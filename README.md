@@ -34,19 +34,20 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 最近更新
+- [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
 - [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 - [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
 - [Duolingo宣布吉祥物Duo已去世](https://github.com/myogg/Gitblog/issues/68)--2025-02-12
 - [祝自己元宵节快乐](https://github.com/myogg/Gitblog/issues/66)--2025-02-12
-- [[ 观影 ] 《碟中谍8：最后的清算》](https://github.com/myogg/Gitblog/issues/59)--2025-02-11
 ## 一些记录
+- [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
 - [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 - [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
 - [Duolingo宣布吉祥物Duo已去世](https://github.com/myogg/Gitblog/issues/68)--2025-02-12
 - [[ 观影 ] 《碟中谍8：最后的清算》](https://github.com/myogg/Gitblog/issues/59)--2025-02-11
-- [[ 分享故事 ]  心灯明亮，则佛性自现](https://github.com/myogg/Gitblog/issues/55)--2025-02-10
 <details><summary>显示更多</summary>
 
+- [[ 分享故事 ]  心灯明亮，则佛性自现](https://github.com/myogg/Gitblog/issues/55)--2025-02-10
 - [搡年糕](https://github.com/myogg/Gitblog/issues/47)--2025-01-25
 - [[ 观影 ] 为了全人类 (1989) 4K HDR](https://github.com/myogg/Gitblog/issues/46)--2025-01-24
 - [[ 图片 ] 隋塔](https://github.com/myogg/Gitblog/issues/45)--2025-01-24
