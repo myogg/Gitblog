@@ -1,39 +1,4 @@
 # Sample workflow for building and deploying a Jekyll site to GitHub Pages
-name: Deploy Jekyll with GitHub Pages dependencies preinstalled
-
-name: Jekyll GitHub Pages
-
-on:
-  push:
-    branches:
-      - main  # 触发工作流的分支
-  schedule:
-    - cron: '0 0 * * *'  # 每天 UTC 时间 00:00 运行
-
-jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.0'  # 根据你的 Jekyll 项目需求设置 Ruby 版本
-
-    - name: Install dependencies
-      run: |
-        gem install bundler
-        bundle install
-
-    - name: Build and deploy
-      env:
-        JEKYLL_ENV: production
-      run: |
-        bundle exec jekyll build
-        # 添加部署步骤，例如使用 `gh-pages` 分支或 GitHub Pages 部署
 on:
   # Runs on pushes targeting the default branch
   push:
