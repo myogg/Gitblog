@@ -1,0 +1,44 @@
+name: Jekyll GitHub Pages
+
+on:
+  push:
+    branches:
+      - main  # 当 main 分支有推送时触发
+  schedule:
+    - cron: '0 0 * * *'  # 每天 UTC 时间 00:00 运行
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1. 检出代码
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # 2. 设置 Ruby 环境
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.0'  # 根据你的 Jekyll 项目需求设置 Ruby 版本
+        bundler-cache: true  # 自动缓存 Gemfile 依赖
+
+    # 3. 安装依赖
+    - name: Install dependencies
+      run: |
+        gem install bundler
+        bundle install
+
+    # 4. 构建 Jekyll 站点
+    - name: Build Jekyll site
+      env:
+        JEKYLL_ENV: production
+      run: |
+        bundle exec jekyll build
+
+    # 5. 部署到 GitHub Pages
+    - name: Deploy to GitHub Pages
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}  # 使用 GitHub 提供的 token
+        publish_dir: ./_site  # Jekyll 默认生成的站点目录
