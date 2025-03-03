@@ -34,11 +34,11 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 最近更新
+- [GW-5000HS-7](https://github.com/myogg/Gitblog/issues/73)--2025-03-03
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
 - [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
 - [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 - [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
-- [Duolingo宣布吉祥物Duo已去世](https://github.com/myogg/Gitblog/issues/68)--2025-02-12
 ## 一些记录
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
 - [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
@@ -81,13 +81,14 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </details>
 
 ## Myblog
+- [GW-5000HS-7](https://github.com/myogg/Gitblog/issues/73)--2025-03-03
 - [祝自己元宵节快乐](https://github.com/myogg/Gitblog/issues/66)--2025-02-12
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)--2025-02-10
 - [[ 分享故事 ]  心灯明亮，则佛性自现](https://github.com/myogg/Gitblog/issues/55)--2025-02-10
-- [[ 胡思乱想 ] 一点小想法。](https://github.com/myogg/Gitblog/issues/54)--2025-02-10
 <details><summary>显示更多</summary>
 
+- [[ 胡思乱想 ] 一点小想法。](https://github.com/myogg/Gitblog/issues/54)--2025-02-10
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)--2025-02-02
 - [[ 观影 ] 唐探1900，值得一看](https://github.com/myogg/Gitblog/issues/51)--2025-01-30
 - [新年快乐](https://github.com/myogg/Gitblog/issues/50)--2025-01-28
