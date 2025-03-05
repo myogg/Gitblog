@@ -34,19 +34,20 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 最近更新
+- [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [GW-5000HS-7](https://github.com/myogg/Gitblog/issues/73)--2025-03-03
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
 - [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
 - [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
-- [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
 ## 一些记录
+- [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
 - [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
 - [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 - [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
-- [Duolingo宣布吉祥物Duo已去世](https://github.com/myogg/Gitblog/issues/68)--2025-02-12
 <details><summary>显示更多</summary>
 
+- [Duolingo宣布吉祥物Duo已去世](https://github.com/myogg/Gitblog/issues/68)--2025-02-12
 - [[ 观影 ] 《碟中谍8：最后的清算》](https://github.com/myogg/Gitblog/issues/59)--2025-02-11
 - [[ 分享故事 ]  心灯明亮，则佛性自现](https://github.com/myogg/Gitblog/issues/55)--2025-02-10
 - [搡年糕](https://github.com/myogg/Gitblog/issues/47)--2025-01-25
@@ -68,13 +69,14 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [Apple Intelligence 有哪些体验](https://github.com/myogg/Gitblog/issues/29)--2025-01-19
 - [[ Markdown ] An option to highlight a "Note" and "Warning" using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
 ## notes
+- [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)--2025-02-08
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)--2025-02-02
 - [[ 观影 ] 唐探1900，值得一看](https://github.com/myogg/Gitblog/issues/51)--2025-01-30
 - [一个频道主的心声，挣钱比较难，所以没动力。](https://github.com/myogg/Gitblog/issues/49)--2025-01-26
-- [Telegram频道主注意了：群组聊天中每10条消息插入广告](https://github.com/myogg/Gitblog/issues/48)--2025-01-26
 <details><summary>显示更多</summary>
 
+- [Telegram频道主注意了：群组聊天中每10条消息插入广告](https://github.com/myogg/Gitblog/issues/48)--2025-01-26
 - [猫猫是水做的](https://github.com/myogg/Gitblog/issues/43)--2025-01-22
 - [Vercel 收购代码搜索工具 - Grep](https://github.com/myogg/Gitblog/issues/32)--2025-01-20
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
