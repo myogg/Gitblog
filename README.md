@@ -67,7 +67,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)--2025-01-21
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)--2025-01-20
 - [Apple Intelligence 有哪些体验](https://github.com/myogg/Gitblog/issues/29)--2025-01-19
-- [[ Markdown ] An option to highlight a "Note" and "Warning" using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
+- [[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
 ## notes
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
