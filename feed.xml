@@ -1,5 +1,11 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2025-03-23T15:35:18.098391+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/79</id><title>About Static Blog Generator</title><updated>2025-03-23T15:35:18.346752+00:00</updated><content type="html"><![CDATA[<p>项目 : <a href="https://github.com/ahui2016/pyboke">https://github.com/ahui2016/pyboke</a></p>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2025-04-03T01:55:06.787264+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/80</id><title>Claude推出教育专用学习模式</title><updated>2025-04-03T01:55:07.118151+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgNn7eo5Hbcxl2rkN6rLitPkAAHfHfMAAty_MRvpq3FXx_liBDYOUOcBAAMCAAN4AAM2BA" alt="H-CN7146244555.jpg" /></p>
+<p>Claude推出教育专用学习模式 引导学生自主思考</p>
+<p>在全球86%大学生使用AI辅助学习的浪潮下，Anthropic为此推出教育计划，新增学习模式。该模式下，聊天机器人Claude不会直接给出答案，而是通过苏格拉底式提问引导学生思考，例如询问&quot;你的结论有何依据？&quot;。  </p>
+<p>该功能基于3.7 Sonnet混合推理模型，与项目管理功能结合。教育版面向Pro用户，.edu邮箱可注册。Anthropic还与东北大学等三所高校合作，全面开放使用。  </p>
+<p>公司同时启动校园大使计划和API学分奖励，并与Canvas合作推进AI教学工具整合。  </p>
+<p><a href="https://www.engadget.com/ai/claudes-new-learning-mode-will-prompt-students-to-answer-questions-on-their-own-172057828.html">Engadget</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/80"/><category term="notes"/><published>2025-04-03T01:54:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/79</id><title>About Static Blog Generator</title><updated>2025-04-03T01:55:07.255409+00:00</updated><content type="html"><![CDATA[<p>项目 : <a href="https://github.com/ahui2016/pyboke">https://github.com/ahui2016/pyboke</a></p>
 <h1>PyBoke</h1>
 <p>Static Blog Generator (极简博客生成器)</p>
 <ul>
@@ -206,13 +212,13 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <code>rg -i &#x27;keyword&#x27; articles</code> 即可查找包含 <code>keyword</code> 的文章，其中 <code>-i</code> 表示不分大小写。</p>
 <p>如果不搜索文章正文内容，只搜索文章标题，可打开网页 title-index.html(标题索引),
 按 <code>Ctrl+F</code> 在页面内搜索。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/79"/><category term="notes"/><published>2025-03-23T15:34:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/78</id><title>[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本</title><updated>2025-03-23T15:35:18.481885+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c874f6f688033adbf1d2e1.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/79"/><category term="notes"/><published>2025-03-23T15:34:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/78</id><title>[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本</title><updated>2025-04-03T01:55:07.437417+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c874f6f688033adbf1d2e1.jpg" alt="" /></p>
 <p>直达： trae.com.cn</p>
 <p>号称是中国国内首个 AI 原生集成开发环境工具（AI IDE），集成了豆包「doubao-1.5-pro」模型，同时支持切换满血版 DeepSeek R1、V3</p>
 <p>目前可以免费使用</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/78"/><category term="notes"/><category term="一些记录"/><published>2025-03-05T16:00:51+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/73</id><title>GW-5000HS-7</title><updated>2025-03-23T15:35:18.576211+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c5466bf688033adbc31c70.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/78"/><category term="notes"/><category term="一些记录"/><published>2025-03-05T16:00:51+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/73</id><title>GW-5000HS-7</title><updated>2025-04-03T01:55:07.601849+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c5466bf688033adbc31c70.jpg" alt="" /></p>
 <p>GW-5000HS-7 ，机芯和新小红圈一样，这款比之前的原点多了砖墙图案，表带的材质也很柔软，贴了钢化膜。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/73"/><category term="Myblog"/><published>2025-03-03T06:05:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/72</id><title>[ 记录 ] 文生图AI网站</title><updated>2025-03-23T15:35:18.677452+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c48b6ef688033adbbbf1c2.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/73"/><category term="Myblog"/><published>2025-03-03T06:05:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/72</id><title>[ 记录 ] 文生图AI网站</title><updated>2025-04-03T01:55:07.731179+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c48b6ef688033adbbbf1c2.jpg" alt="" /></p>
 <p>以下是几个知名的文生图AI网站，它们可以根据文本描述生成图像。虽然我无法直接提供图片，但你可以访问它们的官网查看示例和详细介绍：</p>
 <ol>
 <li>
@@ -265,23 +271,23 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 </li>
 </ol>
 <p>这些工具各有特色，适合不同的创作需求。你可以根据自己的需求选择合适的工具进行尝试，并访问它们的官网查看详细的图片示例和使用指南。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/72"/><category term="一些记录"/><published>2025-03-02T16:47:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/71</id><title>Grok 3 出世后影响最大的是同人文章定制产业</title><updated>2025-03-23T15:35:18.797032+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67ba953401c078e3108673f5.png" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/72"/><category term="一些记录"/><published>2025-03-02T16:47:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/71</id><title>Grok 3 出世后影响最大的是同人文章定制产业</title><updated>2025-04-03T01:55:07.868374+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67ba953401c078e3108673f5.png" alt="" /></p>
 <p>在 Musk 发布 Grok 3 以后，同人产业圈的作者们发现自己的工作受到很大冲击。因为其他优秀模型普遍具有较强的审核，但是 Grok 可以说无视所有关于情色与版权的限制，其生成、续写一些带有不适合公众传播的 AI 文本内容时表现出极强的能力。</p>
 <p>从业者表示虽然当前 Grok 3 生成的文章存在前文情节对话重复、人物塑造不明朗的情景，但是其单次文本长度极佳，并且毫无限制的特性快速收获了一批人的关注。部分人类写手表示甚至考虑大纲完成后提交给 Grok生成内容后精修以交稿。</p>
 <p>意思就是可以写小黄文。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/71"/><category term="一些记录"/><published>2025-02-23T12:16:24+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/70</id><title>[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示</title><updated>2025-03-23T15:35:18.891185+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67b3f69e01c078e3102793db.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/71"/><category term="一些记录"/><published>2025-02-23T12:16:24+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/70</id><title>[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示</title><updated>2025-04-03T01:55:08.003705+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67b3f69e01c078e3102793db.jpg" alt="" /></p>
 <p>Grok 3 将于太平洋时间周一晚上 8 点发布现场演示。</p>
 <p>北京时间周二12点整。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/70"/><category term="一些记录"/><published>2025-02-18T02:57:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/69</id><title>涨见识</title><updated>2025-03-23T15:35:18.993033+00:00</updated><content type="html"><![CDATA[<p>当男人成为“生育机器”。赘婿，即俗称的“上门女婿”，它意味着一个男性无须买房买车也无须彩礼，就可以和一个经济条件不错的女性结婚，生儿育女。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/70"/><category term="一些记录"/><published>2025-02-18T02:57:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/69</id><title>涨见识</title><updated>2025-04-03T01:55:08.128607+00:00</updated><content type="html"><![CDATA[<p>当男人成为“生育机器”。赘婿，即俗称的“上门女婿”，它意味着一个男性无须买房买车也无须彩礼，就可以和一个经济条件不错的女性结婚，生儿育女。</p>
 <p>婚前男方可以拿到一笔彩礼，即便离婚也能分到不菲的资产——萧山的惯例是，男方分得一套70平米左右的房产，或210万元的财产。获得这一切的前提是，男人要在婚后守男德，承担育儿责任，生下来的孩子随女方姓。万一离婚，孩子要留给女方。</p>
 <p>即便如此，丰厚的物质条件还是吸引了不少男人前来“应聘”。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/69"/><category term="一些记录"/><published>2025-02-14T16:44:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/68</id><title>Duolingo宣布吉祥物Duo已去世</title><updated>2025-03-23T15:35:19.073528+00:00</updated><content type="html"><![CDATA[<p>全球拥有超5亿用户的语言学习软件多邻国（Duolingo），在X、Instagram、TikTok等多个社交媒体平台发布 “讣告”，宣布其标志性吉祥物——绿色猫头鹰Duo “去世”。  </p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/69"/><category term="一些记录"/><published>2025-02-14T16:44:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/68</id><title>Duolingo宣布吉祥物Duo已去世</title><updated>2025-04-03T01:55:08.263826+00:00</updated><content type="html"><![CDATA[<p>全球拥有超5亿用户的语言学习软件多邻国（Duolingo），在X、Instagram、TikTok等多个社交媒体平台发布 “讣告”，宣布其标志性吉祥物——绿色猫头鹰Duo “去世”。  </p>
 <p><img src="https://pic.superbed.cc/item/67ac4028fa9f77b4dc078d58.jpg" alt="" /></p>
 <p>这一消息迅速引发全球网友热议，有关“多邻国猫头鹰死了”的话题也登上热搜，相关表情包播放量破亿。  多邻国以黑底白字的严肃形式发布声明：“我们怀着沉痛的心情告别多儿（Duo）。” 声明中透露，猫头鹰的死亡原因仍在调查中，还调侃称 “它可能是在等你上线学习时死掉的”。</p>
 <p><a href="https://x.com/duolingo?t=SlDAA61LRULXulxntcvi-w&amp;s=09">Duolingo</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/68"/><category term="一些记录"/><published>2025-02-12T06:31:54+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/66</id><title>祝自己元宵节快乐</title><updated>2025-03-23T15:35:19.179000+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67abffd4fa9f77b4dcf65043.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/68"/><category term="一些记录"/><published>2025-02-12T06:31:54+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/66</id><title>祝自己元宵节快乐</title><updated>2025-04-03T01:55:08.410477+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67abffd4fa9f77b4dcf65043.jpg" alt="" /></p>
 <p>祝自己元宵节快乐！</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/66"/><category term="Myblog"/><published>2025-02-12T01:57:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/59</id><title>[ 观影 ] 《碟中谍8：最后的清算》</title><updated>2025-03-23T15:35:19.305174+00:00</updated><content type="html"><![CDATA[<p>标题党，哈哈😊</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/66"/><category term="Myblog"/><published>2025-02-12T01:57:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/59</id><title>[ 观影 ] 《碟中谍8：最后的清算》</title><updated>2025-04-03T01:55:08.540529+00:00</updated><content type="html"><![CDATA[<p>标题党，哈哈😊</p>
 <p>《碟中谍8：最后的清算》超级碗现场预告片</p>
 <p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46d5.jpg" alt="" /></p>
 <p>汤姆·克鲁斯将在飞机上倒吊，在陆地、海洋和天空上挑战死亡</p>
@@ -290,36 +296,36 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46cc.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46e3.jpg" alt="" /></p>
 <p><a href="https://youtu.be/-1fpv6Y6N6U">https://youtu.be/-1fpv6Y6N6U</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/59"/><category term="一些记录"/><published>2025-02-11T11:03:34+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/58</id><title>[ 胡思乱想 ] 算盘打的几里外都能听到响</title><updated>2025-03-23T15:35:19.394479+00:00</updated><content type="html"><![CDATA[<p>买药自己家的医保卡不用，非要用我家的。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/59"/><category term="一些记录"/><published>2025-02-11T11:03:34+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/58</id><title>[ 胡思乱想 ] 算盘打的几里外都能听到响</title><updated>2025-04-03T01:55:08.668716+00:00</updated><content type="html"><![CDATA[<p>买药自己家的医保卡不用，非要用我家的。</p>
 <p>我家的那位灵活就业交的那点钱还不够她用的，能存几个钱？</p>
 <p>半夜11点多，要帮她在拼多多上助力拉人头。拗不过我家的那位，又下了个拼多多，帮她助了个力。</p>
 <p>你说这世上怎么也有这么爱贪便宜的人？</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/58"/><category term="突发的一些小想法"/><published>2025-02-11T06:29:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/57</id><title>[ 胡思乱想 ] 屯洗洁精</title><updated>2025-03-23T15:35:19.486015+00:00</updated><content type="html"><![CDATA[<p>只是有个梗在里面。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/58"/><category term="突发的一些小想法"/><published>2025-02-11T06:29:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/57</id><title>[ 胡思乱想 ] 屯洗洁精</title><updated>2025-04-03T01:55:08.818879+00:00</updated><content type="html"><![CDATA[<p>只是有个梗在里面。</p>
 <p>因为有人囤水，有人囤粮，有人囤各种东西，就是因为害怕了才屯，怕过苦日子屯。</p>
 <p>我囤洗洁精的根子在于，小时候总要拿洗洁精兑水来用，因为那样能省一点，因为泡沫少还是倒了很多，结果可能还是因为没省。</p>
 <p>屯盐屯米屯面屯水，都是因为穷怕了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/57"/><category term="Myblog"/><category term="突发的一些小想法"/><published>2025-02-11T02:28:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/56</id><title>[ 胡思乱想 ]  万恶的小视频</title><updated>2025-03-23T15:35:19.573540+00:00</updated><content type="html"><![CDATA[<p>我这个人眼窝子浅，平时看一个感人的电影，也就是两个多小时哭一场。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/57"/><category term="Myblog"/><category term="突发的一些小想法"/><published>2025-02-11T02:28:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/56</id><title>[ 胡思乱想 ]  万恶的小视频</title><updated>2025-04-03T01:55:08.963493+00:00</updated><content type="html"><![CDATA[<p>我这个人眼窝子浅，平时看一个感人的电影，也就是两个多小时哭一场。</p>
 <p>现在倒好看一个小视频，三分钟就要哭一场，有时还要来回看好几遍。</p>
 <p>唉，迟早这个眼睛会瞎了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/56"/><category term="Myblog"/><category term="突发的一些小想法"/><published>2025-02-10T07:55:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/55</id><title>[ 分享故事 ]  心灯明亮，则佛性自现</title><updated>2025-03-23T15:35:19.674760+00:00</updated><content type="html"><![CDATA[<p>在非洲国家坦桑尼亚，不到一半家庭有电；在农村地区，仅三分之一家庭有电。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/56"/><category term="Myblog"/><category term="突发的一些小想法"/><published>2025-02-10T07:55:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/55</id><title>[ 分享故事 ]  心灯明亮，则佛性自现</title><updated>2025-04-03T01:55:09.091698+00:00</updated><content type="html"><![CDATA[<p>在非洲国家坦桑尼亚，不到一半家庭有电；在农村地区，仅三分之一家庭有电。</p>
 <p>坦桑尼亚的发明家詹姆士为了让学童在晚上也可读书，用废弃的水泥袋、缝纫机和太阳能面板，打造太阳能背包，让学童背书包也同时充电，到了夜晚接上电灯即可阅读，点燃学童未来的希望。</p>
 <p>2016年起，詹姆士每月以手工缝制80个可供电6至8个小时的太阳能背包。与昂贵且危险的煤油灯相比，太阳能背包更经济实惠。</p>
 <p>每个背包售价仅约4至8美元，相当于用煤油灯12至22天的支出。而且这款背包材质轻便、耐用，设计更加入象征非洲特色的长颈鹿白色剪影，实用又时尚。</p>
 <p>“心灯明亮，则佛性自现…”</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/55"/><category term="一些记录"/><category term="Myblog"/><published>2025-02-10T01:47:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/54</id><title>[ 胡思乱想 ] 一点小想法。</title><updated>2025-03-23T15:35:19.763602+00:00</updated><content type="html"><![CDATA[<p>以前看见得病的人不锻炼老觉得他们懒，觉得锻炼一下不就身体好的快吗？</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/55"/><category term="一些记录"/><category term="Myblog"/><published>2025-02-10T01:47:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/54</id><title>[ 胡思乱想 ] 一点小想法。</title><updated>2025-04-03T01:55:09.254628+00:00</updated><content type="html"><![CDATA[<p>以前看见得病的人不锻炼老觉得他们懒，觉得锻炼一下不就身体好的快吗？</p>
 <p>知道自己得病了才知道，起床是多么艰难。</p>
 <p>真是应了那句老话，说人容易律己难。</p>
 <p>唉，自己的痛只有自己知道。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/54"/><category term="Myblog"/><published>2025-02-10T01:21:13+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/53</id><title>mihomo party什么情况？</title><updated>2025-03-23T15:35:19.847551+00:00</updated><content type="html"><![CDATA[<p>mihomo party什么情况？不是归档跑路了吗？咋又更新了？</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/54"/><category term="Myblog"/><published>2025-02-10T01:21:13+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/53</id><title>mihomo party什么情况？</title><updated>2025-04-03T01:55:09.386060+00:00</updated><content type="html"><![CDATA[<p>mihomo party什么情况？不是归档跑路了吗？咋又更新了？</p>
 <p><img src="https://pic.superbed.cc/item/67a6cca4fa9f77b4dc2fdeb3.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/53"/><category term="notes"/><published>2025-02-08T03:17:29+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/52</id><title>那么，我的青春呢.</title><updated>2025-03-23T15:35:19.939407+00:00</updated><content type="html"><![CDATA[<p>冬雪未化，母校已倒。朋友圈里几张照片，残垣断壁间，依稀可见当年模样。九二年毕业至今，竟未回去看过一眼，如今却是永诀。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/53"/><category term="notes"/><published>2025-02-08T03:17:29+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/52</id><title>那么，我的青春呢.</title><updated>2025-04-03T01:55:09.520707+00:00</updated><content type="html"><![CDATA[<p>冬雪未化，母校已倒。朋友圈里几张照片，残垣断壁间，依稀可见当年模样。九二年毕业至今，竟未回去看过一眼，如今却是永诀。</p>
 <p><img src="https://pic.superbed.cc/item/679f8be6fa9f77b4dc663ba4.jpg" alt="" /></p>
 <p>记得教学楼前那株老槐，春日里开满白花，香气能飘进二楼的教室。我们总爱在树下背书，花瓣落在课本上，像是给文字添了标点。教室的窗棂漆色斑驳，阳光斜斜地照进来，粉笔灰在光柱中起舞。如今想来，那竟是青春的模样。</p>
 <p>操场边的单杠生了锈，却依然倔强地立着。那年运动会，我在这里摔破了膝盖，班主任背我去医务室，她的发梢有淡淡的茉莉香。医务室的白窗帘随风轻摆，窗外是整排的梧桐，秋日里金黄一片。这些，都随着推土机的轰鸣，化作尘埃。</p>
 <p>朋友圈里的照片，砖瓦散落一地，像是被时光撕碎的日历。有人留言说这里要建商场，有人说要盖写字楼。我忽然觉得，记忆中的母校，就像一片落叶，终究要归于尘土。</p>
 <p>窗外的雪还在下，纷纷扬扬。我仿佛看见少年时的自己，抱着课本匆匆跑过走廊。那时的阳光很暖，风很轻，未来还很远。如今母校倒了，我的青春，也随之散落在时光里。</p>
 <p>雪落无声，掩去了所有痕迹。只有记忆，还在心底某个角落，倔强地生长。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/52"/><category term="notes"/><category term="Myblog"/><published>2025-02-02T15:15:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/51</id><title>[ 观影 ] 唐探1900，值得一看</title><updated>2025-03-23T15:35:20.022686+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/679b3a68fa9f77b4dc41b1e9.webp" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/52"/><category term="notes"/><category term="Myblog"/><published>2025-02-02T15:15:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/51</id><title>[ 观影 ] 唐探1900，值得一看</title><updated>2025-04-03T01:55:09.665858+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/679b3a68fa9f77b4dc41b1e9.webp" alt="" /></p>
 <p>我觉得这个《唐探1900》更有深意，更值得一看。</p>
 <p>《唐探1900》的故事发生在1900年美国旧金山的唐人街，这里的生活还算平静，但一起谋杀案的发生，让唐人街陷入了一片混乱，无端猜忌被人怀疑，蒙受着巨大的阴影和压力，这一切究竟是巧合还是有心人的诡计？</p>
 <p>王宝强扮演的阿鬼和刘昊然扮演的秦福作为侦探的形象出现，他们用独特的幽默去讲述电影中案件背后的故事，寻找真相。</p>
@@ -328,9 +334,9 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <p>在探寻真相的路上，他们遇到了各种各样的阻碍，挡住了他们前进的道路。周润发，白客，张新成，岳云鹏等人饰演的角色，也是为故事添彩不少，他们扮演的不仅是一个电影角色，更像是一种历史符号，正因如此，电影里“此一时，彼一时”、“那才是世上最伟大的魔术”，水到渠成地上了价值。</p>
 <p>影片的最后，发哥的演讲振聋发聩，让人不禁湿了眼眶，可以说把电影拉到了另一个维度。春节看唐探仿佛已经成了一种传统，唐探也没有让观众失望，早已做出口碑，网友的好评已经说明一切。</p>
 <p>《唐探1900》另辟蹊径，喜剧+悬疑+立意+升华，将商业与情怀完美融合，如果春节想去电影院看一部电影的话，我觉得《唐探1900》是很不错的选择。​</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/51"/><category term="notes"/><category term="Myblog"/><published>2025-01-30T08:39:31+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/50</id><title>新年快乐</title><updated>2025-03-23T15:35:20.122785+00:00</updated><content type="html"><![CDATA[<p>新年好，愿自己和看到的各位新的一年 好事连连。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/51"/><category term="notes"/><category term="Myblog"/><published>2025-01-30T08:39:31+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/50</id><title>新年快乐</title><updated>2025-04-03T01:55:09.805552+00:00</updated><content type="html"><![CDATA[<p>新年好，愿自己和看到的各位新的一年 好事连连。</p>
 <p><img src="https://pic.superbed.cc/item/67990515fa9f77b4dc2eb469.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/50"/><category term="Myblog"/><published>2025-01-28T16:30:19+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/49</id><title>一个频道主的心声，挣钱比较难，所以没动力。</title><updated>2025-03-23T15:35:20.241570+00:00</updated><content type="html"><![CDATA[<p>🤡 2024 年频道年终总结</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/50"/><category term="Myblog"/><published>2025-01-28T16:30:19+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/49</id><title>一个频道主的心声，挣钱比较难，所以没动力。</title><updated>2025-04-03T01:55:09.949377+00:00</updated><content type="html"><![CDATA[<p>🤡 2024 年频道年终总结</p>
 <blockquote>
 </blockquote>
 <p>1.更新频率和盈利</p>
@@ -349,11 +355,11 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <ul>
 <li>主要是没有什么动力了</li>
 </ul>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/49"/><category term="notes"/><published>2025-01-26T11:33:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/48</id><title>Telegram频道主注意了：群组聊天中每10条消息插入广告</title><updated>2025-03-23T15:35:20.342095+00:00</updated><content type="html"><![CDATA[<p>Telegram测试新功能：群组聊天中每10条消息插入广告</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/49"/><category term="notes"/><published>2025-01-26T11:33:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/48</id><title>Telegram频道主注意了：群组聊天中每10条消息插入广告</title><updated>2025-04-03T01:55:10.079640+00:00</updated><content type="html"><![CDATA[<p>Telegram测试新功能：群组聊天中每10条消息插入广告</p>
 <p><img src="https://pic.superbed.cc/item/67961a5dfa9f77b4dc14874c.jpg" alt="" /></p>
 <p>近日，Telegram最新测试版中引入了一项实验性功能，允许在群组聊天中展示广告。据悉，广告将大约每10条消息出现一次。这一功能目前仅在调试菜单中可用，尚未正式推出。</p>
 <p>Telegram官方尚未对此功能发表评论，但此举表明该公司正在探索新的盈利模式。这一变化可能预示着未来Telegram在广告领域的进一步布局。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/48"/><category term="notes"/><published>2025-01-26T11:21:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/47</id><title>搡年糕</title><updated>2025-03-23T15:35:20.431549+00:00</updated><content type="html"><![CDATA[<p>年前的准备中，最热闹的不是腊八、不是送灶，不是裹粽子、不是酱年货，而是搡年糕。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/48"/><category term="notes"/><published>2025-01-26T11:21:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/47</id><title>搡年糕</title><updated>2025-04-03T01:55:10.305632+00:00</updated><content type="html"><![CDATA[<p>年前的准备中，最热闹的不是腊八、不是送灶，不是裹粽子、不是酱年货，而是搡年糕。</p>
 <p>过年的各种准备，基本上都属于各家各户自己的事，唯有搡年糕，是必须相互合作大家配合才能完成的事。</p>
 <p>除了严格过革命年，啥也不能准备的特殊年份。正常的过年，年糕是每家每户都要准备的。各家的差距无非是多少，条件好点的，多搡点，条件差的少搡点。</p>
 <p>有的到清明以后家里还有过年时搡的年糕，水里时间泡长了，年糕都臭了，也能吃，叫臭年糕。掘草籽地的时候，家人送来一碗草籽年糕，能羡慕边上的人眼都绿了。搡年糕的时间，也就是现在这个时间段，不能太早，不能太晚，大多在腊八后，送灶前。
@@ -438,29 +444,29 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <li><strong>出锅</strong>：煮好后即可食用。</li>
 </ol>
 <p>这些做法可以根据个人口味和食材进行调整，年糕的软糯口感和多样的烹饪方式使其成为广受欢迎的美食。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/47"/><category term="一些记录"/><category term="Myblog"/><published>2025-01-25T11:47:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/46</id><title>[ 观影 ] 为了全人类 (1989) 4K HDR</title><updated>2025-03-23T15:35:20.556416+00:00</updated><content type="html"><![CDATA[<p>名称：为了全人类 (1989) 4K HDR 中字外挂字幕</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/47"/><category term="一些记录"/><category term="Myblog"/><published>2025-01-25T11:47:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/46</id><title>[ 观影 ] 为了全人类 (1989) 4K HDR</title><updated>2025-04-03T01:55:10.479042+00:00</updated><content type="html"><![CDATA[<p>名称：为了全人类 (1989) 4K HDR 中字外挂字幕</p>
 <p><img src="https://pic.superbed.cc/item/67931821fa9f77b4dcedaef9.jpg" alt="" /></p>
 <p>描述：1969年7月是太空竞赛的一个终点。为了全人类的梦想。三名宇航员带着凭着极大的勇气和信念奔向月球。</p>
 <p>导演阿尔·莱纳所拍摄的这部奥斯卡奖记录长片，完整而真实地记录了这一人类历史最伟大的勇气之旅。这部具有伟大意义而又珍贵的影片，也同样是标准公司的一大宝藏，这次为你完整呈现。</p>
 <p>链接：<a href="https://www.alipan.com/s/Jrgmisun6nA">https://www.alipan.com/s/Jrgmisun6nA</a></p>
 <p>📁 大小：25.9GB</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/46"/><category term="一些记录"/><published>2025-01-24T04:35:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/45</id><title>[ 图片 ] 隋塔</title><updated>2025-03-23T15:35:20.673857+00:00</updated><content type="html"><![CDATA[<p>现在寺庙香火鼎盛，实在没有什么(๑•̌.•̑๑)ˀ̣ˀ̣</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/46"/><category term="一些记录"/><published>2025-01-24T04:35:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/45</id><title>[ 图片 ] 隋塔</title><updated>2025-04-03T01:55:10.607277+00:00</updated><content type="html"><![CDATA[<p>现在寺庙香火鼎盛，实在没有什么(๑•̌.•̑๑)ˀ̣ˀ̣</p>
 <p><img src="https://pic.superbed.cc/item/6793008cfa9f77b4dceca637.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/6793008cfa9f77b4dceca63c.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/6793008dfa9f77b4dceca649.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/6793008dfa9f77b4dceca657.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/6793008dfa9f77b4dceca661.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/67930114fa9f77b4dcecabf1.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/45"/><category term="一些记录"/><published>2025-01-24T02:58:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/44</id><title>[ 观影 ] 驻站</title><updated>2025-03-23T15:35:20.759341+00:00</updated><content type="html"><![CDATA[<p>驻站电视剧，闲时打发下时间</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/45"/><category term="一些记录"/><published>2025-01-24T02:58:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/44</id><title>[ 观影 ] 驻站</title><updated>2025-04-03T01:55:10.731243+00:00</updated><content type="html"><![CDATA[<p>驻站电视剧，闲时打发下时间</p>
 <p>阿里云盘26集全</p>
 <p><a href="https://www.alipan.com/s/Uqqe9joU7dK">https://www.alipan.com/s/Uqqe9joU7dK</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/44"/><category term="一些记录"/><published>2025-01-22T05:24:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/43</id><title>猫猫是水做的</title><updated>2025-03-23T15:35:20.861080+00:00</updated><content type="html"><![CDATA[<p>匈牙利Eötvös Loránd大学的研究团队近日在《iScience》杂志上发表了一项关于猫身体意识的研究，揭示了猫在通过狭小空间时的行为策略。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/44"/><category term="一些记录"/><published>2025-01-22T05:24:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/43</id><title>猫猫是水做的</title><updated>2025-04-03T01:55:10.852212+00:00</updated><content type="html"><![CDATA[<p>匈牙利Eötvös Loránd大学的研究团队近日在《iScience》杂志上发表了一项关于猫身体意识的研究，揭示了猫在通过狭小空间时的行为策略。</p>
 <p>研究选取了30只家养猫，利用逐步变窄或变矮的开口测试其空间决策能力。结果显示，猫在面对高而窄的开口时通常不会犹豫，直接尝试通过；但在遇到低矮的开口时则表现出显著的犹豫行为，甚至寻找替代解决方案，如跳跃越过障碍。</p>
 <p><img src="https://pic.superbed.cc/item/67907c70fa9f77b4dcbb51a0.jpg" alt="" /></p>
 <p>研究指出，猫通过高窄开口时可能依赖其灵活的身体结构和试探性策略，而非基于身体大小的先验判断。然而，当开口高度低于猫的肩高时，猫更倾向于依赖身体意识来判断是否通过。这种差异可能源于猫独特的解剖学特征和生态适应性，例如它们缺乏锁骨，具有极强的挤压能力和敏锐的触须感知。</p>
 <p>研究者认为，这一发现为动物自我意识的模块化理论提供了新证据，即不同动物可能根据生态需求进化出特定的自我意识形式。此外，研究还指出，未来可以在更多复杂环境中进一步探讨猫的身体意识及其表现形式。</p>
 <p>来源：<a href="https://www.sciencedirect.com/science/article/pii/S2589004224020248">iScience</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/43"/><category term="notes"/><published>2025-01-22T05:06:11+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/42</id><title>DeepSeek官方App上线</title><updated>2025-03-23T15:35:20.954933+00:00</updated><content type="html"><![CDATA[<p>DeepSeek有App了。<strong>官方应用</strong>上线App Store，背后正是由此前火爆全网的“国产之光”DeepSeek V3模型提供支持。该App结合了两大核心功能：<strong>深度思考和联网搜索</strong>。支持用户完成对话、语言翻译、创意写作、编程、解题、文献解读、旅行规划等用途，相当于说是<strong>网页版的各种功能都支持</strong>。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/43"/><category term="notes"/><published>2025-01-22T05:06:11+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/42</id><title>DeepSeek官方App上线</title><updated>2025-04-03T01:55:10.971335+00:00</updated><content type="html"><![CDATA[<p>DeepSeek有App了。<strong>官方应用</strong>上线App Store，背后正是由此前火爆全网的“国产之光”DeepSeek V3模型提供支持。该App结合了两大核心功能：<strong>深度思考和联网搜索</strong>。支持用户完成对话、语言翻译、创意写作、编程、解题、文献解读、旅行规划等用途，相当于说是<strong>网页版的各种功能都支持</strong>。</p>
 <p><img src="https://pic.superbed.cc/item/67850520fa9f77b4dce18b54.webp" alt="" /></p>
 <p>更关键的是，免费，免费，还是免费</p>
 <p><img src="https://pic.superbed.cc/item/67850538fa9f77b4dce18c41.webp" alt="" /></p>
@@ -474,7 +480,7 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <p>它是一个参数量为671B的MoE模型，激活37B，在14.8T高质量token上进行了预训练。</p>
 <p>它发布即完全开源，在多项测评上，DeepSeek V3达到了开源SOTA，超越Llama 3.1 405B.</p>
 <p><img src="https://pic.superbed.cc/item/6785062bfa9f77b4dce1b082.webp" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/42"/><category term="收录"/><published>2025-01-21T13:41:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/33</id><title>伊拉克国家域名删除始末</title><updated>2025-03-23T15:35:21.054351+00:00</updated><content type="html"><![CDATA[<p>美国政府到底有没有人为干预伊拉克和利比亚的国家顶级域名呢？其实并没有。但这两个国家的顶级域名(ccTLD)确实出现过很大的故障，但也可有内情。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/42"/><category term="收录"/><published>2025-01-21T13:41:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/33</id><title>伊拉克国家域名删除始末</title><updated>2025-04-03T01:55:11.122512+00:00</updated><content type="html"><![CDATA[<p>美国政府到底有没有人为干预伊拉克和利比亚的国家顶级域名呢？其实并没有。但这两个国家的顶级域名(ccTLD)确实出现过很大的故障，但也可有内情。</p>
 <p>先说伊拉克，它的顶级域名是.iq。创建时间是1997年<a href="https://taoshu.in/dns/us-and-cctld.html#fn3">3</a>，当时的申请人叫 Bayan Elashi，是来自巴勒斯坦的穆斯林。他于1977年到美国留学，在普渡大学拿到<a href="https://taoshu.in/dns/us-and-cctld.html#"> 计算机</a>科学硕士学位。毕业后他在加利福尼亚州的一家 IT 公司任 CEO，设计了最早支持阿拉伯语的个人电脑 Alraed。之后他创办了国际电脑和通讯公司(International Computer and Communications Inc)。最后，他在1992年，于德克萨斯州创办了自己的第三家公司 InfoCom<a href="https://taoshu.in/dns/us-and-cctld.html#fn4">4</a>。</p>
 <p>InfoCom 在阿拉伯世界首屈一指的数据库提供商，而且它还托管了将近500个网站。有些网站属于中东地区的商业公司，也有一些属于在美国的穆斯林组织。Bayan 简直就是阿拉伯人的民族之光。</p>
 <p>Bayan 在 1997 年申请注册.iq域名后，IANA 很快就批准了。至于为什么会把伊拉克的顶级域名授权给一个巴勒斯坦人，我们后面会说。</p>
@@ -505,19 +511,19 @@ toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
 <p>除了.iq和.ly外，还有很多 ccTLD 被重新委托，其中就包括澳大利亚的.au<a href="https://taoshu.in/dns/us-and-cctld.html#fn9">9</a>。</p>
 <p>从历史发展、资源投入和技术现实等各方面考虑，美国在互联网全球治理方面确实有自己的优势。理论上美国确实可以删除任意国家的顶级域名。所以我们国家的某些学者有所担忧也可以理解。但一味的阴谋论则没有必要。</p>
 <p>DNS 的多数根<a href="https://taoshu.in/dns/us-and-cctld.html#"> 服务器</a>和最核心的 A 根服务器虽然都在美国，但管理权确不在美国政府，而在非赢利性的 ICANN 手里。为了防止 ICANN 做坏事，全球互联网社区共同制定了一系列规范，其中之一就是公开透明。ICANN 的所有讨论、结论和行动都有公开的文件可查。信息公开是最好的监督方式。这一点估计国人很难理解。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/33"/><category term="收录"/><published>2025-01-20T13:56:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/32</id><title>Vercel 收购代码搜索工具 - Grep</title><updated>2025-03-23T15:35:21.171898+00:00</updated><content type="html"><![CDATA[<p>Vercel 近期收购了一款强大的代码搜索工具 - Grep，Grep 覆盖超过50万个GitHub仓库。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/33"/><category term="收录"/><published>2025-01-20T13:56:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/32</id><title>Vercel 收购代码搜索工具 - Grep</title><updated>2025-04-03T01:55:11.247501+00:00</updated><content type="html"><![CDATA[<p>Vercel 近期收购了一款强大的代码搜索工具 - Grep，Grep 覆盖超过50万个GitHub仓库。</p>
 <p>支持代码、文件和路径多维度搜索，支持跨仓库代码搜索，能用正则和区分大小写。</p>
 <p><a href="https://grep.app/">Grep 网址</a> | <a href="https://vercel.com/blog/vercel-acquires-grep">Vercel 收购新闻</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/32"/><category term="notes"/><published>2025-01-20T07:51:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/31</id><title>[ 胡思乱想 ] Akamai CDN 退出中国</title><updated>2025-03-23T15:35:21.261243+00:00</updated><content type="html"><![CDATA[<p>我认为这就是大国之间的博弈。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/32"/><category term="notes"/><published>2025-01-20T07:51:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/31</id><title>[ 胡思乱想 ] Akamai CDN 退出中国</title><updated>2025-04-03T01:55:11.633740+00:00</updated><content type="html"><![CDATA[<p>我认为这就是大国之间的博弈。</p>
 <p>就像抖音海外版为什么敢硬顶美国政府，那就是拿他的几亿用户来要挟，如果他换一个地方，估计早就被打趴下了。 </p>
 <p>所以这不关我们小网民什么事，该吃吃该喝喝，这些都不是我们能操心的事，你不要替别人瞎操心。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/31"/><category term="Myblog"/><published>2025-01-20T07:32:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/30</id><title>[ 生活 ] 今秋南方行</title><updated>2025-03-23T15:35:21.539779+00:00</updated><content type="html"><![CDATA[<p>今秋南方行</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/31"/><category term="Myblog"/><published>2025-01-20T07:32:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/30</id><title>[ 生活 ] 今秋南方行</title><updated>2025-04-03T01:55:11.757715+00:00</updated><content type="html"><![CDATA[<p>今秋南方行</p>
 <p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e4757.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e475b.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e4764.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e476e.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e4776.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/30"/><category term="Myblog"/><published>2025-01-20T07:15:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/29</id><title>Apple Intelligence 有哪些体验</title><updated>2025-03-23T15:35:21.629379+00:00</updated><content type="html"><![CDATA[<p>Apple Intelligence 有哪些体验？</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/30"/><category term="Myblog"/><published>2025-01-20T07:15:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/29</id><title>Apple Intelligence 有哪些体验</title><updated>2025-04-03T01:55:11.890582+00:00</updated><content type="html"><![CDATA[<p>Apple Intelligence 有哪些体验？</p>
 <p>一、AI 与操作系统融合
 现有的 AI 大模型专注于一个领域下的智能生成，如 Chat GPT 的文本处理能力、 Midjourney 文生图能力，都是根据用户的指令去完成单独的命令，而 Apple Intelligence 将 LLM 大模型的能力与用户的操作系统深度结合，从内容智能到行为智能，强调了人工智能在手机上的行动生成和整合能力，通过对手机里的各个 App 进行全面的跟踪和分析，完成用户的操作指令。
 <img src="https://pic.superbed.cc/item/678bb35afa9f77b4dc6489c4.webp" alt="" />
@@ -557,7 +563,7 @@ c、视觉搜索</p>
 <li>新型的操作系统</li>
 </ol>
 <p>随着 AI 能力整合，移动端设备变成一个AI 终端的系统，多终端（手机、设备、手表、手环、PC、pad），跨设备执行指令和操作，多模态（文字、语音、图像、手势），根据用户的个人习惯、喜爱偏好，总结推理，在不同的时间地点给予用户最合适的建议和答案，并且能够不断地学习优化，类似“Apple Intelligence”成为用户的“智能贴身管家”，深入理解和预测用户行为，不断成为“私人专属&quot;的终端。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/29"/><category term="收录"/><published>2025-01-19T19:14:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/28</id><title>[ Markdown ] An option to highlight a "Note" and "Warning" using blockquote</title><updated>2025-03-23T15:35:21.738636+00:00</updated><content type="html"><![CDATA[<blockquote>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/29"/><category term="收录"/><published>2025-01-19T19:14:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/28</id><title>[ Markdown ] An option to highlight a "Note" and "Warning" using blockquote</title><updated>2025-04-03T01:55:12.061685+00:00</updated><content type="html"><![CDATA[<blockquote>
 <p>[!NOTE]<br />
 Highlights information that users should take into account, even when skimming.</p>
 </blockquote>
@@ -577,17 +583,17 @@ Critical content demanding immediate user attention due to potential risks.</p>
 <p>[!CAUTION]
 Negative potential consequences of an action.</p>
 </blockquote>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/28"/><category term="收录"/><published>2025-01-19T19:13:01+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/27</id><title>[  图片 ]  随记</title><updated>2025-03-23T15:35:21.837724+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842ae1.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/28"/><category term="收录"/><published>2025-01-19T19:13:01+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/27</id><title>[  图片 ]  随记</title><updated>2025-04-03T01:55:12.189447+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842ae1.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842ae6.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842af0.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842af6.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/27"/><category term="Myblog"/><published>2025-01-19T19:11:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/26</id><title>Friends</title><updated>2025-03-23T15:35:21.948491+00:00</updated><content type="html"><![CDATA[<p>这个 Issue 是友情链接的 Issue, 如果你想加到友情链接里，请在这条 Issue 上评论，我打心后会自动加到友情链接里。感谢大家。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/27"/><category term="Myblog"/><published>2025-01-19T19:11:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/26</id><title>Friends</title><updated>2025-04-03T01:55:12.326031+00:00</updated><content type="html"><![CDATA[<p>这个 Issue 是友情链接的 Issue, 如果你想加到友情链接里，请在这条 Issue 上评论，我打心后会自动加到友情链接里。感谢大家。</p>
 <p>格式如下（请参考我下面的 comment）: 冒号为中文冒号 ：</p>
 <p>名字：xxxxxx
 链接：xxxxxx
 描述：xxxxxx</p>
 <p>added al</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/26"/><category term="Friends"/><published>2025-01-19T19:09:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/25</id><title>苹果发布iPhone屏下Face ID“隐身术”新专利</title><updated>2025-03-23T15:35:22.054769+00:00</updated><content type="html"><![CDATA[<p>这项技术的核心在于通过将前置摄像头、光线传感器等元件隐藏在屏幕下方，并利用多个孔径穿透屏幕表面，使这些组件能够在屏幕下完成图像识别工作。
+]]></content><link href="https://github.com/myogg/Gitblog/issues/26"/><category term="Friends"/><published>2025-01-19T19:09:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/25</id><title>苹果发布iPhone屏下Face ID“隐身术”新专利</title><updated>2025-04-03T01:55:12.460122+00:00</updated><content type="html"><![CDATA[<p>这项技术的核心在于通过将前置摄像头、光线传感器等元件隐藏在屏幕下方，并利用多个孔径穿透屏幕表面，使这些组件能够在屏幕下完成图像识别工作。
 <img src="https://pic.superbed.cc/item/678bb5fdfa9f77b4dc64a433.webp" alt="" />
 一直以来，Face ID技术以其高精度和便捷性著称，通过深感摄像头投射并分析大量点阵，实现对人脸数据的精确捕捉。然而，由于技术限制，使得Face ID系统中的关键组件，如红外摄像头和点阵投影器等，尚无法完全融入屏幕下方。因此，苹果不得不采用所谓的“药丸屏”设计作为折衷方案。</p>
 <p>为了解决将红外摄像头和点阵投影器等关键组件隐藏在屏幕下方的技术难题，苹果的新专利描述了一种创新方法，旨在将光学传感器巧妙地置于屏幕下方。</p>
@@ -615,73 +621,73 @@ Negative potential consequences of an action.</p>
 <p>(<a href="https://pic.superbed.cc/item/678bb681fa9f77b4dc64a988.webp">https://pic.superbed.cc/item/678bb681fa9f77b4dc64a988.webp</a>)</p>
 <p>苹果的这项专利展示了其在屏下技术上的重大突破，尤其是在iPhone和MacBook设备上。对于iPhone而言，这项技术有望彻底消除刘海设计，使得设备拥有更加简洁和一体化的外观。</p>
 <p>这一技术方案预计最早将在2026年发布的iPhone 18系列上得到应用，届时iPhone 18将采用单挖孔屏设计，彻底告别现有的药丸屏形态，进一步推动苹果手机向真正的全面屏方向迈进。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/25"/><category term="一些记录"/><published>2025-01-19T19:08:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/24</id><title>[ 生活 ]  2024年的最后一个月,我做了痔疮手术,</title><updated>2025-03-23T15:35:22.150996+00:00</updated><content type="html"><![CDATA[<p>2024年的最后一个月,我做了痔疮手术,因为已经形成血栓了，所以不做不行了。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/25"/><category term="一些记录"/><published>2025-01-19T19:08:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/24</id><title>[ 生活 ]  2024年的最后一个月,我做了痔疮手术,</title><updated>2025-04-03T01:55:12.600969+00:00</updated><content type="html"><![CDATA[<p>2024年的最后一个月,我做了痔疮手术,因为已经形成血栓了，所以不做不行了。</p>
 <p>现在已经将近20天了，但是伤口还没有长好，所以还没有上班。这几个月因为没上班的缘故，所以收入肯定会巨减。</p>
 <p>刚做的两天没有感觉有点疼痛，因为有麻药的作用。两天之后就开始疼痛，然后大便就跟拉玻璃一样。</p>
 <p>然后当时选的医院有点小，只是个二级医院，可能有选择的余地也比较少,所以就选了一个最原始的一个方法。现在想想,可能这个原始的方法是最去根的方法。但是也是最痛苦的一个方法。</p>
 <p>直到20天以后，我还在。床上躺着上不了班。现在是每天早上大便，然后紧接着去洗去熏。</p>
 <p>期待着2025年。一切顺利吧。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/24"/><category term="一些记录"/><category term="Myblog"/><published>2025-01-19T19:05:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/23</id><title>注册属于自己的 HiDNS 域名</title><updated>2025-03-23T15:35:22.245116+00:00</updated><content type="html"><![CDATA[<p>有需要可以看下。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/24"/><category term="一些记录"/><category term="Myblog"/><published>2025-01-19T19:05:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/23</id><title>注册属于自己的 HiDNS 域名</title><updated>2025-04-03T01:55:12.735336+00:00</updated><content type="html"><![CDATA[<p>有需要可以看下。</p>
 <p>免费注册属于自己的 HiDNS 二级域名</p>
 <p><a href="https://www.hidoha.net/"> 直达 </a></p>
 <p>hidns.co优惠劵：Hello2025</p>
 <p>hidns.vip优惠劵：Great2025</p>
 <p>☎️ 平台是某群某大佬搭建的，据说续费是永久免费。暂时不能托管至 Cloudflare。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/23"/><category term="一些记录"/><published>2025-01-19T17:47:22+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/22</id><title>[ 吐槽 ] claude 3.5</title><updated>2025-03-23T15:35:22.349436+00:00</updated><content type="html"><![CDATA[<p>同样是 claude 3.5,  API 和官网还是有区别.</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/23"/><category term="一些记录"/><published>2025-01-19T17:47:22+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/22</id><title>[ 吐槽 ] claude 3.5</title><updated>2025-04-03T01:55:12.869260+00:00</updated><content type="html"><![CDATA[<p>同样是 claude 3.5,  API 和官网还是有区别.</p>
 <p><img src="https://github.com/user-attachments/assets/96f46fff-de6b-4dee-bd19-63b348ec9740" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/22"/><category term="Myblog"/><published>2025-01-19T16:48:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/21</id><title>吐槽下药品说明书</title><updated>2025-03-23T15:35:22.438609+00:00</updated><content type="html"><![CDATA[<p>最近看了个视频，很有同感。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/22"/><category term="Myblog"/><published>2025-01-19T16:48:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/21</id><title>吐槽下药品说明书</title><updated>2025-04-03T01:55:12.996016+00:00</updated><content type="html"><![CDATA[<p>最近看了个视频，很有同感。</p>
 <p>吃药看不懂药品说明书，一片多少 mg ，吃几片，都不知道。</p>
 <p>药物使用说明书：吃药好比期末考，语数英物化生都得用上 。</p>
 <p>上次在医院看病，大夫给开的片剂的药，一共开了5片药，吃三天，一次吃3/4片，把人为难的，算了半天哈哈。😅</p>
 <p>论智商的重要性。😁</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/21"/><category term="Myblog"/><published>2025-01-19T14:46:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/20</id><title>特朗普推出加密货币，能买吗？</title><updated>2025-03-23T15:35:22.549815+00:00</updated><content type="html"><![CDATA[<p>📮特朗普推出$TRUMP加密货币，市场估值超200亿美元</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/21"/><category term="Myblog"/><published>2025-01-19T14:46:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/20</id><title>特朗普推出加密货币，能买吗？</title><updated>2025-04-03T01:55:13.130048+00:00</updated><content type="html"><![CDATA[<p>📮特朗普推出$TRUMP加密货币，市场估值超200亿美元</p>
 <p>☘️唐纳德·特朗普在即将上任总统前夕，通过社交媒体发布了名为$TRUMP的Solana区块链新型加密货币。该货币迅速获得市场关注，短时间内其市值突破了200亿美元。</p>
 <p>🌸<a href="https://x.com/realDonaldTrump/status/1880446012168249386">Donald Trump</a></p>
 <p>币圈有风险，投资需谨慎</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/20"/><category term="一些记录"/><published>2025-01-19T14:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/19</id><title>TikTok 、CapCut 、lemon8在美国正式关闭</title><updated>2025-03-23T15:35:22.668741+00:00</updated><content type="html"><![CDATA[<p>📮TikTok 、CapCut 、lemon8在美国正式关闭</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/20"/><category term="一些记录"/><published>2025-01-19T14:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/19</id><title>TikTok 、CapCut 、lemon8在美国正式关闭</title><updated>2025-04-03T01:55:13.276509+00:00</updated><content type="html"><![CDATA[<p>📮TikTok 、CapCut 、lemon8在美国正式关闭</p>
 <p>☘️原本关闭时间预计在北京时间周日下午1点（美国时间周日0点）。现在已提前关闭。</p>
 <p>🌸美区App Store以及Google Play已下架相关应用，包含飞书国际版Lark。此次下架包含字节所有的应用。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/19"/><category term="一些记录"/><published>2025-01-19T14:09:32+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/18</id><title>[ 图片 ] 养了两只猫</title><updated>2025-03-23T15:35:22.792930+00:00</updated><content type="html"><![CDATA[<p>无奈的养了两只猫，有了无穷的快乐和烦恼。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/19"/><category term="一些记录"/><published>2025-01-19T14:09:32+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/18</id><title>[ 图片 ] 养了两只猫</title><updated>2025-04-03T01:55:13.405569+00:00</updated><content type="html"><![CDATA[<p>无奈的养了两只猫，有了无穷的快乐和烦恼。</p>
 <p><img src="https://github.com/user-attachments/assets/81374c08-2604-4fe4-8889-12a69b410878" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/1c5241ec-6558-4bdd-a1ab-2a2ed1da8c2f" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/18"/><category term="Myblog"/><published>2025-01-19T09:57:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/17</id><title>[ 图片 ] 世界上最早的高速公路</title><updated>2025-03-23T15:35:22.886529+00:00</updated><content type="html"><![CDATA[<p>2000年前由秦将蒙恬率30万大军修建的军事通道</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/18"/><category term="Myblog"/><published>2025-01-19T09:57:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/17</id><title>[ 图片 ] 世界上最早的高速公路</title><updated>2025-04-03T01:55:13.538261+00:00</updated><content type="html"><![CDATA[<p>2000年前由秦将蒙恬率30万大军修建的军事通道</p>
 <p><img src="https://github.com/user-attachments/assets/89c02bc4-7b10-40b4-a165-c135595f0161" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/9239bab8-1398-435e-99f1-1b4c240daa9a" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/f8c3285f-0ee5-4de6-bff4-9bb31dfd677b" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/691739a7-c181-4206-955c-3e494ea3abf8" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/3e7c080f-4a18-4609-a3f8-ec4dbc0d877e" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/130500da-ee64-4a27-a803-2deef1667e6d" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/17"/><category term="Myblog"/><published>2025-01-19T09:44:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/16</id><title>[ 图片 ] 宁武悬空古栈道</title><updated>2025-03-23T15:35:23.007508+00:00</updated><content type="html"><![CDATA[<p>宁武悬空古栈道</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/17"/><category term="Myblog"/><published>2025-01-19T09:44:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/16</id><title>[ 图片 ] 宁武悬空古栈道</title><updated>2025-04-03T01:55:13.681729+00:00</updated><content type="html"><![CDATA[<p>宁武悬空古栈道</p>
 <p>山路崎岖蜿蜒，悬崖峭壁。一座座悬空古刹由栈道和涵洞相连，惊险刺激.</p>
 <p><img src="https://github.com/user-attachments/assets/45336040-bb2b-435a-b37c-e2851d34d1a4" alt="Image" />
 <img src="https://github.com/user-attachments/assets/4d257e1d-0653-4979-bf0e-ed22633a1045" alt="Image" />
 <img src="https://github.com/user-attachments/assets/6c8ca0ea-8c7a-428c-8661-c034bc468774" alt="Image" />
 <img src="https://github.com/user-attachments/assets/9c38e859-c088-4bd0-a7b5-73c407ab98b7" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/16"/><category term="Myblog"/><published>2025-01-19T09:38:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/15</id><title>[ 图片 ] 峨眉山</title><updated>2025-03-23T15:35:23.111048+00:00</updated><content type="html"><![CDATA[<p>峨眉山</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/16"/><category term="Myblog"/><published>2025-01-19T09:38:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/15</id><title>[ 图片 ] 峨眉山</title><updated>2025-04-03T01:55:13.800520+00:00</updated><content type="html"><![CDATA[<p>峨眉山</p>
 <p><img src="https://github.com/user-attachments/assets/7e313b3e-6c5a-4afc-b771-706a1df0b525" alt="Image" />
 <img src="https://github.com/user-attachments/assets/1b53078c-32a7-4a72-86b6-bb78c54ba024" alt="Image" />
 <img src="https://github.com/user-attachments/assets/de53ec8a-7d33-48d1-ac16-5173a966dc95" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/15"/><category term="Myblog"/><published>2025-01-19T09:31:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/14</id><title>[ 画稿 ] 金鱼</title><updated>2025-03-23T15:35:23.190927+00:00</updated><content type="html"><![CDATA[<p>金鱼</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/15"/><category term="Myblog"/><published>2025-01-19T09:31:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/14</id><title>[ 画稿 ] 金鱼</title><updated>2025-04-03T01:55:13.938312+00:00</updated><content type="html"><![CDATA[<p>金鱼</p>
 <p><img src="https://github.com/user-attachments/assets/7b993f4a-d0fa-4731-be33-80933eb5e886" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/14"/><category term="Myblog"/><published>2025-01-19T09:25:06+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>[ 画稿 ] 被咬了一口的苹果</title><updated>2025-03-23T15:35:23.277748+00:00</updated><content type="html"><![CDATA[<p>被咬了一口的苹果</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/14"/><category term="Myblog"/><published>2025-01-19T09:25:06+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>[ 画稿 ] 被咬了一口的苹果</title><updated>2025-04-03T01:55:14.062303+00:00</updated><content type="html"><![CDATA[<p>被咬了一口的苹果</p>
 <p><img src="https://github.com/user-attachments/assets/2c172ab1-d901-4e7e-8568-6dd311e46bad" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="Myblog"/><published>2025-01-19T09:22:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>[ 图片 ] 关山草原，也称“关山牧场”</title><updated>2025-03-23T15:35:23.365988+00:00</updated><content type="html"><![CDATA[<p>**有机会可以去一下，可以烤全羊，可以骑马，景色优美，空气清新。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="Myblog"/><published>2025-01-19T09:22:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>[ 图片 ] 关山草原，也称“关山牧场”</title><updated>2025-04-03T01:55:14.202019+00:00</updated><content type="html"><![CDATA[<p>**有机会可以去一下，可以烤全羊，可以骑马，景色优美，空气清新。</p>
 <p><img src="https://github.com/user-attachments/assets/a06b5b1d-bf90-4529-932c-46130bfa0039" alt="Image" /></p>
 <p><img src="https://github.com/user-attachments/assets/133505bc-1284-405e-8345-964fce0427e9" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="Myblog"/><published>2025-01-19T09:19:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/11</id><title>[ 图片 ] 老友画了一幅人像，却貌似某人，特此备份吧。</title><updated>2025-03-23T15:35:23.461322+00:00</updated><content type="html"><![CDATA[<p><img src="https://github.com/user-attachments/assets/87c1c769-eadd-4e59-b95a-06385ba06edc" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/11"/><category term="Myblog"/><published>2025-01-19T09:14:43+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>[ 画稿 ] 花</title><updated>2025-03-23T15:35:23.553325+00:00</updated><content type="html"><![CDATA[<p>花</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="Myblog"/><published>2025-01-19T09:19:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/11</id><title>[ 图片 ] 老友画了一幅人像，却貌似某人，特此备份吧。</title><updated>2025-04-03T01:55:14.340521+00:00</updated><content type="html"><![CDATA[<p><img src="https://github.com/user-attachments/assets/87c1c769-eadd-4e59-b95a-06385ba06edc" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/11"/><category term="Myblog"/><published>2025-01-19T09:14:43+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>[ 画稿 ] 花</title><updated>2025-04-03T01:55:14.462119+00:00</updated><content type="html"><![CDATA[<p>花</p>
 <p><img src="https://github.com/user-attachments/assets/eaa0b37a-d17b-4f35-bde1-76510ef91481" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="Myblog"/><published>2025-01-19T09:03:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>[ 画稿 ] 存档、记录 大辣椒</title><updated>2025-03-23T15:35:23.642379+00:00</updated><content type="html"><![CDATA[<p>又一画作：大辣椒</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="Myblog"/><published>2025-01-19T09:03:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>[ 画稿 ] 存档、记录 大辣椒</title><updated>2025-04-03T01:55:14.598672+00:00</updated><content type="html"><![CDATA[<p>又一画作：大辣椒</p>
 <p><img src="https://github.com/user-attachments/assets/e4ec7f97-f7d8-4963-bef3-5a1281db64ba" alt="Image" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Myblog"/><published>2025-01-19T09:00:54+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>[ 画稿 ] 我并没有意识到这么平凡的生活是那么的重要和可贵</title><updated>2025-03-23T15:35:23.737174+00:00</updated><content type="html"><![CDATA[<p>我想去平常的上一天班，我想平常的过一个周末，然后重新体味--过去每一天每一天。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Myblog"/><published>2025-01-19T09:00:54+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>[ 画稿 ] 我并没有意识到这么平凡的生活是那么的重要和可贵</title><updated>2025-04-03T01:55:14.735478+00:00</updated><content type="html"><![CDATA[<p>我想去平常的上一天班，我想平常的过一个周末，然后重新体味--过去每一天每一天。</p>
 <p>我并没有意识到这么平凡的生活是那么的重要和可贵。</p>
 <p><img src="https://pic.superbed.cc/item/678cbeb9fa9f77b4dc6f88ec.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="Myblog"/><published>2025-01-19T08:59:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/7</id><title>[ 画稿 ] 一块老砖</title><updated>2025-03-23T15:35:23.833888+00:00</updated><content type="html"><![CDATA[<p><img src="https://github.com/user-attachments/assets/04820b5a-fe27-494f-9c00-2ee3d227778f" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="Myblog"/><published>2025-01-19T08:59:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/7</id><title>[ 画稿 ] 一块老砖</title><updated>2025-04-03T01:55:14.856751+00:00</updated><content type="html"><![CDATA[<p><img src="https://github.com/user-attachments/assets/04820b5a-fe27-494f-9c00-2ee3d227778f" alt="Image" /></p>
 <p>备份收藏而已</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/7"/><category term="Myblog"/><published>2025-01-19T08:57:06+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/6</id><title>[ 画稿 ] 即使世界偶尔凉薄，内心也要繁花似锦</title><updated>2025-03-23T15:35:23.935862+00:00</updated><content type="html"><![CDATA[<p>一月已经过半，愿都安好</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/7"/><category term="Myblog"/><published>2025-01-19T08:57:06+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/6</id><title>[ 画稿 ] 即使世界偶尔凉薄，内心也要繁花似锦</title><updated>2025-04-03T01:55:14.998249+00:00</updated><content type="html"><![CDATA[<p>一月已经过半，愿都安好</p>
 <p><img src="https://pic.superbed.cc/item/678cbd4cfa9f77b4dc6f7b80.jpg" alt="" /></p>
 <p><img src="https://pic.superbed.cc/item/678cbd6ffa9f77b4dc6f7ce2.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/6"/><category term="Myblog"/><published>2025-01-19T08:53:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>[ 图片 ]山水秦岭 水墨终南</title><updated>2025-03-23T15:35:24.031168+00:00</updated><content type="html"><![CDATA[<h3>山水秦岭，水墨终南</h3>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/6"/><category term="Myblog"/><published>2025-01-19T08:53:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>[ 图片 ]山水秦岭 水墨终南</title><updated>2025-04-03T01:55:15.136718+00:00</updated><content type="html"><![CDATA[<h3>山水秦岭，水墨终南</h3>
 <p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928a9.jpg" alt="" /></p>
 <p>早春二月一场春雪覆盖了终南山麓，云海笼罩着若隐若现的南五台仿佛仙境一般！</p>
 <p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928af.jpg" alt="" /></p>
@@ -691,14 +697,14 @@ Negative potential consequences of an action.</p>
 <p><img src="https://img.imgdb.cn/item/603cdfa35f4313ce2569577a.jpg" alt="" /></p>
 <p><img src="https://img.imgdb.cn/item/603cdfa35f4313ce2569577d.jpg" alt="" /></p>
 <p><img src="https://img.imgdb.cn/item/603cdfa35f4313ce25695782.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="Myblog"/><published>2025-01-19T08:50:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>错误的数学</title><updated>2025-03-23T15:35:24.120715+00:00</updated><content type="html"><![CDATA[<p>一家设计公司在社交媒体上，发布了下面的图片.</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="Myblog"/><published>2025-01-19T08:50:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>错误的数学</title><updated>2025-04-03T01:55:15.274832+00:00</updated><content type="html"><![CDATA[<p>一家设计公司在社交媒体上，发布了下面的图片.</p>
 <p><img src="https://pic.superbed.cc/item/678cb816fa9f77b4dc6f3a3c.webp" alt="" /></p>
 <p>图片声称，33000英尺（1万米）高空的飞机，比5000英尺（1500米）的飞机，在飞向同样目的地时，花费的时间是后者的4倍（假定飞行速度相同）。</p>
 <p>一位网友第一反应是，这是在开笑话吗？它为什么忽略地球半径。</p>
 <p>地球半径（设为 R）大约是1800万英尺，这意味着外圈长度只比内圈，多了不到1%。</p>
 <p><img src="https://pic.superbed.cc/item/678cb85bfa9f77b4dc6f3cb2.webp" alt="" /></p>
 <p>而且，由于33000英尺高空的空气阻力减小，该高度的飞行时间实际上可能更少。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="一些记录"/><published>2025-01-19T08:32:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>照明的历史</title><updated>2025-03-23T15:35:24.210894+00:00</updated><content type="html"><![CDATA[<p>工业革命之前，世界是漆黑的，灯光极其昂贵，火是唯一的人造光源。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="一些记录"/><published>2025-01-19T08:32:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>照明的历史</title><updated>2025-04-03T01:55:15.395563+00:00</updated><content type="html"><![CDATA[<p>工业革命之前，世界是漆黑的，灯光极其昂贵，火是唯一的人造光源。</p>
 <p>历史上，人造光一直是富人和有权势的人的特权，生产和维护既费力又肮脏，可用性和质量都很差。穷人很难获得人造光，总是生活在黑暗中。</p>
 <p>古代房屋在夜晚有蜡烛照明，是巨大财富的标志。当时，蜂蜡制成的优质蜡烛是最好的光源，但天然蜂蜡的供应有限，加上手工制作的繁琐，除了最富有的人之外，其他人都买不到优质蜡烛。</p>
 <p>一位作家写道：“打开你的冰箱门，你召唤出的光线比18世纪大多数家庭所享受的光线总量还要多。”</p>
@@ -710,7 +716,7 @@ Negative potential consequences of an action.</p>
 <p>正是因为煤油，夜间第一次变得明亮了，天黑后也能生产和娱乐。</p>
 <p>19世纪后半期，托马斯·爱迪生（Thomas Edison）发明了电灯，电照明的时代从此来临。</p>
 <p><img src="https://pic.superbed.cc/item/678cb74ffa9f77b4dc6f329a.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="一些记录"/><published>2025-01-19T08:27:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>孟子｜懂人话做人事</title><updated>2025-03-23T15:35:24.333868+00:00</updated><content type="html"><![CDATA[<p>这世界最能听懂的话就是真话。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="一些记录"/><published>2025-01-19T08:27:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>孟子｜懂人话做人事</title><updated>2025-04-03T01:55:15.532070+00:00</updated><content type="html"><![CDATA[<p>这世界最能听懂的话就是真话。</p>
 <p>所谓真话，就是实话实说，上升到哲学高度就是实事求是。因为真话说的就是实事，通过实事能求出“是”来。是，就是规律，就能让我们通过实事了解事情发展的基本走向。</p>
 <p>这个道理很简单，但一到现实中就复杂了。</p>
 <p>因为每个生活在现实中的人或组织，都有自己的利益，为了达到自己的利益，就会有人或组织不愿意说实话。</p>
@@ -735,5 +741,5 @@ Negative potential consequences of an action.</p>
 <p>孟子离我们两千多年了，可现在对比一下他说的话，似乎能做到的也没几个。</p>
 <p>从这意义上说，孟子的思想还是有现实指导意义的：听懂人话，做个好人。</p>
 <p><img src="https://pic.superbed.cc/item/678c7482fa9f77b4dc6be17f.jpg" alt="" /></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/2"/><category term="Myblog"/><published>2025-01-19T03:43:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/1</id><title>2025</title><updated>2025-03-23T15:35:24.439007+00:00</updated><content type="html"><![CDATA[<p>新年快乐，心想事成。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/2"/><category term="Myblog"/><published>2025-01-19T03:43:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/1</id><title>2025</title><updated>2025-04-03T01:55:15.841229+00:00</updated><content type="html"><![CDATA[<p>新年快乐，心想事成。</p>
 ]]></content><link href="https://github.com/myogg/Gitblog/issues/1"/><category term="notes"/><category term="Myblog"/><published>2025-01-19T02:44:37+00:00</published></entry></feed>
