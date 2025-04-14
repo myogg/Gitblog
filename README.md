@@ -36,12 +36,11 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 ## 置顶文章
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 ## 最近更新
+- [陽春三月](https://github.com/myogg/Gitblog/issues/82)--2025-04-14
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
-- [GW-5000HS-7](https://github.com/myogg/Gitblog/issues/73)--2025-03-03
-## 一些记录
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
@@ -66,12 +65,10 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [照明的历史](https://github.com/myogg/Gitblog/issues/3)--2025-01-19
 </details>
 
-## 收录
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)--2025-01-21
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)--2025-01-20
 - [Apple Intelligence 有哪些体验](https://github.com/myogg/Gitblog/issues/29)--2025-01-19
 - [[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
-## notes
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
@@ -87,14 +84,14 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
 </details>
 
-## Myblog
+- [陽春三月](https://github.com/myogg/Gitblog/issues/82)--2025-04-14
 - [GW-5000HS-7](https://github.com/myogg/Gitblog/issues/73)--2025-03-03
 - [祝自己元宵节快乐](https://github.com/myogg/Gitblog/issues/66)--2025-02-12
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)--2025-02-10
-- [[ 分享故事 ]  心灯明亮，则佛性自现](https://github.com/myogg/Gitblog/issues/55)--2025-02-10
 <details><summary>显示更多</summary>
 
+- [[ 分享故事 ]  心灯明亮，则佛性自现](https://github.com/myogg/Gitblog/issues/55)--2025-02-10
 - [[ 胡思乱想 ] 一点小想法。](https://github.com/myogg/Gitblog/issues/54)--2025-02-10
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)--2025-02-02
 - [[ 观影 ] 唐探1900，值得一看](https://github.com/myogg/Gitblog/issues/51)--2025-01-30
@@ -124,7 +121,6 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
 </details>
 
-## 突发的一些小想法
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)--2025-02-10
