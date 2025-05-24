@@ -36,18 +36,19 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 ## 置顶文章
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 ## 最近更新
+- [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 - [陽春三月](https://github.com/myogg/Gitblog/issues/82)--2025-04-14
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
-- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
+- [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
 - [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
-- [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 <details><summary>显示更多</summary>
 
+- [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 - [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
 - [Duolingo宣布吉祥物Duo已去世](https://github.com/myogg/Gitblog/issues/68)--2025-02-12
 - [[ 观影 ] 《碟中谍8：最后的清算》](https://github.com/myogg/Gitblog/issues/59)--2025-02-11
