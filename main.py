@@ -9,7 +9,19 @@ from lxml.etree import CDATA
 from marko.ext.gfm import gfm as marko
 
 MD_HEAD = """## MyGitBlog
-My personal blog using issues and GitHub Actions
+My personal blog using issues and GitHub Actions (参考[yihong](https://github.com/yihong0618/gitblog))
+
+
+* 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
+* 记录在这个时代下的焦虑、迷茫、挣扎与希望。
+* [About me](https://github.com/myogg/myogg)
+
+### 提醒自己：
+#### 1.放弃向他人证明自己，放弃向自己证明自己。专注忘我地去做你应该做的事情，心无旁骛地去解决问题。当你脚踏实地的走自己的路时，那种拼命想要证明什么的冲动就会越来越少。你也会因此变得轻松、自由。
+
+——查理·芒格
+
+#### 2.“我们没有希望，他们也没有希望，这就是希望。”
 
 [RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
 """
@@ -238,4 +250,84 @@ def add_md_label(repo, md, me):
 def get_to_generate_issues(repo, dir_name, issue_number=None):
     md_files = os.listdir(dir_name)
     generated_issues_numbers = [
-        int(i.split("_
+        int(i.split("_")[0]) for i in md_files if i.split("_")[0].isdigit()
+    ]
+    to_generate_issues = [
+        i
+        for i in list(repo.get_issues())
+        if int(i.number) not in generated_issues_numbers
+    ]
+    if issue_number:
+        to_generate_issues.append(repo.get_issue(int(issue_number)))
+    return to_generate_issues
+
+
+def generate_rss_feed(repo, filename, me):
+    generator = FeedGenerator()
+    generator.id(repo.html_url)
+    generator.title(f"RSS feed of {repo.owner.login}'s {repo.name}")
+    generator.author(
+        {"name": os.getenv("GITHUB_NAME"), "email": os.getenv("GITHUB_EMAIL")}
+    )
+    generator.link(href=repo.html_url)
+    generator.link(
+        href=f"https://raw.githubusercontent.com/{repo.full_name}/master/{filename}",
+        rel="self",
+    )
+    for issue in repo.get_issues():
+        if not issue.body or not is_me(issue, me) or issue.pull_request:
+            continue
+        item = generator.add_entry(order="append")
+        item.id(issue.html_url)
+        item.link(href=issue.html_url)
+        item.title(issue.title)
+        item.published(issue.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        for label in issue.labels:
+            item.category({"term": label.name})
+        body = "".join(c for c in issue.body if _valid_xml_char_ordinal(c))
+        item.content(CDATA(marko.convert(body)), type="html")
+    generator.atom_file(filename)
+
+
+def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
+    user = login(token)
+    me = get_me(user)
+    repo = get_repo(user, repo_name)
+    # add to readme one by one, change order here
+    add_md_header("README.md", repo_name)
+    for func in [add_md_firends, add_md_top, add_md_recent, add_md_label, add_md_todo]:
+        func(repo, "README.md", me)
+
+    generate_rss_feed(repo, "feed.xml", me)
+    to_generate_issues = get_to_generate_issues(repo, dir_name, issue_number)
+
+    # save md files to backup folder
+    for issue in to_generate_issues:
+        save_issue(issue, me, dir_name)
+
+
+def save_issue(issue, me, dir_name=BACKUP_DIR):
+    md_name = os.path.join(
+        dir_name, f"{issue.number}_{issue.title.replace('/', '-').replace(' ', '.')}.md"
+    )
+    with open(md_name, "w") as f:
+        f.write(f"# [{issue.title}]({issue.html_url})\n\n")
+        f.write(issue.body or "")
+        if issue.comments:
+            for c in issue.get_comments():
+                if is_me(c, me):
+                    f.write("\n\n---\n\n")
+                    f.write(c.body or "")
+
+
+if __name__ == "__main__":
+    if not os.path.exists(BACKUP_DIR):
+        os.mkdir(BACKUP_DIR)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("github_token", help="github_token")
+    parser.add_argument("repo_name", help="repo_name")
+    parser.add_argument(
+        "--issue_number", help="issue_number", default=None, required=False
+    )
+    options = parser.parse_args()
+    main(options.github_token, options.repo_name, options.issue_number)
