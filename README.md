@@ -1,7 +1,6 @@
 ## MyGitBlog
 My personal blog using issues and GitHub Actions (参考[yihong](https://github.com/yihong0618/gitblog))
 
-
 * 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
 * 记录在这个时代下的焦虑、迷茫、挣扎与希望。
 * [About me](https://github.com/myogg/myogg)
@@ -33,8 +32,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </tbody>
 </table>
 
-## 置顶文章
-- [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
+## 一些记录
 - [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
@@ -56,10 +54,14 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [TikTok 、CapCut 、lemon8在美国正式关闭](https://github.com/myogg/Gitblog/issues/19)--2025-01-19
 - [错误的数学](https://github.com/myogg/Gitblog/issues/4)--2025-01-19
 - [照明的历史](https://github.com/myogg/Gitblog/issues/3)--2025-01-19
+
+## 收录
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)--2025-01-21
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)--2025-01-20
 - [Apple Intelligence 有哪些体验](https://github.com/myogg/Gitblog/issues/29)--2025-01-19
 - [[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
+
+## notes
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
@@ -71,6 +73,11 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [猫猫是水做的](https://github.com/myogg/Gitblog/issues/43)--2025-01-22
 - [Vercel 收购代码搜索工具 - Grep](https://github.com/myogg/Gitblog/issues/32)--2025-01-20
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
+
+## Top
+- [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
+
+## Myblog
 - [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)--2025-07-11
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
@@ -107,6 +114,8 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [[ 图片 ]山水秦岭 水墨终南](https://github.com/myogg/Gitblog/issues/5)--2025-01-19
 - [孟子｜懂人话做人事](https://github.com/myogg/Gitblog/issues/2)--2025-01-19
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
+
+## 突发的一些小想法
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
