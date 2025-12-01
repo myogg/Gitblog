@@ -21,7 +21,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 
 ——查理·芒格
 
-#### 2."我们没有希望，他们也没有希望，这就是希望。"
+#### 2.“我们没有希望，他们也没有希望，这就是希望。”
 
 [RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
 """
@@ -61,7 +61,6 @@ def _make_friend_table_string(s):
     info_dict = FRIENDS_INFO_DICT.copy()
     try:
         string_list = s.splitlines()
-        # drop empty line
         string_list = [l for l in string_list if l and not l.isspace()]
         for l in string_list:
             string_info_list = re.split("：", l)
@@ -76,10 +75,8 @@ def _make_friend_table_string(s):
         return
 
 
-# help to covert xml vaild string
 def _valid_xml_char_ordinal(c):
     codepoint = ord(c)
-    # conditions ordered by presumed frequency
     return (
         0x20 <= codepoint <= 0xD7FF
         or codepoint in (0x9, 0xA, 0xD)
@@ -104,7 +101,6 @@ def parse_TODO(issue):
     body = issue.body.splitlines()
     todo_undone = [l for l in body if l.startswith("- [ ] ")]
     todo_done = [l for l in body if l.startswith("- [x] ")]
-    # just add info all done
     if not todo_undone:
         return f"[{issue.title}]({issue.html_url}) all done", []
     return (
@@ -146,7 +142,6 @@ def add_md_todo(repo, md, me):
                 md.write("TODO list from " + todo_title + "\n")
                 for t in todo_list:
                     md.write(t + "\n")
-                # new line
                 md.write("\n")
 
 
@@ -187,7 +182,6 @@ def add_md_firends(repo, md, me):
 def add_md_recent(repo, md, me, limit=5):
     count = 0
     with open(md, "a+", encoding="utf-8") as md:
-        # one the issue that only one issue and delete (pyGitHub raise an exception)
         try:
             md.write("## 最近更新\n")
             for issue in repo.get_issues():
@@ -208,9 +202,6 @@ def add_md_header(md, repo_name):
 
 def add_md_label(repo, md, me):
     labels = get_repo_labels(repo)
-
-    # sort lables by description info if it exists, otherwise sort by name,
-    # for example, we can let the description start with a number (1#Java, 2#Docker, 3#K8s, etc.)
     labels = sorted(
         labels,
         key=lambda x: (
@@ -223,7 +214,6 @@ def add_md_label(repo, md, me):
 
     with open(md, "a+", encoding="utf-8") as md:
         for label in labels:
-            # we don't need add top label again
             if label.name in IGNORE_LABELS:
                 continue
 
@@ -231,27 +221,82 @@ def add_md_label(repo, md, me):
             if issues.totalCount:
                 md.write("## " + label.name + "\n")
                 issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
-            
-            # 显示所有问题，不再折叠
+
             for issue in issues:
-                if not issue:
-                    continue
-                if is_me(issue, me):
+                if issue and is_me(issue, me):
                     add_issue_info(issue, md)
+        md.write("\n")
 
 
-def main(token, repo_name):
+def get_to_generate_issues(repo, dir_name, issue_number=None):
+    md_files = os.listdir(dir_name)
+    generated_issues_numbers = [
+        int(i.split("_")[0]) for i in md_files if i.split("_")[0].isdigit()
+    ]
+    to_generate_issues = [
+        i
+        for i in list(repo.get_issues())
+        if int(i.number) not in generated_issues_numbers
+    ]
+    if issue_number:
+        to_generate_issues.append(repo.get_issue(int(issue_number)))
+    return to_generate_issues
+
+
+def generate_rss_feed(repo, filename, me):
+    generator = FeedGenerator()
+    generator.id(repo.html_url)
+    generator.title(f"RSS feed of {repo.owner.login}'s {repo.name}")
+    generator.author(
+        {"name": os.getenv("GITHUB_NAME"), "email": os.getenv("GITHUB_EMAIL")}
+    )
+    generator.link(href=repo.html_url)
+    generator.link(
+        href=f"https://raw.githubusercontent.com/{repo.full_name}/master/{filename}",
+        rel="self",
+    )
+    for issue in repo.get_issues():
+        if not issue.body or not is_me(issue, me) or issue.pull_request:
+            continue
+        item = generator.add_entry(order="append")
+        item.id(issue.html_url)
+        item.link(href=issue.html_url)
+        item.title(issue.title)
+        item.published(issue.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"))
+        for label in issue.labels:
+            item.category({"term": label.name})
+        body = "".join(c for c in issue.body if _valid_xml_char_ordinal(c))
+        item.content(CDATA(marko.convert(body)), type="html")
+    generator.atom_file(filename)
+
+
+def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     user = login(token)
     me = get_me(user)
     repo = get_repo(user, repo_name)
-    # add to readme one by one, change order here
-    md_name = "README.md"
-    add_md_header(md_name, repo_name)
-    add_md_top(repo, md_name, me)
-    add_md_recent(repo, md_name, me)
-    add_md_todo(repo, md_name, me)
-    add_md_firends(repo, md_name, me)
-    add_md_label(repo, md_name, me)
+    add_md_header("README.md", repo_name)
+    for func in [add_md_firends, add_md_top, add_md_recent, add_md_label, add_md_todo]:
+        func(repo, "README.md", me)
+
+    generate_rss_feed(repo, "feed.xml", me)
+    to_generate_issues = get_to_generate_issues(repo, dir_name, issue_number)
+
+    for issue in to_generate_issues:
+        save_issue(issue, me, dir_name)
+
+
+def save_issue(issue, me, dir_name=BACKUP_DIR):
+    md_name = os.path.join(
+        dir_name, f"{issue.number}_{issue.title.replace('/', '-').replace(' ', '.')}.md"
+    )
+    with open(md_name, "w") as f:
+        f.write(f"# [{issue.title}]({issue.html_url})\n\n")
+        f.write(issue.body or "")
+        if issue.comments:
+            for c in issue.get_comments():
+                if is_me(c, me):
+                    f.write("\n\n---\n\n")
+                    f.write(c.body or "")
 
 
 if __name__ == "__main__":
@@ -260,5 +305,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("github_token", help="github_token")
     parser.add_argument("repo_name", help="repo_name")
+    parser.add_argument(
+        "--issue_number", help="issue_number", default=None, required=False
+    )
     options = parser.parse_args()
-    main(options.github_token, options.repo_name)
+    main(options.github_token, options.repo_name, options.issue_number)
