@@ -35,12 +35,6 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 
 ## 置顶文章
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
-## 最近更新
-- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
-- [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)--2025-07-11
-- [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
-- [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
-- [陽春三月](https://github.com/myogg/Gitblog/issues/82)--2025-04-14
 - [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
