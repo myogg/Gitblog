@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import argparse
 import os
 import re
@@ -7,9 +8,6 @@ from feedgen.feed import FeedGenerator
 from github import Github
 from lxml.etree import CDATA
 from marko.ext.gfm import gfm as marko
-
-MD_HEAD = """## MyGitBlog
-My personal blog using issues and GitHub Actions 
 
 
 * 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
