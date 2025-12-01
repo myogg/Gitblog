@@ -11,7 +11,6 @@ from marko.ext.gfm import gfm as marko
 MD_HEAD = """## MyGitBlog
 My personal blog using issues and GitHub Actions (参考[yihong](https://github.com/yihong0618/gitblog))
 
-
 * 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
 * 记录在这个时代下的焦虑、迷茫、挣扎与希望。
 * [About me](https://github.com/myogg/myogg)
@@ -27,10 +26,9 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 """
 
 BACKUP_DIR = "BACKUP"
-TOP_ISSUES_LABELS = ["Top"]
 TODO_ISSUES_LABELS = ["TODO"]
 FRIENDS_LABELS = ["Friends"]
-IGNORE_LABELS = FRIENDS_LABELS + TOP_ISSUES_LABELS + TODO_ISSUES_LABELS
+IGNORE_LABELS = FRIENDS_LABELS + TODO_ISSUES_LABELS
 
 FRIENDS_TABLE_HEAD = "| Name | Link | Desc | \n | ---- | ---- | ---- |\n"
 FRIENDS_TABLE_TEMPLATE = "| {name} | {link} | {desc} |\n"
@@ -109,10 +107,6 @@ def parse_TODO(issue):
     )
 
 
-def get_top_issues(repo):
-    return repo.get_issues(labels=TOP_ISSUES_LABELS)
-
-
 def get_todo_issues(repo):
     return repo.get_issues(labels=TODO_ISSUES_LABELS)
 
@@ -145,18 +139,7 @@ def add_md_todo(repo, md, me):
                 md_file.write("\n")
 
 
-def add_md_top(repo, md, me):
-    top_issues = list(get_top_issues(repo))
-    if not TOP_ISSUES_LABELS or not top_issues:
-        return
-    with open(md, "a+", encoding="utf-8") as md_file:
-        md_file.write("## 置顶文章\n")
-        for issue in top_issues:
-            if is_me(issue, me):
-                add_issue_info(issue, md_file)
-
-
-def add_md_firends(repo, md, me):
+def add_md_friends(repo, md, me):
     s = FRIENDS_TABLE_HEAD
     friends_issues = list(repo.get_issues(labels=FRIENDS_LABELS))
     if not FRIENDS_LABELS or not friends_issues:
@@ -202,15 +185,16 @@ def add_md_label(repo, md, me):
             if label.name in IGNORE_LABELS:
                 continue
 
-            issues = get_issues_from_label(repo, label)
-            if issues.totalCount:
-                md_file.write("## " + label.name + "\n")
-                issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
+            issues = list(get_issues_from_label(repo, label))
+            if not issues:
+                continue
 
+            md_file.write(f"## {label.name}\n")
+            issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
             for issue in issues:
-                if issue and is_me(issue, me):
+                if is_me(issue, me):
                     add_issue_info(issue, md_file)
-        md_file.write("\n")
+            md_file.write("\n")
 
 
 def get_to_generate_issues(repo, dir_name, issue_number=None):
@@ -260,8 +244,8 @@ def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     me = get_me(user)
     repo = get_repo(user, repo_name)
     add_md_header("README.md", repo_name)
-    # 调用顺序：友情链接 → 置顶文章 → 标签分类 → TODO
-    for func in [add_md_firends, add_md_top, add_md_label, add_md_todo]:
+    # 调用顺序：友情链接 → 标签分类 → TODO
+    for func in [add_md_friends, add_md_label, add_md_todo]:
         func(repo, "README.md", me)
 
     generate_rss_feed(repo, "feed.xml", me)
