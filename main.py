@@ -9,7 +9,7 @@ from lxml.etree import CDATA
 from marko.ext.gfm import gfm as marko
 
 MD_HEAD = """## MyGitBlog
-My personal blog using issues and GitHub Actions (参考[yihong](https://github.com/yihong0618/gitblog))
+My personal blog using issues and GitHub Actions 
 
 
 * 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
@@ -21,24 +21,27 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 
 ——查理·芒格
 
-#### 2.“我们没有希望，他们也没有希望，这就是希望。”
-
-[RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
-"""
-
 BACKUP_DIR = "BACKUP"
 ANCHOR_NUMBER = 5
 TOP_ISSUES_LABELS = ["Top"]
 TODO_ISSUES_LABELS = ["TODO"]
 FRIENDS_LABELS = ["Friends"]
-IGNORE_LABELS = FRIENDS_LABELS + TOP_ISSUES_LABELS + TODO_ISSUES_LABELS
+ABOUT_LABELS = ["About"]
+THINGS_LABELS = ["Things"]
+IGNORE_LABELS = (
+    FRIENDS_LABELS
+    + TOP_ISSUES_LABELS
+    + TODO_ISSUES_LABELS
+    + ABOUT_LABELS
+    + THINGS_LABELS
+)
 
 FRIENDS_TABLE_HEAD = "| Name | Link | Desc | \n | ---- | ---- | ---- |\n"
 FRIENDS_TABLE_TEMPLATE = "| {name} | {link} | {desc} |\n"
 FRIENDS_INFO_DICT = {
-    "名字": "hhh",
-    "链接": "www.bing.com",
-    "描述": "test",
+    "名字": "",
+    "链接": "",
+    "描述": "",
 }
 
 
@@ -163,6 +166,7 @@ def add_md_top(repo, md, me):
 
 
 def add_md_firends(repo, md, me):
+
     s = FRIENDS_TABLE_HEAD
     friends_issues = list(repo.get_issues(labels=FRIENDS_LABELS))
     if not FRIENDS_LABELS or not friends_issues:
@@ -181,7 +185,9 @@ def add_md_firends(repo, md, me):
         md.write(
             f"## [友情链接](https://github.com/{str(me)}/gitblog/issues/{friends_issue_number})\n"
         )
+        md.write("<details><summary>显示</summary>\n")
         md.write(s)
+        md.write("</details>\n")
         md.write("\n\n")
 
 
@@ -191,7 +197,7 @@ def add_md_recent(repo, md, me, limit=5):
         # one the issue that only one issue and delete (pyGitHub raise an exception)
         try:
             md.write("## 最近更新\n")
-            for issue in repo.get_issues():
+            for issue in repo.get_issues(sort="created", direction="desc"):
                 if is_me(issue, me):
                     add_issue_info(issue, md)
                     count += 1
@@ -229,9 +235,9 @@ def add_md_label(repo, md, me):
                 continue
 
             issues = get_issues_from_label(repo, label)
-            if issues.totalCount:
-                md.write("## " + label.name + "\n")
-                issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
+            issues = list(sorted(issues, key=lambda x: x.created_at, reverse=True))
+            if len(issues) != 0:
+                md.write("## " + label.name + "\n\n")
             i = 0
             for issue in issues:
                 if not issue:
@@ -331,3 +337,10 @@ if __name__ == "__main__":
     )
     options = parser.parse_args()
     main(options.github_token, options.repo_name, options.issue_number)
+
+#### 2.“我们没有希望，他们也没有希望，这就是希望。”
+
+[RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
+"""
+
+
