@@ -242,4 +242,35 @@ def add_md_label(repo, md, me):
                 if not issue:
                     continue
                 if is_me(issue, me):
-                    if i == ANCHOR_
+                    if i == ANCHOR_NUMBER:  # 这里修复了，确保是 ANCHOR_NUMBER
+                        md_file.write("<details><summary>显示更多</summary>\n")
+                        md_file.write("\n")
+                    add_issue_info(issue, md_file)
+                    i += 1
+            if i > ANCHOR_NUMBER:  # 这里也需要修复
+                md_file.write("</details>\n")
+            md_file.write("\n")
+
+
+def main(token, repo_name):
+    user = login(token)
+    me = get_me(user)
+    repo = get_repo(user, repo_name)
+    # add to readme one by one
+    md_name = "README.md"
+    add_md_header(md_name, repo_name)
+    add_md_top(repo, md_name, me)
+    add_md_recent(repo, md_name, me)
+    add_md_label(repo, md_name, me)
+    add_md_todo(repo, md_name, me)
+    add_md_firends(repo, md_name, me)
+
+
+if __name__ == "__main__":
+    if not os.path.exists(BACKUP_DIR):
+        os.mkdir(BACKUP_DIR)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("github_token", help="github_token")
+    parser.add_argument("repo_name", help="repo_name")
+    options = parser.parse_args()
+    main(options.github_token, options.repo_name)
