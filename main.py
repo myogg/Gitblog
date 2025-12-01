@@ -179,21 +179,6 @@ def add_md_firends(repo, md, me):
         md_file.write("\n\n")
 
 
-def add_md_recent(repo, md, me, limit=5):
-    count = 0
-    with open(md, "a+", encoding="utf-8") as md_file:
-        try:
-            md_file.write("## 最近更新\n")
-            for issue in repo.get_issues():
-                if is_me(issue, me):
-                    add_issue_info(issue, md_file)
-                    count += 1
-                    if count >= limit:
-                        break
-        except Exception as e:
-            print(str(e))
-
-
 def add_md_header(md, repo_name):
     with open(md, "w", encoding="utf-8") as md_file:
         md_file.write(MD_HEAD.format(repo_name=repo_name))
@@ -275,7 +260,8 @@ def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     me = get_me(user)
     repo = get_repo(user, repo_name)
     add_md_header("README.md", repo_name)
-    for func in [add_md_firends, add_md_top, add_md_recent, add_md_label, add_md_todo]:
+    # 调用顺序：友情链接 → 置顶文章 → 标签分类 → TODO
+    for func in [add_md_firends, add_md_top, add_md_label, add_md_todo]:
         func(repo, "README.md", me)
 
     generate_rss_feed(repo, "feed.xml", me)
