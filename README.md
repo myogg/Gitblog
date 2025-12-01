@@ -1,8 +1,21 @@
 ## MyGitBlog
-My personal blog using issues and GitHub Actions (鍙傝€僛yihong](https://github.com/yihong0618/gitblog))
+My personal blog using issues and GitHub Actions (参考[yihong](https://github.com/yihong0618/gitblog))
+
+
+* 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
+* 记录在这个时代下的焦虑、迷茫、挣扎与希望。
+* [About me](https://github.com/myogg/myogg)
+
+### 提醒自己：
+#### 1.放弃向他人证明自己，放弃向自己证明自己。专注忘我地去做你应该做的事情，心无旁骛地去解决问题。当你脚踏实地的走自己的路时，那种拼命想要证明什么的冲动就会越来越少。你也会因此变得轻松、自由。
+
+——查理·芒格
+
+#### 2.“我们没有希望，他们也没有希望，这就是希望。”
+
 [RSS Feed](https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml)
 
-## [鍙嬫儏閾炬帴](https://github.com/myogg/gitblog/issues/26)
+## [友情链接](https://github.com/myogg/gitblog/issues/26)
 <table>
 <thead>
 <tr>
@@ -13,16 +26,17 @@ My personal blog using issues and GitHub Actions (鍙傝€僛yihong](https://gi
 </thead>
 <tbody>
 <tr>
-<td>hhh</td>
-<td>www.bing.com</td>
-<td>test</td>
+<td>做个有意思的人</td>
+<td>https://829259.xyz</td>
+<td>做个有意思的人</td>
 </tr>
 </tbody>
 </table>
 
-## 缃《鏂囩珷
+## 置顶文章
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
-## 鏈€杩戞洿鏂癨n- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
+## 最近更新
+- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)--2025-07-11
 - [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
@@ -32,7 +46,7 @@ My personal blog using issues and GitHub Actions (鍙傝€僛yihong](https://gi
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [[ 记录 ] 文生图AI网站](https://github.com/myogg/Gitblog/issues/72)--2025-03-02
 - [Grok 3 出世后影响最大的是同人文章定制产业](https://github.com/myogg/Gitblog/issues/71)--2025-02-23
-<details><summary>鏄剧ず鏇村</summary>
+<details><summary>显示更多</summary>
 
 - [[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示](https://github.com/myogg/Gitblog/issues/70)--2025-02-18
 - [涨见识](https://github.com/myogg/Gitblog/issues/69)--2025-02-14
@@ -61,7 +75,7 @@ My personal blog using issues and GitHub Actions (鍙傝€僛yihong](https://gi
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)--2025-02-08
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)--2025-02-02
-<details><summary>鏄剧ず鏇村</summary>
+<details><summary>显示更多</summary>
 
 - [[ 观影 ] 唐探1900，值得一看](https://github.com/myogg/Gitblog/issues/51)--2025-01-30
 - [一个频道主的心声，挣钱比较难，所以没动力。](https://github.com/myogg/Gitblog/issues/49)--2025-01-26
@@ -76,7 +90,7 @@ My personal blog using issues and GitHub Actions (鍙傝€僛yihong](https://gi
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 - [陽春三月](https://github.com/myogg/Gitblog/issues/82)--2025-04-14
 - [GW-5000HS-7](https://github.com/myogg/Gitblog/issues/73)--2025-03-03
-<details><summary>鏄剧ず鏇村</summary>
+<details><summary>显示更多</summary>
 
 - [祝自己元宵节快乐](https://github.com/myogg/Gitblog/issues/66)--2025-02-12
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
