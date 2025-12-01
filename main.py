@@ -9,7 +9,8 @@ from lxml.etree import CDATA
 from marko.ext.gfm import gfm as marko
 
 MD_HEAD = """## MyGitBlog
-My personal blog using issues and GitHub Actions (鍙傝€僛yihong](https://github.com/yihong0618/gitblog))
+My personal blog using issues and GitHub Actions
+
 [RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
 """
 
@@ -23,9 +24,9 @@ IGNORE_LABELS = FRIENDS_LABELS + TOP_ISSUES_LABELS + TODO_ISSUES_LABELS
 FRIENDS_TABLE_HEAD = "| Name | Link | Desc | \n | ---- | ---- | ---- |\n"
 FRIENDS_TABLE_TEMPLATE = "| {name} | {link} | {desc} |\n"
 FRIENDS_INFO_DICT = {
-    "鍚嶅瓧": "hhh",
-    "閾炬帴": "www.bing.com",
-    "鎻忚堪": "test",
+    "名字": "hhh",
+    "链接": "www.bing.com",
+    "描述": "test",
 }
 
 
@@ -52,12 +53,12 @@ def _make_friend_table_string(s):
         # drop empty line
         string_list = [l for l in string_list if l and not l.isspace()]
         for l in string_list:
-            string_info_list = re.split("锛�", l)
+            string_info_list = re.split("：", l)
             if len(string_info_list) < 2:
                 continue
             info_dict[string_info_list[0]] = string_info_list[1]
         return FRIENDS_TABLE_TEMPLATE.format(
-            name=info_dict["鍚嶅瓧"], link=info_dict["閾炬帴"], desc=info_dict["鎻忚堪"]
+            name=info_dict["名字"], link=info_dict["链接"], desc=info_dict["描述"]
         )
     except Exception as e:
         print(str(e))
@@ -143,7 +144,7 @@ def add_md_top(repo, md, me):
     if not TOP_ISSUES_LABELS or not top_issues:
         return
     with open(md, "a+", encoding="utf-8") as md:
-        md.write("## 缃《鏂囩珷\n")
+        md.write("## 置顶文章\n")
         for issue in top_issues:
             if is_me(issue, me):
                 add_issue_info(issue, md)
@@ -166,7 +167,7 @@ def add_md_firends(repo, md, me):
     s = markdown.markdown(s, output_format="html", extensions=["extra"])
     with open(md, "a+", encoding="utf-8") as md:
         md.write(
-            f"## [鍙嬫儏閾炬帴](https://github.com/{str(me)}/gitblog/issues/{friends_issue_number})\n"
+            f"## [友情链接](https://github.com/{str(me)}/gitblog/issues/{friends_issue_number})\n"
         )
         md.write(s)
         md.write("\n\n")
@@ -177,7 +178,7 @@ def add_md_recent(repo, md, me, limit=5):
     with open(md, "a+", encoding="utf-8") as md:
         # one the issue that only one issue and delete (pyGitHub raise an exception)
         try:
-            md.write("## 鏈€杩戞洿鏂癨n")
+            md.write("## 最近更新\n")
             for issue in repo.get_issues():
                 if is_me(issue, me):
                     add_issue_info(issue, md)
@@ -225,7 +226,7 @@ def add_md_label(repo, md, me):
                     continue
                 if is_me(issue, me):
                     if i == ANCHOR_NUMBER:
-                        md.write("<details><summary>鏄剧ず鏇村</summary>\n")
+                        md.write("<details><summary>显示更多</summary>\n")
                         md.write("\n")
                     add_issue_info(issue, md)
                     i += 1
@@ -237,84 +238,4 @@ def add_md_label(repo, md, me):
 def get_to_generate_issues(repo, dir_name, issue_number=None):
     md_files = os.listdir(dir_name)
     generated_issues_numbers = [
-        int(i.split("_")[0]) for i in md_files if i.split("_")[0].isdigit()
-    ]
-    to_generate_issues = [
-        i
-        for i in list(repo.get_issues())
-        if int(i.number) not in generated_issues_numbers
-    ]
-    if issue_number:
-        to_generate_issues.append(repo.get_issue(int(issue_number)))
-    return to_generate_issues
-
-
-def generate_rss_feed(repo, filename, me):
-    generator = FeedGenerator()
-    generator.id(repo.html_url)
-    generator.title(f"RSS feed of {repo.owner.login}'s {repo.name}")
-    generator.author(
-        {"name": os.getenv("GITHUB_NAME"), "email": os.getenv("GITHUB_EMAIL")}
-    )
-    generator.link(href=repo.html_url)
-    generator.link(
-        href=f"https://raw.githubusercontent.com/{repo.full_name}/master/{filename}",
-        rel="self",
-    )
-    for issue in repo.get_issues():
-        if not issue.body or not is_me(issue, me) or issue.pull_request:
-            continue
-        item = generator.add_entry(order="append")
-        item.id(issue.html_url)
-        item.link(href=issue.html_url)
-        item.title(issue.title)
-        item.published(issue.created_at.strftime("%Y-%m-%dT%H:%M:%SZ"))
-        for label in issue.labels:
-            item.category({"term": label.name})
-        body = "".join(c for c in issue.body if _valid_xml_char_ordinal(c))
-        item.content(CDATA(marko.convert(body)), type="html")
-    generator.atom_file(filename)
-
-
-def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
-    user = login(token)
-    me = get_me(user)
-    repo = get_repo(user, repo_name)
-    # add to readme one by one, change order here
-    add_md_header("README.md", repo_name)
-    for func in [add_md_firends, add_md_top, add_md_recent, add_md_label, add_md_todo]:
-        func(repo, "README.md", me)
-
-    generate_rss_feed(repo, "feed.xml", me)
-    to_generate_issues = get_to_generate_issues(repo, dir_name, issue_number)
-
-    # save md files to backup folder
-    for issue in to_generate_issues:
-        save_issue(issue, me, dir_name)
-
-
-def save_issue(issue, me, dir_name=BACKUP_DIR):
-    md_name = os.path.join(
-        dir_name, f"{issue.number}_{issue.title.replace('/', '-').replace(' ', '.')}.md"
-    )
-    with open(md_name, "w") as f:
-        f.write(f"# [{issue.title}]({issue.html_url})\n\n")
-        f.write(issue.body or "")
-        if issue.comments:
-            for c in issue.get_comments():
-                if is_me(c, me):
-                    f.write("\n\n---\n\n")
-                    f.write(c.body or "")
-
-
-if __name__ == "__main__":
-    if not os.path.exists(BACKUP_DIR):
-        os.mkdir(BACKUP_DIR)
-    parser = argparse.ArgumentParser()
-    parser.add_argument("github_token", help="github_token")
-    parser.add_argument("repo_name", help="repo_name")
-    parser.add_argument(
-        "--issue_number", help="issue_number", default=None, required=False
-    )
-    options = parser.parse_args()
-    main(options.github_token, options.repo_name, options.issue_number)
+        int(i.split("_
