@@ -33,6 +33,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 一些记录
+- [[ 胡思乱想 ] 你才知道的事](https://github.com/myogg/Gitblog/issues/89)--2025-12-02
 - [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
