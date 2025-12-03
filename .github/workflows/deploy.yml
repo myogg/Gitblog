@@ -1,10 +1,12 @@
 name: Deploy GitHub Pages
 
 on:
-  workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - "README.md"
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -14,11 +16,8 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -30,22 +29,25 @@ jobs:
         run: |
           pip install markdown
 
-      - name: Generate simple index.html with footer and header line
+      - name: Generate index.html with fade-in content and back-to-top button
         run: |
           python - <<EOF
           import markdown
           from datetime import datetime
           import re
 
+          # 讀取 README.md
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
 
           html_text = markdown.markdown(md_text, output_format="html5")
           match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
-          page_title = match.group(1).strip() if match else "My GitBlog"
+          page_title = match.group(1).strip() if match else "MyGitBlog"
 
           year = datetime.now().year
-          footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
+          footer_bar = '<div class="footer-bar"></div>'
+          footer_html = f'<footer class="footer-text">© {year} MyOGG. All rights reserved.</footer>'
+          back_to_top_btn = '<button id="backToTop" title="Back to top">↑</button>'
 
           html_page = f"""<!DOCTYPE html>
           <html lang="en">
@@ -55,20 +57,51 @@ jobs:
             <title>{page_title}</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
             <style>
-              body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; }}
+              body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; position:relative; }}
               .markdown-body {{ max-width:900px; width:95%; padding:2rem; margin:2rem auto; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:8px; }}
               h1,h2,h3 {{ color:#2c3e50; }}
               a {{ color:#0366d6; text-decoration:none; }}
               a:hover {{ text-decoration:underline; }}
-              .header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
+              .header-line, .footer-bar {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); opacity:0; animation: fadeIn 1.2s forwards; }}
+              .header-line {{ margin-bottom:1rem; }}
+              .footer-bar {{ margin:1rem 0; animation-delay:1.2s; }}
               h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
-              footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
-              @media (max-width:600px) {{ .markdown-body {{ padding:1rem; font-size:16px; }} }}
+              footer.footer-text {{ margin-top:0.5rem; text-align:center; color:#888; font-size:0.9rem; opacity:0; animation: fadeIn 1.2s forwards; animation-delay:1.4s; }}
+              @keyframes fadeIn {{ from {{opacity:0}} to {{opacity:1}} }}
+
+              /* 回到頂部按鈕樣式 */
+              #backToTop {{
+                display:none;
+                position:fixed;
+                bottom:40px;
+                right:40px;
+                z-index:99;
+                border:none;
+                outline:none;
+                background:#0366d6;
+                color:white;
+                cursor:pointer;
+                padding:10px 14px;
+                border-radius:50%;
+                font-size:18px;
+                opacity:0.7;
+              }}
+              #backToTop:hover {{ opacity:1; }}
+
+              /* 滾動漸顯內容 */
+              .fade-on-scroll {{ opacity:0; transform: translateY(20px); transition: all 0.8s ease-out; }}
+              .fade-on-scroll.visible {{ opacity:1; transform: translateY(0); }}
+
+              @media (max-width:600px) {{ 
+                .markdown-body {{ padding:1rem; font-size:16px; }} 
+                #backToTop {{ bottom:20px; right:20px; padding:8px 12px; font-size:16px; }}
+              }}
               @media (prefers-color-scheme: dark) {{
                 body {{ background:#121212; color:#e0e0e0; }}
                 .markdown-body {{ background:#1e1e1e; color:#e0e0e0; }}
                 a {{ color:#58a6ff; }}
-                .header-line {{ background: linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff); }}
+                .header-line, .footer-bar {{ background: linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff); }}
+                #backToTop {{ background:#58a6ff; color:#121212; }}
               }}
             </style>
           </head>
@@ -76,9 +109,36 @@ jobs:
             <div class="markdown-body">
               <div class="header-line"></div>
               <h1 class="page-title">{page_title}</h1>
-              {html_text}
+              <div class="fade-on-scroll">{html_text}</div>
+              {footer_bar}
               {footer_html}
             </div>
+            {back_to_top_btn}
+            <script>
+              // 回到頂部按鈕
+              var btn = document.getElementById("backToTop");
+              window.onscroll = function() {{
+                if(document.body.scrollTop > 100 || document.documentElement.scrollTop > 100) {{
+                  btn.style.display = "block";
+                }} else {{
+                  btn.style.display = "none";
+                }}
+
+                // 滾動漸顯
+                var fadeElems = document.querySelectorAll('.fade-on-scroll');
+                fadeElems.forEach(function(el){{
+                  var rect = el.getBoundingClientRect();
+                  if(rect.top < window.innerHeight - 50){{
+                    el.classList.add('visible');
+                  }}
+                }});
+              }};
+              btn.onclick = function() {{
+                window.scrollTo({{top:0, behavior:'smooth'}});
+              }};
+              // 初始化可見元素
+              window.dispatchEvent(new Event('scroll'));
+            </script>
           </body>
           </html>
           """
@@ -87,13 +147,13 @@ jobs:
               f.write(html_page)
           EOF
 
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: ./index.html
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
