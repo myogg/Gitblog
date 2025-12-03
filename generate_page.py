@@ -4,7 +4,6 @@ import argparse
 from datetime import datetime
 from github import Github
 import markdown
-from marko.ext.gfm import gfm as marko
 
 # --------------------------
 # Argument parsing
@@ -17,10 +16,9 @@ args = parser.parse_args()
 
 g = Github(args.token)
 repo = g.get_repo(args.repo)
-me = g.get_user().login
 
 # --------------------------
-# Generate index.html
+# Prepare data
 # --------------------------
 # 標籤列表
 labels = [l.name for l in repo.get_labels()]
@@ -29,28 +27,58 @@ issues = sorted([i for i in repo.get_issues() if not i.pull_request],
                 key=lambda x: x.created_at, reverse=True)
 recent_issues = issues[:5]
 
-# 讀 README.md
+# README 轉 HTML
 with open("README.md", "r", encoding="utf-8") as f:
     md_text = f.read()
 html_content = markdown.markdown(md_text, output_format="html5")
 
-# 側邊欄 HTML
+# --------------------------
+# Generate label sections with fold
+# --------------------------
+label_html = ""
+for label in labels:
+    # 標籤文章
+    labeled_issues = [i for i in issues if label in [l.name for l in i.labels]]
+    label_html += f"<h3>{label}</h3><ul>"
+    for i, issue in enumerate(labeled_issues):
+        if i < 5:
+            label_html += f"<li><a href='{issue.html_url}'>{issue.title}</a></li>"
+        else:
+            break
+    if len(labeled_issues) > 5:
+        label_html += f"<li><details><summary>更多...</summary>"
+        for issue in labeled_issues[5:]:
+            label_html += f"<li><a href='{issue.html_url}'>{issue.title}</a></li>"
+        label_html += "</details></li>"
+    label_html += "</ul>"
+
+# --------------------------
+# Sidebar
+# --------------------------
+import random
+
+def random_color():
+    return f"#{random.randint(0,0xFFFFFF):06x}"
+
 sidebar_html = "<aside style='padding:1rem; border-left:1px solid #ccc;'>"
-sidebar_html += "<h3>分類</h3><ul>"
+sidebar_html += "<h3>標籤</h3><div style='display:flex; flex-wrap:wrap; gap:0.3rem;'>"
 for l in labels:
-    sidebar_html += f"<li>{l}</li>"
-sidebar_html += "</ul><h3>最近文章</h3><ul>"
+    sidebar_html += f"<span style='background:{random_color()}; color:white; padding:0.2rem 0.5rem; border-radius:5px; font-size:0.9rem;'>{l}</span>"
+sidebar_html += "</div>"
+
+sidebar_html += "<h3>最近文章</h3><ul>"
 for i in recent_issues:
     sidebar_html += f"<li><a href='{i.html_url}'>{i.title}</a></li>"
 sidebar_html += "</ul></aside>"
 
-# 彩條和頁面標題
+# --------------------------
+# Page HTML
+# --------------------------
 page_title = "My GitBlog"
 year = datetime.now().year
 footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
 header_line = '<div style="height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem;"></div>'
 
-# 組裝完整 HTML
 html_page = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,10 +95,11 @@ a:hover {{ text-decoration:underline; }}
 .header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
 h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
 footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
-@media (max-width:600px) {{ 
-  body {{ flex-direction:column; }}
-  .markdown-body {{ width:95%; padding:1rem; font-size:16px; }}
-  aside {{ order:2; margin-top:2rem; }}
+aside {{ min-width:200px; padding:1rem; margin-left:2rem; }}
+details {{ margin-left:1rem; }}
+@media (max-width:900px) {{ 
+  body {{ flex-direction:column; align-items:center; }}
+  aside {{ margin-left:0; width:95%; margin-top:2rem; }}
 }}
 @media (prefers-color-scheme: dark) {{
   body {{ background:#121212; color:#e0e0e0; }}
@@ -85,6 +114,7 @@ footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
 {header_line}
 <h1 class="page-title">{page_title}</h1>
 {html_content}
+{label_html}
 {footer_html}
 </div>
 {sidebar_html}
@@ -92,7 +122,7 @@ footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
 </html>
 """
 
-# 保存到 output 目錄
+# Save
 os.makedirs(args.output, exist_ok=True)
 with open(os.path.join(args.output, "index.html"), "w", encoding="utf-8") as f:
     f.write(html_page)
