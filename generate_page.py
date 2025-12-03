@@ -1,91 +1,99 @@
 import os
-from github import Github
+import re
+import argparse
 from datetime import datetime
+from github import Github
+import markdown
+from marko.ext.gfm import gfm as marko
 
-# 配置
-GITHUB_TOKEN = os.getenv("G_TT")
-GITHUB_USER = "myogg"
-REPO_NAME = "Gitblog"
-MAX_RECENT = 5  # 側邊欄最近文章數量
+# --------------------------
+# Argument parsing
+# --------------------------
+parser = argparse.ArgumentParser()
+parser.add_argument("--token", required=True)
+parser.add_argument("--repo", required=True)
+parser.add_argument("--output", default="site")
+args = parser.parse_args()
 
-# 登錄 GitHub
-g = Github(GITHUB_TOKEN)
-repo = g.get_repo(f"{GITHUB_USER}/{REPO_NAME}")
+g = Github(args.token)
+repo = g.get_repo(args.repo)
+me = g.get_user().login
 
-# 獲取標籤
-labels = list(repo.get_labels())
-labels = sorted(labels, key=lambda x: x.name.lower())
+# --------------------------
+# Generate index.html
+# --------------------------
+# 標籤列表
+labels = [l.name for l in repo.get_labels()]
+# 最近文章
+issues = sorted([i for i in repo.get_issues() if not i.pull_request],
+                key=lambda x: x.created_at, reverse=True)
+recent_issues = issues[:5]
 
-# 獲取最近文章（所有 issues 按時間排序）
-all_issues = list(repo.get_issues(state="open"))
-all_issues.sort(key=lambda x: x.created_at, reverse=True)
-recent_issues = all_issues[:MAX_RECENT]
+# 讀 README.md
+with open("README.md", "r", encoding="utf-8") as f:
+    md_text = f.read()
+html_content = markdown.markdown(md_text, output_format="html5")
 
-# 生成側邊欄 HTML
-tags_html = "<div><h3>標籤</h3><ul style='list-style:none;padding:0;'>"
-for label in labels:
-    tags_html += f"<li style='display:inline-block;margin:0.2rem;'><span style='padding:0.3rem 0.6rem;background:#ff6a00;color:white;border-radius:4px;'>{label.name}</span></li>"
-tags_html += "</ul></div>"
+# 側邊欄 HTML
+sidebar_html = "<aside style='padding:1rem; border-left:1px solid #ccc;'>"
+sidebar_html += "<h3>分類</h3><ul>"
+for l in labels:
+    sidebar_html += f"<li>{l}</li>"
+sidebar_html += "</ul><h3>最近文章</h3><ul>"
+for i in recent_issues:
+    sidebar_html += f"<li><a href='{i.html_url}'>{i.title}</a></li>"
+sidebar_html += "</ul></aside>"
 
-recent_html = "<div style='margin-top:1rem;'><h3>最近文章</h3><ul style='list-style:none;padding:0;'>"
-for issue in recent_issues:
-    recent_html += f"<li><a href='{issue.html_url}' style='text-decoration:none;color:#0366d6;'>{issue.title}</a></li>"
-recent_html += "</ul></div>"
-
-sidebar_html = f"<aside>{tags_html}{recent_html}</aside>"
-
-# 主內容 HTML（簡單文章列表）
-main_content = "<div><h1>文章列表</h1>"
-for issue in all_issues:
-    main_content += f"<h2><a href='{issue.html_url}'>{issue.title}</a></h2>"
-main_content += "</div>"
-
-# 頁尾
+# 彩條和頁面標題
+page_title = "My GitBlog"
 year = datetime.now().year
-footer_html = f"""
-<footer>
-<div style="height:4px;width:100%;background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff);"></div>
-<p style="text-align:center;color:#888;font-size:0.9rem;">© {year} MyOGG. All rights reserved.</p>
-</footer>
-"""
+footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
+header_line = '<div style="height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem;"></div>'
 
-# 組合完整頁面
+# 組裝完整 HTML
 html_page = f"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>My GitBlog</title>
+<title>{page_title}</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
 <style>
-body {{ display:flex; flex-direction:column; font-family:'Helvetica Neue',Arial,sans-serif; background:#f5f5f5; margin:0; }}
-header {{ text-align:center; padding:1rem; }}
-.container {{ display:flex; flex-wrap:wrap; max-width:1200px; margin:auto; }}
-.main {{ flex:1 1 700px; padding:2rem; background:white; margin:1rem; border-radius:8px; box-shadow:0 4px 12px rgba(0,0,0,0.1); }}
-aside {{ flex:0 0 250px; padding:1rem; background:#fafafa; margin:1rem; border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,0.05); }}
+body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; }}
+.markdown-body {{ max-width:900px; width:95%; padding:2rem; margin:2rem auto; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:8px; }}
 h1,h2,h3 {{ color:#2c3e50; }}
 a {{ color:#0366d6; text-decoration:none; }}
 a:hover {{ text-decoration:underline; }}
-footer {{ margin-top:2rem; }}
-@media (max-width:800px) {{
-  .container {{ flex-direction:column; }}
-  aside {{ order:2; }}
-  .main {{ order:1; }}
+.header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
+h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
+footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
+@media (max-width:600px) {{ 
+  body {{ flex-direction:column; }}
+  .markdown-body {{ width:95%; padding:1rem; font-size:16px; }}
+  aside {{ order:2; margin-top:2rem; }}
+}}
+@media (prefers-color-scheme: dark) {{
+  body {{ background:#121212; color:#e0e0e0; }}
+  .markdown-body {{ background:#1e1e1e; color:#e0e0e0; }}
+  a {{ color:#58a6ff; }}
+  .header-line {{ background: linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff); }}
 }}
 </style>
 </head>
 <body>
-<header><h1>My GitBlog</h1></header>
-<div class="container">
-<div class="main">{main_content}</div>
-{sidebar_html}
-</div>
+<div class="markdown-body">
+{header_line}
+<h1 class="page-title">{page_title}</h1>
+{html_content}
 {footer_html}
+</div>
+{sidebar_html}
 </body>
 </html>
 """
 
-# 輸出文件
-os.makedirs("site", exist_ok=True)
-with open("site/index.html", "w", encoding="utf-8") as f:
+# 保存到 output 目錄
+os.makedirs(args.output, exist_ok=True)
+with open(os.path.join(args.output, "index.html"), "w", encoding="utf-8") as f:
     f.write(html_page)
-print("index.html 已生成到 site/ 文件夾")
+print("Page generated at:", os.path.join(args.output, "index.html"))
