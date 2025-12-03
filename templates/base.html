@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mYogg'Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="markdown-body">
+        <div class="header-line"></div>
+        <h1 class="page-title">mYogg'Blog</h1>
+        
+        <!-- 側邊欄 -->
+        <div class="sidebar">
+            <div class="filter-controls">
+                <h3 style="margin:0;">標簽</h3>
+                <span class="clear-filter" id="clear-filter">清除篩選</span>
+            </div>
+            <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
+            <div class="tags-container">
+                {{TAGS}}
+            </div>
+            
+            <h3>最近文章</h3>
+            <ul id="recent-articles">
+                {{RECENT_ARTICLES}}
+            </ul>
+        </div>
+        
+        <!-- 正文分類 -->
+        <div id="categories-container">
+            {{CATEGORIES}}
+        </div>
+        
+        <!-- 無結果提示 -->
+        <div class="no-results" id="no-results">沒有找到相關文章</div>
+        
+        <footer>© {{YEAR}} MyOGG. All rights reserved.</footer>
+    </div>
+    
+    <script src="static/script.js"></script>
+</body>
+</html>
