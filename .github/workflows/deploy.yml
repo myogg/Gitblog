@@ -2,7 +2,11 @@ name: Deploy GitHub Pages
 
 on:
   push:
-    branches: ["master"]
+    branches:
+      - master
+    paths:
+      - README.md
+      - .github/workflows/deploy.yml
 
   # 手动触发
   workflow_dispatch:
@@ -26,6 +30,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
+          # 整個倉庫就是你的 Pages 內容
           path: .
 
       - name: Deploy to Pages
