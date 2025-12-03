@@ -3,12 +3,16 @@ name: Deploy GitHub Pages
 on:
   workflow_dispatch:   # 手動觸發
   issues:
-    types: [opened, edited, labeled, unlabeled, reopened]
+    types: [labeled]  # 只監聽 labeled 事件（打標籤時）
 
 permissions:
   contents: read
   pages: write
   id-token: write
+
+concurrency:
+  group: "pages-deploy"
+  cancel-in-progress: true  # 取消正在運行的舊部署
 
 jobs:
   deploy:
