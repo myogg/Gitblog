@@ -33,6 +33,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 一些记录
+- [Telegram 测试通行密钥登录](https://github.com/myogg/Gitblog/issues/105)--2025-12-03
 - [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)--2025-12-03
 - [Google 正在尝试用AI生成的引入注目的标题](https://github.com/myogg/Gitblog/issues/94)--2025-12-03
 - [ChatGPT iPhone](https://github.com/myogg/Gitblog/issues/93)--2025-12-03
