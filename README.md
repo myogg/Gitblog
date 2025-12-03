@@ -61,7 +61,6 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [照明的历史](https://github.com/myogg/Gitblog/issues/3)--2025-01-19
 
 ## 收录
-- [ceshi](https://github.com/myogg/Gitblog/issues/100)--2025-12-03
 - [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)--2025-12-03
 - [安娜的档案馆](https://github.com/myogg/Gitblog/issues/88)--2025-12-02
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)--2025-01-21
@@ -70,7 +69,6 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
 
 ## notes
-- [測試](https://github.com/myogg/Gitblog/issues/99)--2025-12-03
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
@@ -88,9 +86,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## Myblog
-- [cggvvb](https://github.com/myogg/Gitblog/issues/101)--2025-12-03
-- [《权力的游戏》](https://github.com/myogg/Gitblog/issues/98)--2025-12-03
-- [[ 代碼好難 ] 我為什麽不是程序員](https://github.com/myogg/Gitblog/issues/97)--2025-12-03
+- [好難！](https://github.com/myogg/Gitblog/issues/102)--2025-12-03
 - [10000](https://github.com/myogg/Gitblog/issues/87)--2025-12-02
 - [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)--2025-07-11
