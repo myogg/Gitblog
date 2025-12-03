@@ -1,118 +1,57 @@
-name: Build and Deploy GitBlog
+name: Deploy GitHub Pages
 
 on:
-  workflow_dispatch:
   push:
     branches:
       - main
-  issues:
-    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled]
+    paths:
+      - "README.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Generate index.html from Issues
-        run: |
-          echo "<html><head><meta charset='utf-8'><title>My GitBlog</title>
-          <style>
-            body{font-family:Arial;max-width:760px;margin:40px auto;line-height:1.7;}
-            h1{text-align:center;margin-bottom:10px;}
-            .tag{background:#eee;padding:2px 6px;border-radius:4px;margin-right:4px;font-size:12px;}
-            .section{margin-top:40px;}
-            a{text-decoration:none;color:#0366d6;}
-          </style>
-          </head><body>" > index.html
-
-          echo "<h1>My GitBlog</h1>" >> index.html
-          echo "<p style='text-align:center;color:#666;'>自动从 Issues 生成的博客</p><hr/>" >> index.html
-
-          # 分组: 每个 label 一个 section
-          LABELS=$(gh api repos/$GITHUB_REPOSITORY/labels --jq '.[].name')
-
-          for L in $LABELS; do
-            echo "<div class='section'><h2>🟦 $L</h2><ul>" >> index.html
-
-            gh api -X GET repos/$GITHUB_REPOSITORY/issues \
-              --jq ".[] | select(.labels[].name == \"$L\") | \"<li><a href='\(.html_url)'>\(.title)</a> <span class='tag'>#\(.number)</span></li>\"" \
-              >> index.html || true
-
-            echo "</ul></div>" >> index.html
-          done
-
-          # 无标签 Issues
-          echo "<div class='section'><h2>🔶 未分类</h2><ul>" >> index.html
-
-          gh api repos/$GITHUB_REPOSITORY/issues \
-            --jq ".[] | select(.labels | length == 0) | \"<li><a href='\(.html_url)'>\(.title)</a> <span class='tag'>#\(.number)</span></li>\"" \
-            >> index.html || true
-
-          echo "</ul></div>" >> index.html
-
-          echo "</body></html>" >> index.html
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          path: .
+          python-version: "3.10"
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
+      - name: Install dependencies
+        run: |
+          pip install markdown
 
-    environment:
-      name: github-pages
-
-    steps:
-      - name: Deploy
-        uses: actions/deploy-pages@v4
+      - name: Generate index.html with header and footer
+        run: |
+          python - <<EOF
           import markdown
-          import re
           from datetime import datetime
+          import re
 
+          # 讀取 README.md
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
 
+          # 轉 HTML
+          html_text = markdown.markdown(md_text, output_format="html5")
+
+          # 頁面標題
           match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
-          page_title = match.group(1).strip() if match else "My GitBlog"
+          page_title = match.group(1).strip() if match else "MyGitBlog"
 
-          toc = []
-          for line in md_text.splitlines():
-              h_match = re.match(r'^(#{2,3})\s+(.*)', line)
-              if h_match:
-                  level = len(h_match.group(1))
-                  text = h_match.group(2).strip()
-                  anchor = re.sub(r'[^a-zA-Z0-9\\- ]', '', text).replace(' ', '-').lower()
-                  toc.append((level, text, anchor))
-
-          toc_html = '<nav style="margin-bottom:2rem;"><ul>'
-          for level, text, anchor in toc:
-              indent = '  ' * (level-2)
-              toc_html += f'{indent}<li><a href="#{anchor}">{text}</a></li>\n'
-          toc_html += '</ul></nav>'
-
-          def add_ids(md):
-              def repl(m):
-                  level = m.group(1)
-                  text = m.group(2).strip()
-                  anchor = re.sub(r'[^a-zA-Z0-9\\- ]', '', text).replace(' ', '-').lower()
-                  return f'{level} {text} {{#{anchor}}}'
-              return re.sub(r'^(#{1,6})\s+(.*)', repl, md, flags=re.MULTILINE)
-
-          md_with_ids = add_ids(md_text)
-
-          html_body = markdown.markdown(md_with_ids, output_format="html5", extensions=['attr_list'])
-
+          # Footer
           year = datetime.now().year
-          footer_html = f'<footer>© {year} MyOGG. All rights reserved.</footer>'
+          footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
 
+          # 完整 HTML
           html_page = f"""<!DOCTYPE html>
           <html lang="en">
           <head>
@@ -128,8 +67,6 @@ jobs:
               a:hover {{ text-decoration:underline; }}
               .header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
               h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
-              nav ul {{ list-style:none; padding-left:0; margin-bottom:2rem; }}
-              nav li {{ margin-left:1rem; }}
               footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
               @media (max-width:600px) {{ .markdown-body {{ padding:1rem; font-size:16px; }} }}
               @media (prefers-color-scheme: dark) {{
@@ -144,8 +81,8 @@ jobs:
             <div class="markdown-body">
               <div class="header-line"></div>
               <h1 class="page-title">{page_title}</h1>
-              {toc_html}
-              {html_body}
+              {html_text}
+              <hr style="margin:2rem 0; border:none; border-top:1px solid #ddd;">
               {footer_html}
             </div>
           </body>
@@ -156,21 +93,13 @@ jobs:
               f.write(html_page)
           EOF
 
-      - name: Prepare site folder
-        run: |
-          mkdir -p site
-          cp index.html site/index.html
-
-      - name: Verify index.html
-        run: ls -l site/index.html
-
-      - name: Setup Pages
+      - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          path: ./index.html
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
