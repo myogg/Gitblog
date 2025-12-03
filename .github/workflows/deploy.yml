@@ -15,11 +15,41 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
+      name: github-pages    # 必須指定 environment
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install markdown
+
+      - name: Convert README.md to index.html
+        run: |
+          python - <<EOF
+          import markdown
+          with open("README.md", "r", encoding="utf-8") as f:
+              md_text = f.read()
+          html_text = markdown.markdown(md_text, output_format="html5")
+          html_page = f"""<!DOCTYPE html>
+          <html lang="en">
+          <head>
+            <meta charset="UTF-8">
+            <title>My GitBlog</title>
+          </head>
+          <body>
+          {html_text}
+          </body>
+          </html>"""
+          with open("index.html", "w", encoding="utf-8") as f:
+              f.write(html_page)
+          EOF
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -27,7 +57,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .            # 整個 repo 作為頁面
+          path: .            # 整個 repo 作為 Pages 內容
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
