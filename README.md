@@ -33,6 +33,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 一些记录
+- [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)--2025-12-03
 - [Google 正在尝试用AI生成的引入注目的标题](https://github.com/myogg/Gitblog/issues/94)--2025-12-03
 - [ChatGPT iPhone](https://github.com/myogg/Gitblog/issues/93)--2025-12-03
 - [[ 胡思亂想 ]  AI 的“良心”是如何炼成的](https://github.com/myogg/Gitblog/issues/92)--2025-12-03
