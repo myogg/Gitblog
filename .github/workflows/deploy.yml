@@ -1,17 +1,14 @@
 name: Deploy GitHub Pages from Issues
 
 on:
-  workflow_dispatch:
-  issues:
-    types: [opened, edited, labeled, unlabeled, closed]
+  workflow_dispatch:   # 手動觸發
+  issues:             # 當 Issues 被創建、編輯、標籤變化時觸發
+    types: [opened, edited, labeled, unlabeled]
 
 permissions:
   contents: read
   pages: write
   id-token: write
-
-env:
-  GITHUB_TOKEN: ${{ secrets.G_TT }}
 
 jobs:
   deploy:
@@ -26,14 +23,15 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
           pip install markdown PyGithub
 
-      - name: Generate GitHub Pages site
-        run: python generate_page.py
+      - name: Generate Page
+        run: |
+          python generate_page.py
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -41,7 +39,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./site
+          path: site
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
