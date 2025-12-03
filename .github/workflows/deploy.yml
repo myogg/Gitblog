@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 env:
-  GITHUB_TOKEN: ${{ secrets.G_TT }}  # 使用你的 PAT
+  GITHUB_TOKEN: ${{ secrets.G_TT }}
 
 jobs:
   deploy:
