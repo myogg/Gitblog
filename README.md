@@ -33,6 +33,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 一些记录
+- [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
 - [Telegram 测试通行密钥登录](https://github.com/myogg/Gitblog/issues/105)--2025-12-03
 - [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)--2025-12-03
 - [Google 正在尝试用AI生成的引入注目的标题](https://github.com/myogg/Gitblog/issues/94)--2025-12-03
@@ -84,7 +85,6 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
 
 ## Top
-- [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/90)--2025-12-03
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## Myblog
@@ -128,12 +128,8 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 
 ## 突发的一些小想法
 - [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
-- [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/90)--2025-12-03
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)--2025-02-10
-
-## TODO
-TODO list from [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/90) all done
 
