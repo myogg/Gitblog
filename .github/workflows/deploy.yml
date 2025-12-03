@@ -27,6 +27,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cache pip
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -34,20 +42,20 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install markdown PyGithub marko feedgen lxml
+          pip install --quiet markdown PyGithub marko
 
-      - name: Generate HTML from Issues (label sorted, beautiful)
+      - name: Generate HTML from latest Issues (5 per label + More)
         run: |
           mkdir -p site
           python - <<EOF
-          import os, datetime, markdown
+          import os, markdown, datetime
           from github import Github
 
           token = os.getenv("GITHUB_TOKEN")
           repo = Github(token).get_repo(os.getenv("GITHUB_REPOSITORY"))
           me = repo.owner.login
 
-          # 按標籤分類 Issue
+          # Collect Issues by label
           labels_dict = {}
           for issue in repo.get_issues():
               if issue.pull_request or issue.user.login != me:
@@ -58,15 +66,20 @@ jobs:
               else:
                   labels_dict.setdefault("Unlabeled", []).append(issue)
 
-          # HTML body
           html_body = ""
           for label_name, issues in sorted(labels_dict.items()):
+              issues_sorted = sorted(issues, key=lambda x: x.created_at, reverse=True)
               html_body += f"<h2>{label_name}</h2>\n"
-              for i in sorted(issues, key=lambda x: x.created_at, reverse=True):
+              for i in issues_sorted[:5]:
                   html_body += f"<div class='issue-card'><a href='{i.html_url}'>{i.title}</a></div>\n"
+              if len(issues_sorted) > 5:
+                  html_body += "<details><summary>更多文章...</summary>\n"
+                  for i in issues_sorted[5:]:
+                      html_body += f"<div class='issue-card'><a href='{i.html_url}'>{i.title}</a></div>\n"
+                  html_body += "</details>\n"
 
           year = datetime.datetime.now().year
-          html_page = f"""<!DOCTYPE html>
+          html_page = f\"\"\"<!DOCTYPE html>
           <html lang="en">
           <head>
               <meta charset="UTF-8">
@@ -83,6 +96,8 @@ jobs:
                   h1.page-title{{text-align:center;font-size:2.5rem;font-weight:bold;margin-top:0;margin-bottom:2rem;}}
                   .issue-card{{background:#fff;padding:1rem;margin:0.5rem 0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:transform 0.2s;}}
                   .issue-card:hover{{transform:translateY(-2px);}}
+                  details{{margin:1rem 0;}}
+                  summary{{cursor:pointer;font-weight:bold;color:#0366d6;}}
                   footer{{margin-top:3rem;text-align:center;color:#888;font-size:0.9rem;}}
                   @media(max-width:600px){{.markdown-body{{padding:1rem;font-size:16px;}}.issue-card{{padding:0.8rem;}}}}
                   @media(prefers-color-scheme:dark){{body{{background:#121212;color:#e0e0e0;}}.markdown-body{{background:#1e1e1e;color:#e0e0e0;}}a{{color:#58a6ff;}}.header-line{{background:linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff);}}}}
@@ -97,7 +112,7 @@ jobs:
               </div>
           </body>
           </html>
-          """
+          \"\"\"
 
           with open("site/index.html","w",encoding="utf-8") as f:
               f.write(html_page)
