@@ -5,7 +5,6 @@ on:
   push:
     paths:
       - "README.md"
-      - "BACKUP/**"
 
 permissions:
   contents: read
@@ -31,27 +30,27 @@ jobs:
         run: |
           pip install markdown
 
-      - name: Generate responsive index.html
+      - name: Generate responsive index.html with title & footer
         run: |
           python - <<EOF
-          import os
           import markdown
+          from datetime import datetime
+          import re
 
           # 讀取 README.md
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
+
+          # Markdown 轉 HTML
           html_text = markdown.markdown(md_text, output_format="html5")
 
-          # 生成文章列表
-          backup_dir = "BACKUP"
-          articles = []
-          if os.path.exists(backup_dir):
-              for file in sorted(os.listdir(backup_dir), reverse=True):
-                  if file.endswith(".md"):
-                      title = file.split("_",1)[-1].replace(".md","")
-                      link = os.path.join(backup_dir, file)
-                      articles.append(f'<li><a href="{link}">{title}</a></li>')
-          articles_html = "<ul class='article-list'>" + "".join(articles) + "</ul>" if articles else ""
+          # 取 README 第一個標題作為頁面標題
+          match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
+          page_title = match.group(1).strip() if match else "My GitBlog"
+
+          # 版權信息
+          year = datetime.now().year
+          footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
 
           # HTML 內容
           html_page = f"""<!DOCTYPE html>
@@ -59,41 +58,36 @@ jobs:
           <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1">
-            <title>My GitBlog</title>
+            <title>{page_title}</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
             <style>
-              body {{ display: flex; justify-content: center; background-color: #f5f5f5; font-family: 'Helvetica Neue', Arial, sans-serif; line-height:1.6; }}
+              body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; }}
               .markdown-body {{ max-width:900px; width:95%; padding:2rem; margin:2rem auto; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:8px; }}
               h1,h2,h3 {{ color:#2c3e50; }}
               a {{ color:#0366d6; text-decoration:none; }}
               a:hover {{ text-decoration:underline; }}
-              ul.article-list {{ list-style:none; padding:0; }}
-              ul.article-list li {{ padding:0.5rem 0.8rem; border-bottom:1px solid #eee; transition: background 0.2s; word-break:break-word; }}
-              ul.article-list li:hover {{ background:#f0f8ff; }}
               img.logo {{ max-width:120px; width:30%; height:auto; display:block; margin:auto; border-radius:50%; }}
-
+              h1.page-title {{ text-align:center; margin-top:1rem; margin-bottom:2rem; }}
               @media (max-width:600px) {{
                 .markdown-body {{ padding:1rem; font-size:16px; }}
-                ul.article-list li {{ padding:0.5rem 0.5rem; }}
               }}
-
               @media (prefers-color-scheme: dark) {{
                 body {{ background:#121212; color:#e0e0e0; }}
                 .markdown-body {{ background:#1e1e1e; color:#e0e0e0; }}
                 a {{ color:#58a6ff; }}
-                ul.article-list li:hover {{ background:#333; }}
               }}
             </style>
           </head>
           <body>
             <div class="markdown-body">
               <img class="logo" src="https://avatars.githubusercontent.com/u/你的用戶ID?v=4" alt="Logo">
+              <h1 class="page-title">{page_title}</h1>
               {html_text}
-              <h2>文章列表</h2>
-              {articles_html}
+              {footer_html}
             </div>
           </body>
-          </html>"""
+          </html>
+          """
 
           with open("index.html", "w", encoding="utf-8") as f:
               f.write(html_page)
