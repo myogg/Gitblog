@@ -4,7 +4,8 @@ on:
   workflow_dispatch:        # 手動觸發
   push:
     paths:
-      - "README.md"         # 當 README 更新時自動部署
+      - "README.md"
+      - "BACKUP/**"
 
 permissions:
   contents: read
@@ -15,7 +16,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages    # 必須指定 environment
+      name: github-pages
 
     steps:
       - name: Checkout
@@ -30,23 +31,49 @@ jobs:
         run: |
           pip install markdown
 
-      - name: Convert README.md to index.html
+      - name: Generate index.html with articles list
         run: |
           python - <<EOF
+          import os
           import markdown
+
+          # 讀取 README.md
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
           html_text = markdown.markdown(md_text, output_format="html5")
+
+          # 生成文章列表
+          backup_dir = "BACKUP"
+          articles = []
+          if os.path.exists(backup_dir):
+              for file in sorted(os.listdir(backup_dir)):
+                  if file.endswith(".md"):
+                      title = file.split("_",1)[-1].replace(".md","")
+                      link = os.path.join(backup_dir, file)
+                      articles.append(f'<li><a href="{link}">{title}</a></li>')
+          articles_html = "<ul>" + "".join(articles) + "</ul>" if articles else ""
+
+          # 整個 HTML
           html_page = f"""<!DOCTYPE html>
           <html lang="en">
           <head>
             <meta charset="UTF-8">
             <title>My GitBlog</title>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+            <style>
+              body {{ display: flex; justify-content: center; }}
+              .markdown-body {{ max-width: 800px; padding: 2rem; }}
+            </style>
           </head>
           <body>
-          {html_text}
+            <div class="markdown-body">
+            {html_text}
+            <h2>文章列表</h2>
+            {articles_html}
+            </div>
           </body>
           </html>"""
+
           with open("index.html", "w", encoding="utf-8") as f:
               f.write(html_page)
           EOF
@@ -57,7 +84,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .            # 整個 repo 作為 Pages 內容
+          path: .
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
