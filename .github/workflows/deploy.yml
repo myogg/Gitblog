@@ -6,11 +6,16 @@ on:
     paths:
       - "README.md"         # 當 README 更新時自動部署
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages    # <-- 這一行是關鍵
+      name: github-pages
 
     steps:
       - name: Checkout
@@ -22,7 +27,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .            # 直接把整個 repo 當成頁面，可顯示 README
+          path: .            # 整個 repo 作為頁面
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
