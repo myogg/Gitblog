@@ -1,0 +1,44 @@
+name: Sync Issues and Update Pages
+
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened, labeled, edited]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  generate-and-deploy:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-actions[bot]'
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: pip install markdown PyGithub
+
+      - name: Generate Pages
+        run: python generate_page.py
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: index.html
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
