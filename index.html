@@ -1,0 +1,150 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyOGG Blog</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f5f5f5; }
+.container { max-width:900px; margin:auto; background:white; padding:20px; }
+
+.tag-header { font-size:22px; margin-top:40px; padding-bottom:6px;
+              border-bottom:3px solid #ff6a00; font-weight:bold; }
+
+.issue { padding:10px 0; }
+.issue a { text-decoration:none; color:#0366d6; font-size:18px; }
+
+.more-btn {
+    margin-top:10px; cursor:pointer; color:#ff6a00; font-weight:bold;
+}
+.hidden { display:none; }
+
+footer {
+    margin-top:50px; padding:15px; text-align:center;
+    color:#888; font-size:14px;
+    border-top:2px solid #ddd;
+}
+</style>
+
+<script>
+function toggleMore(id){
+  var x = document.getElementById(id);
+  if(x.classList.contains('hidden')){
+     x.classList.remove('hidden');
+  } else {
+     x.classList.add('hidden');
+  }
+}
+</script>
+
+</head>
+<body>
+<div class="container">
+<h1 style="text-align:center; margin-top:20px;">MyOGG Blog</h1>
+<div class="tag-header">notes</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/99" target="_blank">· 測試</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/80" target="_blank">· Claude推出教育专用学习模式</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/79" target="_blank">· About Static Blog Generator</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/78" target="_blank">· [ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/53" target="_blank">· mihomo party什么情况？</a></div>
+<div id="more-notes" class="hidden"><div class="issue"><a href="https://github.com/myogg/Gitblog/issues/52" target="_blank">· 那么，我的青春呢.</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/51" target="_blank">· [ 观影 ] 唐探1900，值得一看</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/49" target="_blank">· 一个频道主的心声，挣钱比较难，所以没动力。</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/48" target="_blank">· Telegram频道主注意了：群组聊天中每10条消息插入广告</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/43" target="_blank">· 猫猫是水做的</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/32" target="_blank">· Vercel 收购代码搜索工具 - Grep</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/1" target="_blank">· 2025</a></div>
+</div><div class="more-btn" onclick="toggleMore('more-notes')">顯示更多…</div><div class="tag-header">Myblog</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/98" target="_blank">· 《权力的游戏》</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/97" target="_blank">· [ 代碼好難 ] 我為什麽不是程序員</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/87" target="_blank">· 10000</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/86" target="_blank">· [ 胡思乱想 ]  我没钱了</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/85" target="_blank">· [ 胡思乱想 ]  房子买了</a></div>
+<div id="more-Myblog" class="hidden"><div class="issue"><a href="https://github.com/myogg/Gitblog/issues/83" target="_blank">· [ 胡思亂想 ] 吉卜力图片，為什麼</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/82" target="_blank">· 陽春三月</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/73" target="_blank">· GW-5000HS-7</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/66" target="_blank">· 祝自己元宵节快乐</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/57" target="_blank">· [ 胡思乱想 ] 屯洗洁精</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/56" target="_blank">· [ 胡思乱想 ]  万恶的小视频</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/55" target="_blank">· [ 分享故事 ]  心灯明亮，则佛性自现</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/54" target="_blank">· [ 胡思乱想 ] 一点小想法。</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/52" target="_blank">· 那么，我的青春呢.</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/51" target="_blank">· [ 观影 ] 唐探1900，值得一看</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/50" target="_blank">· 新年快乐</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/47" target="_blank">· 搡年糕</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/31" target="_blank">· [ 胡思乱想 ] Akamai CDN 退出中国</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/30" target="_blank">· [ 生活 ] 今秋南方行</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/27" target="_blank">· [  图片 ]  随记</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/24" target="_blank">· [ 生活 ]  2024年的最后一个月,我做了痔疮手术,</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/22" target="_blank">· [ 吐槽 ] claude 3.5</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/21" target="_blank">· 吐槽下药品说明书</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/18" target="_blank">· [ 图片 ] 养了两只猫</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/17" target="_blank">· [ 图片 ] 世界上最早的高速公路</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/16" target="_blank">· [ 图片 ] 宁武悬空古栈道</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/15" target="_blank">· [ 图片 ] 峨眉山</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/14" target="_blank">· [ 画稿 ] 金鱼</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/13" target="_blank">· [ 画稿 ] 被咬了一口的苹果</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/12" target="_blank">· [ 图片 ] 关山草原，也称“关山牧场”</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/11" target="_blank">· [ 图片 ] 老友画了一幅人像，却貌似某人，特此备份吧。</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/10" target="_blank">· [ 画稿 ] 花</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/9" target="_blank">· [ 画稿 ] 存档、记录 大辣椒</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/8" target="_blank">· [ 画稿 ] 我并没有意识到这么平凡的生活是那么的重要和可贵</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/7" target="_blank">· [ 画稿 ] 一块老砖</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/6" target="_blank">· [ 画稿 ] 即使世界偶尔凉薄，内心也要繁花似锦</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/5" target="_blank">· [ 图片 ]山水秦岭 水墨终南</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/2" target="_blank">· 孟子｜懂人话做人事</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/1" target="_blank">· 2025</a></div>
+</div><div class="more-btn" onclick="toggleMore('more-Myblog')">顯示更多…</div><div class="tag-header">突发的一些小想法</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/96" target="_blank">· [ 突發奇想] 突然想要一個輸出的頁面</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/90" target="_blank">· 極簡博客維護小技巧</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/83" target="_blank">· [ 胡思亂想 ] 吉卜力图片，為什麼</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/58" target="_blank">· [ 胡思乱想 ] 算盘打的几里外都能听到响</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/57" target="_blank">· [ 胡思乱想 ] 屯洗洁精</a></div>
+<div id="more-突发的一些小想法" class="hidden"><div class="issue"><a href="https://github.com/myogg/Gitblog/issues/56" target="_blank">· [ 胡思乱想 ]  万恶的小视频</a></div>
+</div><div class="more-btn" onclick="toggleMore('more-突发的一些小想法')">顯示更多…</div><div class="tag-header">一些记录</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/95" target="_blank">· 重要/漏洞：aaPanel</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/94" target="_blank">· Google 正在尝试用AI生成的引入注目的标题</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/93" target="_blank">· ChatGPT iPhone</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/92" target="_blank">· [ 胡思亂想 ]  AI 的“良心”是如何炼成的</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/89" target="_blank">· [ 胡思乱想 ] 你才知道的事</a></div>
+<div id="more-一些记录" class="hidden"><div class="issue"><a href="https://github.com/myogg/Gitblog/issues/84" target="_blank">· [ 胡思乱想 ] 想买房子了</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/81" target="_blank">· 任天堂正式发布 Nintendo Switch 2 游戏机</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/78" target="_blank">· [ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/72" target="_blank">· [ 记录 ] 文生图AI网站</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/71" target="_blank">· Grok 3 出世后影响最大的是同人文章定制产业</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/70" target="_blank">· [ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/69" target="_blank">· 涨见识</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/68" target="_blank">· Duolingo宣布吉祥物Duo已去世</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/59" target="_blank">· [ 观影 ] 《碟中谍8：最后的清算》</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/55" target="_blank">· [ 分享故事 ]  心灯明亮，则佛性自现</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/47" target="_blank">· 搡年糕</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/46" target="_blank">· [ 观影 ] 为了全人类 (1989) 4K HDR</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/45" target="_blank">· [ 图片 ] 隋塔</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/44" target="_blank">· [ 观影 ] 驻站</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/25" target="_blank">· 苹果发布iPhone屏下Face ID“隐身术”新专利</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/24" target="_blank">· [ 生活 ]  2024年的最后一个月,我做了痔疮手术,</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/23" target="_blank">· 注册属于自己的 HiDNS 域名</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/20" target="_blank">· 特朗普推出加密货币，能买吗？</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/19" target="_blank">· TikTok 、CapCut 、lemon8在美国正式关闭</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/4" target="_blank">· 错误的数学</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/3" target="_blank">· 照明的历史</a></div>
+</div><div class="more-btn" onclick="toggleMore('more-一些记录')">顯示更多…</div><div class="tag-header">收录</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/91" target="_blank">· YouTube推出年度回顾</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/88" target="_blank">· 安娜的档案馆</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/42" target="_blank">· DeepSeek官方App上线</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/33" target="_blank">· 伊拉克国家域名删除始末</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/29" target="_blank">· Apple Intelligence 有哪些体验</a></div>
+<div id="more-收录" class="hidden"><div class="issue"><a href="https://github.com/myogg/Gitblog/issues/28" target="_blank">· [ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote</a></div>
+</div><div class="more-btn" onclick="toggleMore('more-收录')">顯示更多…</div><div class="tag-header">Top</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/90" target="_blank">· 極簡博客維護小技巧</a></div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/26" target="_blank">· Friends</a></div>
+<div class="tag-header">TODO</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/90" target="_blank">· 極簡博客維護小技巧</a></div>
+<div class="tag-header">Friends</div>
+<div class="issue"><a href="https://github.com/myogg/Gitblog/issues/26" target="_blank">· Friends</a></div>
+
+<footer>© 2025 MyOGG. All rights reserved.</footer>
+</div>
+</body>
+</html>
