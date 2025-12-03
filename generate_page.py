@@ -1,0 +1,72 @@
+import os
+import markdown
+import datetime
+from github import Github
+
+# GitHub token
+token = os.getenv("GITHUB_TOKEN")
+repo = Github(token).get_repo(os.getenv("GITHUB_REPOSITORY"))
+me = repo.owner.login
+
+# Collect Issues by label
+labels_dict = {}
+for issue in repo.get_issues():
+    if issue.pull_request or issue.user.login != me:
+        continue
+    if issue.labels:
+        for label in issue.labels:
+            labels_dict.setdefault(label.name, []).append(issue)
+    else:
+        labels_dict.setdefault("Unlabeled", []).append(issue)
+
+html_body = ""
+for label_name, issues in sorted(labels_dict.items()):
+    issues_sorted = sorted(issues, key=lambda x: x.created_at, reverse=True)
+    html_body += f"<h2>{label_name}</h2>\n"
+    for i in issues_sorted[:5]:
+        html_body += f"<div class='issue-card'><a href='{i.html_url}'>{i.title}</a></div>\n"
+    if len(issues_sorted) > 5:
+        html_body += "<details><summary>更多文章...</summary>\n"
+        for i in issues_sorted[5:]:
+            html_body += f"<div class='issue-card'><a href='{i.html_url}'>{i.title}</a></div>\n"
+        html_body += "</details>\n"
+
+year = datetime.datetime.now().year
+html_page = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MyGitBlog</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+<style>
+body{{display:flex;justify-content:center;background:#f5f5f5;font-family:'Helvetica Neue',Arial,sans-serif;line-height:1.6;}}
+.markdown-body{{max-width:900px;width:95%;padding:2rem;margin:2rem auto;background:white;box-shadow:0 4px 12px rgba(0,0,0,0.1);border-radius:8px;}}
+h1,h2,h3{{color:#2c3e50;}}
+a{{color:#0366d6;text-decoration:none;}}
+a:hover{{text-decoration:underline;}}
+.header-line{{height:6px;width:100%;border-radius:3px;background:linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff);margin-bottom:1.5rem;}}
+h1.page-title{{text-align:center;font-size:2.5rem;font-weight:bold;margin-top:0;margin-bottom:2rem;}}
+.issue-card{{background:#fff;padding:1rem;margin:0.5rem 0;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);transition:transform 0.2s;}}
+.issue-card:hover{{transform:translateY(-2px);}}
+details{{margin:1rem 0;}}
+summary{{cursor:pointer;font-weight:bold;color:#0366d6;}}
+footer{{margin-top:3rem;text-align:center;color:#888;font-size:0.9rem;}}
+@media(max-width:600px){{.markdown-body{{padding:1rem;font-size:16px;}}.issue-card{{padding:0.8rem;}}}}
+@media(prefers-color-scheme:dark){{body{{background:#121212;color:#e0e0e0;}}.markdown-body{{background:#1e1e1e;color:#e0e0e0;}}a{{color:#58a6ff;}}.header-line{{background:linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff);}}}}
+</style>
+</head>
+<body>
+<div class="markdown-body">
+<div class="header-line"></div>
+<h1 class="page-title">MyGitBlog</h1>
+{html_body}
+<footer>© {year} MyOGG. All rights reserved. | <a href="feed.xml">RSS Feed</a></footer>
+</div>
+</body>
+</html>
+"""
+
+os.makedirs("site", exist_ok=True)
+with open("site/index.html", "w", encoding="utf-8") as f:
+    f.write(html_page)
