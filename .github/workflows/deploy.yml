@@ -1,17 +1,17 @@
-name: Deploy GitHub Pages
+name: Deploy GitHub Pages from Issues
 
 on:
   workflow_dispatch:
   issues:
-    types: [opened, edited, closed, labeled, unlabeled]
-  issue_comment:
-    types: [created, edited, deleted]
+    types: [opened, edited, labeled, unlabeled, closed]
 
 permissions:
   contents: read
   pages: write
   id-token: write
-  issues: read
+
+env:
+  GITHUB_TOKEN: ${{ secrets.G_TT }}  # 使用你的 PAT
 
 jobs:
   deploy:
@@ -30,15 +30,15 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install --quiet markdown PyGithub marko
+          pip install markdown PyGithub
 
-      - name: Generate HTML from Issues
+      - name: Generate GitHub Pages site
         run: python generate_page.py
 
-      - name: Setup GitHub Pages
+      - name: Setup Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./site
