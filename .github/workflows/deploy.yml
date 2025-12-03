@@ -30,8 +30,9 @@ jobs:
         run: |
           pip install markdown
 
-      - name: Generate index.html with header, footer and mobile-friendly
+      - name: Generate index.html in site directory
         run: |
+          mkdir -p site
           python - <<EOF
           import markdown
           from datetime import datetime
@@ -41,7 +42,7 @@ jobs:
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
 
-          # 轉成 HTML
+          # 轉換成 HTML
           html_text = markdown.markdown(md_text, output_format="html5")
           match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
           page_title = match.group(1).strip() if match else "MyGitBlog"
@@ -58,7 +59,7 @@ jobs:
             <title>{page_title}</title>
             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
             <style>
-              body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; position:relative; }}
+              body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; }}
               .markdown-body {{ max-width:900px; width:95%; padding:2rem; margin:2rem auto; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:8px; }}
               h1,h2,h3 {{ color:#2c3e50; }}
               a {{ color:#0366d6; text-decoration:none; }}
@@ -140,7 +141,7 @@ jobs:
           </html>
           """
 
-          with open("index.html", "w", encoding="utf-8") as f:
+          with open("site/index.html", "w", encoding="utf-8") as f:
               f.write(html_page)
           EOF
 
@@ -150,7 +151,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./index.html
+          path: ./site
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
