@@ -3,62 +3,46 @@ import markdown
 from github import Github
 from datetime import datetime
 
-SITE_DIR = "site"
-os.makedirs(SITE_DIR, exist_ok=True)
+# 設置 token
+token = os.getenv("G_TT")
+repo_name = "Gitblog"
 
-token = os.getenv("GITHUB_TOKEN")
 g = Github(token)
+repo = g.get_repo(f"myogg/{repo_name}")
 
-repo_name = os.getenv("GITHUB_REPOSITORY")  # e.g. myogg/Gitblog
-repo = g.get_repo(repo_name)
-
-MAX_ISSUES_VISIBLE = 5
-
-# 獲取標籤
-labels = sorted(repo.get_labels(), key=lambda l: l.name)
-
-# 桌面側邊欄 HTML
-sidebar_html = "<h3>分類</h3>\n<ul>"
+# 分類及文章列表
+labels = repo.get_labels()
+label_dict = {}
 for label in labels:
-    sidebar_html += f"<li><a href='#{label.name}'>{label.name}</a></li>"
-sidebar_html += "</ul>"
+    issues = repo.get_issues(labels=[label], state="open", sort="created", direction="desc", per_page=5)
+    label_dict[label.name] = [(i.title, i.html_url) for i in issues]
 
-# 手機底部分類 HTML
-mobile_label_html = "<div class='mobile-labels'><h3>分類</h3><div class='labels-grid'>"
-for label in labels:
-    mobile_label_html += f"<a href='#{label.name}'>{label.name}</a>"
-mobile_label_html += "</div></div>"
+# 最近文章（全局前5條）
+all_issues = repo.get_issues(state="open", sort="created", direction="desc", per_page=5)
+recent_articles = [(i.title, i.html_url) for i in all_issues]
 
-# 文章列表
-content_html = ""
-for label in labels:
-    issues = [i for i in repo.get_issues(labels=[label]) if not i.pull_request]
-    if not issues:
-        continue
-    content_html += f"<h2 id='{label.name}'>{label.name}</h2>\n<ul>"
-    visible = issues[:MAX_ISSUES_VISIBLE]
-    hidden = issues[MAX_ISSUES_VISIBLE:]
+# 讀取 README.md
+with open("README.md", "r", encoding="utf-8") as f:
+    md_text = f.read()
 
-    for issue in visible:
-        content_html += f"<li><a href='{issue.html_url}'>{issue.title}</a> ({issue.created_at.date()})</li>"
+html_text = markdown.markdown(md_text, output_format="html5")
 
-    if hidden:
-        content_html += "<li><details><summary>顯示更多...</summary><ul>"
-        for issue in hidden:
-            content_html += f"<li><a href='{issue.html_url}'>{issue.title}</a> ({issue.created_at.date()})</li>"
-        content_html += "</ul></details></li>"
-
-    content_html += "</ul>\n"
-
-# 頁面標題與彩條
 page_title = "My GitBlog"
 year = datetime.now().year
-footer_html = f"""
-<div class="footer-line"></div>
-<footer style='margin-top:2rem;text-align:center;color:#888;font-size:0.9rem;'>
-© {year} MyOGG. All rights reserved.
-</footer>
-"""
+
+footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
+
+# 側邊欄 HTML
+sidebar_html = '<aside class="sidebar"><h3>分類</h3><ul>'
+for label, articles in label_dict.items():
+    sidebar_html += f'<li>{label}<ul>'
+    for title, url in articles:
+        sidebar_html += f'<li><a href="{url}">{title}</a></li>'
+    sidebar_html += '</ul></li>'
+sidebar_html += '</ul><h3>最近文章</h3><ul>'
+for title, url in recent_articles:
+    sidebar_html += f'<li><a href="{url}">{title}</a></li>'
+sidebar_html += '</ul></aside>'
 
 # 完整 HTML
 html_page = f"""<!DOCTYPE html>
@@ -69,49 +53,40 @@ html_page = f"""<!DOCTYPE html>
 <title>{page_title}</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
 <style>
-body {{ display:flex; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; }}
-.container {{ display:flex; max-width:1200px; margin:2rem auto; }}
-.sidebar {{ width:200px; margin-right:2rem; position:sticky; top:1rem; }}
-.content {{ flex:1; }}
-.markdown-body {{ background:white; padding:2rem; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:8px; }}
+body {{ display:flex; flex-direction:row; justify-content:center; background:#f5f5f5; font-family:'Helvetica Neue',Arial,sans-serif; line-height:1.6; }}
+.markdown-body {{ max-width:900px; width:70%; padding:2rem; margin:2rem; background:white; box-shadow:0 4px 12px rgba(0,0,0,0.1); border-radius:8px; }}
+.sidebar {{ width:25%; padding:1rem; background:#f9f9f9; border-left:1px solid #ddd; border-radius:0 8px 8px 0; }}
 h1,h2,h3 {{ color:#2c3e50; }}
 a {{ color:#0366d6; text-decoration:none; }}
 a:hover {{ text-decoration:underline; }}
 .header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
-.footer-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#00d4ff,#ee0979,#ff6a00); margin-top:2rem; }}
 h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
-details summary {{ cursor:pointer; font-weight:bold; color:#0366d6; }}
-details[open] summary {{ color:#d23669; }}
-li p {{ margin:0.2rem 0 1rem 0; color:#555; font-size:0.95rem; }}
-
-.mobile-labels {{ display:none; margin-top:2rem; text-align:center; }}
-.labels-grid {{ display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }}
-.labels-grid a {{ background:#0366d6; color:white; padding:0.3rem 0.6rem; border-radius:4px; text-decoration:none; font-size:0.9rem; }}
-.labels-grid a:hover {{ background:#024a9b; }}
-
-@media (max-width:768px) {{
-  .container {{ flex-direction:column; }}
-  .sidebar {{ display:none; }}
-  .mobile-labels {{ display:block; }}
+footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
+@media (max-width:900px) {{
+    body {{ flex-direction:column; }}
+    .markdown-body {{ width:95%; margin:1rem auto; }}
+    .sidebar {{ width:95%; margin:0 auto; border-left:none; border-radius:8px 8px 0 0; }}
+}}
+@media (prefers-color-scheme: dark) {{
+    body {{ background:#121212; color:#e0e0e0; }}
+    .markdown-body {{ background:#1e1e1e; color:#e0e0e0; }}
+    .sidebar {{ background:#1e1e1e; }}
+    a {{ color:#58a6ff; }}
+    .header-line {{ background: linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff); }}
 }}
 </style>
 </head>
 <body>
-<div class="container">
-  <aside class="sidebar">
-    {sidebar_html}
-  </aside>
-  <main class="content markdown-body">
-    <div class="header-line"></div>
-    <h1 class="page-title">{page_title}</h1>
-    {content_html}
-    {mobile_label_html}
-    {footer_html}
-  </main>
+<div class="markdown-body">
+<div class="header-line"></div>
+<h1 class="page-title">{page_title}</h1>
+{html_text}
+{footer_html}
 </div>
+{sidebar_html}
 </body>
 </html>
 """
 
-with open(os.path.join(SITE_DIR, "index.html"), "w", encoding="utf-8") as f:
+with open("index.html", "w", encoding="utf-8") as f:
     f.write(html_page)
