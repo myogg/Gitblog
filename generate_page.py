@@ -3,26 +3,31 @@ import markdown
 from github import Github
 from datetime import datetime
 
-# 輸出目錄
 SITE_DIR = "site"
 os.makedirs(SITE_DIR, exist_ok=True)
 
-# 使用 PAT
 token = os.getenv("GITHUB_TOKEN")
 g = Github(token)
 
-# 讀取倉庫
 repo_name = os.getenv("GITHUB_REPOSITORY")  # e.g. myogg/Gitblog
 repo = g.get_repo(repo_name)
 
 MAX_ISSUES_VISIBLE = 5
 
-# 側邊欄標籤列表
+# 獲取標籤
 labels = sorted(repo.get_labels(), key=lambda l: l.name)
+
+# 桌面側邊欄 HTML
 sidebar_html = "<h3>分類</h3>\n<ul>"
 for label in labels:
     sidebar_html += f"<li><a href='#{label.name}'>{label.name}</a></li>"
 sidebar_html += "</ul>"
+
+# 手機底部分類 HTML
+mobile_label_html = "<div class='mobile-labels'><h3>分類</h3><div class='labels-grid'>"
+for label in labels:
+    mobile_label_html += f"<a href='#{label.name}'>{label.name}</a>"
+mobile_label_html += "</div></div>"
 
 # 文章列表
 content_html = ""
@@ -77,9 +82,17 @@ a:hover {{ text-decoration:underline; }}
 h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
 details summary {{ cursor:pointer; font-weight:bold; color:#0366d6; }}
 details[open] summary {{ color:#d23669; }}
+li p {{ margin:0.2rem 0 1rem 0; color:#555; font-size:0.95rem; }}
+
+.mobile-labels {{ display:none; margin-top:2rem; text-align:center; }}
+.labels-grid {{ display:flex; flex-wrap:wrap; justify-content:center; gap:0.5rem; }}
+.labels-grid a {{ background:#0366d6; color:white; padding:0.3rem 0.6rem; border-radius:4px; text-decoration:none; font-size:0.9rem; }}
+.labels-grid a:hover {{ background:#024a9b; }}
+
 @media (max-width:768px) {{
   .container {{ flex-direction:column; }}
-  .sidebar {{ width:100%; margin-bottom:1rem; position:static; }}
+  .sidebar {{ display:none; }}
+  .mobile-labels {{ display:block; }}
 }}
 </style>
 </head>
@@ -92,6 +105,7 @@ details[open] summary {{ color:#d23669; }}
     <div class="header-line"></div>
     <h1 class="page-title">{page_title}</h1>
     {content_html}
+    {mobile_label_html}
     {footer_html}
   </main>
 </div>
