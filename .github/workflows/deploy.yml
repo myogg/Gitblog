@@ -3,6 +3,8 @@ name: Deploy GitHub Pages
 on:
   workflow_dispatch:
   push:
+    branches:
+      - main
     paths:
       - "README.md"
 
@@ -18,7 +20,7 @@ jobs:
       name: github-pages
 
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: Setup Python
@@ -27,25 +29,55 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
-          pip install markdown
+        run: pip install markdown
 
-      - name: Generate simple index.html with footer and header line
+      - name: Generate index.html with TOC, header, footer, responsive design
         run: |
           python - <<EOF
           import markdown
-          from datetime import datetime
           import re
+          from datetime import datetime
 
+          # 讀取 README.md
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
 
-          html_text = markdown.markdown(md_text, output_format="html5")
+          # 提取第一個 H1 作為頁面標題
           match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
           page_title = match.group(1).strip() if match else "My GitBlog"
 
+          # 生成 TOC
+          toc = []
+          for line in md_text.splitlines():
+              h_match = re.match(r'^(#{2,3})\s+(.*)', line)
+              if h_match:
+                  level = len(h_match.group(1))
+                  text = h_match.group(2).strip()
+                  # 生成 id（簡單版）
+                  anchor = re.sub(r'[^a-zA-Z0-9\- ]', '', text).replace(' ', '-').lower()
+                  toc.append((level, text, anchor))
+
+          toc_html = '<nav style="margin-bottom:2rem;"><ul>'
+          for level, text, anchor in toc:
+              indent = '  ' * (level-2)
+              toc_html += f'{indent}<li><a href="#{anchor}">{text}</a></li>\n'
+          toc_html += '</ul></nav>'
+
+          # 將 Markdown 標題添加 id，以便 TOC 跳轉
+          def add_ids(md):
+              def repl(m):
+                  level = m.group(1)
+                  text = m.group(2).strip()
+                  anchor = re.sub(r'[^a-zA-Z0-9\- ]', '', text).replace(' ', '-').lower()
+                  return f'{level} {text} {{#{anchor}}}'
+              return re.sub(r'^(#{1,6})\s+(.*)', repl, md, flags=re.MULTILINE)
+
+          md_with_ids = add_ids(md_text)
+
+          html_body = markdown.markdown(md_with_ids, output_format="html5", extensions=['attr_list'])
+
           year = datetime.now().year
-          footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
+          footer_html = f'<footer>© {year} MyOGG. All rights reserved.</footer>'
 
           html_page = f"""<!DOCTYPE html>
           <html lang="en">
@@ -62,6 +94,8 @@ jobs:
               a:hover {{ text-decoration:underline; }}
               .header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
               h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
+              nav ul {{ list-style:none; padding-left:0; margin-bottom:2rem; }}
+              nav li {{ margin-left:1rem; }}
               footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
               @media (max-width:600px) {{ .markdown-body {{ padding:1rem; font-size:16px; }} }}
               @media (prefers-color-scheme: dark) {{
@@ -76,7 +110,8 @@ jobs:
             <div class="markdown-body">
               <div class="header-line"></div>
               <h1 class="page-title">{page_title}</h1>
-              {html_text}
+              {toc_html}
+              {html_body}
               {footer_html}
             </div>
           </body>
@@ -87,13 +122,16 @@ jobs:
               f.write(html_page)
           EOF
 
+      - name: Verify index.html
+        run: ls -l index.html
+
       - name: Setup Pages
         uses: actions/configure-pages@v4
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: index.html
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
