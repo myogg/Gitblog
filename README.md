@@ -86,6 +86,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## Myblog
+- [[ 代碼好難 ] 我為什麽不是程序員](https://github.com/myogg/Gitblog/issues/97)--2025-12-03
 - [10000](https://github.com/myogg/Gitblog/issues/87)--2025-12-02
 - [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)--2025-07-11
