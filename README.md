@@ -57,6 +57,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [照明的历史](https://github.com/myogg/Gitblog/issues/3)--2025-01-19
 
 ## 收录
+- [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)--2025-12-03
 - [安娜的档案馆](https://github.com/myogg/Gitblog/issues/88)--2025-12-02
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)--2025-01-21
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)--2025-01-20
