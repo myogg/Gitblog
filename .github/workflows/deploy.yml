@@ -15,7 +15,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     environment:
-      name: github-pages
+      name: main
 
     steps:
       - name: Checkout
