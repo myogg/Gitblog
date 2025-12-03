@@ -1,24 +1,16 @@
 name: Deploy GitHub Pages
 
 on:
+  workflow_dispatch:        # 手動觸發
   push:
-    branches:
-      - master
     paths:
-      - README.md
-      - .github/workflows/deploy.yml
-
-  # 手动触发
-  workflow_dispatch:
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+      - "README.md"         # 當 README 更新時自動部署
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages    # <-- 這一行是關鍵
 
     steps:
       - name: Checkout
@@ -30,8 +22,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 整個倉庫就是你的 Pages 內容
-          path: .
+          path: .            # 直接把整個 repo 當成頁面，可顯示 README
 
-      - name: Deploy to Pages
+      - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
