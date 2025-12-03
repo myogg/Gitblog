@@ -1,39 +1,78 @@
-name: Deploy GitHub Pages
+name: Build and Deploy GitBlog
 
 on:
   workflow_dispatch:
   push:
     branches:
       - main
-    paths:
-      - "README.md"
-
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+  issues:
+    types: [opened, edited, deleted, closed, reopened, labeled, unlabeled]
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Generate index.html from Issues
+        run: |
+          echo "<html><head><meta charset='utf-8'><title>My GitBlog</title>
+          <style>
+            body{font-family:Arial;max-width:760px;margin:40px auto;line-height:1.7;}
+            h1{text-align:center;margin-bottom:10px;}
+            .tag{background:#eee;padding:2px 6px;border-radius:4px;margin-right:4px;font-size:12px;}
+            .section{margin-top:40px;}
+            a{text-decoration:none;color:#0366d6;}
+          </style>
+          </head><body>" > index.html
+
+          echo "<h1>My GitBlog</h1>" >> index.html
+          echo "<p style='text-align:center;color:#666;'>自动从 Issues 生成的博客</p><hr/>" >> index.html
+
+          # 分组: 每个 label 一个 section
+          LABELS=$(gh api repos/$GITHUB_REPOSITORY/labels --jq '.[].name')
+
+          for L in $LABELS; do
+            echo "<div class='section'><h2>🟦 $L</h2><ul>" >> index.html
+
+            gh api -X GET repos/$GITHUB_REPOSITORY/issues \
+              --jq ".[] | select(.labels[].name == \"$L\") | \"<li><a href='\(.html_url)'>\(.title)</a> <span class='tag'>#\(.number)</span></li>\"" \
+              >> index.html || true
+
+            echo "</ul></div>" >> index.html
+          done
+
+          # 无标签 Issues
+          echo "<div class='section'><h2>🔶 未分类</h2><ul>" >> index.html
+
+          gh api repos/$GITHUB_REPOSITORY/issues \
+            --jq ".[] | select(.labels | length == 0) | \"<li><a href='\(.html_url)'>\(.title)</a> <span class='tag'>#\(.number)</span></li>\"" \
+            >> index.html || true
+
+          echo "</ul></div>" >> index.html
+
+          echo "</body></html>" >> index.html
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
     environment:
       name: github-pages
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.10"
-
-      - name: Install dependencies
-        run: pip install markdown
-
-      - name: Generate index.html with TOC, header, footer, responsive design
-        run: |
-          python - <<EOF
+      - name: Deploy
+        uses: actions/deploy-pages@v4
           import markdown
           import re
           from datetime import datetime
