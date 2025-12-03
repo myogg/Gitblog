@@ -29,7 +29,7 @@ jobs:
         run: |
           pip install markdown
 
-      - name: Generate index.html with header and footer
+      - name: Generate index.html with header, footer, color bar and fade-in animation
         run: |
           python - <<EOF
           import markdown
@@ -47,9 +47,10 @@ jobs:
           match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
           page_title = match.group(1).strip() if match else "MyGitBlog"
 
-          # Footer
+          # Footer 彩條與版權
           year = datetime.now().year
-          footer_html = f'<footer style="margin-top:2rem; text-align:center; color:#888; font-size:0.9rem;">© {year} MyOGG. All rights reserved.</footer>'
+          footer_bar = '<div class="footer-bar"></div>'
+          footer_html = f'<footer class="footer-text">© {year} MyOGG. All rights reserved.</footer>'
 
           # 完整 HTML
           html_page = f"""<!DOCTYPE html>
@@ -65,15 +66,18 @@ jobs:
               h1,h2,h3 {{ color:#2c3e50; }}
               a {{ color:#0366d6; text-decoration:none; }}
               a:hover {{ text-decoration:underline; }}
-              .header-line {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); margin-bottom:1rem; }}
+              .header-line, .footer-bar {{ height:4px; width:100%; border-radius:2px; background: linear-gradient(90deg,#ff6a00,#ee0979,#00d4ff); opacity:0; animation: fadeIn 1.2s forwards; }}
+              .header-line {{ margin-bottom:1rem; }}
+              .footer-bar {{ margin:1rem 0; animation-delay:1.2s; }}
               h1.page-title {{ text-align:center; margin-top:0; margin-bottom:2rem; }}
-              footer {{ margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }}
+              footer.footer-text {{ margin-top:0.5rem; text-align:center; color:#888; font-size:0.9rem; opacity:0; animation: fadeIn 1.2s forwards; animation-delay:1.4s; }}
+              @keyframes fadeIn {{ from {{opacity:0}} to {{opacity:1}} }}
               @media (max-width:600px) {{ .markdown-body {{ padding:1rem; font-size:16px; }} }}
               @media (prefers-color-scheme: dark) {{
                 body {{ background:#121212; color:#e0e0e0; }}
                 .markdown-body {{ background:#1e1e1e; color:#e0e0e0; }}
                 a {{ color:#58a6ff; }}
-                .header-line {{ background: linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff); }}
+                .header-line, .footer-bar {{ background: linear-gradient(90deg,#ff8c00,#ff2d95,#00e0ff); }}
               }}
             </style>
           </head>
@@ -82,13 +86,14 @@ jobs:
               <div class="header-line"></div>
               <h1 class="page-title">{page_title}</h1>
               {html_text}
-              <hr style="margin:2rem 0; border:none; border-top:1px solid #ddd;">
+              {footer_bar}
               {footer_html}
             </div>
           </body>
           </html>
           """
 
+          # 寫入 index.html
           with open("index.html", "w", encoding="utf-8") as f:
               f.write(html_page)
           EOF
@@ -96,7 +101,7 @@ jobs:
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
 
-      - name: Upload artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./index.html
