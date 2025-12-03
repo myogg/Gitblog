@@ -10,6 +10,7 @@ REPO_NAME = "myogg/Gitblog"
 BACKUP_DIR = "BACKUP"
 
 MAX_RECENT = 5
+MAX_PER_CATEGORY = 5  # 每個分類下直接顯示的最大文章數
 
 def login():
     return Github(GITHUB_TOKEN)
@@ -31,6 +32,10 @@ def generate_index_html(issues):
     for issue in issues:
         for label in issue.labels:
             label_dict.setdefault(label.name, []).append(issue)
+    
+    # 按創建時間排序每個分類下的文章
+    for label in label_dict:
+        label_dict[label] = sorted(label_dict[label], key=lambda x: x.created_at, reverse=True)
 
     # HTML頭部
     html_parts = []
@@ -53,6 +58,13 @@ footer { margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }
 .sidebar { background:#fafafa; padding:1rem; border-radius:6px; margin-bottom:2rem; }
 .sidebar h3 { margin-top:0; }
 .tag { display:inline-block; margin:2px 4px; padding:2px 6px; border-radius:4px; background:#ff6a00; color:white; font-size:0.85rem; }
+.show-more-btn { display:inline-block; margin:10px 0; padding:6px 12px; background:#0366d6; color:white; border:none; border-radius:4px; cursor:pointer; font-size:0.9rem; }
+.show-more-btn:hover { background:#0256b3; }
+.hidden-articles { display:none; }
+.hidden-articles.visible { display:block; }
+.article-list { margin:0; padding:0; list-style:none; }
+.article-list li { margin-bottom:8px; padding:6px; border-left:3px solid #0366d6; }
+.article-list li:hover { background:#f8f9fa; }
 @media (max-width:600px) { .markdown-body { padding:1rem; font-size:16px; } }
 </style>
 </head>
@@ -74,20 +86,55 @@ footer { margin-top:2rem; text-align:center; color:#888; font-size:0.9rem; }
     html_parts.append('</ul></div>')
 
     # 正文分類展示
-    for label, items in label_dict.items():
-        html_parts.append(f'<h2>{label}</h2><ul>')
-        for idx, issue in enumerate(items):
-            safe_body = "".join(c for c in (issue.body or "") if _valid_xml_char_ordinal(c))
-            if idx < MAX_RECENT:
-                html_parts.append(f'<li><a href="{issue.html_url}">{issue.title}</a></li>')
-            else:
-                html_parts.append(f'''
-<details>
-<summary>{issue.title}</summary>
-<p>{markdown.markdown(safe_body)}</p>
-</details>
-''')
+    for label, items in sorted(label_dict.items()):
+        html_parts.append(f'<h2>{label} <small>({len(items)}篇文章)</small></h2>')
+        html_parts.append('<ul class="article-list">')
+        
+        # 顯示前 MAX_PER_CATEGORY 篇文章
+        visible_items = items[:MAX_PER_CATEGORY]
+        hidden_items = items[MAX_PER_CATEGORY:]
+        
+        for issue in visible_items:
+            html_parts.append(f'<li><a href="{issue.html_url}">{issue.title}</a> <span style="color:#888;font-size:0.9em;">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
+        
         html_parts.append('</ul>')
+        
+        # 如果有隱藏的文章，添加「顯示更多」按鈕
+        if hidden_items:
+            # 為每個分類創建唯一的ID
+            category_id = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
+            
+            # 隱藏的文章列表
+            html_parts.append(f'<div id="hidden-{category_id}" class="hidden-articles">')
+            html_parts.append('<ul class="article-list">')
+            for issue in hidden_items:
+                html_parts.append(f'<li><a href="{issue.html_url}">{issue.title}</a> <span style="color:#888;font-size:0.9em;">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
+            html_parts.append('</ul></div>')
+            
+            # 顯示更多按鈕
+            html_parts.append(f'''
+<button class="show-more-btn" onclick="toggleMore('{category_id}')" id="btn-{category_id}">
+    顯示更多 ({len(hidden_items)}篇)
+</button>
+''')
+
+    # JavaScript 函數
+    html_parts.append('''
+<script>
+function toggleMore(categoryId) {
+    const hiddenDiv = document.getElementById('hidden-' + categoryId);
+    const btn = document.getElementById('btn-' + categoryId);
+    
+    if (hiddenDiv.classList.contains('visible')) {
+        hiddenDiv.classList.remove('visible');
+        btn.textContent = '顯示更多 (' + (hiddenDiv.querySelectorAll('li').length) + '篇)';
+    } else {
+        hiddenDiv.classList.add('visible');
+        btn.textContent = '顯示更少';
+    }
+}
+</script>
+''')
 
     year = datetime.now().year
     html_parts.append(f'<footer>© {year} MyOGG. All rights reserved.</footer>')
