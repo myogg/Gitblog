@@ -86,7 +86,6 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## Myblog
-- [好難！](https://github.com/myogg/Gitblog/issues/102)--2025-12-03
 - [10000](https://github.com/myogg/Gitblog/issues/87)--2025-12-02
 - [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)--2025-07-11
@@ -126,7 +125,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [2025](https://github.com/myogg/Gitblog/issues/1)--2025-01-19
 
 ## 突发的一些小想法
-- [[ 突發奇想] 突然想要一個輸出的頁面](https://github.com/myogg/Gitblog/issues/96)--2025-12-03
+- [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
 - [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/90)--2025-12-03
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
