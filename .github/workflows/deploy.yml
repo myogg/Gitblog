@@ -30,17 +30,18 @@ jobs:
         run: |
           pip install markdown
 
-      - name: Generate index.html with animation and footer
+      - name: Generate index.html with header, footer and mobile-friendly
         run: |
-          mkdir -p page
           python - <<EOF
           import markdown
           from datetime import datetime
           import re
 
+          # 讀取 README.md
           with open("README.md", "r", encoding="utf-8") as f:
               md_text = f.read()
 
+          # 轉成 HTML
           html_text = markdown.markdown(md_text, output_format="html5")
           match = re.search(r'^#\s+(.*)', md_text, re.MULTILINE)
           page_title = match.group(1).strip() if match else "MyGitBlog"
@@ -139,7 +140,7 @@ jobs:
           </html>
           """
 
-          with open("page/index.html", "w", encoding="utf-8") as f:
+          with open("index.html", "w", encoding="utf-8") as f:
               f.write(html_page)
           EOF
 
@@ -149,7 +150,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: ./page
+          path: ./index.html
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
