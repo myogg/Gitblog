@@ -1,0 +1,47 @@
+name: Deploy GitHub Pages
+
+on:
+  workflow_dispatch:   # 手動觸發
+  issues:
+    types: [opened, edited, labeled, unlabeled, reopened]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install markdown PyGithub marko
+
+      - name: Generate HTML page
+        run: |
+          mkdir -p site
+          python generate_page.py --output site --token ${{ secrets.G_TT }} --repo myogg/Gitblog
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
