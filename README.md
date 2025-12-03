@@ -33,6 +33,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </table>
 
 ## 一些记录
+- [[ 胡思亂想 ]  AI 的“良心”是如何炼成的](https://github.com/myogg/Gitblog/issues/92)--2025-12-03
 - [[ 胡思乱想 ] 你才知道的事](https://github.com/myogg/Gitblog/issues/89)--2025-12-02
 - [[ 胡思乱想 ] 想买房子了](https://github.com/myogg/Gitblog/issues/84)--2025-05-24
 - [任天堂正式发布 Nintendo Switch 2 游戏机](https://github.com/myogg/Gitblog/issues/81)--2025-04-03
