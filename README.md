@@ -90,6 +90,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## Myblog
+- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [12月3日](https://github.com/myogg/Gitblog/issues/108)--2025-12-04
 - [10000](https://github.com/myogg/Gitblog/issues/87)--2025-12-02
 - [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
