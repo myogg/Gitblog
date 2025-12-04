@@ -73,6 +73,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 - [[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote](https://github.com/myogg/Gitblog/issues/28)--2025-01-19
 
 ## notes
+- [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)--2025-03-05
