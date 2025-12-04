@@ -35,9 +35,29 @@ jobs:
           pip install markdown PyGithub marko
 
       - name: Generate HTML page
+        env:
+          G_TT: ${{ secrets.G_TT }}  # 設置環境變量
         run: |
-          mkdir -p site
-          python generate_page.py --output site --token ${{ secrets.G_TT }} --repo myogg/Gitblog
+          echo "開始生成HTML頁面..."
+          python generate_page.py
+          
+          echo "檢查生成的文件:"
+          ls -la
+          
+          if [ -f "index.html" ]; then
+            echo "✅ index.html 已生成"
+            echo "文件大小: $(wc -l < index.html) 行"
+          else
+            echo "❌ index.html 未生成"
+            exit 1
+          fi
+          
+          if [ -d "static" ]; then
+            echo "✅ static 目錄已生成"
+            ls -la static/
+          else
+            echo "⚠️  static 目錄未生成"
+          fi
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v4
@@ -45,7 +65,8 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: site
+          # 上傳根目錄，包含 index.html 和 static/
+          path: .
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
