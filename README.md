@@ -10,11 +10,14 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 
 ——查理·芒格
 
-#### 2.“我们没有希望，他们也没有希望，这就是希望。”
+#### 2."我们没有希望，他们也没有希望，这就是希望。"
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml)
 
 ## [友情链接](https://github.com/myogg/gitblog/issues/26)
+<details>
+<summary>点击展开/折叠友情链接</summary>
+
 <table>
 <thead>
 <tr>
@@ -31,6 +34,14 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 </tr>
 </tbody>
 </table>
+</details>
+
+## 最近文章
+- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
+- [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
+- [12月3日](https://github.com/myogg/Gitblog/issues/108)--2025-12-04
+- [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)--2025-12-03
+- [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
 
 ## 一些记录
 - [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
