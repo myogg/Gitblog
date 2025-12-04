@@ -20,7 +20,7 @@ My personal blog using issues and GitHub Actions (参考[yihong](https://github.
 
 ——查理·芒格
 
-#### 2.“我们没有希望，他们也没有希望，这就是希望。”
+#### 2."我们没有希望，他们也没有希望，这就是希望。"
 
 [RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
 """
@@ -140,11 +140,14 @@ def add_md_todo(repo, md, me):
 
 
 def add_md_friends(repo, md, me):
+    """友情链接（折叠）和最近文章（不折叠）"""
     s = FRIENDS_TABLE_HEAD
     friends_issues = list(repo.get_issues(labels=FRIENDS_LABELS))
     if not FRIENDS_LABELS or not friends_issues:
         return
     friends_issue_number = friends_issues[0].number
+    
+    # 处理友情链接数据
     for issue in friends_issues:
         for comment in issue.get_comments():
             if is_hearted_by_me(comment, me):
@@ -153,13 +156,39 @@ def add_md_friends(repo, md, me):
                 except Exception as e:
                     print(str(e))
                     pass
+    
+    # 转换为HTML表格
     s = markdown.markdown(s, output_format="html", extensions=["extra"])
+    
+    # 获取最近的5个Issues（排除PR）
+    all_issues = list(repo.get_issues(state="open"))
+    recent_issues = sorted(
+        [issue for issue in all_issues if not issue.pull_request],
+        key=lambda x: x.created_at,
+        reverse=True
+    )[:5]  # 只取最近5个
+    
+    # 生成最近文章的Markdown列表
+    recent_md = ""
+    for issue in recent_issues:
+        time = format_time(issue.created_at)
+        recent_md += f"- [{issue.title}]({issue.html_url})--{time}\n"
+    
+    # 写入文件
     with open(md, "a+", encoding="utf-8") as md_file:
+        # 1. 友情链接（折叠显示）
         md_file.write(
             f"## [友情链接](https://github.com/{str(me)}/gitblog/issues/{friends_issue_number})\n"
         )
+        md_file.write("<details>\n")
+        md_file.write("<summary>点击展开/折叠友情链接</summary>\n\n")
         md_file.write(s)
-        md_file.write("\n\n")
+        md_file.write("\n</details>\n\n")
+        
+        # 2. 最近文章（直接显示，不折叠）
+        md_file.write("## 最近文章\n")
+        md_file.write(recent_md)
+        md_file.write("\n")
 
 
 def add_md_header(md, repo_name):
@@ -244,7 +273,9 @@ def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     me = get_me(user)
     repo = get_repo(user, repo_name)
     add_md_header("README.md", repo_name)
+    
     # 调用顺序：友情链接 → 标签分类 → TODO
+    # 注意：add_md_friends 现在同时处理友情链接和最近文章
     for func in [add_md_friends, add_md_label, add_md_todo]:
         func(repo, "README.md", me)
 
@@ -279,4 +310,6 @@ if __name__ == "__main__":
         "--issue_number", help="issue_number", default=None, required=False
     )
     options = parser.parse_args()
+    
+    # 运行主函数
     main(options.github_token, options.repo_name, options.issue_number)
