@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [12月3日](https://github.com/myogg/Gitblog/issues/108)--2025-12-04
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)--2025-12-03
-- [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
 
 ## 一些记录 (28篇文章)
 - [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
@@ -80,16 +80,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (8篇文章)
+## 收录 (9篇文章)
+- [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)--2025-12-03
 - [WebGPU 正式在主流浏览器启用](https://github.com/myogg/Gitblog/issues/104)--2025-12-03
 - [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)--2025-12-03
 - [安娜的档案馆](https://github.com/myogg/Gitblog/issues/88)--2025-12-02
-- [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)--2025-01-21
 
 <details>
-<summary>显示更多 (3篇)</summary>
+<summary>显示更多 (4篇)</summary>
 
+- [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)
 - [Apple Intelligence 有哪些体验](https://github.com/myogg/Gitblog/issues/29)
 - [[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote](https://github.com/myogg/Gitblog/issues/28)
