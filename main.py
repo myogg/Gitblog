@@ -9,18 +9,19 @@ from lxml.etree import CDATA
 from marko.ext.gfm import gfm as marko
 
 MD_HEAD = """## MyGitBlog
-My personal blog using issues and GitHub Actions (参考[yihong](https://github.com/yihong0618/gitblog))
+My personal blog using issues and GitHub Actions
 
-* 用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
-* 记录在这个时代下的焦虑、迷茫、挣扎与希望。
-* [About me](https://github.com/myogg/myogg)
+用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  
+记录在这个时代下的焦虑、迷茫、挣扎与希望。
+
+[About me](https://github.com/myogg/myogg)
 
 ### 提醒自己：
-#### 1.放弃向他人证明自己，放弃向自己证明自己。专注忘我地去做你应该做的事情，心无旁骛地去解决问题。当你脚踏实地的走自己的路时，那种拼命想要证明什么的冲动就会越来越少。你也会因此变得轻松、自由。
+**1.放弃向他人证明自己，放弃向自己证明自己。专注忘我地去做你应该做的事情，心无旁骛地去解决问题。当你脚踏实地的走自己的路时，那种拼命想要证明什么的冲动就会越来越少。你也会因此变得轻松、自由。**
 
 ——查理·芒格
 
-#### 2."我们没有希望，他们也没有希望，这就是希望。"
+**2."我们没有希望，他们也没有希望，这就是希望。"**
 
 [RSS Feed](https://raw.githubusercontent.com/{repo_name}/master/feed.xml)
 """
@@ -38,14 +39,14 @@ FRIENDS_INFO_DICT = {
     "描述": "test",
 }
 
+# 每个分类最多显示的文章数
+MAX_ARTICLES_PER_LABEL = 5
 
 def get_me(user):
     return user.get_user().login
 
-
 def is_me(issue, me):
     return issue.user.login == me
-
 
 def is_hearted_by_me(comment, me):
     reactions = list(comment.get_reactions())
@@ -53,7 +54,6 @@ def is_hearted_by_me(comment, me):
         if r.content == "heart" and r.user.login == me:
             return True
     return False
-
 
 def _make_friend_table_string(s):
     info_dict = FRIENDS_INFO_DICT.copy()
@@ -72,7 +72,6 @@ def _make_friend_table_string(s):
         print(str(e))
         return
 
-
 def _valid_xml_char_ordinal(c):
     codepoint = ord(c)
     return (
@@ -82,18 +81,14 @@ def _valid_xml_char_ordinal(c):
         or 0x10000 <= codepoint <= 0x10FFFF
     )
 
-
 def format_time(time):
     return str(time)[:10]
-
 
 def login(token):
     return Github(token)
 
-
 def get_repo(user: Github, repo: str):
     return user.get_repo(repo)
-
 
 def parse_TODO(issue):
     body = issue.body.splitlines()
@@ -106,23 +101,21 @@ def parse_TODO(issue):
         todo_done + todo_undone,
     )
 
-
 def get_todo_issues(repo):
     return repo.get_issues(labels=TODO_ISSUES_LABELS)
-
 
 def get_repo_labels(repo):
     return [l for l in repo.get_labels()]
 
-
 def get_issues_from_label(repo, label):
     return repo.get_issues(labels=(label,))
 
-
-def add_issue_info(issue, md):
+def add_issue_info(issue, md, include_date=True):
     time = format_time(issue.created_at)
-    md.write(f"- [{issue.title}]({issue.html_url})--{time}\n")
-
+    if include_date:
+        md.write(f"- [{issue.title}]({issue.html_url})--{time}\n")
+    else:
+        md.write(f"- [{issue.title}]({issue.html_url})\n")
 
 def add_md_todo(repo, md, me):
     todo_issues = list(get_todo_issues(repo))
@@ -137,7 +130,6 @@ def add_md_todo(repo, md, me):
                 for t in todo_list:
                     md_file.write(t + "\n")
                 md_file.write("\n")
-
 
 def add_md_friends(repo, md, me):
     """友情链接（折叠）和最近文章（不折叠）"""
@@ -190,12 +182,10 @@ def add_md_friends(repo, md, me):
         md_file.write(recent_md)
         md_file.write("\n")
 
-
 def add_md_header(md, repo_name):
     with open(md, "w", encoding="utf-8") as md_file:
         md_file.write(MD_HEAD.format(repo_name=repo_name))
         md_file.write("\n")
-
 
 def add_md_label(repo, md, me):
     labels = get_repo_labels(repo)
@@ -218,13 +208,28 @@ def add_md_label(repo, md, me):
             if not issues:
                 continue
 
-            md_file.write(f"## {label.name}\n")
+            md_file.write(f"## {label.name} ({len(issues)}篇文章)\n")
             issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
-            for issue in issues:
+            
+            # 显示前5篇文章
+            visible_issues = issues[:MAX_ARTICLES_PER_LABEL]
+            hidden_issues = issues[MAX_ARTICLES_PER_LABEL:]
+            
+            for issue in visible_issues:
                 if is_me(issue, me):
                     add_issue_info(issue, md_file)
+            
+            # 如果有隐藏的文章，添加折叠部分
+            if hidden_issues:
+                # 生成安全的label ID
+                label_id = re.sub(r'[^a-z0-9]+', '-', label.name.lower()).strip('-')
+                md_file.write(f'\n<details>\n<summary>显示更多 ({len(hidden_issues)}篇)</summary>\n\n')
+                for issue in hidden_issues:
+                    if is_me(issue, me):
+                        add_issue_info(issue, md_file, include_date=False)
+                md_file.write('\n</details>\n')
+            
             md_file.write("\n")
-
 
 def get_to_generate_issues(repo, dir_name, issue_number=None):
     md_files = os.listdir(dir_name)
@@ -239,7 +244,6 @@ def get_to_generate_issues(repo, dir_name, issue_number=None):
     if issue_number:
         to_generate_issues.append(repo.get_issue(int(issue_number)))
     return to_generate_issues
-
 
 def generate_rss_feed(repo, filename, me):
     generator = FeedGenerator()
@@ -267,7 +271,6 @@ def generate_rss_feed(repo, filename, me):
         item.content(CDATA(marko.convert(body)), type="html")
     generator.atom_file(filename)
 
-
 def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     user = login(token)
     me = get_me(user)
@@ -275,7 +278,6 @@ def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
     add_md_header("README.md", repo_name)
     
     # 调用顺序：友情链接 → 标签分类 → TODO
-    # 注意：add_md_friends 现在同时处理友情链接和最近文章
     for func in [add_md_friends, add_md_label, add_md_todo]:
         func(repo, "README.md", me)
 
@@ -284,7 +286,6 @@ def main(token, repo_name, issue_number=None, dir_name=BACKUP_DIR):
 
     for issue in to_generate_issues:
         save_issue(issue, me, dir_name)
-
 
 def save_issue(issue, me, dir_name=BACKUP_DIR):
     md_name = os.path.join(
@@ -298,7 +299,6 @@ def save_issue(issue, me, dir_name=BACKUP_DIR):
                 if is_me(c, me):
                     f.write("\n\n---\n\n")
                     f.write(c.body or "")
-
 
 if __name__ == "__main__":
     if not os.path.exists(BACKUP_DIR):
