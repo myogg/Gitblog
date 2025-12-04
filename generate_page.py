@@ -275,28 +275,65 @@ def main():
         # 生成HTML
         html_text = generate_index_html(issues)
         
-        # 創建目錄並保存
-        os.makedirs("site", exist_ok=True)
-        output_path = "site/index.html"
+        # ★★★ 关键修改：在根目录生成 index.html ★★★
+        output_path = "index.html"  # 根目录，不是 site/index.html
+        
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(html_text)
-        print(f"HTML已生成: {output_path}")
+        print(f"✅ index.html 已生成在根目录")
         
-        # 複製靜態文件
-        os.makedirs("site/static", exist_ok=True)
-        if os.path.exists("static/style.css"):
-            import shutil
-            shutil.copy("static/style.css", "site/static/style.css")
-            print("已复制: static/style.css")
-        if os.path.exists("static/script.js"):
-            shutil.copy("static/script.js", "site/static/script.js")
-            print("已复制: static/script.js")
+        # ★★★ 静态文件也放在根目录的 static/ ★★★
+        os.makedirs("static", exist_ok=True)
         
-        print("网站生成完成！")
-        print("打开 site/index.html 查看效果")
+        # 尝试从不同位置查找CSS文件
+        css_sources = ["templates/style.css", "static/style.css", "style.css"]
+        js_sources = ["templates/script.js", "static/script.js", "script.js"]
+        
+        css_found = False
+        js_found = False
+        
+        # 复制CSS文件
+        for css_source in css_sources:
+            if os.path.exists(css_source):
+                import shutil
+                shutil.copy(css_source, "static/style.css")
+                print(f"✅ CSS文件已复制: {css_source} → static/style.css")
+                css_found = True
+                break
+        
+        # 复制JS文件
+        for js_source in js_sources:
+            if os.path.exists(js_source):
+                import shutil
+                shutil.copy(js_source, "static/script.js")
+                print(f"✅ JS文件已复制: {js_source} → static/script.js")
+                js_found = True
+                break
+        
+        if not css_found:
+            print("⚠️  未找到CSS文件，请确保 style.css 存在于 templates/ 或 static/ 目录")
+        if not js_found:
+            print("⚠️  未找到JS文件，请确保 script.js 存在于 templates/ 或 static/ 目录")
+        
+        print("\n" + "="*50)
+        print("🎉 网站生成完成！")
+        print("="*50)
+        print("📂 生成的文件结构:")
+        print("├── index.html          (博客主页)")
+        print("└── static/             (静态资源)")
+        print("    ├── style.css       (样式文件)")
+        print("    └── script.js       (脚本文件)")
+        print("\n📝 下一步操作:")
+        print("1. 检查生成的文件: ls -la index.html static/")
+        print("2. 提交到GitHub:")
+        print("   git add index.html static/")
+        print("   git commit -m '更新博客页面'")
+        print("   git push origin main")
+        print("3. 等待1-2分钟，访问: https://myogg.github.io/Gitblog/")
+        print("="*50)
         
     except Exception as e:
-        print(f"运行失败: {e}")
+        print(f"❌ 运行失败: {e}")
         import traceback
         traceback.print_exc()
 
