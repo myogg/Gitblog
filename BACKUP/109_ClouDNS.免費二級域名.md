@@ -24,5 +24,5 @@
 
 • MX：甚至可以做邮箱（不过免费版功能有限）
 
-[www.cloudns.com](www.cloudns.com)
+[www.cloudns.net](www.cloudns.net)
 
