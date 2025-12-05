@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
 - [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)--2025-12-04
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
-- [12月3日](https://github.com/myogg/Gitblog/issues/108)--2025-12-04
 
-## 一些记录 (29篇文章)
+## 一些记录 (30篇文章)
+- [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
 - [Telegram 测试通行密钥登录](https://github.com/myogg/Gitblog/issues/105)--2025-12-03
 - [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)--2025-12-03
-- [Google 正在尝试用AI生成的引入注目的标题](https://github.com/myogg/Gitblog/issues/94)--2025-12-03
 
 <details>
-<summary>显示更多 (24篇)</summary>
+<summary>显示更多 (25篇)</summary>
 
+- [Google 正在尝试用AI生成的引入注目的标题](https://github.com/myogg/Gitblog/issues/94)
 - [ChatGPT iPhone](https://github.com/myogg/Gitblog/issues/93)
 - [[ 胡思亂想 ]  AI 的“良心”是如何炼成的](https://github.com/myogg/Gitblog/issues/92)
 - [[ 胡思乱想 ] 你才知道的事](https://github.com/myogg/Gitblog/issues/89)
