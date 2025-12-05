@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
 - [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)--2025-12-04
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
-- [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 
 ## 一些记录 (30篇文章)
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
@@ -173,16 +173,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 突发的一些小想法 (6篇文章)
+## 突发的一些小想法 (7篇文章)
+- [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
-- [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)--2025-02-11
 
 <details>
-<summary>显示更多 (1篇)</summary>
+<summary>显示更多 (2篇)</summary>
 
+- [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)
 
 </details>
