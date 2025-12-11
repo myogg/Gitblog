@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 - [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
-- [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)--2025-12-04
 
 ## 一些记录 (30篇文章)
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
@@ -101,16 +101,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (14篇文章)
+## notes (15篇文章)
+- [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
-- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 
 <details>
-<summary>显示更多 (9篇)</summary>
+<summary>显示更多 (10篇)</summary>
 
+- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)
