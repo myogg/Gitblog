@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
 - [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
 - [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
-- [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 
 ## 一些记录 (31篇文章)
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
@@ -83,16 +83,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (10篇文章)
+## 收录 (11篇文章)
+- [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)--2025-12-03
 - [WebGPU 正式在主流浏览器启用](https://github.com/myogg/Gitblog/issues/104)--2025-12-03
-- [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)--2025-12-03
 
 <details>
-<summary>显示更多 (5篇)</summary>
+<summary>显示更多 (6篇)</summary>
 
+- [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)
 - [安娜的档案馆](https://github.com/myogg/Gitblog/issues/88)
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)
