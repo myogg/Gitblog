@@ -1,11 +1,9 @@
 import os
 import re
 import json
-import markdown
 import time
 from github import Github
 from datetime import datetime, timedelta
-from marko.ext.gfm import gfm as marko
 
 GITHUB_TOKEN = os.getenv("G_TT")
 REPO_NAME = "myogg/Gitblog"
@@ -103,7 +101,7 @@ def fetch_issues_with_cache(repo):
         
         # 过滤掉PR
         issues = [i for i in all_issues if not i.pull_request]
-        
+
         # 准备缓存数据
         cache_data = []
         for issue in issues:
@@ -182,10 +180,23 @@ def generate_index_html(issues):
         for label in issue.labels:
             label_dict.setdefault(label.name, []).append(issue)
     
-    # 按創建時間排序每個分類下的文章
-    for label in label_dict:
-        label_dict[label] = sorted(label_dict[label], key=lambda x: x.created_at, reverse=True)
+    # --- 核心修改开始：增加置顶排序逻辑 ---
     
+    def sort_issues(issue_list):
+        """自定义排序函数：先按 Pinned 标签，再按时间"""
+        def sort_key(issue):
+            # 检查是否有 "Pinned" 标签 (不区分大小写)
+            has_pinned_tag = any(label.name.lower() == "pinned" for label in issue.labels)
+            # 返回元组：0 表示置顶，1 表示普通；时间取反是为了实现倒序
+            return (0 if has_pinned_tag else 1, -issue.created_at.timestamp())
+        return sorted(issue_list, key=sort_key)
+
+    # 对每个分类下的文章进行排序
+    for label in label_dict:
+        label_dict[label] = sort_issues(label_dict[label])
+    
+    # --- 核心修改结束 ---
+
     # 加載基礎模板
     template = load_template("base.html")
     
@@ -196,11 +207,19 @@ def generate_index_html(issues):
         safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
         tags_html.append(f'<span class="tag" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
     
-    # 生成最近文章HTML
-    sorted_issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
+    # 生成最近文章HTML (这里也会应用新的排序逻辑)
+    # 将所有文章合并排序（同样应用置顶逻辑）
+    all_sorted_issues = []
+    for items in label_dict.values():
+        all_sorted_issues.extend(items)
+    # 去重并重新排序
+    all_sorted_issues = sort_issues(list(set(all_sorted_issues)))
+    
     recent_html = []
-    for i in sorted_issues[:MAX_RECENT]:
-        recent_html.append(f'<li><a href="{i.html_url}" target="_blank">{i.title}</a></li>')
+    for i in all_sorted_issues[:MAX_RECENT]:
+        # 给置顶文章加个小小的图标 (可选)
+        pin_icon = " 🔖" if any(lbl.name.lower() == "pinned" for lbl in i.labels) else ""
+        recent_html.append(f'<li><a href="{i.html_url}" target="_blank">{i.title}</a> <span class="article-date">({i.created_at.strftime("%Y-%m-%d")}){pin_icon}</span></li>')
     
     # 生成分類HTML
     categories_html = []
@@ -214,7 +233,8 @@ def generate_index_html(issues):
         # 生成文章列表
         articles_html = []
         for issue in visible_items:
-            articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
+            pin_mark = " 🔖" if any(lbl.name.lower() == "pinned" for lbl in issue.labels) else ""
+            articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")}){pin_mark}</span></li>')
         
         # 生成隱藏文章
         hidden_articles_html = []
@@ -276,23 +296,23 @@ def main():
         html_text = generate_index_html(issues)
         
         # ★★★ 关键修改：在根目录生成 index.html ★★★
-        output_path = "index.html"  # 根目录，不是 site/index.html
+        output_path = "index.html" # 根目录
         
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(html_text)
-        print(f"✅ index.html 已生成在根目录")
+        print(f"✅ {output_path} 已生成")
         
-        # ★★★ 静态文件也放在根目录的 static/ ★★★
+        # ★★★ 处理静态文件 (CSS & JS) ★★★
         os.makedirs("static", exist_ok=True)
         
-        # 尝试从不同位置查找CSS文件
+        # 尝试从不同位置查找并复制CSS文件
         css_sources = ["templates/style.css", "static/style.css", "style.css"]
         js_sources = ["templates/script.js", "static/script.js", "script.js"]
         
         css_found = False
         js_found = False
         
-        # 复制CSS文件
+        # --- 复制 CSS 文件 ---
         for css_source in css_sources:
             if os.path.exists(css_source):
                 import shutil
@@ -301,7 +321,10 @@ def main():
                 css_found = True
                 break
         
-        # 复制JS文件
+        if not css_found:
+            print("⚠️ 警告: 未找到 style.css 文件，页面可能无法正常显示样式。")
+
+        # --- 复制 JS 文件 ---
         for js_source in js_sources:
             if os.path.exists(js_source):
                 import shutil
@@ -310,32 +333,14 @@ def main():
                 js_found = True
                 break
         
-        if not css_found:
-            print("⚠️  未找到CSS文件，请确保 style.css 存在于 templates/ 或 static/ 目录")
         if not js_found:
-            print("⚠️  未找到JS文件，请确保 script.js 存在于 templates/ 或 static/ 目录")
-        
-        print("\n" + "="*50)
-        print("🎉 网站生成完成！")
-        print("="*50)
-        print("📂 生成的文件结构:")
-        print("├── index.html          (博客主页)")
-        print("└── static/             (静态资源)")
-        print("    ├── style.css       (样式文件)")
-        print("    └── script.js       (脚本文件)")
-        print("\n📝 下一步操作:")
-        print("1. 检查生成的文件: ls -la index.html static/")
-        print("2. 提交到GitHub:")
-        print("   git add index.html static/")
-        print("   git commit -m '更新博客页面'")
-        print("   git push origin main")
-        print("3. 等待1-2分钟，访问: https://myogg.github.io/Gitblog/")
-        print("="*50)
-        
-    except Exception as e:
-        print(f"❌ 运行失败: {e}")
-        import traceback
-        traceback.print_exc()
+            print("⚠️ 警告: 未找到 script.js 文件，交互功能可能失效。")
 
+        print("🎉 博客生成任务完成！请查看根目录下的 index.html")
+
+    except Exception as e:
+        print(f"❌ 执行过程中发生错误: {e}")
+
+# --- 程序入口 ---
 if __name__ == "__main__":
     main()
