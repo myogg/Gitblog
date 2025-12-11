@@ -15,7 +15,7 @@ My personal blog using issues and GitHub Actions
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml)
 
-## [友情链接](https://github.com/myogg/gitblog/issues/110)
+## [友情链接](https://github.com/myogg/gitblog/issues/26)
 <details>
 <summary>点击展开/折叠友情链接</summary>
 
@@ -38,15 +38,15 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
 - [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
-- [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
 
 ## 一些记录 (30篇文章)
+- [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
 - [Telegram 测试通行密钥登录](https://github.com/myogg/Gitblog/issues/105)--2025-12-03
 - [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)--2025-12-03
@@ -82,17 +82,16 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (11篇文章)
+## 收录 (10篇文章)
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)--2025-12-03
 - [WebGPU 正式在主流浏览器启用](https://github.com/myogg/Gitblog/issues/104)--2025-12-03
+- [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)--2025-12-03
 
 <details>
-<summary>显示更多 (6篇)</summary>
+<summary>显示更多 (5篇)</summary>
 
-- [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)
 - [安娜的档案馆](https://github.com/myogg/Gitblog/issues/88)
 - [DeepSeek官方App上线](https://github.com/myogg/Gitblog/issues/42)
 - [伊拉克国家域名删除始末](https://github.com/myogg/Gitblog/issues/33)
@@ -101,17 +100,16 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (15篇文章)
+## notes (14篇文章)
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
+- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 
 <details>
-<summary>显示更多 (10篇)</summary>
+<summary>显示更多 (9篇)</summary>
 
-- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)
@@ -124,21 +122,19 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## Top (2篇文章)
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
+## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## Myblog (41篇文章)
+## Myblog (40篇文章)
 - [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 - [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)--2025-12-04
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [12月3日](https://github.com/myogg/Gitblog/issues/108)--2025-12-04
 - [10000](https://github.com/myogg/Gitblog/issues/87)--2025-12-02
+- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 
 <details>
-<summary>显示更多 (36篇)</summary>
+<summary>显示更多 (35篇)</summary>
 
-- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)
 - [陽春三月](https://github.com/myogg/Gitblog/issues/82)
@@ -177,22 +173,22 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 突发的一些小想法 (8篇文章)
+## 突发的一些小想法 (7篇文章)
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 - [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
+- [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
 
 <details>
-<summary>显示更多 (3篇)</summary>
+<summary>显示更多 (2篇)</summary>
 
-- [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)
 
 </details>
 
-## TODO
-TODO list from [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110) all done
+## Pinned (2篇文章)
+- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
+- [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
