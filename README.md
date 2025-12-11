@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
 - [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
 - [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
-- [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 
-## 一些记录 (30篇文章)
+## 一些记录 (31篇文章)
+- [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
 - [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
 - [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)--2025-12-03
 - [Telegram 测试通行密钥登录](https://github.com/myogg/Gitblog/issues/105)--2025-12-03
-- [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)--2025-12-03
 
 <details>
-<summary>显示更多 (25篇)</summary>
+<summary>显示更多 (26篇)</summary>
 
+- [重要/漏洞：aaPanel](https://github.com/myogg/Gitblog/issues/95)
 - [Google 正在尝试用AI生成的引入注目的标题](https://github.com/myogg/Gitblog/issues/94)
 - [ChatGPT iPhone](https://github.com/myogg/Gitblog/issues/93)
 - [[ 胡思亂想 ]  AI 的“良心”是如何炼成的](https://github.com/myogg/Gitblog/issues/92)
