@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 - [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
-- [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
 
 ## 一些记录 (30篇文章)
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)--2025-12-05
@@ -128,16 +128,17 @@ My personal blog using issues and GitHub Actions
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## Myblog (40篇文章)
+## Myblog (41篇文章)
+- [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 - [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)--2025-12-04
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [12月3日](https://github.com/myogg/Gitblog/issues/108)--2025-12-04
 - [10000](https://github.com/myogg/Gitblog/issues/87)--2025-12-02
-- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)--2025-12-01
 
 <details>
-<summary>显示更多 (35篇)</summary>
+<summary>显示更多 (36篇)</summary>
 
+- [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)
 - [[ 胡思乱想 ]  房子买了](https://github.com/myogg/Gitblog/issues/85)
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)
 - [陽春三月](https://github.com/myogg/Gitblog/issues/82)
