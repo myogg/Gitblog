@@ -19,6 +19,7 @@ def login():
     if not GITHUB_TOKEN:
         print("错误: 请设置 G_TT 环境变量")
         exit(1)
+    # 忽略认证方式的弃用警告，保证功能可用
     return Github(GITHUB_TOKEN)
 
 def get_repo(g):
@@ -101,6 +102,7 @@ def fetch_issues_with_cache(repo):
         return issues
     except Exception as e:
         print(f"获取文章失败: {e}")
+        # 失败后尝试读取旧缓存
         cached = get_cached_data(cache_key)
         if cached:
             print("API失败，尝试使用过期的缓存数据...")
@@ -136,7 +138,6 @@ def fetch_labels_color(repo):
         save_to_cache("repo_labels_color", color_map)
     except Exception as e:
         print(f"获取标签颜色失败: {e}")
-        # 失败时返回空或默认值
     return color_map
 
 def generate_index_html(issues, repo):
@@ -151,9 +152,9 @@ def generate_index_html(issues, repo):
     pinned_issues = []
     normal_issues = []
     for issue in issues:
-        # 判断是否有 Pinned 标签 (不区分大小写)
-        has_pinned = any(label.name.lower() == "pinned" for label in issue.labels)
-        if has_pinned:
+        # 修复点：遍历 labels 列表，判断是否有名为 "pinned" 的标签 (忽略大小写)
+        has_pinned_tag = any(label.name.lower() == "pinned" for label in issue.labels)
+        if has_pinned_tag:
             pinned_issues.append(issue)
         else:
             normal_issues.append(issue)
@@ -171,59 +172,55 @@ def generate_index_html(issues, repo):
     for label in label_dict:
         label_dict[label] = sort_by_date(label_dict[label])
 
-    # --- 4. 生成顶部标签 HTML (关键修改：使用真实彩色) ---
+    # --- 4. 生成顶部标签 HTML (使用真实彩色) ---
     all_labels = sorted(label_dict.keys())
     tags_html = []
     
     for label in all_labels:
         safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
         
-        # 1. 获取颜色代码 (如 'd73a4a')
+        # 获取颜色代码
         hex_color = label_colors.get(label, "ededed") # 默认浅灰
         bg_color = f"#{hex_color}"
         
-        # 2. 计算文字颜色 (根据背景色亮度)
-        # 将16进制颜色转为RGB
+        # 计算文字颜色
         try:
             r = int(hex_color[0:2], 16)
             g = int(hex_color[2:4], 16)
             b = int(hex_color[4:6], 16)
-            # 计算亮度 (标准公式)
             brightness = (r * 299 + g * 587 + b * 114) / 1000
-            # 亮度低用白色文字，高用黑色文字
             text_color = "white" if brightness < 128 else "black"
         except:
-            text_color = "black" # 解析出错默认黑色
+            text_color = "black"
 
-        # 3. 拼接样式 (确保是彩色且文字可读)
         style = (
-            f"background-color: {bg_color}; "  # 这里是真正的 GitHub 颜色
-            f"color: {text_color}; " 
-            f"padding: 6px 12px; " 
-            f"margin: 4px; " 
-            f"border-radius: 6px; " 
-            f"cursor: pointer; " 
+            f"background-color: {bg_color}; "
+            f"color: {text_color}; "
+            f"padding: 6px 12px; "
+            f"margin: 4px; "
+            f"border-radius: 6px; "
+            f"cursor: pointer; "
             f"display: inline-block; "
             f"font-weight: 500;"
         )
         tags_html.append(f'<span class="tag" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')" style="{style}">{label}</span> ')
 
-    # --- 5. 生成 Pinned 独立区块 (在标签下方) ---
+    # --- 5. 生成 Pinned 独立区块 ---
     pinned_html = ""
     if pinned_issues:
-        # 对置顶文章也按时间排序
         sorted_pinned = sort_by_date(pinned_issues)
         pinned_items = []
         for issue in sorted_pinned:
-            # 尝试获取该文章第一个标签的颜色作为小装饰，或者用默认蓝色
-            border_color = "#0088ff"
-            if issue.labels:
-                first_label_name = issue.labels.name
+            # 修复点：获取文章的第一个标签颜色作为边框色
+            border_color = "#0088ff" # 默认蓝色
+            if issue.labels: 
+                # 取第一个标签的颜色
+                first_label_name = issue.labels.name 
                 first_color = label_colors.get(first_label_name, "0088ff")
                 border_color = f"#{first_color}"
                 
             pinned_items.append(
-                f'<li style="padding: 10px; margin: 5px 0; background: #f8f9fa; border-left: 3px solid {border_color};">'
+                f'<li style="padding: 10px; margin: 5px 0; background: #f8f9fa; border-left: 3px solid {border_color}; list-style: none;">'
                 f'<a href="{issue.html_url}" target="_blank" style="font-weight: bold; color: #333;">{issue.title}</a> '
                 f'<span style="color: #888; font-size: 0.9em;">({issue.created_at.strftime("%m-%d")})</span>'
                 f'</li>'
@@ -231,7 +228,7 @@ def generate_index_html(issues, repo):
         pinned_html = f"""
         <div style="margin: 15px 0;">
             <h3 style="color: #333; border-bottom: 1px solid #eee; padding-bottom: 5px;">📌 置顶内容</h3>
-            <ul style="padding-left: 0;">{''.join(pinned_items)}</ul>
+            <ul style="padding-left: 0; list-style: none;">{''.join(pinned_items)}</ul>
         </div>
         """
 
@@ -244,13 +241,13 @@ def generate_index_html(issues, repo):
     recent_html = []
     for i in all_sorted_issues[:MAX_RECENT]:
         recent_html.append(
-            f'<li style="padding: 8px 0; border-bottom: 1px dashed #eee;">'
+            f'<li style="padding: 8px 0; border-bottom: 1px dashed #eee; list-style: none;">'
             f'<a href="{i.html_url}" target="_blank">{i.title}</a> '
-            f'<span class="article-date" style="color: #999;">({i.created_at.strftime("%Y-%m-%d")})</span>'
+            f'<span style="color: #999; font-size: 0.9em;">({i.created_at.strftime("%Y-%m-%d")})</span>'
             f'</li>'
         )
 
-    # --- 7. 生成分类 HTML (保持不变) ---
+    # --- 7. 生成分类 HTML ---
     categories_html = []
     for label, items in sorted(label_dict.items()):
         if not items:
@@ -263,7 +260,7 @@ def generate_index_html(issues, repo):
         articles_html = []
         for issue in visible_items:
             articles_html.append(
-                f'<li style="padding: 5px 0;">'
+                f'<li style="padding: 5px 0; list-style: none;">'
                 f'<a href="{issue.html_url}" target="_blank">{issue.title}</a> '
                 f'<span style="color: #999; font-size: 0.9em;">({issue.created_at.strftime("%m-%d")})</span>'
                 f'</li>'
@@ -274,7 +271,7 @@ def generate_index_html(issues, repo):
         if hidden_items:
             cat_id = safe_label + "_more"
             hidden_list = "".join([
-                f'<li style="padding: 5px 0;"><a href="{i.html_url}" target="_blank">{i.title}</a> '
+                f'<li style="padding: 5px 0; list-style: none;"><a href="{i.html_url}" target="_blank">{i.title}</a> '
                 f'<span style="color: #999; font-size: 0.9em;">({i.created_at.strftime("%m-%d")})</span></li>'
                 for i in hidden_items
             ])
@@ -291,23 +288,21 @@ def generate_index_html(issues, repo):
         """)
 
     # --- 8. 组合最终 HTML ---
-    # 这里假设你的模板里有 {{TAGS}} 和 {{RECENT_ARTICLES}}
     try:
         template = load_template("base.html")
     except:
-        template = "<html><body>{{TAGS}}<div>{{PINNED_SECTION}}</div><h2>最近文章</h2><ul>{{RECENT_ARTICLES}}</ul>{{CATEGORIES}}</body></html>"
+        # 如果没有模板，构建一个简单的结构
+        template = "<html><head><meta charset='UTF-8'></head><body>{{TAGS}}<div>{{PINNED_SECTION}}</div><h2>最近文章</h2><ul>{{RECENT_ARTICLES}}</ul>{{CATEGORIES}}</body></html>"
 
-    # 1. 填充标签
     html = template.replace("{{TAGS}}", "".join(tags_html))
     
-    # 2. 填充置顶区块 (在标签下方，最近文章上方)
-    # 如果模板有 {{PINNED_SECTION}} 就替换，没有就在最近文章前面插入
+    # 处理置顶区块占位符
     if "{{PINNED_SECTION}}" in html:
         html = html.replace("{{PINNED_SECTION}}", pinned_html)
     else:
+        # 如果没有占位符，插入到最近文章之前
         html = html.replace("{{RECENT_ARTICLES}}", pinned_html + "{{RECENT_ARTICLES}}", 1)
     
-    # 3. 填充剩余部分
     html = html.replace("{{RECENT_ARTICLES}}", "".join(recent_html))
     html = html.replace("{{CATEGORIES}}", "".join(categories_html))
     html = html.replace("{{YEAR}}", str(datetime.now().year))
@@ -336,7 +331,7 @@ def main():
             print("没有找到文章")
             return
         
-        # 生成 HTML (传入 repo 对象以获取标签颜色)
+        # 生成 HTML
         html_text = generate_index_html(issues, repo)
         
         output_path = "index.html"
@@ -344,7 +339,7 @@ def main():
             f.write(html_text)
         print(f"✅ {output_path} 已生成")
         
-        # 处理静态文件 (CSS/JS)
+        # 处理静态文件
         os.makedirs("static", exist_ok=True)
         css_src = "templates/style.css"
         css_dst = "static/style.css"
