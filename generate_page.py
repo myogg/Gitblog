@@ -19,7 +19,7 @@ def login():
     if not GITHUB_TOKEN:
         print("错误: 请设置 G_TT 环境变量")
         exit(1)
-    # 忽略认证方式的弃用警告，保证功能可用
+    # 忽略认证方式的弃用警告
     return Github(GITHUB_TOKEN)
 
 def get_repo(g):
@@ -132,7 +132,6 @@ def fetch_labels_color(repo):
             
         # 从API获取
         for label in repo.get_labels():
-            # GitHub返回的是不带#的6位字符串，如 'd73a4a'
             color_map[label.name] = label.color 
             
         save_to_cache("repo_labels_color", color_map)
@@ -152,7 +151,7 @@ def generate_index_html(issues, repo):
     pinned_issues = []
     normal_issues = []
     for issue in issues:
-        # 修复点：遍历 labels 列表，判断是否有名为 "pinned" 的标签 (忽略大小写)
+        # 修复点：遍历 labels 列表判断
         has_pinned_tag = any(label.name.lower() == "pinned" for label in issue.labels)
         if has_pinned_tag:
             pinned_issues.append(issue)
@@ -213,8 +212,8 @@ def generate_index_html(issues, repo):
         for issue in sorted_pinned:
             # 修复点：获取文章的第一个标签颜色作为边框色
             border_color = "#0088ff" # 默认蓝色
-            if issue.labels: 
-                # 取第一个标签的颜色
+            if issue.labels and len(issue.labels) > 0: 
+                # 取第一个标签的颜色 (注意：labels 是列表，需要索引 )
                 first_label_name = issue.labels.name 
                 first_color = label_colors.get(first_label_name, "0088ff")
                 border_color = f"#{first_color}"
@@ -291,8 +290,7 @@ def generate_index_html(issues, repo):
     try:
         template = load_template("base.html")
     except:
-        # 如果没有模板，构建一个简单的结构
-        template = "<html><head><meta charset='UTF-8'></head><body>{{TAGS}}<div>{{PINNED_SECTION}}</div><h2>最近文章</h2><ul>{{RECENT_ARTICLES}}</ul>{{CATEGORIES}}</body></html>"
+        template = "<html><head><meta charset='UTF-8'></head><body>{{TAGS}}{{PINNED_SECTION}}<h2>最近文章</h2><ul>{{RECENT_ARTICLES}}</ul>{{CATEGORIES}}</body></html>"
 
     html = template.replace("{{TAGS}}", "".join(tags_html))
     
