@@ -63,17 +63,28 @@ def fetch_issues_with_cache(repo):
         print(f"从缓存加载 {len(cached)} 篇文章")
         issues = []
         for item in cached:
-            issue = type('CachedIssue', (), {
-                "number": item["number"],
-                "title": item["title"],
-                "html_url": item["html_url"],
-                "body": item["body"],
-                "created_at": datetime.fromisoformat(item["created_at"]) if item["created_at"] else None,
-                "labels": [type('CachedLabel', (), {"name": label["name"]}) for label in item["labels"]],
-                "pull_request": item["pull_request"]
-            })()
+            # 创建 Issue 对象
+            class CachedIssue:
+                def __init__(self, data):
+                    self.number = data["number"]
+                    self.title = data["title"]
+                    self.html_url = data["html_url"]
+                    self.body = data["body"]
+                    self.created_at = datetime.fromisoformat(data["created_at"]) if data["created_at"] else None
+                    self.pull_request = data["pull_request"]
+                    
+                    # 处理 labels
+                    self.labels = []
+                    for label_data in data["labels"]:
+                        class CachedLabel:
+                            def __init__(self, name):
+                                self.name = name
+                        self.labels.append(CachedLabel(label_data["name"]))
+            
+            issue = CachedIssue(item)
             issues.append(issue)
-        return issues
+        
+        return [i for i in issues if not i.pull_request]
 
     print("从GitHub API获取文章数据...")
     try:
@@ -108,16 +119,26 @@ def fetch_issues_with_cache(repo):
             print("API失败，尝试使用过期的缓存数据...")
             issues = []
             for item in cached:
-                issue = type('CachedIssue', (), {
-                    "number": item["number"],
-                    "title": item["title"],
-                    "html_url": item["html_url"],
-                    "body": item["body"],
-                    "created_at": datetime.fromisoformat(item["created_at"]) if item["created_at"] else None,
-                    "labels": [type('CachedLabel', (), {"name": label["name"]}) for label in item["labels"]],
-                    "pull_request": item["pull_request"]
-                })()
+                class CachedIssue:
+                    def __init__(self, data):
+                        self.number = data["number"]
+                        self.title = data["title"]
+                        self.html_url = data["html_url"]
+                        self.body = data["body"]
+                        self.created_at = datetime.fromisoformat(data["created_at"]) if data["created_at"] else None
+                        self.pull_request = data["pull_request"]
+                        
+                        # 处理 labels
+                        self.labels = []
+                        for label_data in data["labels"]:
+                            class CachedLabel:
+                                def __init__(self, name):
+                                    self.name = name
+                            self.labels.append(CachedLabel(label_data["name"]))
+                
+                issue = CachedIssue(item)
                 issues.append(issue)
+            
             return [i for i in issues if not i.pull_request]
         return []
 
@@ -151,8 +172,13 @@ def generate_index_html(issues, repo):
     pinned_issues = []
     normal_issues = []
     for issue in issues:
-        # 修复点：遍历 labels 列表判断
-        has_pinned_tag = any(label.name.lower() == "pinned" for label in issue.labels)
+        # 修复点：安全地检查 labels
+        has_pinned_tag = False
+        if hasattr(issue, 'labels'):
+            for label in issue.labels:
+                if hasattr(label, 'name') and label.name.lower() == "pinned":
+                    has_pinned_tag = True
+                    break
         if has_pinned_tag:
             pinned_issues.append(issue)
         else:
@@ -161,12 +187,14 @@ def generate_index_html(issues, repo):
     # --- 3. 按标签分类 (仅针对普通文章) ---
     label_dict = {}
     for issue in normal_issues:
-        for label in issue.labels:
-            label_dict.setdefault(label.name, []).append(issue)
+        if hasattr(issue, 'labels'):
+            for label in issue.labels:
+                if hasattr(label, 'name'):
+                    label_dict.setdefault(label.name, []).append(issue)
 
     # 排序函数
     def sort_by_date(issue_list):
-        return sorted(issue_list, key=lambda x: x.created_at, reverse=True)
+        return sorted(issue_list, key=lambda x: x.created_at if hasattr(x, 'created_at') else datetime.min, reverse=True)
 
     for label in label_dict:
         label_dict[label] = sort_by_date(label_dict[label])
@@ -210,18 +238,20 @@ def generate_index_html(issues, repo):
         sorted_pinned = sort_by_date(pinned_issues)
         pinned_items = []
         for issue in sorted_pinned:
-            # 修复点：获取文章的第一个标签颜色作为边框色
+            # 修复点：安全地获取第一个标签颜色
             border_color = "#0088ff" # 默认蓝色
-            if issue.labels and len(issue.labels) > 0: 
-                # 取第一个标签的颜色 (注意：labels 是列表，需要索引 )
-                first_label_name = issue.labels.name 
-                first_color = label_colors.get(first_label_name, "0088ff")
-                border_color = f"#{first_color}"
+            if hasattr(issue, 'labels') and issue.labels and len(issue.labels) > 0: 
+                # 获取第一个标签的颜色
+                first_label = issue.labels[0]
+                if hasattr(first_label, 'name'):
+                    first_label_name = first_label.name
+                    first_color = label_colors.get(first_label_name, "0088ff")
+                    border_color = f"#{first_color}"
                 
             pinned_items.append(
                 f'<li style="padding: 10px; margin: 5px 0; background: #f8f9fa; border-left: 3px solid {border_color}; list-style: none;">'
                 f'<a href="{issue.html_url}" target="_blank" style="font-weight: bold; color: #333;">{issue.title}</a> '
-                f'<span style="color: #888; font-size: 0.9em;">({issue.created_at.strftime("%m-%d")})</span>'
+                f'<span style="color: #888; font-size: 0.9em;">({issue.created_at.strftime("%m-%d") if hasattr(issue, "created_at") and issue.created_at else ""})</span>'
                 f'</li>'
             )
         pinned_html = f"""
@@ -242,7 +272,7 @@ def generate_index_html(issues, repo):
         recent_html.append(
             f'<li style="padding: 8px 0; border-bottom: 1px dashed #eee; list-style: none;">'
             f'<a href="{i.html_url}" target="_blank">{i.title}</a> '
-            f'<span style="color: #999; font-size: 0.9em;">({i.created_at.strftime("%Y-%m-%d")})</span>'
+            f'<span style="color: #999; font-size: 0.9em;">({i.created_at.strftime("%Y-%m-%d") if hasattr(i, "created_at") and i.created_at else ""})</span>'
             f'</li>'
         )
 
@@ -261,7 +291,7 @@ def generate_index_html(issues, repo):
             articles_html.append(
                 f'<li style="padding: 5px 0; list-style: none;">'
                 f'<a href="{issue.html_url}" target="_blank">{issue.title}</a> '
-                f'<span style="color: #999; font-size: 0.9em;">({issue.created_at.strftime("%m-%d")})</span>'
+                f'<span style="color: #999; font-size: 0.9em;">({issue.created_at.strftime("%m-%d") if hasattr(issue, "created_at") and issue.created_at else ""})</span>'
                 f'</li>'
             )
         
@@ -271,7 +301,7 @@ def generate_index_html(issues, repo):
             cat_id = safe_label + "_more"
             hidden_list = "".join([
                 f'<li style="padding: 5px 0; list-style: none;"><a href="{i.html_url}" target="_blank">{i.title}</a> '
-                f'<span style="color: #999; font-size: 0.9em;">({i.created_at.strftime("%m-%d")})</span></li>'
+                f'<span style="color: #999; font-size: 0.9em;">({i.created_at.strftime("%m-%d") if hasattr(i, "created_at") and i.created_at else ""})</span></li>'
                 for i in hidden_items
             ])
             hidden_html = f'<div id="{cat_id}" style="display: none;">{hidden_list}</div>'
@@ -290,17 +320,55 @@ def generate_index_html(issues, repo):
     try:
         template = load_template("base.html")
     except:
-        template = "<html><head><meta charset='UTF-8'></head><body>{{TAGS}}{{PINNED_SECTION}}<h2>最近文章</h2><ul>{{RECENT_ARTICLES}}</ul>{{CATEGORIES}}</body></html>"
+        template = """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>mYogg'Blog</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="markdown-body">
+        <div class="header-line"></div>
+        <h1 class="page-title">mYogg'Blog</h1>
+        
+        <!-- 側邊欄 -->
+        <div class="sidebar">
+            <div class="filter-controls">
+                <h3 style="margin:0;">標簽</h3>
+                <span class="clear-filter" id="clear-filter">清除篩選</span>
+            </div>
+            <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
+            <div class="tags-container">
+                {{TAGS}}
+            </div>
+            
+            <h3>最近文章</h3>
+            <ul id="recent-articles">
+                {{RECENT_ARTICLES}}
+            </ul>
+        </div>
+        
+        <!-- 正文分類 -->
+        <div id="categories-container">
+            {{PINNED_SECTION}}
+            {{CATEGORIES}}
+        </div>
+        
+        <!-- 無結果提示 -->
+        <div class="no-results" id="no-results">沒有找到相關文章</div>
+        
+        <footer>© {{YEAR}} MyOGG. All rights reserved.</footer>
+    </div>
+    
+    <script src="static/script.js"></script>
+</body>
+</html>"""
 
     html = template.replace("{{TAGS}}", "".join(tags_html))
-    
-    # 处理置顶区块占位符
-    if "{{PINNED_SECTION}}" in html:
-        html = html.replace("{{PINNED_SECTION}}", pinned_html)
-    else:
-        # 如果没有占位符，插入到最近文章之前
-        html = html.replace("{{RECENT_ARTICLES}}", pinned_html + "{{RECENT_ARTICLES}}", 1)
-    
+    html = html.replace("{{PINNED_SECTION}}", pinned_html)
     html = html.replace("{{RECENT_ARTICLES}}", "".join(recent_html))
     html = html.replace("{{CATEGORIES}}", "".join(categories_html))
     html = html.replace("{{YEAR}}", str(datetime.now().year))
@@ -350,6 +418,8 @@ def main():
 
     except Exception as e:
         print(f"❌ 错误: {e}")
+        import traceback
+        traceback.print_exc()
 
 if __name__ == "__main__":
     main()
