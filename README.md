@@ -38,7 +38,7 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
-- [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/123)--2025-12-15
+- [修改了博客结构](https://github.com/myogg/Gitblog/issues/124)--2025-12-15
 - [申请强夺 Twitter 商标](https://github.com/myogg/Gitblog/issues/122)--2025-12-11
 - [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
@@ -102,17 +102,16 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (15篇文章)
-- [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/123)--2025-12-15
+## notes (14篇文章)
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
+- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 
 <details>
-<summary>显示更多 (10篇)</summary>
+<summary>显示更多 (9篇)</summary>
 
-- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)
@@ -177,16 +176,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 突发的一些小想法 (7篇文章)
+## 突发的一些小想法 (8篇文章)
+- [修改了博客结构](https://github.com/myogg/Gitblog/issues/124)--2025-12-15
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 - [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
 - [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
-- [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)--2025-02-11
 
 <details>
-<summary>显示更多 (2篇)</summary>
+<summary>显示更多 (3篇)</summary>
 
+- [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)
 
