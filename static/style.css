@@ -61,6 +61,7 @@ footer {
 
 .sidebar h3 {
     margin-top: 0;
+    margin-bottom: 10px;
 }
 
 /* GitHub标签颜色系统 */
@@ -95,126 +96,6 @@ footer {
 .tag.active {
     box-shadow: inset 0 0 0 2px rgba(255,255,255,0.8);
     transform: translateY(0);
-}
-
-/* 小尺寸标签（用于文章内标签） */
-.tag-small {
-    display: inline-block;
-    margin: 1px 3px;
-    padding: 1px 6px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 500;
-}
-
-.tag-small.gh-label-1 { background-color: #7057ff; color: white; }
-.tag-small.gh-label-2 { background-color: #008672; color: white; }
-.tag-small.gh-label-3 { background-color: #b60205; color: white; }
-.tag-small.gh-label-4 { background-color: #0e8a16; color: white; }
-.tag-small.gh-label-5 { background-color: #ff9f1c; color: black; }
-.tag-small.gh-label-6 { background-color: #d93f0b; color: white; }
-.tag-small.gh-label-7 { background-color: #f9d0c4; color: black; }
-.tag-small.gh-label-8 { background-color: #1d76db; color: white; }
-.tag-small.gh-label-9 { background-color: #5319e7; color: white; }
-.tag-small.gh-label-10 { background-color: #fbca04; color: black; }
-
-/* 置顶文章区块 */
-.pinned-section {
-    margin: 20px 0 30px 0;
-    padding: 20px;
-    background: linear-gradient(135deg, #fff9e6 0%, #fff0cc 100%);
-    border-radius: 10px;
-    border: 1px solid #ffd700;
-    box-shadow: 0 3px 10px rgba(255, 215, 0, 0.2);
-    position: relative;
-    overflow: hidden;
-}
-
-.pinned-section::before {
-    content: "🔖 置顶";
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: #ffd700;
-    color: #333;
-    padding: 3px 10px;
-    border-radius: 12px;
-    font-size: 0.8rem;
-    font-weight: bold;
-}
-
-.pinned-section h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-    color: #e6a700;
-    padding-bottom: 10px;
-    border-bottom: 2px solid #ffd700;
-}
-
-.pinned-articles {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 15px;
-}
-
-.pinned-article {
-    padding: 15px;
-    background: white;
-    border-radius: 8px;
-    border: 1px solid #e1e4e8;
-    transition: all 0.3s ease;
-    position: relative;
-}
-
-.pinned-article:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
-    border-color: #ffd700;
-}
-
-.pinned-article h3 {
-    margin: 0 0 10px 0;
-    font-size: 1.1em;
-    color: #2c3e50;
-}
-
-.pinned-article h3 a {
-    color: #0366d6;
-    text-decoration: none;
-}
-
-.pinned-article h3 a:hover {
-    color: #024ea1;
-    text-decoration: underline;
-}
-
-/* 文章元数据样式 */
-.article-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    font-size: 0.85em;
-    color: #586069;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.article-date {
-    font-size: 0.85em;
-    color: #666;
-    white-space: nowrap;
-    background: #f5f5f5;
-    padding: 2px 8px;
-    border-radius: 4px;
-}
-
-.article-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    flex-grow: 1;
-    justify-content: flex-end;
 }
 
 /* 按钮样式 */
@@ -343,6 +224,13 @@ footer {
     margin-bottom: 15px;
 }
 
+/* 文章日期样式 */
+.article-date {
+    color: #888;
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .markdown-body {
@@ -350,5 +238,21 @@ footer {
         font-size: 16px;
     }
     
-    .pinned-articles {
-        grid-template-columns: 1fr
+    .sidebar {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .markdown-body {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .tag {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+    }
+    }
