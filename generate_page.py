@@ -148,7 +148,7 @@ def fetch_issues(repo):
     return fetch_issues_with_cache(repo)
 
 def load_template(template_name):
-    """加載模板文件"""
+    """加载模板文件"""
     template_path = os.path.join("templates", template_name)
     try:
         with open(template_path, "r", encoding="utf-8") as f:
@@ -226,7 +226,7 @@ def generate_index_html(issues):
         color_class = get_label_color(label)
         tags_html.append(f'<span class="tag {color_class}" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
     
-    # 生成置顶文章HTML区块
+    # 生成置顶文章HTML区块 - 放在正文分类容器中
     pinned_html = []
     if pinned_issues:
         pinned_html.append('<div class="pinned-section">')
@@ -358,9 +358,9 @@ def generate_index_html(issues):
     
     # 填充模板
     html = template.replace("{{TAGS}}", "".join(tags_html))
-    html = html.replace("{{PINNED_ARTICLES}}", "".join(pinned_html))
+    # 将置顶文章放在正文分类容器的顶部
+    html = html.replace("{{CATEGORIES}}", "".join(pinned_html) + "".join(categories_html))
     html = html.replace("{{RECENT_ARTICLES}}", "".join(recent_html))
-    html = html.replace("{{CATEGORIES}}", "".join(categories_html))
     html = html.replace("{{YEAR}}", str(datetime.now().year))
     
     return html
