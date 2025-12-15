@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{TITLE}} - mYogg'Blog</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <style>
+        body {
+            background: #f5f5f5;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+        }
+        
+        .article-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .article-header {
+            background: #fafafa;
+            padding: 2rem;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #0366d6;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        
+        .article-title {
+            margin: 0 0 1rem 0;
+            color: #2c3e50;
+            font-size: 2rem;
+        }
+        
+        .article-meta {
+            color: #586069;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .article-labels {
+            margin-top: 1rem;
+        }
+        
+        .article-content {
+            padding: 2rem;
+        }
+        
+        .original-link-container {
+            margin-top: 3rem;
+            padding: 1.5rem;
+            background: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        
+        .github-link-btn {
+            display: inline-block;
+            margin-top: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: #24292e;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        
+        .github-link-btn:hover {
+            background: #000;
+            text-decoration: none;
+        }
+        
+        .github-link-btn:before {
+            content: "🐙 ";
+        }
+        
+        @media (max-width: 768px) {
+            .article-container {
+                margin: 0;
+                border-radius: 0;
+            }
+            
+            .article-header,
+            .article-content {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="article-container">
+        <div class="article-header">
+            <a href="../index.html" class="back-link">← 返回博客首页</a>
+            
+            <h1 class="article-title">{{TITLE}}</h1>
+            
+            <div class="article-meta">
+                <span>📅 发布于: {{DATE}}</span>
+                <span style="margin: 0 10px;">|</span>
+                <span>#{{NUMBER}}</span>
+            </div>
+            
+            <div class="article-labels">
+                {{LABELS}}
+            </div>
+        </div>
+        
+        <div class="article-content markdown-body">
+            {{CONTENT}}
+            
+            <div class="original-link-container">
+                <h4>📝 原文信息</h4>
+                <p>本文内容来自GitHub Issues，点击下方链接查看原文和参与讨论：</p>
+                <a href="{{ORIGINAL_URL}}" class="github-link-btn" target="_blank" rel="noopener">
+                    在GitHub上查看此文章
+                </a>
+                <p style="margin-top: 1rem; font-size: 0.9rem; color: #586069;">
+                    注意：评论和更新将在GitHub Issues中进行，此处为静态页面。
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+  </html>
