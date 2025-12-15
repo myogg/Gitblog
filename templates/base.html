@@ -23,6 +23,9 @@
                 {{TAGS}}
             </div>
             
+            <!-- 置顶文章放在这里，标签下面，最近文章上面 -->
+            {{PINNED_ARTICLES}}
+            
             <h3>最近文章</h3>
             <ul id="recent-articles">
                 {{RECENT_ARTICLES}}
@@ -31,10 +34,6 @@
         
         <!-- 正文分類 -->
         <div id="categories-container">
-            <!-- 置顶文章区块 -->
-            {{PINNED_ARTICLES}}
-            
-            <!-- 分类文章 -->
             {{CATEGORIES}}
         </div>
         
