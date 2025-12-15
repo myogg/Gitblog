@@ -13,12 +13,11 @@ MAX_PER_CATEGORY = 5
 
 # 缓存配置
 CACHE_FILE = "github_cache.json"
-CACHE_DURATION = 3600  # 缓存1小时（3600秒）
+CACHE_DURATION = 3600
 
 def login():
     if not GITHUB_TOKEN:
         print("错误: 请设置 G_TT 环境变量")
-        print("使用方法: export G_TT='你的github_token'")
         exit(1)
     return Github(GITHUB_TOKEN)
 
@@ -26,17 +25,13 @@ def get_repo(g):
     return g.get_repo(REPO_NAME)
 
 def get_cached_data(key):
-    """从缓存读取数据"""
     try:
         if os.path.exists(CACHE_FILE):
             with open(CACHE_FILE, "r", encoding="utf-8") as f:
                 cache = json.load(f)
-            
             if key in cache:
                 data = cache[key]
                 cache_time = datetime.fromisoformat(data["timestamp"])
-                
-                # 检查缓存是否过期
                 if datetime.now() - cache_time < timedelta(seconds=CACHE_DURATION):
                     print(f"使用缓存数据: {key}")
                     return data["data"]
@@ -45,251 +40,256 @@ def get_cached_data(key):
     return None
 
 def save_to_cache(key, data):
-    """保存数据到缓存"""
     try:
         cache = {}
         if os.path.exists(CACHE_FILE):
             with open(CACHE_FILE, "r", encoding="utf-8") as f:
                 cache = json.load(f)
-        
         cache[key] = {
             "timestamp": datetime.now().isoformat(),
             "data": data
         }
-        
         with open(CACHE_FILE, "w", encoding="utf-8") as f:
             json.dump(cache, f, ensure_ascii=False, indent=2)
-        
         print(f"已缓存: {key}")
     except Exception as e:
         print(f"保存缓存失败: {e}")
 
-def fetch_issues_with_cache(repo):
-    """带缓存的获取issues函数"""
-    cache_key = f"issues_{repo.full_name}_open"
-    
-    # 尝试从缓存读取
+def fetch_all_data_with_cache(repo):
+    """同时获取 Issues 和 Labels 数据"""
+    cache_key = f"full_data_{repo.full_name}"
     cached = get_cached_data(cache_key)
-    if cached is not None:
-        print(f"从缓存加载 {len(cached)} 篇文章")
-        # 将缓存的字典数据转换回对象
-        issues = []
-        for item in cached:
-            issue = type('CachedIssue', (), {
-                "number": item["number"],
-                "title": item["title"],
-                "html_url": item["html_url"],
-                "body": item["body"],
-                "created_at": datetime.fromisoformat(item["created_at"]) if item["created_at"] else None,
-                "labels": [type('CachedLabel', (), {"name": label["name"]}) for label in item["labels"]],
-                "pull_request": item["pull_request"]
-            })()
-            issues.append(issue)
-        return issues
-    
-    # 从GitHub API获取
-    print("从GitHub API获取文章数据...")
+    if cached:
+        return cached.get("issues", []), cached.get("labels", {})
+
+    print("从GitHub API获取数据 (Issues + Labels)...")
     try:
-        all_issues = []
+        # 1. 获取 Labels 颜色
+        repo_labels = {}
+        for lbl in repo.get_labels():
+            # 存储标签名 -> 颜色代码 (如 'bug' -> 'd73a4a')
+            repo_labels[lbl.name] = lbl.color
+
+        # 2. 获取 Issues
+        issues = []
         for issue in repo.get_issues(state="open"):
-            all_issues.append(issue)
-            time.sleep(0.1) 
-        
-        print(f"成功获取 {len(all_issues)} 篇文章")
-        issues = [i for i in all_issues if not i.pull_request]
-
-        cache_data = []
-        for issue in issues:
-            issue_data = {
-                "number": issue.number,
-                "title": issue.title,
-                "html_url": issue.html_url,
-                "body": issue.body,
-                "created_at": issue.created_at.isoformat() if issue.created_at else None,
-                "labels": [{"name": label.name} for label in issue.labels],
-                "pull_request": issue.pull_request is not None
-            }
-            cache_data.append(issue_data)
-        
-        save_to_cache(cache_key, cache_data)
-        return issues
-        
-    except Exception as e:
-        print(f"获取文章失败: {e}")
-        cached = get_cached_data(cache_key)
-        if cached:
-            print("API失败，尝试使用过期的缓存数据...")
-            issues = []
-            for item in cached:
-                issue = type('CachedIssue', (), {
-                    "number": item["number"],
-                    "title": item["title"],
-                    "html_url": item["html_url"],
-                    "body": item["body"],
-                    "created_at": datetime.fromisoformat(item["created_at"]) if item["created_at"] else None,
-                    "labels": [type('CachedLabel', (), {"name": label["name"]}) for label in item["labels"]],
-                    "pull_request": item["pull_request"]
-                })()
+            if not issue.pull_request:
                 issues.append(issue)
-            return [i for i in issues if not i.pull_request]
-        return []
+            time.sleep(0.05)
 
-def fetch_issues(repo):
-    return fetch_issues_with_cache(repo)
+        # 准备缓存数据
+        cache_data = {
+            "issues": [
+                {
+                    "number": i.number,
+                    "title": i.title,
+                    "html_url": i.html_url,
+                    "created_at": i.created_at.isoformat() if i.created_at else None,
+                    "labels": [{"name": lbl.name} for lbl in i.labels],
+                    "body": i.body
+                } for i in issues
+            ],
+            "labels": repo_labels
+        }
+
+        save_to_cache(cache_key, cache_data)
+        return issues, repo_labels
+
+    except Exception as e:
+        print(f"API获取失败: {e}")
+        return [], {}
 
 def load_template(template_name):
-    """加載模板文件"""
     template_path = os.path.join("templates", template_name)
     try:
         with open(template_path, "r", encoding="utf-8") as f:
             return f.read()
     except FileNotFoundError:
         print(f"警告: 模板文件 {template_name} 不存在，使用默认模板")
-        return """<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>MyGitBlog</title>
-</head>
-<body>
-    <h1>Blog Content</h1>
-    
-</body>
-</html>"""
+        return """
+        <!DOCTYPE html>
+        <html>
+        <head><title>Blog</title></head>
+        <body>
+            <div>{{TAGS}}</div>
+            <div>{{PINNED_SECTION}}</div>
+            <h2>最近文章</h2>
+            <ul>{{RECENT_ARTICLES}}</ul>
+            <div>{{CATEGORIES}}</div>
+        </body>
+        </html>
+        """
 
-def generate_index_html(issues):
-    """生成首頁HTML"""
+def generate_index_html(all_issues, repo_labels):
+    """生成首页 HTML"""
+    if not all_issues:
+        return "<html><body><h1>暂无文章</h1></body></html>"
+
+    # --- 逻辑 1: 分离 Pinned 文章 ---
+    pinned_issues = []
+    normal_issues = []
     
-    if not issues:
-        print("警告: 没有获取到文章数据")
-        return "<html><body><h1>暂时没有文章</h1></body></html>"
-    
-    # 按標簽分類
+    for issue in all_issues:
+        # 判断是否为置顶
+        is_pinned = any(label.name.lower() == "pinned" for label in issue.labels)
+        if is_pinned:
+            pinned_issues.append(issue)
+        else:
+            normal_issues.append(issue)
+
+    # --- 逻辑 2: 按标签分类 (只分类普通文章) ---
     label_dict = {}
-    for issue in issues:
+    for issue in normal_issues:
         for label in issue.labels:
             label_dict.setdefault(label.name, []).append(issue)
-    
-    # --- 1. 分离 Pinned 文章 ---
-    pinned_issues = []
-    # 遍历所有文章，找出带有 Pinned 标签的
-    for issue in issues:
-        if any(label.name.lower() == "pinned" for label in issue.labels):
-            pinned_issues.append(issue)
-    
-    # 从原分类中移除 Pinned 文章，避免重复显示 (可选，取决于您是否想在分类里也显示)
-    # 这里为了清晰，我们在分类里不再显示，只在置顶区显示
+
+    # 排序函数 (时间倒序)
+    def sort_by_date(issue_list):
+        return sorted(issue_list, key=lambda x: x.created_at, reverse=True)
+
     for label in label_dict:
-        label_dict[label] = [issue for issue in label_dict[label] if not any(lbl.name.lower() == "pinned" for lbl in issue.labels)]
+        label_dict[label] = sort_by_date(label_dict[label])
 
-    # 排序逻辑保持不变
-    def sort_issues(issue_list):
-        def sort_key(issue):
-            has_pinned_tag = any(label.name.lower() == "pinned" for label in issue.labels)
-            return (0 if has_pinned_tag else 1, -issue.created_at.timestamp())
-        return sorted(issue_list, key=sort_key)
-
-    # 对每个分类排序
-    for label in label_dict:
-        label_dict[label] = sort_issues(label_dict[label])
-
-    template = load_template("base.html")
+    # --- 生成 1: 顶部标签 HTML (使用真实 GitHub 颜色) ---
+    # 去重并排序
+    all_label_names = sorted(set(label for label in repo_labels.keys() if label in label_dict) | {"Pinned"})
     
-    # --- 2. 生成顶部标签 HTML (改为 GitHub 多色风格) ---
-    # 注意：这里去掉了之前的黑色内联样式，改为使用 class="github-tag"
-    # 颜色映射逻辑通常在 CSS 里处理，或者这里可以简单随机/哈希，但为了不改其他地方，只改 class 名
-    all_labels = sorted(label_dict.keys())
     tags_html = []
-    for label in all_labels:
-        safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
-        # 移除了 style="background-color: #1a1a1a..." 
-        # 改为使用符合 GitHub 风格的 class (具体颜色由 CSS 定义，或者 GitHub 风格的库处理)
-        tags_html.append(f'<span class="github-tag tag" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
-    
-    # --- 3. 生成 Pinned 置顶区块 (新增的独立区块) ---
+    for label_name in all_label_names:
+        safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label_name).lower()
+        
+        # 获取 GitHub 官方颜色，如果没有则默认为 'ededed' (灰色)
+        color_code = repo_labels.get(label_name, "ededed")
+        
+        # GitHub 颜色格式通常是 6位小写，如 'd73a4a'
+        bg_color = f"#{color_code}"
+        
+        # 简单的对比度判断：如果颜色太深，文字用白色，否则用黑色
+        # 这里简单处理，以 '0'-'7' 开头认为是深色
+        is_dark = color_code in '01234567'
+        text_color = "white" if is_dark else "black"
+        
+        style = (
+            f"background-color: {bg_color}; "
+            f"color: {text_color}; "
+            f"padding: 6px 12px; "
+            f"margin: 4px; "
+            f"border-radius: 6px; "
+            f"cursor: pointer; "
+            f"display: inline-block; "
+            f"font-weight: 500;"
+        )
+        tags_html.append(f'<span class="tag" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')" style="{style}">{label_name}</span>')
+
+    # --- 生成 2: Pinned 独立区块 ---
     pinned_html = ""
     if pinned_issues:
-        pinned_articles = []
+        pinned_items = []
         for issue in pinned_issues:
-            pinned_articles.append(f'<li class="pinned-item"><strong>[置顶]</strong> <a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
-        pinned_html = f'''
-        <div class="pinned-section">
-            <h3>📌 置顶文章</h3>
-            <ul class="article-list">
-                {''.join(pinned_articles)}
+            # 尝试获取文章的第一个标签颜色作为边框色，或者默认蓝色
+            border_color = "#0088ff"
+            if issue.labels:
+                first_label_color = repo_labels.get(issue.labels.name, "0088ff")
+                border_color = f"#{first_label_color}"
+                
+            pinned_items.append(
+                f'<li style="padding: 12px; margin: 10px 0; border-left: 4px solid {border_color}; '
+                f'background: #f6f8fa; list-style: none;">'
+                f'<span style="font-size: 0.8em; color: #666; margin-right: 10px;">[置顶]</span>'
+                f'<a href="{issue.html_url}" target="_blank" style="font-size: 1.1em; font-weight: bold; text-decoration: none;">'
+                f'{issue.title}'
+                f'</a>'
+                f'<span style="color: #666; margin-left: 10px;">({issue.created_at.strftime("%m-%d")})</span>'
+                f'</li>'
+            )
+        pinned_html = f"""
+        <div style="margin: 25px 0; padding: 0;">
+            <h3 style="color: #333; margin-bottom: 15px; border-left: 3px solid #0088ff; padding-left: 10px;">📌 置顶精选</h3>
+            <ul style="padding-left: 0; margin: 0;">
+                {''.join(pinned_items)}
             </ul>
         </div>
-        <hr style="margin: 20px 0;"> <!-- 加个分割线 -->
-        '''
+        <hr style="border: 1px solid #eee; margin: 20px 0;">
+        """
 
-    # --- 4. 生成最近文章 HTML (保持显示5篇，但排除置顶的?) ---
-    # 这里逻辑保持不变，会自动包含置顶（如果在最近5篇里），或者您希望最近文章不包含置顶，可以过滤
-    # 为了符合“最近”定义，这里不做特殊过滤，保持原逻辑
-    all_sorted_issues = []
-    for items in label_dict.values():
-        all_sorted_issues.extend(items)
-    all_sorted_issues = sort_issues(list(set(all_sorted_issues)))
-    
+    # --- 生成 3: 最近文章 (只显示普通文章中的最近5篇) ---
+    # 合并所有普通文章并排序
+    all_normal_sorted = sort_by_date(normal_issues)
     recent_html = []
-    for i in all_sorted_issues[:MAX_RECENT]:
-        # 如果是置顶文章，这里也可以加个标记，或者不显示，看需求。这里保持简单，只显示标题。
-        recent_html.append(f'<li><a href="{i.html_url}" target="_blank">{i.title}</a> <span class="article-date">({i.created_at.strftime("%Y-%m-%d")})</span></li>')
+    for issue in all_normal_sorted[:MAX_RECENT]:
+        recent_html.append(
+            f'<li style="padding: 8px 0; border-bottom: 1px dashed #eee;">'
+            f'<a href="{issue.html_url}" target="_blank" style="text-decoration: none; color: #333;">{issue.title}</a> '
+            f'<span style="color: #999; font-size: 0.9em;">({issue.created_at.strftime("%Y-%m-%d")})</span>'
+            f'</li>'
+        )
 
-    # --- 5. 生成分类 HTML ---
+    # --- 生成 4: 分类文章 ---
     categories_html = []
-    for label, items in sorted(label_dict.items()):
-        if not items: # 跳过空分类
+    for label_name, issues_in_label in sorted(label_dict.items()):
+        if not issues_in_label:
             continue
-        safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
+        safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label_name).lower()
         
-        visible_items = items[:MAX_PER_CATEGORY]
-        hidden_items = items[MAX_PER_CATEGORY:]
+        # 可见文章
+        visible_issues = issues_in_label[:MAX_PER_CATEGORY]
+        hidden_issues = issues_in_label[MAX_PER_CATEGORY:]
         
+        # 文章列表 HTML
         articles_html = []
-        for issue in visible_items:
-            articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
+        for issue in visible_issues:
+            articles_html.append(
+                f'<li style="padding: 6px 0; border-bottom: 1px solid #f0f0f0;">'
+                f'<a href="{issue.html_url}" target="_blank">{issue.title}</a> '
+                f'<span style="color: #999; font-size: 0.8em;">({issue.created_at.strftime("%m-%d")})</span>'
+                f'</li>'
+            )
         
-        hidden_articles_html = []
-        show_more_btn = ""
-        if hidden_items:
-            category_id = safe_label + "-hidden"
-            for issue in hidden_items:
-                hidden_articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
-            
-            show_more_btn = f'''
-            <div id="hidden-{category_id}" class="hidden-articles">
-                <ul class="article-list">{''.join(hidden_articles_html)}</ul>
-            </div>
-            <button class="show-more-btn" onclick="toggleMore(\'{category_id}\')" id="btn-{category_id}">
-                顯示更多 ({len(hidden_items)}篇)
+        # 隐藏文章按钮 (如果有的话)
+        more_btn_html = ""
+        if hidden_issues:
+            cat_id = f"cat_{safe_label}"
+            hidden_html = "".join([
+                f'<li style="padding: 6px 0;">'
+                f'<a href="{i.html_url}" target="_blank">{i.title}</a> '
+                f'<span style="color: #999; font-size: 0.8em;">({i.created_at.strftime("%m-%d")})</span>'
+                f'</li>' for i in hidden_issues
+            ])
+            more_btn_html = f"""
+            <div id="{cat_id}_extra" style="display: none;">{hidden_html}</div>
+            <button onclick="toggle('{cat_id}')" style="margin: 10px 0; padding: 5px 10px; background: #f0f0f0;">
+                显示全部 {len(issues_in_label)} 篇
             </button>
-            '''
-        
-        category_html = f'''
-        <div class="category-section" data-label="{safe_label}">
-            <h2>{label} <small>({len(items)}篇文章)</small></h2>
-            <ul class="article-list">
+            """
+
+        cat_html = f"""
+        <div class="category" data-label="{safe_label}" style="margin: 30px 0; padding: 0;">
+            <h2 style="color: #333; border-bottom: 2px solid #eee; padding-bottom: 5px;">
+                {label_name} 
+                <span style="color: #999; font-size: 0.9em;">({len(issues_in_label)}篇文章)</span>
+            </h2>
+            <ul style="padding-left: 20px;">
                 {''.join(articles_html)}
             </ul>
-            {show_more_btn}
+            {more_btn_html}
         </div>
-        '''
-        categories_html.append(category_html)
+        """
+        categories_html.append(cat_html)
 
-    # --- 6. 填充模板 ---
-    # 这里假设您的 base.html 模板中有 {{TAGS}}, {{PINNED_SECTION}}, {{RECENT_ARTICLES}}, {{CATEGORIES}} 这些占位符
-    # 如果没有 {{PINNED_SECTION}}，您可能需要手动调整 HTML 结构，或者将 pinned_html 拼接到其他位置
-    html = template.replace("{{TAGS}}", "".join(tags_html))
+    # --- 组合最终 HTML ---
+    template = load_template("base.html")
     
-    # 将置顶区块插入到标签下方 (这是您要求的"标签下一个区块")
-    # 如果模板没有预留位置，这里做一个简单的替换尝试
+    # 1. 先填入标签
+    html = template.replace("{{TAGS}}", "".join(tags_html))
+    # 2. 在标签后直接插入置顶区块 (这是关键，确保位置在标签下方)
+    #    如果模板有 {{PINNED_SECTION}} 则替换，否则插入到 {{RECENT_ARTICLES}} 前面
     if "{{PINNED_SECTION}}" in html:
         html = html.replace("{{PINNED_SECTION}}", pinned_html)
     else:
-        # 如果没有占位符，就插在 {{RECENT_ARTICLES}} 前面或者 {{TAGS}} 后面
-        # 这里选择插在 {{TAGS}} 后面
-        html = html.replace("{{TAGS}}", "".join(tags_html) + pinned_html)
-
+        # 强制插入到最近文章占位符之前
+        html = html.replace("{{RECENT_ARTICLES}}", pinned_html + "{{RECENT_ARTICLES}}", 1)
+    
+    # 3. 填入最近文章和分类
     html = html.replace("{{RECENT_ARTICLES}}", "".join(recent_html))
     html = html.replace("{{CATEGORIES}}", "".join(categories_html))
     html = html.replace("{{YEAR}}", str(datetime.now().year))
@@ -299,7 +299,6 @@ def generate_index_html(issues):
 def main():
     if not GITHUB_TOKEN:
         print("错误: 请先设置 G_TT 环境变量")
-        print("运行: export G_TT='你的github_token'")
         return
     
     try:
@@ -307,55 +306,36 @@ def main():
         repo = get_repo(g)
         print(f"连接仓库: {repo.full_name}")
         
-        issues = fetch_issues(repo)
+        # 获取数据 (文章 + 标签颜色)
+        issues, labels_color_map = fetch_all_data_with_cache(repo)
         print(f"处理 {len(issues)} 篇文章")
         
         if not issues:
-            print("没有找到文章，请检查仓库是否有open的issues")
+            print("没有找到文章")
             return
         
-        html_text = generate_index_html(issues)
+        # 生成 HTML
+        html_text = generate_index_html(issues, labels_color_map)
         
+        # 写入文件
         output_path = "index.html"
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(html_text)
-        print(f"✅ {output_path} 已生成")
+        print(f"✅ {output_path} 生成成功！")
         
-        # 处理静态文件
+        # 处理静态资源
         os.makedirs("static", exist_ok=True)
+        css_src = "templates/style.css"
+        css_dst = "static/style.css"
+        if os.path.exists(css_src):
+            import shutil
+            shutil.copy(css_src, css_dst)
+            print("✅ 样式文件已更新")
         
-        css_sources = ["templates/style.css", "static/style.css", "style.css"]
-        js_sources = ["templates/script.js", "static/script.js", "script.js"]
-        
-        css_found = False
-        js_found = False
-        
-        for css_source in css_sources:
-            if os.path.exists(css_source):
-                import shutil
-                shutil.copy(css_source, "static/style.css")
-                print(f"✅ CSS文件已复制: {css_source} → static/style.css")
-                css_found = True
-                break
-        
-        if not css_found:
-            print("⚠️ 警告: 未找到 style.css 文件，页面可能无法正常显示样式。")
-
-        for js_source in js_sources:
-            if os.path.exists(js_source):
-                import shutil
-                shutil.copy(js_source, "static/script.js")
-                print(f"✅ JS文件已复制: {js_source} → static/script.js")
-                js_found = True
-                break
-        
-        if not js_found:
-            print("⚠️ 警告: 未找到 script.js 文件，交互功能可能失效。")
-
-        print("🎉 博客生成任务完成！请查看根目录下的 index.html")
+        print("🚀 博客构建完成")
 
     except Exception as e:
-        print(f"❌ 执行过程中发生错误: {e}")
+        print(f"❌ 错误: {e}")
 
 if __name__ == "__main__":
     main()
