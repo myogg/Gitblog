@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/123)--2025-12-15
 - [申请强夺 Twitter 商标](https://github.com/myogg/Gitblog/issues/122)--2025-12-11
 - [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
 - [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
-- [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
 
 ## 一些记录 (31篇文章)
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
@@ -102,16 +102,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (14篇文章)
+## notes (15篇文章)
+- [極簡博客維護小技巧](https://github.com/myogg/Gitblog/issues/123)--2025-12-15
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
-- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 
 <details>
-<summary>显示更多 (9篇)</summary>
+<summary>显示更多 (10篇)</summary>
 
+- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)
