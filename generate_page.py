@@ -3,6 +3,7 @@ import re
 import json
 import time
 import hashlib
+import markdown
 from github import Github
 from datetime import datetime, timedelta
 
@@ -15,6 +16,9 @@ MAX_PER_CATEGORY = 5
 # 缓存配置
 CACHE_FILE = "github_cache.json"
 CACHE_DURATION = 3600  # 缓存1小时（3600秒）
+
+# 文章目录
+ARTICLES_DIR = "articles"
 
 def login():
     if not GITHUB_TOKEN:
@@ -133,7 +137,7 @@ def fetch_issues_with_cache(repo):
                 issue = type('CachedIssue', (), {
                     "number": item["number"],
                     "title": item["title"],
-                    "html_url": item.html_url,
+                    "html_url": item["html_url"],
                     "body": item["body"],
                     "created_at": datetime.fromisoformat(item["created_at"]) if item["created_at"] else None,
                     "labels": [type('CachedLabel', (), {"name": label["name"], "color": label.get("color", "ededed")}) for label in item["labels"]],
@@ -168,11 +172,94 @@ def load_template(template_name):
 </body>
 </html>"""
 
+def load_article_template():
+    """加载文章详情页模板"""
+    template_path = os.path.join("templates", "article.html")
+    try:
+        with open(template_path, "r", encoding="utf-8") as f:
+            return f.read()
+    except FileNotFoundError:
+        # 默认文章模板
+        return """<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{TITLE}} - mYogg'Blog</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <style>
+        .article-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e1e4e8;
+        }
+        .article-title {
+            margin-bottom: 0.5rem;
+        }
+        .article-meta {
+            color: #586069;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        .article-labels {
+            margin-top: 1rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #0366d6;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+        .original-link {
+            margin-top: 2rem;
+            padding: 1rem;
+            background: #f6f8fa;
+            border-radius: 6px;
+            border: 1px solid #e1e4e8;
+        }
+        .markdown-body {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        <a href="../index.html" class="back-link">← 返回博客首页</a>
+        
+        <div class="article-header">
+            <h1 class="article-title">{{TITLE}}</h1>
+            <div class="article-meta">
+                发布于: {{DATE}} | 文章ID: #{{NUMBER}}
+            </div>
+            <div class="article-labels">
+                {{LABELS}}
+            </div>
+        </div>
+        
+        <div class="article-content">
+            {{CONTENT}}
+        </div>
+        
+        <div class="original-link">
+            <strong>📝 原文链接:</strong>
+            <a href="{{ORIGINAL_URL}}" target="_blank" rel="noopener">{{ORIGINAL_URL}}</a>
+            <p style="margin-top: 0.5rem; font-size: 0.9rem; color: #586069;">
+                本文内容来自GitHub Issues，点击上方链接查看原文和讨论。
+            </p>
+        </div>
+    </div>
+</body>
+</html>"""
+
 def get_label_color(label_name):
     """根据标签名生成一个稳定的颜色类名"""
-    # 使用哈希函数为每个标签名生成一个稳定的数字
     hash_num = int(hashlib.md5(label_name.encode()).hexdigest()[:8], 16)
-    # 从预设的GitHub颜色类中选择一个
     color_classes = [
         "gh-label-1", "gh-label-2", "gh-label-3", "gh-label-4", 
         "gh-label-5", "gh-label-6", "gh-label-7", "gh-label-8",
@@ -183,11 +270,45 @@ def get_label_color(label_name):
 def sort_issues(issue_list):
     """自定义排序函数：先按 Pinned 标签，再按时间"""
     def sort_key(issue):
-        # 检查是否有 "Pinned" 标签 (不区分大小写)
         has_pinned_tag = any(label.name.lower() == "pinned" for label in issue.labels)
-        # 返回元组：0 表示置顶，1 表示普通；时间取反是为了实现倒序
         return (0 if has_pinned_tag else 1, -issue.created_at.timestamp())
     return sorted(issue_list, key=sort_key)
+
+def generate_article_page(issue):
+    """生成单篇文章页面"""
+    # 创建文章目录
+    os.makedirs(ARTICLES_DIR, exist_ok=True)
+    
+    # 加载文章模板
+    template = load_article_template()
+    
+    # 转换Markdown为HTML
+    html_content = markdown.markdown(issue.body or "暂无内容", extensions=['extra', 'codehilite', 'tables'])
+    
+    # 生成标签HTML
+    labels_html = []
+    for label in issue.labels:
+        if label.name.lower() != "pinned":
+            color_class = get_label_color(label.name)
+            labels_html.append(f'<span class="tag {color_class}">{label.name}</span> ')
+    
+    # 填充模板
+    html = template.replace("{{TITLE}}", issue.title)
+    html = html.replace("{{NUMBER}}", str(issue.number))
+    html = html.replace("{{DATE}}", issue.created_at.strftime("%Y-%m-%d"))
+    html = html.replace("{{CONTENT}}", html_content)
+    html = html.replace("{{ORIGINAL_URL}}", issue.html_url)
+    html = html.replace("{{LABELS}}", "".join(labels_html))
+    
+    # 生成文件名（使用文章ID）
+    filename = f"article-{issue.number}.html"
+    filepath = os.path.join(ARTICLES_DIR, filename)
+    
+    # 保存文章
+    with open(filepath, "w", encoding="utf-8") as f:
+        f.write(html)
+    
+    return filename
 
 def generate_index_html(issues):
     """生成首頁HTML"""
@@ -215,10 +336,10 @@ def generate_index_html(issues):
     # 去重并排序置顶文章
     pinned_issues = sort_issues(list(set(pinned_issues)))
 
-    # 加載基礎模板
+    # 加载基础模板
     template = load_template("base.html")
     
-    # 生成標籤HTML - 添加GitHub标签样式类
+    # 生成標籤HTML
     all_labels = sorted(label_dict.keys())
     tags_html = []
     for label in all_labels:
@@ -226,17 +347,22 @@ def generate_index_html(issues):
         color_class = get_label_color(label)
         tags_html.append(f'<span class="tag {color_class}" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
     
-    # 生成置顶文章HTML区块 - 放在侧边栏，样式与最近文章一致
+    # 生成置顶文章HTML区块
     pinned_html = []
     if pinned_issues:
         pinned_html.append('<h3>置顶文章</h3>')
         pinned_html.append('<ul class="article-list">')
         
         for issue in pinned_issues[:MAX_RECENT]:
+            # 生成文章页面并获取链接
+            article_filename = generate_article_page(issue)
+            article_url = f"{ARTICLES_DIR}/{article_filename}"
+            
             pinned_html.append(f'''
             <li>
-                <a href="{issue.html_url}" target="_blank">{issue.title}</a>
+                <a href="{article_url}" target="_blank">{issue.title}</a>
                 <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
+                <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
         
         pinned_html.append('</ul>')
@@ -245,17 +371,20 @@ def generate_index_html(issues):
     all_sorted_issues = []
     for items in label_dict.values():
         all_sorted_issues.extend(items)
-    # 去重并重新排序
     all_sorted_issues = sort_issues(list(set(all_sorted_issues)))
     
     recent_html = []
     for i in all_sorted_issues[:MAX_RECENT]:
-        # 排除已经在置顶区域显示的文章
         if i not in pinned_issues[:MAX_RECENT]:
+            # 生成文章页面并获取链接
+            article_filename = generate_article_page(i)
+            article_url = f"{ARTICLES_DIR}/{article_filename}"
+            
             recent_html.append(f'''
             <li>
-                <a href="{i.html_url}" target="_blank">{i.title}</a>
+                <a href="{article_url}" target="_blank">{i.title}</a>
                 <span class="article-date">({i.created_at.strftime("%Y-%m-%d")})</span>
+                <a href="{i.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
     
     # 生成分類HTML
@@ -263,22 +392,37 @@ def generate_index_html(issues):
     for label, items in sorted(label_dict.items()):
         safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
         
-        # 可見文章
         visible_items = items[:MAX_PER_CATEGORY]
         hidden_items = items[MAX_PER_CATEGORY:]
         
-        # 生成文章列表
         articles_html = []
         for issue in visible_items:
+            # 生成文章页面并获取链接
+            article_filename = generate_article_page(issue)
+            article_url = f"{ARTICLES_DIR}/{article_filename}"
+            
             pin_mark = " 🔖" if any(lbl.name.lower() == "pinned" for lbl in issue.labels) else ""
-            articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")}){pin_mark}</span></li>')
+            articles_html.append(f'''
+            <li>
+                <a href="{article_url}" target="_blank">{issue.title}</a>
+                <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")}){pin_mark}</span>
+                <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
+            </li>''')
         
-        # 生成隱藏文章
         hidden_articles_html = []
         if hidden_items:
             category_id = safe_label + "-hidden"
             for issue in hidden_items:
-                hidden_articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
+                # 生成文章页面并获取链接
+                article_filename = generate_article_page(issue)
+                article_url = f"{ARTICLES_DIR}/{article_filename}"
+                
+                hidden_articles_html.append(f'''
+                <li>
+                    <a href="{article_url}" target="_blank">{issue.title}</a>
+                    <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
+                    <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
+                </li>''')
             
             show_more_btn = f'''
             <div id="hidden-{category_id}" class="hidden-articles">
@@ -330,27 +474,25 @@ def main():
             print("没有找到文章，请检查仓库是否有open的issues")
             return
         
-        # 生成HTML
+        # 生成文章页面和首页
         html_text = generate_index_html(issues)
         
-        # ★★★ 关键修改：在根目录生成 index.html ★★★
-        output_path = "index.html" # 根目录
-        
+        # 生成首页
+        output_path = "index.html"
         with open(output_path, "w", encoding="utf-8") as f:
             f.write(html_text)
         print(f"✅ {output_path} 已生成")
         
-        # ★★★ 处理静态文件 (CSS & JS) ★★★
+        # 处理静态文件
         os.makedirs("static", exist_ok=True)
         
-        # 尝试从不同位置查找并复制CSS文件
+        # 复制CSS文件
         css_sources = ["templates/style.css", "static/style.css", "style.css"]
         js_sources = ["templates/script.js", "static/script.js", "script.js"]
         
         css_found = False
         js_found = False
         
-        # --- 复制 CSS 文件 ---
         for css_source in css_sources:
             if os.path.exists(css_source):
                 import shutil
@@ -362,7 +504,6 @@ def main():
         if not css_found:
             print("⚠️ 警告: 未找到 style.css 文件，页面可能无法正常显示样式。")
 
-        # --- 复制 JS 文件 ---
         for js_source in js_sources:
             if os.path.exists(js_source):
                 import shutil
@@ -374,7 +515,9 @@ def main():
         if not js_found:
             print("⚠️ 警告: 未找到 script.js 文件，交互功能可能失效。")
 
-        print("🎉 博客生成任务完成！请查看根目录下的 index.html")
+        print(f"🎉 博客生成任务完成！共生成 {len(issues)} 篇文章")
+        print("📁 文章目录: articles/")
+        print("🏠 首页: index.html")
 
     except Exception as e:
         print(f"❌ 执行过程中发生错误: {e}")
