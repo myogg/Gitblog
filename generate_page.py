@@ -133,7 +133,7 @@ def fetch_issues_with_cache(repo):
                 issue = type('CachedIssue', (), {
                     "number": item["number"],
                     "title": item["title"],
-                    "html_url": item["html_url"],
+                    "html_url": item.html_url,
                     "body": item["body"],
                     "created_at": datetime.fromisoformat(item["created_at"]) if item["created_at"] else None,
                     "labels": [type('CachedLabel', (), {"name": label["name"], "color": label.get("color", "ededed")}) for label in item["labels"]],
@@ -226,35 +226,20 @@ def generate_index_html(issues):
         color_class = get_label_color(label)
         tags_html.append(f'<span class="tag {color_class}" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
     
-    # 生成置顶文章HTML区块 - 放在正文分类容器中
+    # 生成置顶文章HTML区块 - 放在侧边栏，样式与最近文章一致
     pinned_html = []
     if pinned_issues:
-        pinned_html.append('<div class="pinned-section">')
-        pinned_html.append('<h2>🔖 置顶文章</h2>')
-        pinned_html.append('<div class="pinned-articles">')
+        pinned_html.append('<h3>置顶文章</h3>')
+        pinned_html.append('<ul class="article-list">')
         
         for issue in pinned_issues[:MAX_RECENT]:
-            # 获取文章标签
-            tags = []
-            for label in issue.labels:
-                if label.name.lower() != "pinned":
-                    safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
-                    color_class = get_label_color(label.name)
-                    tags.append(f'<span class="tag-small {color_class}">{label.name}</span>')
-            
-            tags_html_str = "".join(tags)
             pinned_html.append(f'''
-            <div class="pinned-article">
-                <h3><a href="{issue.html_url}" target="_blank">{issue.title}</a></h3>
-                <div class="article-meta">
-                    <span class="article-date">{issue.created_at.strftime("%Y-%m-%d")}</span>
-                    <div class="article-tags">{tags_html_str}</div>
-                </div>
-            </div>
-            ''')
+            <li>
+                <a href="{issue.html_url}" target="_blank">{issue.title}</a>
+                <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
+            </li>''')
         
-        pinned_html.append('</div>')
-        pinned_html.append('</div>')
+        pinned_html.append('</ul>')
     
     # 生成最近文章HTML
     all_sorted_issues = []
@@ -267,22 +252,10 @@ def generate_index_html(issues):
     for i in all_sorted_issues[:MAX_RECENT]:
         # 排除已经在置顶区域显示的文章
         if i not in pinned_issues[:MAX_RECENT]:
-            # 获取文章标签
-            tags = []
-            for label in i.labels:
-                if label.name.lower() != "pinned":
-                    safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
-                    color_class = get_label_color(label.name)
-                    tags.append(f'<span class="tag-small {color_class}">{label.name}</span>')
-            
-            tags_html_str = "".join(tags)
             recent_html.append(f'''
             <li>
                 <a href="{i.html_url}" target="_blank">{i.title}</a>
-                <div class="article-meta">
-                    <span class="article-date">({i.created_at.strftime("%Y-%m-%d")})</span>
-                    <div class="article-tags">{tags_html_str}</div>
-                </div>
+                <span class="article-date">({i.created_at.strftime("%Y-%m-%d")})</span>
             </li>''')
     
     # 生成分類HTML
@@ -297,42 +270,15 @@ def generate_index_html(issues):
         # 生成文章列表
         articles_html = []
         for issue in visible_items:
-            # 获取文章标签（排除当前分类标签）
-            tags = []
-            for lbl in issue.labels:
-                if lbl.name.lower() != label.lower() and lbl.name.lower() != "pinned":
-                    safe_lbl = re.sub(r'[^a-zA-Z0-9]', '-', lbl.name).lower()
-                    color_class = get_label_color(lbl.name)
-                    tags.append(f'<span class="tag-small {color_class}">{lbl.name}</span>')
-            
-            tags_html_str = "".join(tags)
             pin_mark = " 🔖" if any(lbl.name.lower() == "pinned" for lbl in issue.labels) else ""
-            articles_html.append(f'''
-            <li>
-                <a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")}){pin_mark}</span>
-                <div class="article-tags">{tags_html_str}</div>
-            </li>''')
+            articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")}){pin_mark}</span></li>')
         
         # 生成隱藏文章
         hidden_articles_html = []
         if hidden_items:
             category_id = safe_label + "-hidden"
             for issue in hidden_items:
-                # 获取文章标签（排除当前分类标签）
-                tags = []
-                for lbl in issue.labels:
-                    if lbl.name.lower() != label.lower() and lbl.name.lower() != "pinned":
-                        safe_lbl = re.sub(r'[^a-zA-Z0-9]', '-', lbl.name).lower()
-                        color_class = get_label_color(lbl.name)
-                        tags.append(f'<span class="tag-small {color_class}">{lbl.name}</span>')
-                
-                tags_html_str = "".join(tags)
-                hidden_articles_html.append(f'''
-                <li>
-                    <a href="{issue.html_url}" target="_blank">{issue.title}</a>
-                    <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
-                    <div class="article-tags">{tags_html_str}</div>
-                </li>''')
+                hidden_articles_html.append(f'<li><a href="{issue.html_url}" target="_blank">{issue.title}</a> <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span></li>')
             
             show_more_btn = f'''
             <div id="hidden-{category_id}" class="hidden-articles">
@@ -358,9 +304,9 @@ def generate_index_html(issues):
     
     # 填充模板
     html = template.replace("{{TAGS}}", "".join(tags_html))
-    # 将置顶文章放在正文分类容器的顶部
-    html = html.replace("{{CATEGORIES}}", "".join(pinned_html) + "".join(categories_html))
+    html = html.replace("{{PINNED_ARTICLES}}", "".join(pinned_html))
     html = html.replace("{{RECENT_ARTICLES}}", "".join(recent_html))
+    html = html.replace("{{CATEGORIES}}", "".join(categories_html))
     html = html.replace("{{YEAR}}", str(datetime.now().year))
     
     return html
