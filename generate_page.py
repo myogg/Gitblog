@@ -205,7 +205,8 @@ def generate_index_html(issues):
     tags_html = []
     for label in all_labels:
         safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
-        tags_html.append(f'<span class="tag" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
+        # 添加GitHub颜色（黑色）和置顶按钮
+        tags_html.append(f'<span class="tag" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')" style="background-color: #1a1a1a; color: white; padding: 5px; margin: 2px; cursor: pointer;">{label}</span> ')
     
     # 生成最近文章HTML (这里也会应用新的排序逻辑)
     # 将所有文章合并排序（同样应用置顶逻辑）
