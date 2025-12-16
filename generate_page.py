@@ -347,47 +347,75 @@ def generate_index_html(issues):
         color_class = get_label_color(label)
         tags_html.append(f'<span class="tag {color_class}" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
     
-    # 生成置顶文章HTML区块
+    # 1. 生成置顶文章HTML区块 - 使用与分类一致的样式
     pinned_html = []
     if pinned_issues:
-        pinned_html.append('<h3>置顶文章</h3>')
-        pinned_html.append('<ul class="article-list">')
-        
-        for issue in pinned_issues[:MAX_RECENT]:
+        # 生成文章列表
+        articles_html = []
+        for issue in pinned_issues:
             # 生成文章页面并获取链接
             article_filename = generate_article_page(issue)
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
-            pinned_html.append(f'''
+            articles_html.append(f'''
             <li>
                 <a href="{article_url}" target="_blank">{issue.title}</a>
                 <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
                 <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
         
-        pinned_html.append('</ul>')
+        # 包裹在与分类一致的容器中
+        pinned_html.append(f'''
+        <div class="category-section">
+            <h2>置顶文章 <small>({len(pinned_issues)}篇文章)</small></h2>
+            <ul class="article-list">
+                {''.join(articles_html)}
+            </ul>
+        </div>
+        ''')
     
-    # 生成最近文章HTML
+    # 2. 生成最近文章HTML - 显示5篇，排除已显示在置顶的文章
+    recent_html = []
+    
+    # 获取所有文章并排序（排除置顶文章中已显示的）
     all_sorted_issues = []
     for items in label_dict.values():
         all_sorted_issues.extend(items)
+    
+    # 去重并排序
     all_sorted_issues = sort_issues(list(set(all_sorted_issues)))
     
-    recent_html = []
-    for i in all_sorted_issues[:MAX_RECENT]:
-        if i not in pinned_issues[:MAX_RECENT]:
+    # 过滤掉已经在置顶文章中显示的
+    pinned_issue_ids = [issue.number for issue in pinned_issues]
+    recent_candidates = [issue for issue in all_sorted_issues if issue.number not in pinned_issue_ids]
+    
+    # 只取前5篇
+    recent_issues = recent_candidates[:5]
+    
+    if recent_issues:
+        articles_html = []
+        for issue in recent_issues:
             # 生成文章页面并获取链接
-            article_filename = generate_article_page(i)
+            article_filename = generate_article_page(issue)
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
-            recent_html.append(f'''
+            articles_html.append(f'''
             <li>
-                <a href="{article_url}" target="_blank">{i.title}</a>
-                <span class="article-date">({i.created_at.strftime("%Y-%m-%d")})</span>
-                <a href="{i.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
+                <a href="{article_url}" target="_blank">{issue.title}</a>
+                <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
+                <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
+        
+        recent_html.append(f'''
+        <div class="category-section">
+            <h2>最近文章 <small>(5篇最新文章)</small></h2>
+            <ul class="article-list">
+                {''.join(articles_html)}
+            </ul>
+        </div>
+        ''')
     
-    # 生成分類HTML
+    # 3. 生成分類HTML
     categories_html = []
     for label, items in sorted(label_dict.items()):
         safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
