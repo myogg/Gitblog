@@ -22,18 +22,12 @@
             <div class="tags-container">
                 {{TAGS}}
             </div>
-            
-            <!-- 置顶文章放在这里，标签下面，最近文章上面 -->
-            {{PINNED_ARTICLES}}
-            
-            <h3>最近文章</h3>
-            <ul id="recent-articles">
-                {{RECENT_ARTICLES}}
-            </ul>
         </div>
         
         <!-- 正文分類 -->
         <div id="categories-container">
+            {{PINNED_ARTICLES}}
+            {{RECENT_ARTICLES}}
             {{CATEGORIES}}
         </div>
         
