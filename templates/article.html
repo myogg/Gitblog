@@ -30,129 +30,12 @@
             line-height: 1.7;
             color: #374151;
             min-height: 100vh;
+            padding: 20px;
         }
         
-        /* 导航栏样式 */
-        .navbar {
-            background-color: #fff;
-            border-bottom: 1px solid #e5e7eb;
-            padding: 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            height: 60px;
-        }
-        
-        .nav-brand {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #2c3e50;
-            text-decoration: none;
-            font-size: 1.2rem;
-            font-weight: bold;
-        }
-        
-        .nav-brand:hover {
-            color: var(--primary-color);
-            text-decoration: none;
-        }
-        
-        .brand-icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 6px;
-            background: linear-gradient(135deg, #ff6a00, #ee0979, #00d4ff);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 14px;
-            font-weight: bold;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: #586069;
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            padding: 6px 12px;
-            border-radius: 4px;
-            transition: all 0.2s ease;
-            position: relative;
-        }
-        
-        .nav-link:hover {
-            color: var(--primary-color);
-            background-color: #f6f8fa;
-            text-decoration: none;
-        }
-        
-        .nav-link.active {
-            color: var(--primary-color);
-            background-color: rgba(59, 130, 246, 0.1);
-        }
-        
-        .nav-link.active::after {
-            content: '';
-            position: absolute;
-            bottom: -1px;
-            left: 12px;
-            right: 12px;
-            height: 2px;
-            background: var(--primary-color);
-            border-radius: 1px;
-        }
-        
-        .nav-link.github-link {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background-color: #f6f8fa;
-            border: 1px solid #e1e4e8;
-        }
-        
-        .nav-link.github-link:hover {
-            background-color: #e1e4e8;
-            border-color: #d1d5da;
-        }
-        
-        /* 移动端菜单按钮 */
-        .menu-toggle {
-            display: none;
-            background: none;
-            border: none;
-            color: #586069;
-            font-size: 1.5rem;
-            cursor: pointer;
-            padding: 8px;
-        }
-        
-        .menu-toggle:hover {
-            color: var(--primary-color);
-        }
-        
-        /* 文章内容区域 */
         .article-wrapper {
             max-width: 900px;
             margin: 0 auto;
-            padding: 20px;
         }
         
         .article-container {
@@ -163,7 +46,6 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             margin-bottom: 30px;
             border: 1px solid #e5e7eb;
-            margin-top: 20px;
         }
         
         .article-container:hover {
@@ -444,60 +326,8 @@
         }
         
         /* 响应式设计 */
-        @media (max-width: 992px) {
-            .nav-container {
-                padding: 0 1rem;
-            }
-        }
-        
         @media (max-width: 768px) {
-            /* 移动端导航栏 */
-            .nav-container {
-                height: 50px;
-                padding: 0 1rem;
-            }
-            
-            .nav-links {
-                position: fixed;
-                top: 50px;
-                left: 0;
-                right: 0;
-                background: white;
-                flex-direction: column;
-                gap: 0;
-                padding: 0;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
-                z-index: 999;
-            }
-            
-            .nav-links.active {
-                max-height: 400px;
-            }
-            
-            .nav-link {
-                width: 100%;
-                padding: 1rem;
-                border-bottom: 1px solid #f6f8fa;
-                border-radius: 0;
-            }
-            
-            .nav-link:last-child {
-                border-bottom: none;
-            }
-            
-            .nav-link.active::after {
-                display: none;
-            }
-            
-            .menu-toggle {
-                display: block;
-            }
-            
-            /* 调整内容区域 */
-            .article-wrapper {
+            body {
                 padding: 10px;
                 background: white;
             }
@@ -571,10 +401,6 @@
                 padding: 0;
             }
             
-            .navbar {
-                display: none;
-            }
-            
             .article-container {
                 box-shadow: none;
                 margin: 0;
@@ -623,38 +449,57 @@
             background: rgba(59, 130, 246, 0.3);
             color: #1f2937;
         }
+        
+        /* 为代码块添加行号 */
+        pre {
+            position: relative;
+        }
+        
+        pre code {
+            display: block;
+            padding-left: 3.5em;
+        }
+        
+        pre::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3em;
+            background: rgba(255, 255, 255, 0.05);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: right;
+            padding: 1.2rem 0.5rem;
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9em;
+            line-height: 1.5;
+            counter-reset: line;
+        }
+        
+        pre code {
+            counter-reset: line-number;
+        }
+        
+        pre code .line {
+            display: block;
+            position: relative;
+        }
+        
+        pre code .line::before {
+            counter-increment: line-number;
+            content: counter(line-number);
+            position: absolute;
+            left: -3.5em;
+            width: 2.5em;
+            text-align: right;
+            color: #94a3b8;
+            font-size: 0.9em;
+        }
     </style>
 </head>
 <body>
-    <!-- 导航栏 -->
-    <nav class="navbar">
-        <div class="nav-container">
-            <a href="../index.html" class="nav-brand">
-                <span class="brand-icon">M</span>
-                <span class="brand-text">myogg'Blog</span>
-            </a>
-            
-            <!-- 移动端菜单按钮 -->
-            <button class="menu-toggle" id="menu-toggle" aria-label="菜单" aria-expanded="false">
-                ☰
-            </button>
-            
-            <!-- 导航链接 -->
-            <div class="nav-links" id="nav-links">
-                <a href="../index.html" class="nav-link">首页</a>
-                <a href="../links.html" class="nav-link">链接</a>
-                <a href="../about.html" class="nav-link">关于</a>
-                <a href="../archives.html" class="nav-link">归档</a>
-                <a href="https://github.com/myogg" class="nav-link github-link" target="_blank">
-                    <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
-                        <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                    </svg>
-                    GitHub
-                </a>
-            </div>
-        </div>
-    </nav>
-
     <div class="article-wrapper">
         <div class="article-container">
             <div class="article-header">
@@ -711,160 +556,113 @@
     </div>
     
     <script>
-        // 移动端菜单功能
-        const menuToggle = document.getElementById('menu-toggle');
-        const navLinks = document.getElementById('nav-links');
-        
-        if (menuToggle && navLinks) {
-            menuToggle.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-                const isActive = navLinks.classList.contains('active');
-                menuToggle.innerHTML = isActive ? '✕' : '☰';
-                menuToggle.setAttribute('aria-expanded', isActive ? 'true' : 'false');
-            });
-            
-            // 点击链接后关闭菜单
-            navLinks.querySelectorAll('.nav-link').forEach(link => {
-                link.addEventListener('click', function() {
-                    navLinks.classList.remove('active');
-                    menuToggle.innerHTML = '☰';
-                    menuToggle.setAttribute('aria-expanded', 'false');
-                });
-            });
-        }
-        
-        // 设置当前页面激活状态
-        function setActiveNavLink() {
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                link.classList.remove('active');
-                
-                // 设置当前页面active
-                if (href.endsWith(currentPage) || 
-                    (currentPage.includes('article-') && href === '../index.html')) {
-                    link.classList.add('active');
-                }
-                
-                // 为外部链接添加target="_blank"
-                if (href.startsWith('http')) {
-                    link.setAttribute('target', '_blank');
-                    link.setAttribute('rel', 'noopener noreferrer');
-                }
-            });
-        }
-        
-        // 页面加载完成后设置导航链接状态
-        document.addEventListener('DOMContentLoaded', function() {
-            setActiveNavLink();
-            
-            // 添加平滑滚动
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-            
-            // 添加代码块复制功能
-            document.querySelectorAll('pre').forEach(pre => {
-                const button = document.createElement('button');
-                button.className = 'copy-code-btn';
-                button.innerHTML = '<i class="far fa-copy"></i> 复制';
-                button.style.cssText = `
-                    position: absolute;
-                    top: 10px;
-                    right: 10px;
-                    background: rgba(59, 130, 246, 0.9);
-                    border: none;
-                    color: white;
-                    padding: 6px 12px;
-                    border-radius: 6px;
-                    cursor: pointer;
-                    font-size: 12px;
-                    transition: all 0.2s ease;
-                    font-family: inherit;
-                    z-index: 10;
-                    display: flex;
-                    align-items: center;
-                    gap: 4px;
-                `;
-                button.addEventListener('mouseenter', () => {
-                    button.style.background = 'rgba(37, 99, 235, 1)';
-                    button.style.transform = 'scale(1.05)';
-                });
-                button.addEventListener('mouseleave', () => {
-                    button.style.background = 'rgba(59, 130, 246, 0.9)';
-                    button.style.transform = 'scale(1)';
-                });
-                button.addEventListener('click', () => {
-                    const code = pre.querySelector('code')?.innerText || pre.innerText;
-                    navigator.clipboard.writeText(code).then(() => {
-                        const originalHTML = button.innerHTML;
-                        const originalBG = button.style.background;
-                        button.innerHTML = '<i class="fas fa-check"></i> 已复制';
-                        button.style.background = '#10b981';
-                        button.disabled = true;
-                        
-                        setTimeout(() => {
-                            button.innerHTML = originalHTML;
-                            button.style.background = originalBG;
-                            button.disabled = false;
-                        }, 2000);
-                    }).catch(err => {
-                        console.error('复制失败:', err);
-                        button.innerHTML = '<i class="fas fa-times"></i> 失败';
-                        button.style.background = '#ef4444';
-                        
-                        setTimeout(() => {
-                            button.innerHTML = originalHTML;
-                            button.style.background = originalBG;
-                        }, 2000);
+        // 添加平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
                     });
+                }
+            });
+        });
+        
+        // 添加代码块复制功能
+        document.querySelectorAll('pre').forEach(pre => {
+            const button = document.createElement('button');
+            button.className = 'copy-code-btn';
+            button.innerHTML = '<i class="far fa-copy"></i> 复制';
+            button.style.cssText = `
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                background: rgba(59, 130, 246, 0.9);
+                border: none;
+                color: white;
+                padding: 6px 12px;
+                border-radius: 6px;
+                cursor: pointer;
+                font-size: 12px;
+                transition: all 0.2s ease;
+                font-family: inherit;
+                z-index: 10;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            `;
+            button.addEventListener('mouseenter', () => {
+                button.style.background = 'rgba(37, 99, 235, 1)';
+                button.style.transform = 'scale(1.05)';
+            });
+            button.addEventListener('mouseleave', () => {
+                button.style.background = 'rgba(59, 130, 246, 0.9)';
+                button.style.transform = 'scale(1)';
+            });
+            button.addEventListener('click', () => {
+                const code = pre.querySelector('code')?.innerText || pre.innerText;
+                navigator.clipboard.writeText(code).then(() => {
+                    const originalHTML = button.innerHTML;
+                    const originalBG = button.style.background;
+                    button.innerHTML = '<i class="fas fa-check"></i> 已复制';
+                    button.style.background = '#10b981';
+                    button.disabled = true;
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.style.background = originalBG;
+                        button.disabled = false;
+                    }, 2000);
+                }).catch(err => {
+                    console.error('复制失败:', err);
+                    button.innerHTML = '<i class="fas fa-times"></i> 失败';
+                    button.style.background = '#ef4444';
+                    
+                    setTimeout(() => {
+                        button.innerHTML = originalHTML;
+                        button.style.background = originalBG;
+                    }, 2000);
                 });
-                
-                pre.style.position = 'relative';
-                pre.appendChild(button);
             });
             
-            // 为标题添加锚点链接
-            document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4').forEach(heading => {
-                const id = heading.textContent.toLowerCase().replace(/[^\w]+/g, '-');
-                heading.id = id;
-                
-                const link = document.createElement('a');
-                link.href = `#${id}`;
-                link.className = 'heading-link';
-                link.innerHTML = '<i class="fas fa-link"></i>';
-                link.style.cssText = `
-                    margin-left: 10px;
-                    opacity: 0;
-                    transition: opacity 0.2s;
-                    color: var(--primary-color);
-                    text-decoration: none;
-                    font-size: 0.8em;
-                `;
-                
-                heading.appendChild(link);
-                
-                heading.addEventListener('mouseenter', () => {
-                    link.style.opacity = '1';
-                });
-                
-                heading.addEventListener('mouseleave', () => {
-                    link.style.opacity = '0';
-                });
+            pre.style.position = 'relative';
+            pre.appendChild(button);
+        });
+        
+        // 为标题添加锚点链接
+        document.querySelectorAll('.markdown-body h1, .markdown-body h2, .markdown-body h3, .markdown-body h4').forEach(heading => {
+            const id = heading.textContent.toLowerCase().replace(/[^\w]+/g, '-');
+            heading.id = id;
+            
+            const link = document.createElement('a');
+            link.href = `#${id}`;
+            link.className = 'heading-link';
+            link.innerHTML = '<i class="fas fa-link"></i>';
+            link.style.cssText = `
+                margin-left: 10px;
+                opacity: 0;
+                transition: opacity 0.2s;
+                color: var(--primary-color);
+                text-decoration: none;
+                font-size: 0.8em;
+            `;
+            
+            heading.appendChild(link);
+            
+            heading.addEventListener('mouseenter', () => {
+                link.style.opacity = '1';
             });
             
-            // 添加页面加载完成后的动画
+            heading.addEventListener('mouseleave', () => {
+                link.style.opacity = '0';
+            });
+        });
+        
+        // 添加页面加载完成后的动画
+        document.addEventListener('DOMContentLoaded', () => {
+            // 为内容添加逐段显示效果
             const contentSections = document.querySelectorAll('.markdown-body > *');
             contentSections.forEach((section, index) => {
                 section.style.opacity = '0';
@@ -876,18 +674,6 @@
                     section.style.transform = 'translateY(0)';
                 }, 100 + index * 50);
             });
-        });
-        
-        // 监听滚动，为导航栏添加阴影
-        window.addEventListener('scroll', function() {
-            const navbar = document.querySelector('.navbar');
-            if (navbar) {
-                if (window.scrollY > 10) {
-                    navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-                } else {
-                    navbar.style.boxShadow = '0 1px 3px rgba(0, 0, 0, 0.1)';
-                }
-            }
         });
     </script>
 </body>
