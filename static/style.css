@@ -1,205 +1,317 @@
-/* ========== 响应式标签布局 ========== */
+/* ========== 导航栏样式 ========== */
 
-/* 1. 移动端标签区域 (默认显示) */
-.mobile-tags-section {
-    display: block;
-    background: #fafafa;
-    padding: 1.5rem;
-    border-radius: 6px;
-    margin-bottom: 2rem;
-    border: 1px solid #e1e4e8;
+/* 导航栏容器 */
+.navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #e1e4e8;
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
-.mobile-tags-section .filter-controls {
+/* 导航内容容器 */
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    height: 60px;
 }
 
-.mobile-tags-section .filter-info {
-    color: #666;
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
-}
-
-.mobile-tags-section .tags-container {
-    margin-bottom: 0;
-}
-
-/* 2. 桌面端侧边栏 (默认隐藏) */
-.desktop-sidebar {
-    display: none;
-}
-
-/* 3. 主要内容容器 */
-.main-container {
+/* 品牌标志 */
+.nav-brand {
     display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    align-items: center;
+    gap: 10px;
+    color: #2c3e50;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
 }
 
-/* 响应式设计：桌面端 (768px以上) */
-@media (min-width: 768px) {
-    /* 隐藏移动端标签区域 */
-    .mobile-tags-section {
-        display: none;
-    }
-    
-    /* 显示桌面端侧边栏 */
-    .desktop-sidebar {
-        display: block;
-        width: 250px;
-        margin-left: 2rem;
-        margin-bottom: 2rem;
-        padding: 1.5rem;
-        background: #fafafa;
-        border-radius: 6px;
-        border: 1px solid #e1e4e8;
-        position: sticky;
-        top: 1rem;
-        height: fit-content;
-        align-self: flex-start;
-    }
-    
-    /* 调整主要内容布局 */
-    .main-container {
-        flex-direction: row;
-        align-items: flex-start;
-    }
-    
-    /* 调整分类容器宽度 */
-    #categories-container {
-        flex: 1;
-        min-width: 0;
-    }
+.nav-brand:hover {
+    color: #0366d6;
+    text-decoration: none;
 }
 
-/* 响应式设计：移动端 (767px以下) */
-@media (max-width: 767px) {
-    /* 隐藏桌面端侧边栏 */
-    .desktop-sidebar {
-        display: none !important;
-    }
-    
-    /* 移动端标签区域优化 */
-    .mobile-tags-section {
-        padding: 1rem;
-    }
-    
-    .mobile-tags-section .filter-controls h3 {
-        margin: 0;
-        font-size: 1.1rem;
-    }
-    
-    .mobile-tags-section .clear-filter {
-        padding: 4px 8px;
-        font-size: 0.8rem;
-    }
-    
-    .mobile-tags-section .tags-container {
-        max-height: 150px;
-        overflow-y: auto;
-        padding-right: 5px;
-    }
-    
-    .mobile-tags-section .tags-container::-webkit-scrollbar {
-        width: 4px;
-    }
-    
-    .mobile-tags-section .tags-container::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 4px;
-    }
-    
-    .mobile-tags-section .tags-container::-webkit-scrollbar-thumb {
-        background: #888;
-        border-radius: 4px;
-    }
-}
-
-/* ========== 保持原有样式，添加新样式 ========== */
-
-/* 清除筛选按钮优化 */
-#clear-filter-mobile,
-#clear-filter-desktop {
-    display: inline-block;
-    margin-left: 10px;
-    padding: 4px 12px;
-    background: #dc3545;
+.brand-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, #ff6a00, #ee0979, #00d4ff);
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: white;
-    border-radius: 4px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-#clear-filter-mobile:hover,
-#clear-filter-desktop:hover {
-    background: #c82333;
-    transform: translateY(-1px);
-}
-
-/* 标签容器优化 */
-.tags-container {
+/* 导航链接 */
+.nav-links {
     display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    margin-bottom: 15px;
+    gap: 1.5rem;
+    align-items: center;
 }
 
-.tag {
-    display: inline-block;
-    margin: 2px 0;
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    cursor: pointer;
-    transition: all 0.2s;
+.nav-link {
+    color: #586069;
+    text-decoration: none;
+    font-size: 0.95rem;
     font-weight: 500;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
-/* 保持原有的GitHub标签颜色 */
-.tag.gh-label-1 { background-color: #7057ff; color: white; }
-.tag.gh-label-2 { background-color: #008672; color: white; }
-.tag.gh-label-3 { background-color: #b60205; color: white; }
-.tag.gh-label-4 { background-color: #0e8a16; color: white; }
-.tag.gh-label-5 { background-color: #ff9f1c; color: black; }
-.tag.gh-label-6 { background-color: #d93f0b; color: white; }
-.tag.gh-label-7 { background-color: #f9d0c4; color: black; }
-.tag.gh-label-8 { background-color: #1d76db; color: white; }
-.tag.gh-label-9 { background-color: #5319e7; color: white; }
-.tag.gh-label-10 { background-color: #fbca04; color: black; }
-
-.tag:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+.nav-link:hover {
+    color: #0366d6;
+    background-color: #f6f8fa;
+    text-decoration: none;
 }
 
-.tag.active {
-    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.8);
-    transform: translateY(0);
+.nav-link.active {
+    color: #0366d6;
+    background-color: rgba(3, 102, 214, 0.1);
 }
 
-/* 适应新布局的调整 */
+.nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 12px;
+    right: 12px;
+    height: 2px;
+    background: #0366d6;
+    border-radius: 1px;
+}
+
+/* GitHub链接特殊样式 */
+.nav-link.github-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f6f8fa;
+    border: 1px solid #e1e4e8;
+}
+
+.nav-link.github-link:hover {
+    background-color: #e1e4e8;
+    border-color: #d1d5da;
+}
+
+/* 移动端菜单按钮 */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: #586069;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 8px;
+}
+
+.menu-toggle:hover {
+    color: #0366d6;
+}
+
+/* ========== 调整现有样式以适应导航栏 ========== */
+
+/* 调整markdown-body的顶部间距 */
 .markdown-body {
-    max-width: 1200px; /* 增加最大宽度以适应侧边栏 */
+    max-width: 1200px; /* 增加最大宽度以匹配导航栏 */
     width: 95%;
     padding: 2rem;
-    margin: 2rem auto;
+    margin: 1rem auto; /* 减少顶部间距 */
     background: white;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
 }
 
-/* 确保原有布局不受影响 */
-@media (max-width: 767px) {
-    .markdown-body {
-        width: 95%;
-        margin: 1rem auto;
-        padding: 1rem;
+/* 移除原来的大标题，因为现在在导航栏里 */
+.header-line {
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #ff6a00, #ee0979, #00d4ff);
+    margin: 1rem 0; /* 调整间距 */
+}
+
+h1.page-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 2rem;
+    font-size: 1.8rem; /* 稍微减小字号 */
+}
+
+/* 侧边栏和主内容区域布局 */
+.main-content {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.sidebar {
+    flex: 0 0 250px;
+    background: #fafafa;
+    padding: 1.5rem;
+    border-radius: 8px;
+    align-self: flex-start;
+    position: sticky;
+    top: 80px; /* 在导航栏下方 */
+}
+
+#categories-container {
+    flex: 1;
+    min-width: 0; /* 防止flex item溢出 */
+}
+
+/* ========== 响应式设计 ========== */
+
+@media (max-width: 992px) {
+    .nav-container {
+        padding: 0 1rem;
+    }
+    
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        flex: none;
+        width: 100%;
+        position: static;
+        margin-bottom: 1rem;
     }
 }
 
-/* 原有其他样式保持不变... */
+@media (max-width: 768px) {
+    /* 移动端导航栏 */
+    .nav-container {
+        height: 50px;
+        padding: 0 1rem;
+    }
+    
+    .nav-links {
+        position: fixed;
+        top: 50px;
+        left: 0;
+        right: 0;
+        background: white;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        z-index: 999;
+    }
+    
+    .nav-links.active {
+        max-height: 400px;
+    }
+    
+    .nav-link {
+        width: 100%;
+        padding: 1rem;
+        border-bottom: 1px solid #f6f8fa;
+        border-radius: 0;
+    }
+    
+    .nav-link:last-child {
+        border-bottom: none;
+    }
+    
+    .nav-link.active::after {
+        display: none;
+    }
+    
+    .menu-toggle {
+        display: block;
+    }
+    
+    /* 调整内容区域 */
+    .markdown-body {
+        padding: 1rem;
+        margin: 0.5rem auto;
+        width: 100%;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .header-line {
+        margin: 0.5rem 0;
+    }
+    
+    h1.page-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-container {
+        padding: 0 0.5rem;
+    }
+    
+    .nav-brand {
+        font-size: 1rem;
+    }
+    
+    .brand-icon {
+        width: 20px;
+        height: 20px;
+        font-size: 12px;
+    }
+    
+    .markdown-body {
+        padding: 0.5rem;
+    }
+}
+
+/* ========== 其他页面的导航栏 ========== */
+
+/* 文章详情页的导航栏 */
+.article-navbar {
+    background-color: #fff;
+    border-bottom: 1px solid #e1e4e8;
+    padding: 0.8rem 0;
+}
+
+.article-nav-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.article-nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.article-nav-link {
+    color: #586069;
+    text-decoration: none;
+    font-size: 0.9rem;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.article-nav-link:hover {
+    color: #0366d6;
+    background-color: #f6f8fa;
+}
+
+.article-nav-link.active {
+    color: #0366d6;
+    background-color: rgba(3, 102, 214, 0.1);
+}
