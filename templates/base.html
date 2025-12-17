@@ -6,116 +6,28 @@
     <title>mYogg'Blog</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
-    <style>
-        /* 导航栏样式 */
-        .navbar {
-            background-color: #f6f8fa;
-            border-bottom: 1px solid #e1e4e8;
-            padding: 0.8rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        }
-        
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .nav-brand {
-            font-size: 1.2rem;
-            font-weight: bold;
-            color: #24292e;
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        
-        .nav-brand:hover {
-            color: #0366d6;
-        }
-        
-        .nav-links {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-        
-        .nav-link {
-            color: #586069;
-            text-decoration: none;
-            font-size: 0.95rem;
-            padding: 0.3rem 0.5rem;
-            border-radius: 3px;
-            transition: all 0.2s;
-        }
-        
-        .nav-link:hover {
-            color: #0366d6;
-            background-color: rgba(3, 102, 214, 0.05);
-        }
-        
-        .nav-link.active {
-            color: #0366d6;
-            font-weight: 500;
-        }
-        
-        .github-link {
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        
-        /* 调整现有样式以适应导航栏 */
-        .markdown-body {
-            padding-top: 0;
-        }
-        
-        .header-line {
-            margin-top: 1rem;
-        }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            .nav-container {
-                flex-direction: column;
-                gap: 0.8rem;
-            }
-            
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 1rem;
-            }
-            
-            .nav-link {
-                font-size: 0.9rem;
-            }
-        }
-    </style>
 </head>
 <body>
-    <!-- 新增导航栏 -->
+    <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="index.html" class="nav-brand">
-                <svg height="20" width="20" viewBox="0 0 16 16" fill="currentColor">
-                    <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
-                </svg>
-                mYogg'Blog
+                <span class="brand-icon">M</span>
+                <span class="brand-text">mYogg'Blog</span>
             </a>
-            <div class="nav-links">
-                <a href="index.html" class="nav-link active">首页</a>
+            
+            <!-- 移动端菜单按钮 -->
+            <button class="menu-toggle" id="menu-toggle" aria-label="菜单" aria-expanded="false">
+                ☰
+            </button>
+            
+            <!-- 导航链接 -->
+            <div class="nav-links" id="nav-links">
+                <a href="index.html" class="nav-link">首页</a>
                 <a href="links.html" class="nav-link">链接</a>
                 <a href="about.html" class="nav-link">关于</a>
                 <a href="archives.html" class="nav-link">归档</a>
-                <a href="https://github.com/myogg" class="nav-link github-link" target="_blank">
+                <a href="https://github.com/myogg" class="nav-link github-link">
                     <svg height="16" width="16" viewBox="0 0 16 16" fill="currentColor">
                         <path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/>
                     </svg>
@@ -126,27 +38,32 @@
     </nav>
 
     <div class="markdown-body">
-        <!-- 移除原来的标题，因为导航栏已经有了 -->
-        <!-- <div class="header-line"></div>
-        <h1 class="page-title">mYogg'Blog</h1> -->
+        <!-- 保留渐变装饰线 -->
+        <div class="header-line"></div>
         
-        <!-- 側邊欄 -->
-        <div class="sidebar">
-            <div class="filter-controls">
-                <h3 style="margin:0;">標簽</h3>
-                <span class="clear-filter" id="clear-filter">清除篩選</span>
-            </div>
-            <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
-            <div class="tags-container">
-                {{TAGS}}
-            </div>
-        </div>
+        <!-- 主内容区域 -->
+        <h1 class="page-title">mYogg'Blog</h1>
         
-        <!-- 正文分類 -->
-        <div id="categories-container">
-            {{PINNED_ARTICLES}}
-            {{RECENT_ARTICLES}}
-            {{CATEGORIES}}
+        <!-- 侧边栏和主内容区域布局 -->
+        <div class="main-content">
+            <!-- 側邊欄 -->
+            <div class="sidebar">
+                <div class="filter-controls">
+                    <h3 style="margin:0;">標簽</h3>
+                    <span class="clear-filter" id="clear-filter">清除篩選</span>
+                </div>
+                <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
+                <div class="tags-container">
+                    {{TAGS}}
+                </div>
+            </div>
+            
+            <!-- 正文分類 -->
+            <div id="categories-container">
+                {{PINNED_ARTICLES}}
+                {{RECENT_ARTICLES}}
+                {{CATEGORIES}}
+            </div>
         </div>
         
         <!-- 無結果提示 -->
@@ -156,24 +73,5 @@
     </div>
     
     <script src="static/script.js"></script>
-    <script>
-        // 添加导航栏交互
-        document.addEventListener('DOMContentLoaded', function() {
-            // 设置当前页面激活状态
-            const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-            const navLinks = document.querySelectorAll('.nav-link');
-            
-            navLinks.forEach(link => {
-                const href = link.getAttribute('href');
-                if (href === currentPage || 
-                    (currentPage === '' && href === 'index.html') ||
-                    (currentPage === 'index.html' && href === 'index.html')) {
-                    link.classList.add('active');
-                } else {
-                    link.classList.remove('active');
-                }
-            });
-        });
-    </script>
 </body>
 </html>
