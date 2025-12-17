@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [ai听书软件](https://github.com/myogg/Gitblog/issues/132)--2025-12-17
 - [天文学家拍摄到类星战塔图因的系外行星](https://github.com/myogg/Gitblog/issues/131)--2025-12-17
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 - [看看大家的电脑上都贴了些啥？](https://github.com/myogg/Gitblog/issues/129)--2025-12-16
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)--2025-12-16
-- [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)--2025-12-16
 
 ## 一些记录 (35篇文章)
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
@@ -87,16 +87,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (13篇文章)
+## 收录 (14篇文章)
+- [ai听书软件](https://github.com/myogg/Gitblog/issues/132)--2025-12-17
 - [天文学家拍摄到类星战塔图因的系外行星](https://github.com/myogg/Gitblog/issues/131)--2025-12-17
 - [苹果"阔折叠"iPhone明年发布](https://github.com/myogg/Gitblog/issues/125)--2025-12-15
 - [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
-- [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)--2025-12-04
 
 <details>
-<summary>显示更多 (8篇)</summary>
+<summary>显示更多 (9篇)</summary>
 
+- [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)
 - [WebGPU 正式在主流浏览器启用](https://github.com/myogg/Gitblog/issues/104)
 - [YouTube推出年度回顾](https://github.com/myogg/Gitblog/issues/91)
