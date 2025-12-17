@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 - [看看大家的电脑上都贴了些啥？](https://github.com/myogg/Gitblog/issues/129)--2025-12-16
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)--2025-12-16
 - [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)--2025-12-16
 - [单光子单原子量子干涉仪](https://github.com/myogg/Gitblog/issues/126)--2025-12-16
-- [苹果"阔折叠"iPhone明年发布](https://github.com/myogg/Gitblog/issues/125)--2025-12-15
 
-## 一些记录 (34篇文章)
+## 一些记录 (35篇文章)
+- [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)--2025-12-16
 - [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)--2025-12-16
 - [单光子单原子量子干涉仪](https://github.com/myogg/Gitblog/issues/126)--2025-12-16
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)--2025-12-11
-- [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)--2025-12-11
 
 <details>
-<summary>显示更多 (29篇)</summary>
+<summary>显示更多 (30篇)</summary>
 
+- [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)
 - [币安推出 Binance Junior](https://github.com/myogg/Gitblog/issues/106)
 - [Telegram 测试通行密钥登录](https://github.com/myogg/Gitblog/issues/105)
