@@ -12,38 +12,23 @@
         <div class="header-line"></div>
         <h1 class="page-title">mYogg'Blog</h1>
         
-        <!-- 移动版标签区域 (在移动端显示) -->
-        <div class="mobile-tags-section">
+        <!-- 側邊欄 -->
+        <div class="sidebar">
             <div class="filter-controls">
                 <h3 style="margin:0;">標簽</h3>
-                <span class="clear-filter" id="clear-filter-mobile">清除篩選</span>
+                <span class="clear-filter" id="clear-filter">清除篩選</span>
             </div>
-            <div class="filter-info" id="filter-info-mobile">點擊標籤篩選文章</div>
+            <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
             <div class="tags-container">
                 {{TAGS}}
             </div>
         </div>
         
-        <!-- 主要内容容器 -->
-        <div class="main-container">
-            <!-- 侧边栏标签 (在桌面端显示) -->
-            <div class="desktop-sidebar">
-                <div class="filter-controls">
-                    <h3 style="margin:0;">標簽</h3>
-                    <span class="clear-filter" id="clear-filter-desktop">清除篩選</span>
-                </div>
-                <div class="filter-info" id="filter-info-desktop">點擊標籤篩選文章</div>
-                <div class="tags-container">
-                    {{TAGS}}
-                </div>
-            </div>
-            
-            <!-- 正文分类 -->
-            <div id="categories-container">
-                {{PINNED_ARTICLES}}
-                {{RECENT_ARTICLES}}
-                {{CATEGORIES}}
-            </div>
+        <!-- 正文分類 -->
+        <div id="categories-container">
+            {{PINNED_ARTICLES}}
+            {{RECENT_ARTICLES}}
+            {{CATEGORIES}}
         </div>
         
         <!-- 無結果提示 -->
@@ -53,30 +38,5 @@
     </div>
     
     <script src="static/script.js"></script>
-    <script>
-        // 同时处理移动端和桌面端的清除筛选按钮
-        document.addEventListener('DOMContentLoaded', function() {
-            const clearFilterMobile = document.getElementById('clear-filter-mobile');
-            const clearFilterDesktop = document.getElementById('clear-filter-desktop');
-            
-            if (clearFilterMobile) {
-                clearFilterMobile.addEventListener('click', function() {
-                    // 清除筛选逻辑，假设您有对应的JavaScript函数
-                    if (typeof clearFilter === 'function') {
-                        clearFilter();
-                    }
-                });
-            }
-            
-            if (clearFilterDesktop) {
-                clearFilterDesktop.addEventListener('click', function() {
-                    // 清除筛选逻辑，假设您有对应的JavaScript函数
-                    if (typeof clearFilter === 'function') {
-                        clearFilter();
-                    }
-                });
-            }
-        });
-    </script>
 </body>
 </html>
