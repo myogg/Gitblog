@@ -1,42 +1,562 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>mYogg'Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>myogg'Blog - 个人博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
-    <link rel="stylesheet" href="static/style.css">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --border-radius: 8px;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f5f7fa;
+        }
+        
+        .markdown-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            box-shadow: var(--shadow);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .header-line {
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--accent-color));
+            margin-bottom: 20px;
+            border-radius: var(--border-radius);
+        }
+        
+        .page-title {
+            text-align: center;
+            color: var(--secondary-color);
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+        
+        .page-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .main-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .sidebar {
+            flex: 0 0 280px;
+            background-color: var(--light-color);
+            padding: 20px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+        
+        .filter-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 10px;
+        }
+        
+        .filter-controls h3 {
+            color: var(--secondary-color);
+            font-size: 1.2rem;
+        }
+        
+        .clear-filter {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .clear-filter:hover {
+            background-color: rgba(231, 76, 60, 0.1);
+        }
+        
+        .filter-info {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+            padding: 8px 12px;
+            background-color: #f1f8ff;
+            border-radius: 4px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 5px 12px;
+            background-color: #e9ecef;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            color: #495057;
+        }
+        
+        .tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+            transform: translateY(-2px);
+        }
+        
+        .tag.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .content {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .category {
+            margin-bottom: 30px;
+            background-color: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+        
+        .category-header {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .article-count {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .articles-list {
+            padding: 0;
+        }
+        
+        .article-item {
+            padding: 15px 20px;
+            border-bottom: 1px solid #f1f1f1;
+            transition: var(--transition);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .article-item:last-child {
+            border-bottom: none;
+        }
+        
+        .article-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .article-title {
+            color: var(--secondary-color);
+            font-weight: 500;
+            text-decoration: none;
+            flex: 1;
+        }
+        
+        .article-title:hover {
+            color: var(--primary-color);
+        }
+        
+        .article-date {
+            color: #6c757d;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+        
+        .pinned .article-item {
+            background-color: #fff9e6;
+            border-left: 3px solid #ffc107;
+        }
+        
+        .pinned .category-header {
+            background-color: #ffc107;
+            color: #856404;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+            display: none;
+        }
+        
+        .no-results.show {
+            display: block;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #6c757d;
+            border-top: 1px solid #eaeaea;
+            margin-top: 40px;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                flex: 1;
+                position: static;
+            }
+            
+            .page-title {
+                font-size: 2rem;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .article-count {
+                margin-top: 5px;
+            }
+            
+            .article-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .article-date {
+                margin-left: 0;
+                margin-top: 5px;
+            }
+        }
+        
+        /* 加载动画 */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 滚动条样式 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+    </style>
 </head>
 <body>
     <div class="markdown-body">
         <div class="header-line"></div>
         <h1 class="page-title">mYogg'Blog</h1>
         
-        <!-- 側邊欄 -->
-        <div class="sidebar">
-            <div class="filter-controls">
-                <h3 style="margin:0;">標簽</h3>
-                <span class="clear-filter" id="clear-filter">清除篩選</span>
+        <div class="main-container">
+            <!-- 側邊欄 -->
+            <div class="sidebar">
+                <div class="filter-controls">
+                    <h3>標簽</h3>
+                    <span class="clear-filter" id="clear-filter">清除篩選</span>
+                </div>
+                <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
+                <div class="tags-container" id="tags-container">
+                    <!-- 标签将由JavaScript动态生成 -->
+                </div>
             </div>
-            <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
-            <div class="tags-container">
-                {{TAGS}}
+            
+            <!-- 正文內容 -->
+            <div class="content" id="categories-container">
+                <!-- 内容将由JavaScript动态生成 -->
             </div>
-        </div>
-        
-        <!-- 正文分類 -->
-        <div id="categories-container">
-            {{PINNED_ARTICLES}}
-            {{RECENT_ARTICLES}}
-            {{CATEGORIES}}
         </div>
         
         <!-- 無結果提示 -->
-        <div class="no-results" id="no-results">沒有找到相關文章</div>
+        <div class="no-results" id="no-results">
+            <h3>沒有找到相關文章</h3>
+            <p>嘗試選擇其他標籤或清除篩選條件</p>
+        </div>
         
-        <footer>© {{YEAR}} MyOGG. All rights reserved.</footer>
+        <footer>© 2023 MyOGG. All rights reserved.</footer>
     </div>
     
-    <script src="static/script.js"></script>
+    <script>
+        // 模拟数据 - 在实际应用中，这些数据应该来自后端
+        const blogData = {
+            pinned: [
+                { id: 1, title: "欢迎来到我的博客", date: "2023-10-01", tags: ["介绍", "博客"] },
+                { id: 2, title: "JavaScript最佳实践", date: "2023-09-28", tags: ["JavaScript", "编程"] }
+            ],
+            recent: [
+                { id: 3, title: "CSS Grid布局完全指南", date: "2023-10-15", tags: ["CSS", "布局"] },
+                { id: 4, title: "Vue 3组合式API详解", date: "2023-10-12", tags: ["Vue", "前端"] },
+                { id: 5, title: "Node.js性能优化技巧", date: "2023-10-08", tags: ["Node.js", "后端"] }
+            ],
+            categories: [
+                {
+                    name: "前端开发",
+                    articles: [
+                        { id: 6, title: "React Hooks深入解析", date: "2023-09-25", tags: ["React", "前端"] },
+                        { id: 7, title: "TypeScript入门指南", date: "2023-09-20", tags: ["TypeScript", "编程"] }
+                    ]
+                },
+                {
+                    name: "后端开发",
+                    articles: [
+                        { id: 8, title: "REST API设计原则", date: "2023-09-15", tags: ["API", "后端"] },
+                        { id: 9, title: "数据库优化策略", date: "2023-09-10", tags: ["数据库", "优化"] }
+                    ]
+                }
+            ]
+        };
+
+        // 获取所有标签
+        function getAllTags() {
+            const tags = new Set();
+            
+            // 从置顶文章中获取标签
+            blogData.pinned.forEach(article => {
+                article.tags.forEach(tag => tags.add(tag));
+            });
+            
+            // 从最近文章中获取标签
+            blogData.recent.forEach(article => {
+                article.tags.forEach(tag => tags.add(tag));
+            });
+            
+            // 从分类文章中获取标签
+            blogData.categories.forEach(category => {
+                category.articles.forEach(article => {
+                    article.tags.forEach(tag => tags.add(tag));
+                });
+            });
+            
+            return Array.from(tags);
+        }
+
+        // 渲染标签
+        function renderTags() {
+            const tagsContainer = document.getElementById('tags-container');
+            const tags = getAllTags();
+            
+            tagsContainer.innerHTML = tags.map(tag => 
+                `<span class="tag" data-tag="${tag}">${tag}</span>`
+            ).join('');
+        }
+
+        // 渲染文章列表
+        function renderArticles() {
+            const container = document.getElementById('categories-container');
+            let html = '';
+            
+            // 置顶文章
+            if (blogData.pinned.length > 0) {
+                html += `
+                    <div class="category pinned">
+                        <div class="category-header">
+                            <span class="category-title">置顶文章</span>
+                            <span class="article-count">${blogData.pinned.length} 篇</span>
+                        </div>
+                        <div class="articles-list">
+                            ${blogData.pinned.map(article => `
+                                <div class="article-item" data-id="${article.id}" data-tags="${article.tags.join(',')}">
+                                    <a href="#" class="article-title">${article.title}</a>
+                                    <span class="article-date">${article.date}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 最近文章
+            if (blogData.recent.length > 0) {
+                html += `
+                    <div class="category">
+                        <div class="category-header">
+                            <span class="category-title">最近文章</span>
+                            <span class="article-count">${blogData.recent.length} 篇</span>
+                        </div>
+                        <div class="articles-list">
+                            ${blogData.recent.map(article => `
+                                <div class="article-item" data-id="${article.id}" data-tags="${article.tags.join(',')}">
+                                    <a href="#" class="article-title">${article.title}</a>
+                                    <span class="article-date">${article.date}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // 分类文章
+            blogData.categories.forEach(category => {
+                html += `
+                    <div class="category">
+                        <div class="category-header">
+                            <span class="category-title">${category.name}</span>
+                            <span class="article-count">${category.articles.length} 篇</span>
+                        </div>
+                        <div class="articles-list">
+                            ${category.articles.map(article => `
+                                <div class="article-item" data-id="${article.id}" data-tags="${article.tags.join(',')}">
+                                    <a href="#" class="article-title">${article.title}</a>
+                                    <span class="article-date">${article.date}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            container.innerHTML = html;
+        }
+
+        // 筛选文章
+        function filterArticles(tag) {
+            const articles = document.querySelectorAll('.article-item');
+            const noResults = document.getElementById('no-results');
+            let visibleCount = 0;
+            
+            articles.forEach(article => {
+                const tags = article.getAttribute('data-tags').split(',');
+                if (tag === 'all' || tags.includes(tag)) {
+                    article.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+            
+            // 隐藏空的分类
+            document.querySelectorAll('.category').forEach(category => {
+                const visibleArticles = category.querySelectorAll('.article-item[style*="display: flex"]');
+                if (visibleArticles.length === 0) {
+                    category.style.display = 'none';
+                } else {
+                    category.style.display = 'block';
+                }
+            });
+            
+            // 显示/隐藏无结果提示
+            if (visibleCount === 0) {
+                noResults.classList.add('show');
+            } else {
+                noResults.classList.remove('show');
+            }
+        }
+
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            renderTags();
+            renderArticles();
+            
+            // 标签点击事件
+            document.querySelectorAll('.tag').forEach(tag => {
+                tag.addEventListener('click', function() {
+                    const selectedTag = this.getAttribute('data-tag');
+                    
+                    // 更新标签状态
+                    document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // 筛选文章
+                    filterArticles(selectedTag);
+                    
+                    // 更新筛选信息
+                    document.getElementById('filter-info').textContent = `当前筛选: ${selectedTag}`;
+                });
+            });
+            
+            // 清除筛选
+            document.getElementById('clear-filter').addEventListener('click', function() {
+                document.querySelectorAll('.tag').forEach(t => t.classList.remove('active'));
+                filterArticles('all');
+                document.getElementById('filter-info').textContent = '點擊標籤篩選文章';
+            });
+            
+            // 文章点击事件（在实际应用中应跳转到文章详情页）
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('article-title')) {
+                    e.preventDefault();
+                    alert('在实际应用中，这里会跳转到文章详情页');
+                }
+            });
+        });
+    </script>
 </body>
 </html>
