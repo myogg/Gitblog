@@ -1,0 +1,25 @@
+# config.yaml - GitBlog 配置文件
+
+# 显示设置
+max_recent: 5                # 最近文章显示数量
+max_per_category: 5          # 每个分类显示的最大文章数
+
+# 缓存设置
+cache_duration: 3600         # 缓存时间（秒）
+cache_body_max_length: 5000  # 缓存中文章内容的最大长度
+
+# 性能设置
+max_workers: 3               # 并行生成文章的最大线程数
+rate_limit_delay: 0.05       # API请求间隔（秒）
+max_issues: 200              # 最大获取文章数
+
+# 文章过滤
+exclude_labels:              # 排除的标签
+  - spam
+  - duplicate
+  - invalid
+
+include_only: []             # 如果指定，只包含这些标签（空数组表示包含所有）
+
+# 路径设置
+articles_dir: "articles"     # 文章输出目录
