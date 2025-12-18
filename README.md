@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
 - [皮毛、霜冻和盛宴](https://github.com/myogg/Gitblog/issues/133)--2025-12-17
 - [ai听书软件](https://github.com/myogg/Gitblog/issues/132)--2025-12-17
 - [天文学家拍摄到类星战塔图因的系外行星](https://github.com/myogg/Gitblog/issues/131)--2025-12-17
-- [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 
 ## 一些记录 (36篇文章)
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
@@ -135,16 +135,17 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## Myblog (43篇文章)
+## Myblog (44篇文章)
+- [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
 - [皮毛、霜冻和盛宴](https://github.com/myogg/Gitblog/issues/133)--2025-12-17
 - [看看大家的电脑上都贴了些啥？](https://github.com/myogg/Gitblog/issues/129)--2025-12-16
 - [申请强夺 Twitter 商标](https://github.com/myogg/Gitblog/issues/122)--2025-12-11
 - [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)--2025-12-11
-- [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)--2025-12-04
 
 <details>
-<summary>显示更多 (38篇)</summary>
+<summary>显示更多 (39篇)</summary>
 
+- [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)
 - [12月3日](https://github.com/myogg/Gitblog/issues/108)
 - [10000](https://github.com/myogg/Gitblog/issues/87)
 - [[ 胡思乱想 ]  我没钱了](https://github.com/myogg/Gitblog/issues/86)
