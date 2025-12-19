@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)--2025-12-18
 - [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
-- [皮毛、霜冻和盛宴](https://github.com/myogg/Gitblog/issues/133)--2025-12-17
 
 ## 一些记录 (36篇文章)
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
@@ -110,16 +110,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (14篇文章)
+## notes (15篇文章)
+- [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
-- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)--2025-03-23
 
 <details>
-<summary>显示更多 (9篇)</summary>
+<summary>显示更多 (10篇)</summary>
 
+- [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)
 - [那么，我的青春呢.](https://github.com/myogg/Gitblog/issues/52)
