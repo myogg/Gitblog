@@ -406,10 +406,9 @@ def generate_index_html(issues):
                 <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
         
-        # 修改点：添加 recent-articles 类名
         recent_html.append(f'''
-        <div class="category-section recent-articles">
-            <h2>最近更新 <small>({len(recent_issues)}篇)</small></h2>
+        <div class="category-section">
+            <h2>最近文章 <small>(5篇最新文章)</small></h2>
             <ul class="article-list">
                 {''.join(articles_html)}
             </ul>
