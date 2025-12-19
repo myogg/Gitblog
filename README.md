@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
 - [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
-- [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 
 ## 一些记录 (37篇文章)
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
@@ -138,7 +138,7 @@ My personal blog using issues and GitHub Actions
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## blog (49篇文章)
-- [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
+- [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
@@ -210,7 +210,8 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## Pinned (2篇文章)
+## Pinned (3篇文章)
+- [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
