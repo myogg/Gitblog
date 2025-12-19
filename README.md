@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)--2025-12-18
 - [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
-- [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
 
 ## 一些记录 (36篇文章)
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
@@ -136,16 +136,17 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## Myblog (46篇文章)
+## Myblog (47篇文章)
+- [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)--2025-12-18
 - [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
 - [皮毛、霜冻和盛宴](https://github.com/myogg/Gitblog/issues/133)--2025-12-17
-- [看看大家的电脑上都贴了些啥？](https://github.com/myogg/Gitblog/issues/129)--2025-12-16
 
 <details>
-<summary>显示更多 (41篇)</summary>
+<summary>显示更多 (42篇)</summary>
 
+- [看看大家的电脑上都贴了些啥？](https://github.com/myogg/Gitblog/issues/129)
 - [申请强夺 Twitter 商标](https://github.com/myogg/Gitblog/issues/122)
 - [最糟糕的发明是短视频](https://github.com/myogg/Gitblog/issues/118)
 - [這一陣甲流太猖狂了](https://github.com/myogg/Gitblog/issues/112)
