@@ -257,15 +257,47 @@ def load_article_template():
 </body>
 </html>"""
 
-def get_label_color(label_name):
-    """根据标签名生成一个稳定的颜色类名"""
-    hash_num = int(hashlib.md5(label_name.encode()).hexdigest()[:8], 16)
-    color_classes = [
-        "gh-label-1", "gh-label-2", "gh-label-3", "gh-label-4", 
-        "gh-label-5", "gh-label-6", "gh-label-7", "gh-label-8",
-        "gh-label-9", "gh-label-10"
-    ]
-    return color_classes[hash_num % len(color_classes)]
+def get_label_color(label_name, label_color):
+    """根据GitHub标签颜色生成对应的CSS类名"""
+    if not label_color:
+        # 如果没有颜色信息，回退到原来的hash方法
+        hash_num = int(hashlib.md5(label_name.encode()).hexdigest()[:8], 16)
+        color_classes = [
+            "gh-label-1", "gh-label-2", "gh-label-3", "gh-label-4", 
+            "gh-label-5", "gh-label-6", "gh-label-7", "gh-label-8",
+            "gh-label-9", "gh-label-10"
+        ]
+        return color_classes[hash_num % len(color_classes)]
+    
+    # 将GitHub的hex颜色映射到你的CSS类名
+    color_mapping = {
+        '#7057ff': 'gh-label-1',
+        '#008672': 'gh-label-2', 
+        '#b60205': 'gh-label-3',
+        '#0e8a16': 'gh-label-4',
+        '#ff9f1c': 'gh-label-5',
+        '#d93f0b': 'gh-label-6',
+        '#f9d0c4': 'gh-label-7',
+        '#1d76db': 'gh-label-8',
+        '#5319e7': 'gh-label-9',
+        '#fbca04': 'gh-label-10',
+        # GitHub默认颜色映射
+        '#d73a4a': 'gh-label-3',    # GitHub红 -> gh-label-3
+        '#0075ca': 'gh-label-8',    # GitHub蓝 -> gh-label-8
+        '#cfd3d7': 'gh-label-7',    # GitHub灰 -> gh-label-7
+        '#a2eeef': 'gh-label-4',    # GitHub青 -> gh-label-4
+        '#d876e3': 'gh-label-1',    # GitHub紫 -> gh-label-1
+        '#ffffff': 'gh-label-7',    # 白色 -> gh-label-7
+    }
+    
+    # 标准化颜色值（GitHub可能返回不带#的颜色）
+    if not label_color.startswith('#'):
+        normalized_color = '#' + label_color.lower()
+    else:
+        normalized_color = label_color.lower()
+    
+    # 查找匹配的颜色，如果没有匹配则使用默认
+    return color_mapping.get(normalized_color, 'gh-label-1')
 
 def sort_issues(issue_list):
     """自定义排序函数：先按 Pinned 标签，再按时间"""
@@ -285,11 +317,11 @@ def generate_article_page(issue):
     # 转换Markdown为HTML
     html_content = markdown.markdown(issue.body or "暂无内容", extensions=['extra', 'codehilite', 'tables'])
     
-    # 生成标签HTML
+    # 生成标签HTML - 使用GitHub实际颜色
     labels_html = []
     for label in issue.labels:
         if label.name.lower() != "pinned":
-            color_class = get_label_color(label.name)
+            color_class = get_label_color(label.name, label.color)
             labels_html.append(f'<span class="tag {color_class}">{label.name}</span> ')
     
     # 填充模板
@@ -319,9 +351,15 @@ def generate_index_html(issues):
     
     # 按標簽分類
     label_dict = {}
+    # 同时收集所有标签的颜色信息
+    label_colors = {}  # 存储每个标签的颜色
+    
     for issue in issues:
         for label in issue.labels:
             label_dict.setdefault(label.name, []).append(issue)
+            # 存储标签颜色（取第一个出现的颜色）
+            if label.name not in label_colors:
+                label_colors[label.name] = label.color
     
     # 对每个分类下的文章进行排序
     for label in label_dict:
@@ -339,12 +377,14 @@ def generate_index_html(issues):
     # 加载基础模板
     template = load_template("base.html")
     
-    # 生成標籤HTML
+    # 生成標籤HTML - 使用GitHub实际颜色
     all_labels = sorted(label_dict.keys())
     tags_html = []
     for label in all_labels:
         safe_label = re.sub(r'[^a-zA-Z0-9]', '-', label).lower()
-        color_class = get_label_color(label)
+        # 使用标签的实际颜色
+        label_color = label_colors.get(label)
+        color_class = get_label_color(label, label_color)
         tags_html.append(f'<span class="tag {color_class}" data-label="{safe_label}" onclick="filterByLabel(\'{safe_label}\')">{label}</span> ')
     
     # 1. 生成置顶文章HTML区块 - 使用与分类一致的样式
@@ -357,7 +397,6 @@ def generate_index_html(issues):
             article_filename = generate_article_page(issue)
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
-            # 修改点1：移除target="_blank"，移除GitHub链接
             articles_html.append(f'''
             <li>
                 <a href="{article_url}">{issue.title}</a>
@@ -399,7 +438,6 @@ def generate_index_html(issues):
             article_filename = generate_article_page(issue)
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
-            # 修改点2：移除target="_blank"，移除GitHub链接
             articles_html.append(f'''
             <li>
                 <a href="{article_url}">{issue.title}</a>
@@ -430,7 +468,6 @@ def generate_index_html(issues):
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
             pin_mark = " 🔖" if any(lbl.name.lower() == "pinned" for lbl in issue.labels) else ""
-            # 修改点3：移除target="_blank"，移除GitHub链接
             articles_html.append(f'''
             <li>
                 <a href="{article_url}">{issue.title}</a>
@@ -445,7 +482,6 @@ def generate_index_html(issues):
                 article_filename = generate_article_page(issue)
                 article_url = f"{ARTICLES_DIR}/{article_filename}"
                 
-                # 修改点4：移除target="_blank"，移除GitHub链接
                 hidden_articles_html.append(f'''
                 <li>
                     <a href="{article_url}">{issue.title}</a>
