@@ -10,15 +10,9 @@
 <body>
     <div class="markdown-body">
         <div class="header-line"></div>
+        <h1 class="page-title">mYogg'Blog</h1>
         
-        <!-- 修改1：导航栏替换标题 -->
-        <nav class="site-nav">
-            <a href="index.html" class="nav-link">首页</a>
-            <a href="about.html" class="nav-link">关于</a>
-            <a href="archives.html" class="nav-link">归档</a>
-        </nav>
-        
-        <!-- 主内容容器 -->
+        <!-- 主内容容器：实现左右布局 -->
         <div class="main-container">
             <!-- 左侧标签栏 -->
             <div class="sidebar">
@@ -30,19 +24,19 @@
                 <div class="tags-container">
                     {{TAGS}}
                 </div>
-                
-                <!-- 修改2：最近文章移到侧边栏内 -->
-                {{RECENT_ARTICLES}}
             </div>
             
             <!-- 右侧文章内容区域 -->
             <div id="categories-container">
                 {{PINNED_ARTICLES}}
+                {{RECENT_ARTICLES}}
                 {{CATEGORIES}}
             </div>
         </div>
         
+        <!-- 無結果提示 -->
         <div class="no-results" id="no-results">沒有找到相關文章</div>
+        
         <footer>© {{YEAR}} MyOGG. All rights reserved.</footer>
     </div>
     
