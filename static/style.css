@@ -51,7 +51,7 @@ footer {
     font-size: 0.9rem;
 }
 
-/* 侧边栏样式 */
+/* 侧边栏基础样式 */
 .sidebar {
     background: #fafafa;
     padding: 1rem;
@@ -64,7 +64,7 @@ footer {
     margin-bottom: 10px;
 }
 
-/* GitHub标签颜色系统 */
+/* GitHub标签颜色系统 - 保持原样 */
 .tag {
     display: inline-block;
     margin: 2px 4px;
@@ -76,7 +76,7 @@ footer {
     font-weight: 500;
 }
 
-/* GitHub标签颜色 - 类似GitHub的实际颜色 */
+/* GitHub标签颜色 - 保持原样 */
 .tag.gh-label-1 { background-color: #7057ff; color: white; }
 .tag.gh-label-2 { background-color: #008672; color: white; }
 .tag.gh-label-3 { background-color: #b60205; color: white; }
@@ -425,6 +425,37 @@ footer {
     border-radius: 6px;
 }
 
+/* ========== 左侧标签栏布局样式 ========== */
+
+/* 主容器：建立Flex布局，让侧边栏和内容区并排 */
+.main-container {
+    display: flex;
+    flex-direction: row; /* 横向排列 */
+    align-items: flex-start; /* 顶部对齐 */
+    gap: 30px; /* 设置两个区域之间的间距 */
+    margin-top: 20px;
+}
+
+/* 侧边栏样式：固定宽度，滚动时保持可见 */
+.sidebar {
+    flex: 0 0 220px; /* 不伸缩，固定宽度为220px */
+    position: sticky; /* 粘性定位，滚动时跟随 */
+    top: 20px; /* 距离顶部20px时固定 */
+    max-height: calc(100vh - 40px); /* 最大高度为视口高度减40px */
+    overflow-y: auto; /* 如果内容过长，显示垂直滚动条 */
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 0; /* 覆盖原来的下边距 */
+}
+
+/* 内容区域样式：占据剩余所有宽度 */
+#categories-container {
+    flex: 1; /* 占据 Flex 布局中剩余的所有空间 */
+    min-width: 0; /* 防止内容溢出，对Flex布局非常重要 */
+}
+
 /* 响应式设计 */
 @media (max-width: 768px) {
     .markdown-body {
@@ -432,8 +463,19 @@ footer {
         font-size: 16px;
     }
     
+    /* 移动端：恢复垂直布局 */
+    .main-container {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
     .sidebar {
-        padding: 15px;
+        flex: none;
+        width: 100%;
+        position: static;
+        max-height: none;
+        overflow-y: visible;
+        margin-bottom: 2rem;
     }
     
     .article-container {
@@ -476,5 +518,9 @@ footer {
     
     .github-link {
         font-size: 0.7em;
+    }
+    
+    .main-container {
+        gap: 15px;
     }
 }
