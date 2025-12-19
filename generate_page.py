@@ -357,11 +357,11 @@ def generate_index_html(issues):
             article_filename = generate_article_page(issue)
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
+            # 修改点1：移除target="_blank"，移除GitHub链接
             articles_html.append(f'''
             <li>
-                <a href="{article_url}" target="_blank">{issue.title}</a>
+                <a href="{article_url}">{issue.title}</a>
                 <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
-                <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
         
         # 包裹在与分类一致的容器中
@@ -399,11 +399,11 @@ def generate_index_html(issues):
             article_filename = generate_article_page(issue)
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
+            # 修改点2：移除target="_blank"，移除GitHub链接
             articles_html.append(f'''
             <li>
-                <a href="{article_url}" target="_blank">{issue.title}</a>
+                <a href="{article_url}">{issue.title}</a>
                 <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
-                <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
         
         recent_html.append(f'''
@@ -430,11 +430,11 @@ def generate_index_html(issues):
             article_url = f"{ARTICLES_DIR}/{article_filename}"
             
             pin_mark = " 🔖" if any(lbl.name.lower() == "pinned" for lbl in issue.labels) else ""
+            # 修改点3：移除target="_blank"，移除GitHub链接
             articles_html.append(f'''
             <li>
-                <a href="{article_url}" target="_blank">{issue.title}</a>
+                <a href="{article_url}">{issue.title}</a>
                 <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")}){pin_mark}</span>
-                <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
             </li>''')
         
         hidden_articles_html = []
@@ -445,11 +445,11 @@ def generate_index_html(issues):
                 article_filename = generate_article_page(issue)
                 article_url = f"{ARTICLES_DIR}/{article_filename}"
                 
+                # 修改点4：移除target="_blank"，移除GitHub链接
                 hidden_articles_html.append(f'''
                 <li>
-                    <a href="{article_url}" target="_blank">{issue.title}</a>
+                    <a href="{article_url}">{issue.title}</a>
                     <span class="article-date">({issue.created_at.strftime("%Y-%m-%d")})</span>
-                    <a href="{issue.html_url}" class="github-link" target="_blank" title="查看GitHub原文">🔗</a>
                 </li>''')
             
             show_more_btn = f'''
