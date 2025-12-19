@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)--2025-12-18
-- [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
 
-## 一些记录 (36篇文章)
+## 一些记录 (37篇文章)
+- [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)--2025-12-16
 - [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)--2025-12-16
-- [单光子单原子量子干涉仪](https://github.com/myogg/Gitblog/issues/126)--2025-12-16
 
 <details>
-<summary>显示更多 (31篇)</summary>
+<summary>显示更多 (32篇)</summary>
 
+- [单光子单原子量子干涉仪](https://github.com/myogg/Gitblog/issues/126)
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)
 - [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)
 - [焦虑舒缓工具集](https://github.com/myogg/Gitblog/issues/113)
