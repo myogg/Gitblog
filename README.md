@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
-- [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 
 ## 一些记录 (37篇文章)
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
@@ -137,16 +137,17 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## blog (48篇文章)
+## blog (49篇文章)
+- [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)--2025-12-18
-- [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)--2025-12-18
 
 <details>
-<summary>显示更多 (43篇)</summary>
+<summary>显示更多 (44篇)</summary>
 
+- [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)
 - [皮毛、霜冻和盛宴](https://github.com/myogg/Gitblog/issues/133)
 - [看看大家的电脑上都贴了些啥？](https://github.com/myogg/Gitblog/issues/129)
 - [申请强夺 Twitter 商标](https://github.com/myogg/Gitblog/issues/122)
