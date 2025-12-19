@@ -136,7 +136,7 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## Myblog (47篇文章)
+## blog (47篇文章)
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)--2025-12-18
