@@ -11,50 +11,93 @@
     <div class="markdown-body">
         <div class="header-line"></div>
         <h1 class="page-title">北方的博客</h1>
+        
         <div class="main-container">
             <div class="sidebar">
-                <div class="filter-controls"><h3>標籤</h3><span class="clear-filter" id="clear-filter">清除篩選</span></div>
-                <div class="tags-container">
-                    {% for name, info in label_info.items() %}
-                    <span class="tag" style="background-color:#{{info.color}}; color:{{info.text_color}};" 
-                          data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">{{name}}</span>
+                <div class="filter-controls">
+                    <h3 style="margin:0;">標籤雲</h3>
+                    <span class="clear-filter" id="clear-filter">清除篩選</span>
+                </div>
+                <div class="filter-info" id="filter-info">點擊標籤篩選文章</div>
+                
+                <div class="tags-container" style="display: flex; flex-wrap: wrap; gap: 8px; padding: 10px 0;">
+                    {% for name, items in label_dict.items() %}
+                        {% set count = items|length %}
+                        {# 根據文章數調整大小：基礎13px，每多2篇+1px，最高20px #}
+                        {% set size = [13 + (count // 2), 20]|min %}
+                        
+                        <span class="tag tag-cloud-item" 
+                              style="background-color: #{{ label_info[name].color }}; 
+                                     color: {{ label_info[name].text_color }}; 
+                                     font-size: {{ size }}px;
+                                     max-width: 140px;
+                                     overflow: hidden;
+                                     text-overflow: ellipsis;
+                                     white-space: nowrap;
+                                     display: inline-block;
+                                     padding: 4px 10px;
+                                     border-radius: 12px;
+                                     cursor: pointer;
+                                     transition: all 0.2s ease;"
+                              data-label="{{ label_info[name].safe_name }}" 
+                              title="{{ name }} ({{ count }} 篇文章)"
+                              onclick="filterByLabel('{{ label_info[name].safe_name }}')">
+                            {{ name }}
+                            <small style="font-size: 0.7em; opacity: 0.7;">{{ count }}</small>
+                        </span>
                     {% endfor %}
                 </div>
             </div>
+            
             <div id="categories-container">
                 {% if pinned_issues %}
                 <div class="category-section">
-                    <h2>置頂文章 <small>({{pinned_issues|length}}篇)</small></h2>
+                    <h2>置頂文章 <small>({{ pinned_issues|length }})</small></h2>
                     <ul class="article-list">
-                        {% for i in pinned_issues %}
-                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
+                        {% for issue in pinned_issues %}
+                        <li>
+                            <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
+                            <span class="article-date">({{ issue.created_at.strftime('%Y-%m-%d') }})</span>
+                        </li>
                         {% endfor %}
                     </ul>
                 </div>
                 {% endif %}
+
                 {% for label, items in label_dict.items() %}
-                <div class="category-section" data-label="{{label_info[label].safe_name}}">
-                    <h2>{{label}} <small>({{items|length}}篇)</small></h2>
+                <div class="category-section" data-label="{{ label_info[label].safe_name }}">
+                    <h2>{{ label }} <small>({{ items|length }})</small></h2>
                     <ul class="article-list">
-                        {% for i in items[:MAX_PER_CATEGORY] %}
-                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
+                        {% for issue in items[:MAX_PER_CATEGORY] %}
+                        <li>
+                            <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
+                            <span class="article-date">({{ issue.created_at.strftime('%Y-%m-%d') }})</span>
+                        </li>
                         {% endfor %}
                     </ul>
+                    
                     {% if items|length > MAX_PER_CATEGORY %}
-                    <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
+                    <div id="hidden-{{ label_info[label].safe_name }}-hidden" class="hidden-articles">
                         <ul class="article-list">
-                            {% for i in items[MAX_PER_CATEGORY:] %}
-                            <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
+                            {% for issue in items[MAX_PER_CATEGORY:] %}
+                            <li>
+                                <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
+                                <span class="article-date">({{ issue.created_at.strftime('%Y-%m-%d') }})</span>
+                            </li>
                             {% endfor %}
                         </ul>
                     </div>
-                    <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">顯示更多</button>
+                    <button class="show-more-btn" onclick="toggleMore('{{ label_info[label].safe_name }}-hidden')" id="btn-{{ label_info[label].safe_name }}-hidden">
+                        顯示更多
+                    </button>
                     {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
-        <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
+        
+        <div class="no-results" id="no-results">沒有找到相關文章</div>
+        <footer>© {{ YEAR }} 北方的博客. All rights reserved.</footer>
     </div>
     <script src="static/script.js"></script>
 </body>
