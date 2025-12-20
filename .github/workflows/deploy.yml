@@ -3,7 +3,8 @@ name: Deploy GitHub Pages
 on:
   workflow_dispatch:   # 手動觸發
   issues:
-    types: [labeled, opened, edited]  # 增加 opened/edited，確保新文章也能自動更新
+    # 這裡保留 labeled, opened, edited 以確保靈活性
+    types: [labeled, opened, edited]
 
 permissions:
   contents: read
@@ -12,10 +13,18 @@ permissions:
 
 concurrency:
   group: "pages-deploy"
-  cancel-in-progress: true  # 取消正在運行的舊部署
+  cancel-in-progress: true
 
 jobs:
   deploy:
+    # 【核心修改：主人准入制】
+    # 只有滿足以下任一條件才運行：
+    # 1. 是你手動觸發的 (workflow_dispatch)
+    # 2. 觸發事件是 'labeled'（只有你能打標籤，這區分了主人和客人）
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      github.event.action == 'labeled'
+    
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -28,17 +37,16 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
-          cache: 'pip' # 使用緩存加速
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          # 核心修改：在這裡補上 jinja2，並保留原有的庫
           pip install markdown PyGithub marko jinja2 feedgen
 
       - name: Generate HTML page
         env:
-          G_TT: ${{ secrets.G_TT }}  # 保持 G_TT 不變
+          G_TT: ${{ secrets.G_TT }}
         run: |
           echo "開始生成HTML頁面..."
           python generate_page.py
@@ -46,7 +54,6 @@ jobs:
           echo "檢查生成的文件:"
           ls -la
           
-          # 檢查主頁
           if [ -f "index.html" ]; then
             echo "✅ index.html 已生成"
           else
@@ -54,18 +61,11 @@ jobs:
             exit 1
           fi
           
-          # 檢查 3D 標籤球歸檔頁
           if [ -f "archives.html" ]; then
             echo "✅ archives.html (3D標籤球) 已生成"
           else
-            echo "❌ archives.html 未生成，請檢查模板"
+            echo "❌ archives.html 未生成"
             exit 1
-          fi
-          
-          if [ -d "static" ]; then
-            echo "✅ static 目錄已生成"
-          else
-            echo "⚠️  static 目錄未生成"
           fi
 
       - name: Setup GitHub Pages
@@ -74,7 +74,6 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 上傳包含所有生成 HTML 的根目錄
           path: .
 
       - name: Deploy to GitHub Pages
