@@ -2,39 +2,78 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文章歸檔 - 北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
-    <link rel="stylesheet" href="static/style.css">
     <style>
-        .archive-container { max-width: 800px; margin: 0 auto; padding: 20px; }
-        .sphere-section { background: #f6f8fa; border-radius: 12px; padding: 20px; margin-bottom: 40px; text-align: center; }
-        .year-section { margin-bottom: 30px; border-left: 3px solid #0366d6; padding-left: 20px; }
+        body { background-color: #ffffff; margin: 0; padding: 0; }
+        .markdown-body { box-sizing: border-box; min-width: 200px; max-width: 900px; margin: 0 auto; padding: 45px; }
+        
+        /* 3D 球體容器：這是實現「圓形地球」的關鍵 */
+        #sphere-section {
+            width: 100%;
+            height: 450px;
+            background: radial-gradient(circle, #ffffff 0%, #f8f9fa 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 20px;
+            margin-bottom: 50px;
+            overflow: hidden;
+        }
+
+        /* 歸檔列表樣式 */
+        .year-group { margin-bottom: 40px; }
+        .year-label { font-size: 28px; border-bottom: 2px solid #0366d6; color: #24292e; padding-bottom: 8px; margin-bottom: 20px; }
         .archive-list { list-style: none; padding: 0; }
-        .archive-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
-        .archive-date { color: #666; font-family: monospace; }
-        #tag-list { display: none; }
+        .archive-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            padding: 12px 0; 
+            border-bottom: 1px solid #eaecef; 
+        }
+        .archive-item a { font-size: 18px; color: #0366d6; text-decoration: none; font-weight: 500; }
+        .archive-item a:hover { text-decoration: underline; }
+        .archive-date { color: #6a737d; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; }
+
+        /* 隱藏給 JS 使用的原始數據 */
+        #tag-data { display: none; }
+
+        @media (max-width: 767px) {
+            .markdown-body { padding: 15px; }
+            #sphere-section { height: 350px; }
+            .archive-item { flex-direction: column; align-items: flex-start; }
+            .archive-date { margin-top: 5px; font-size: 14px; }
+        }
     </style>
 </head>
 <body>
     <div class="markdown-body">
-        <div class="archive-container">
-            <a href="index.html" style="margin-bottom: 20px; display: inline-block;">← 返回首頁</a>
-            <h1>文章歸檔</h1>
+        <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回主頁</a>
+        <h1 style="text-align: center; border: none; margin-bottom: 30px;">文章歸檔</h1>
 
-            <div class="sphere-section">
-                <canvas width="400" height="400" id="archiveCanvas" style="max-width: 100%;">
-                    <ul id="tag-list">
-                        {% for name, items in label_dict.items() %}
-                        <li><a href="index.html" onclick="localStorage.setItem('filter', '{{ label_info[name].safe_name }}')" 
-                               style="color: #{{ label_info[name].color }}; font-size: {{ [14 + items|length, 24]|min }}px;">{{ name }}</a></li>
-                        {% endfor %}
-                    </ul>
-                </canvas>
-            </div>
+        <div id="sphere-section">
+            <canvas width="400" height="400" id="tagCanvas">
+                <p>您的瀏覽器不支持 Canvas</p>
+            </canvas>
+        </div>
 
+        <ul id="tag-data">
+            {% for name, items in label_dict.items() %}
+            <li>
+                <a href="index.html" 
+                   style="color: #{{ label_info[name].color }}; font-size: {{ [16 + items|length*2, 32]|min }}px;">
+                    {{ name }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="archive-content">
             {% for year in sorted_years %}
-            <div class="year-section">
-                <h2>{{ year }} 年</h2>
+            <div class="year-group">
+                <div class="year-label">{{ year }}</div>
                 <ul class="archive-list">
                     {% for issue in articles_by_year[year] %}
                     <li class="archive-item">
@@ -46,17 +85,33 @@
             </div>
             {% endfor %}
         </div>
-        <footer>© {{ YEAR }} 北方的博客</footer>
+
+        <footer style="margin-top: 100px; text-align: center; color: #888;">
+            © {{ YEAR }} 北方的博客
+        </footer>
     </div>
 
-    <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
-    <script>
+    <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
         window.onload = function() {
-            TagCanvas.Start('archiveCanvas', 'tag-list', {
-                textColour: null, outlineColour: '#0366d6', reverse: true,
-                depth: 0.8, maxSpeed: 0.05, weight: true, initial: [0.1, -0.1]
-            });
+            try {
+                TagCanvas.Start('tagCanvas', 'tag-data', {
+                    textColour: null,          // 繼承標籤本身的顏色
+                    outlineColour: 'transparent',
+                    reverse: true,             // 隨鼠標方向旋轉
+                    depth: 0.95,               // 增加球體立體感
+                    maxSpeed: 0.04,            // 旋轉速度
+                    initial: [0.1, -0.1],      // 初始自動旋轉
+                    weight: true,              // 根據文章數顯示大小
+                    weightMode: 'both',
+                    fadeIn: 800,               // 淡入效果
+                    wheelZoom: false,
+                    dragControl: true          // 允許手動拖拽地球
+                });
+            } catch(e) {
+                document.getElementById('sphere-section').style.display = 'none';
+            }
         };
     </script>
 </body>
-  </html>
+</html>
