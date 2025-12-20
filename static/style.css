@@ -1,61 +1,526 @@
-/* 基礎佈局保護 */
-.main-container {
+/* 基础样式 */
+body {
     display: flex;
-    gap: 30px;
-    align-items: flex-start;
+    justify-content: center;
+    background: #f5f5f5;
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    line-height: 1.6;
 }
 
-.sidebar {
-    width: 240px;          /* 固定側邊欄寬度 */
-    flex-shrink: 0;        /* 禁止側邊欄被壓縮 */
-    position: sticky;      /* 滾動跟隨 */
-    top: 20px;
-    background-color: #fafafa;
-    padding: 15px;
+.markdown-body {
+    max-width: 900px;
+    width: 95%;
+    padding: 2rem;
+    margin: 2rem auto;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
-    max-height: calc(100vh - 40px);
-    overflow-y: auto;      /* 標籤太多時允許內部滾動 */
-    overflow-x: hidden;    /* 絕對禁止橫向溢出 */
 }
 
-/* 標籤雲項目效果 */
-.tag-cloud-item:hover {
-    transform: translateY(-2px) scale(1.05);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    filter: brightness(1.05);
-    z-index: 10;
+h1, h2, h3 {
+    color: #2c3e50;
 }
 
-/* 文章列表標題保護：防止標題過長 */
+a {
+    color: #0366d6;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.header-line {
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, #ff6a00, #ee0979, #00d4ff);
+    margin-bottom: 1rem;
+}
+
+h1.page-title {
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 2rem;
+}
+
+footer {
+    margin-top: 2rem;
+    text-align: center;
+    color: #888;
+    font-size: 0.9rem;
+}
+
+/* 侧边栏基础样式 */
+.sidebar {
+    background: #fafafa;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-bottom: 2rem;
+}
+
+.sidebar h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+/* GitHub标签颜色系统 - 保持原样 */
+.tag {
+    display: inline-block;
+    margin: 2px 4px;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-weight: 500;
+}
+
+/* GitHub标签颜色 - 保持原样 */
+.tag.gh-label-1 { background-color: #7057ff; color: white; }
+.tag.gh-label-2 { background-color: #008672; color: white; }
+.tag.gh-label-3 { background-color: #b60205; color: white; }
+.tag.gh-label-4 { background-color: #0e8a16; color: white; }
+.tag.gh-label-5 { background-color: #ff9f1c; color: black; }
+.tag.gh-label-6 { background-color: #d93f0b; color: white; }
+.tag.gh-label-7 { background-color: #f9d0c4; color: black; }
+.tag.gh-label-8 { background-color: #1d76db; color: white; }
+.tag.gh-label-9 { background-color: #5319e7; color: white; }
+.tag.gh-label-10 { background-color: #fbca04; color: black; }
+
+.tag:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.tag.active {
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,0.8);
+    transform: translateY(0);
+}
+
+/* 按钮样式 */
+.show-more-btn {
+    display: inline-block;
+    margin: 10px 0;
+    padding: 8px 16px;
+    background: #0366d6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s;
+}
+
+.show-more-btn:hover {
+    background: #0256b3;
+    transform: translateY(-1px);
+}
+
+/* 隐藏文章区域 */
+.hidden-articles {
+    display: none;
+}
+
+.hidden-articles.visible {
+    display: block;
+}
+
+/* 文章列表样式 */
+.article-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
 .article-list li {
+    margin-bottom: 10px;
+    padding: 10px 12px;
+    border-left: 3px solid #0366d6;
+    background: #fafafa;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.3s;
+    position: relative;
+    padding-right: 30px; /* 为GitHub链接留出空间 */
+}
+
+.article-list li:hover {
+    background: #f0f7ff;
+    border-left-color: #024ea1;
+    transform: translateX(3px);
+}
+
+/* GitHub链接样式 */
+.github-link {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 0.8em;
+    color: #0366d6;
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+
+.github-link:hover {
+    opacity: 1;
+    text-decoration: none;
+}
+
+.article-list li .github-link {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* 文章日期样式 */
+.article-date {
+    color: #888;
+    font-size: 0.9em;
+    margin-left: 5px;
+}
+
+/* 分类区块样式 */
+.category-section {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.category-section:last-child {
+    border-bottom: none;
+}
+
+.category-section h2 {
+    color: #2c3e50;
+    margin-bottom: 15px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #0366d6;
+}
+
+.category-section h2 small {
+    font-size: 0.7em;
+    color: #666;
+    font-weight: normal;
+}
+
+/* 筛选控制 */
+.filter-controls {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 8px;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.article-list li a {
+.clear-filter {
+    display: none;
+    margin-left: 10px;
+    padding: 4px 12px;
+    background: #dc3545;
+    color: white;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.clear-filter:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.clear-filter.visible {
+    display: inline-block;
+}
+
+.filter-info {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+/* 无结果提示 */
+.no-results {
+    display: none;
+    text-align: center;
+    color: #999;
+    padding: 3rem;
+    font-size: 1.1rem;
+}
+
+.no-results.visible {
+    display: block;
+}
+
+.tags-container {
+    margin-bottom: 15px;
+}
+
+/* ========== 文章详情页样式 ========== */
+.article-container {
+    max-width: 900px;
+    margin: 2rem auto;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
     overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    flex: 1;
 }
 
-.article-date {
-    flex-shrink: 0;
-    color: #888;
-    font-size: 0.85em;
+.article-header {
+    background: #fafafa;
+    padding: 2rem;
+    border-bottom: 1px solid #e1e4e8;
 }
 
-/* 手機端自動適應 */
+.back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    color: #0366d6;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+.article-title {
+    margin: 0 0 1rem 0;
+    color: #2c3e50;
+    font-size: 2rem;
+    line-height: 1.2;
+}
+
+.article-meta {
+    color: #586069;
+    font-size: 0.9rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+}
+
+.article-meta span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.article-labels {
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+}
+
+.article-content {
+    padding: 2rem;
+}
+
+.original-link-container {
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: #f6f8fa;
+    border-radius: 6px;
+    border: 1px solid #e1e4e8;
+}
+
+.original-link-container h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #2c3e50;
+}
+
+.github-link-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0.5rem;
+    padding: 0.6rem 1.2rem;
+    background: #24292e;
+    color: white;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+}
+
+.github-link-btn:hover {
+    background: #000;
+    text-decoration: none;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.github-link-btn:before {
+    content: "🐙";
+    font-size: 1rem;
+}
+
+.original-link-container p {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #586069;
+    line-height: 1.5;
+}
+
+/* 文章内容中的样式 */
+.article-content .markdown-body {
+    max-width: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    box-shadow: none;
+    background: transparent;
+}
+
+.article-content .markdown-body h1,
+.article-content .markdown-body h2,
+.article-content .markdown-body h3 {
+    color: #2c3e50;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+}
+
+.article-content .markdown-body code {
+    background: #f6f8fa;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.article-content .markdown-body pre {
+    background: #f6f8fa;
+    padding: 1em;
+    border-radius: 6px;
+    overflow-x: auto;
+}
+
+.article-content .markdown-body blockquote {
+    border-left: 4px solid #dfe2e5;
+    padding-left: 1em;
+    color: #6a737d;
+    margin: 1em 0;
+}
+
+.article-content .markdown-body table {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 1em 0;
+}
+
+.article-content .markdown-body th,
+.article-content .markdown-body td {
+    border: 1px solid #dfe2e5;
+    padding: 0.5em;
+}
+
+.article-content .markdown-body img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+}
+
+/* ========== 左侧标签栏布局样式 ========== */
+
+/* 主容器：建立Flex布局，让侧边栏和内容区并排 */
+.main-container {
+    display: flex;
+    flex-direction: row; /* 横向排列 */
+    align-items: flex-start; /* 顶部对齐 */
+    gap: 30px; /* 设置两个区域之间的间距 */
+    margin-top: 20px;
+}
+
+/* 侧边栏样式：固定宽度，滚动时保持可见 */
+.sidebar {
+    flex: 0 0 220px; /* 不伸缩，固定宽度为220px */
+    position: sticky; /* 粘性定位，滚动时跟随 */
+    top: 20px; /* 距离顶部20px时固定 */
+    max-height: calc(100vh - 40px); /* 最大高度为视口高度减40px */
+    overflow-y: auto; /* 如果内容过长，显示垂直滚动条 */
+    padding: 15px;
+    background-color: #fafafa;
+    border-radius: 8px;
+    box-sizing: border-box;
+    margin-bottom: 0; /* 覆盖原来的下边距 */
+}
+
+/* 内容区域样式：占据剩余所有宽度 */
+#categories-container {
+    flex: 1; /* 占据 Flex 布局中剩余的所有空间 */
+    min-width: 0; /* 防止内容溢出，对Flex布局非常重要 */
+}
+
+/* 响应式设计 */
 @media (max-width: 768px) {
+    .markdown-body {
+        padding: 1rem;
+        font-size: 16px;
+    }
+    
+    /* 移动端：恢复垂直布局 */
     .main-container {
         flex-direction: column;
+        gap: 20px;
     }
+    
     .sidebar {
+        flex: none;
         width: 100%;
         position: static;
         max-height: none;
+        overflow-y: visible;
+        margin-bottom: 2rem;
+    }
+    
+    .article-container {
+        margin: 0;
+        border-radius: 0;
+    }
+    
+    .article-header,
+    .article-content {
+        padding: 1rem;
+    }
+    
+    .article-title {
+        font-size: 1.5rem;
+    }
+    
+    .article-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    .markdown-body {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        box-shadow: none;
+    }
+    
+    .tag {
+        font-size: 0.8rem;
+        padding: 3px 8px;
+    }
+    
+    .article-list li {
+        padding-right: 25px;
+    }
+    
+    .github-link {
+        font-size: 0.7em;
+    }
+    
+    .main-container {
+        gap: 15px;
     }
 }
