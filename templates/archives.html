@@ -9,10 +9,9 @@
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         
-        /* 1. 畫布容器：調小顯示區域，讓球體更精緻 */
         #sphere-container {
             width: 100%;
-            height: 420px; 
+            height: 380px; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -20,30 +19,18 @@
             overflow: hidden;
         }
 
-        /* 實際顯示大小為 400px */
+        /* 顯示大小設為 380px，讓佈局更緊湊 */
         canvas#tagCanvas {
-            width: 400px;
-            height: 400px;
+            width: 380px;
+            height: 380px;
             cursor: pointer;
         }
 
-        .filter-info { 
-            text-align: center; 
-            margin-bottom: 30px; 
-            min-height: 30px;
-        }
-
+        .filter-info { text-align: center; margin-bottom: 20px; min-height: 30px; }
         .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; }
-        .archive-item { 
-            display: flex; 
-            justify-content: space-between; 
-            padding: 12px 0; 
-            border-bottom: 1px solid #f0f0f0; 
-        }
+        .archive-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
         .archive-date { color: #888; font-family: monospace; }
-        
         #tag-data { display: none; }
-        
         .reset-btn {
             display: inline-block;
             margin-left: 10px;
@@ -65,13 +52,12 @@
         <h1 style="text-align: center; border-bottom: none; margin-bottom: 0;">文章歸檔</h1>
 
         <div id="sphere-container">
-            <canvas width="1000" height="1000" id="tagCanvas">
+            <canvas width="700" height="700" id="tagCanvas">
                 <p>您的瀏覽器不支持 Canvas</p>
             </canvas>
         </div>
 
-        <div class="filter-info" id="filterDisplay">
-            </div>
+        <div class="filter-info" id="filterDisplay"></div>
 
         <ul id="tag-data">
             {% for name, items in label_dict.items() %}
@@ -106,56 +92,53 @@
         window.onload = function() {
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
-                    textColour: null,           // 使用 HTML 裡的 inline color
+                    textColour: null,
                     outlineColour: 'transparent',
                     reverse: true,
-                    depth: 0.6,                 // 降低深度讓球體更扁平圓潤，字體顯大
-                    maxSpeed: 0.04,
+                    // --- 關鍵修改：變大的秘訣 ---
+                    depth: 0.1,                 // 極低深度，標籤不往遠處縮小，全部推向最前面
+                    zoom: 1.1,                  // 全局放大 10%
+                    maxSpeed: 0.03,
                     initial: [0.1, -0.1],
                     wheelZoom: false,
                     dragControl: true,
-                    clickToFront: 600,          // 點擊後標籤轉向正面
-                    freezeActive: true,         // 滑鼠懸停暫停
-                    frontSelect: true,          // 優先選中前景標籤
+                    clickToFront: 600,
+                    freezeActive: true,
+                    frontSelect: true,
                     
-                    // --- 字體巨大化與高清設置 ---
+                    // --- 字體佔比優化 ---
                     weight: true,
                     weightMode: 'size',
-                    weightSize: 1.2,
-                    minFontSize: 45,            // 高清模式下的最小字號 (相當於視覺 18px)
-                    maxFontSize: 90,            // 高清模式下的最大字號 (相當於視覺 36px)
+                    weightSize: 1.5,
+                    minFontSize: 30,            // 縮小內部畫布後，30px 已經非常大
+                    maxFontSize: 60,            
                     textFont: 'Impact, Arial Black, sans-serif',
-                    padding: 15,                // 防止大字體重疊
+                    padding: 5,                 // 壓縮邊距，讓字體充滿球體
                     
                     outlineMethod: 'colour',
-                    activeCursor: 'pointer'
+                    activeCursor: 'pointer',
+                    stretchX: 1.2               // 橫向拉伸，防止長文字換行縮小
                 });
             } catch(e) {
                 document.getElementById('sphere-container').style.display = 'none';
             }
         };
 
-        // 過濾邏輯
         function filterByTag(tagName) {
             const items = document.querySelectorAll('.archive-item');
             const sections = document.querySelectorAll('.year-section');
             const display = document.getElementById('filterDisplay');
-
             display.innerHTML = `<span class="active-tag-hint">已選標籤：#${tagName}</span> <span class="reset-btn" onclick="resetFilter()">顯示全部</span>`;
-
             items.forEach(item => {
                 const tags = item.getAttribute('data-tags').split(',');
                 item.style.display = tags.includes(tagName) ? 'flex' : 'none';
             });
-
             sections.forEach(section => {
-                const hasVisible = Array.from(section.querySelectorAll('.archive-item'))
-                                       .some(i => i.style.display === 'flex');
+                const hasVisible = Array.from(section.querySelectorAll('.archive-item')).some(i => i.style.display === 'flex');
                 section.style.display = hasVisible ? 'block' : 'none';
             });
         }
 
-        // 重置邏輯
         function resetFilter() {
             document.querySelectorAll('.archive-item').forEach(i => i.style.display = 'flex');
             document.querySelectorAll('.year-section').forEach(s => s.style.display = 'block');
