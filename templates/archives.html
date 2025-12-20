@@ -9,56 +9,63 @@
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         
-        /* 1. 解決字體模糊：Canvas 容器保持固定顯示大小 */
+        /* 1. 畫布容器：調小顯示區域，讓球體更精緻 */
         #sphere-container {
             width: 100%;
-            height: 400px;
+            height: 420px; 
             display: flex;
             justify-content: center;
             align-items: center;
-            margin: 20px 0;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        /* 實際顯示大小為 400px */
+        canvas#tagCanvas {
+            width: 400px;
+            height: 400px;
             cursor: pointer;
         }
 
-        .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; transition: all 0.3s; }
+        .filter-info { 
+            text-align: center; 
+            margin-bottom: 30px; 
+            min-height: 30px;
+        }
+
+        .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; }
         .archive-item { 
             display: flex; 
             justify-content: space-between; 
             padding: 12px 0; 
             border-bottom: 1px solid #f0f0f0; 
-            transition: opacity 0.3s;
         }
         .archive-date { color: #888; font-family: monospace; }
-        .filter-info { 
-            text-align: center; 
-            color: #0366d6; 
-            margin-bottom: 20px; 
-            font-weight: bold;
-            height: 24px;
-        }
+        
         #tag-data { display: none; }
         
-        /* 重置按鈕樣式 */
         .reset-btn {
             display: inline-block;
-            margin-top: 10px;
-            padding: 5px 10px;
+            margin-left: 10px;
+            padding: 2px 8px;
             font-size: 12px;
             background: #f6f8fa;
             border: 1px solid #d1d5da;
             border-radius: 3px;
             cursor: pointer;
             color: #24292e;
+            vertical-align: middle;
         }
+        .active-tag-hint { color: #0366d6; font-weight: bold; font-size: 1.1em; }
     </style>
 </head>
 <body>
     <div class="markdown-body">
         <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回首頁</a>
-        <h1 style="text-align: center; border-bottom: none;">文章歸檔</h1>
+        <h1 style="text-align: center; border-bottom: none; margin-bottom: 0;">文章歸檔</h1>
 
         <div id="sphere-container">
-            <canvas width="1000" height="1000" id="tagCanvas" style="width: 500px; height: 500px;">
+            <canvas width="1000" height="1000" id="tagCanvas">
                 <p>您的瀏覽器不支持 Canvas</p>
             </canvas>
         </div>
@@ -96,61 +103,59 @@
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        // --- 1. 初始化 3D 球體 ---
         window.onload = function() {
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
-                    textColour: null,
+                    textColour: null,           // 使用 HTML 裡的 inline color
                     outlineColour: 'transparent',
                     reverse: true,
-                    depth: 0.8,
-                    maxSpeed: 0.05,
+                    depth: 0.6,                 // 降低深度讓球體更扁平圓潤，字體顯大
+                    maxSpeed: 0.04,
                     initial: [0.1, -0.1],
                     wheelZoom: false,
                     dragControl: true,
-                    clickToFront: 600,
-                    freezeActive: true,      // 滑鼠懸停時暫停，確保點擊精準
-                    frontSelect: true,       // 只選中前面的標籤
+                    clickToFront: 600,          // 點擊後標籤轉向正面
+                    freezeActive: true,         // 滑鼠懸停暫停
+                    frontSelect: true,          // 優先選中前景標籤
+                    
+                    // --- 字體巨大化與高清設置 ---
                     weight: true,
                     weightMode: 'size',
-                    weightSize: 0.7,
-                    minFontSize: 16,
-                    maxFontSize: 24,
-                    textFont: 'Arial, sans-serif' // 解決字體模糊
+                    weightSize: 1.2,
+                    minFontSize: 45,            // 高清模式下的最小字號 (相當於視覺 18px)
+                    maxFontSize: 90,            // 高清模式下的最大字號 (相當於視覺 36px)
+                    textFont: 'Impact, Arial Black, sans-serif',
+                    padding: 15,                // 防止大字體重疊
+                    
+                    outlineMethod: 'colour',
+                    activeCursor: 'pointer'
                 });
             } catch(e) {
                 document.getElementById('sphere-container').style.display = 'none';
             }
         };
 
-        // --- 2. 核心過濾邏輯 ---
+        // 過濾邏輯
         function filterByTag(tagName) {
             const items = document.querySelectorAll('.archive-item');
             const sections = document.querySelectorAll('.year-section');
             const display = document.getElementById('filterDisplay');
 
-            // 更新提示文字
-            display.innerHTML = `正在查看標籤: <span style="color:red">#${tagName}</span> <span class="reset-btn" onclick="resetFilter()">顯示全部</span>`;
+            display.innerHTML = `<span class="active-tag-hint">已選標籤：#${tagName}</span> <span class="reset-btn" onclick="resetFilter()">顯示全部</span>`;
 
             items.forEach(item => {
                 const tags = item.getAttribute('data-tags').split(',');
-                // 檢查文章標籤是否包含選中的標籤
-                if (tags.includes(tagName)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+                item.style.display = tags.includes(tagName) ? 'flex' : 'none';
             });
 
-            // 處理年份標題的顯示與隱藏
             sections.forEach(section => {
-                const hasVisibleItem = Array.from(section.querySelectorAll('.archive-item'))
-                                            .some(item => item.style.display === 'flex');
-                section.style.display = hasVisibleItem ? 'block' : 'none';
+                const hasVisible = Array.from(section.querySelectorAll('.archive-item'))
+                                       .some(i => i.style.display === 'flex');
+                section.style.display = hasVisible ? 'block' : 'none';
             });
         }
 
-        // --- 3. 重置過濾 ---
+        // 重置邏輯
         function resetFilter() {
             document.querySelectorAll('.archive-item').forEach(i => i.style.display = 'flex');
             document.querySelectorAll('.year-section').forEach(s => s.style.display = 'block');
