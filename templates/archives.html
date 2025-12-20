@@ -9,29 +9,26 @@
         body { background: white; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         
-        /* 1. 關鍵：畫布容器，不設背景，確保純淨 */
+        /* 球體容器：保持純淨透明 */
         #sphere-container {
             width: 100%;
+            height: 450px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px 0;
-            cursor: move; /* 提示用戶可以抓取旋轉 */
+            margin: 20px 0;
+            overflow: hidden;
         }
 
-        .archive-item { 
-            display: flex; 
-            justify-content: space-between; 
-            padding: 12px 0; 
-            border-bottom: 1px solid #f0f0f0; 
-        }
+        .year-section { margin-top: 40px; border-left: 4px solid #0366d6; padding-left: 15px; }
+        .archive-item { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f0f0f0; }
         .archive-date { color: #888; font-family: monospace; }
-        #tag-data { display: none; } /* 隱藏原始清單 */
+        #tag-data { display: none; } 
     </style>
 </head>
 <body>
     <div class="markdown-body">
-        <a href="index.html" style="text-decoration: none;">← 返回首頁</a>
+        <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回首頁</a>
         <h1 style="text-align: center; border-bottom: none;">文章歸檔</h1>
 
         <div id="sphere-container">
@@ -44,24 +41,29 @@
             {% for name, items in label_dict.items() %}
             <li>
                 <a href="index.html" 
-                   style="color: #{{ label_info[name].color }}; font-size: {{ [16 + items|length*3, 35]|min }}px;">
+                   onclick="localStorage.setItem('filter', '{{ label_info[name].safe_name }}')"
+                   style="color: #{{ label_info[name].color }};">
                     {{ name }}
                 </a>
             </li>
             {% endfor %}
         </ul>
 
-        {% for year in sorted_years %}
-        <h2 style="border-bottom: 2px solid #0366d6; padding-bottom: 5px; margin-top: 50px;">{{ year }} 年</h2>
-        <ul style="list-style: none; padding: 0;">
-            {% for issue in articles_by_year[year] %}
-            <li class="archive-item">
-                <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
-                <span class="archive-date">{{ issue.created_at.strftime('%m-%d') }}</span>
-            </li>
+        <div class="archive-list-wrapper">
+            {% for year in sorted_years %}
+            <div class="year-section">
+                <h2>{{ year }} 年</h2>
+                <ul style="list-style: none; padding: 0;">
+                    {% for issue in articles_by_year[year] %}
+                    <li class="archive-item">
+                        <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
+                        <span class="archive-date">{{ issue.created_at.strftime('%m-%d') }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% endfor %}
-        </ul>
-        {% endfor %}
+        </div>
     </div>
 
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
@@ -69,25 +71,29 @@
     <script type="text/javascript">
         window.onload = function() {
             try {
-                // 啟動球體，並設置強烈的 3D 效果
                 TagCanvas.Start('tagCanvas', 'tag-data', {
-                    textColour: null,           // 使用 A 標籤自定義顏色
-                    outlineColour: 'transparent', // 不要選中框
-                    reverse: true,              // 隨鼠標方向轉
+                    textColour: null,           
+                    outlineColour: 'transparent', 
+                    reverse: true,              
                     
-                    // --- 營造球體感的關鍵參數 ---
-                    depth: 0.95,                // 深度感：越大越像球，後面的標籤會變得很小
-                    maxSpeed: 0.05,             // 最大轉速
-                    initial: [0.1, -0.1],       // 自動旋轉的角度
-                    weight: true,               // 根據文章多少決定標籤原始大小
+                    // --- 解決字體大小與球形感問題 ---
+                    weight: true,
                     weightMode: 'size',
+                    weightSize: 0.7,            // 降低權重敏感度，讓字體更整齊
+                    minFontSize: 16,            // 最小字體，不再細如螞蟻
+                    maxFontSize: 24,            // 最大字體，不再撐破球體
                     
-                    // --- 優化視覺 ---
-                    wheelZoom: false,           // 關閉滾輪縮放以免干擾頁面捲動
-                    dragControl: true,          // 允許用鼠標抓著地球轉
-                    freezeActive: false,        // 鼠標放在標籤上時不要停止轉動
-                    shuffleTags: true,          // 隨機打亂標籤位置，讓球體更圓
-                    frontSelect: true           // 只允許點擊前面的標籤
+                    depth: 0.6,                 // 降低深度感，讓後排標籤變大一點，球體更充實
+                    radiusX: 1.1,               // 微調比例
+                    radiusY: 1.1,
+                    
+                    maxSpeed: 0.04,             
+                    initial: [0.1, -0.1],       
+                    dragControl: true,          
+                    wheelZoom: false,
+                    noSelect: true,
+                    freezeActive: false,
+                    shuffleTags: true           // 打亂分佈，讓標籤少時也像球
                 });
             } catch(e) {
                 document.getElementById('sphere-container').style.display = 'none';
