@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 - [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
-- [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 
 ## 一些记录 (38篇文章)
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
@@ -113,16 +113,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (16篇文章)
+## notes (17篇文章)
+- [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
-- [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
 
 <details>
-<summary>显示更多 (11篇)</summary>
+<summary>显示更多 (12篇)</summary>
 
+- [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
@@ -222,9 +223,11 @@ My personal blog using issues and GitHub Actions
 ## 世界好精彩我想去看看 (1篇文章)
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 我喜歡宇宙奇觀 (1篇文章)
+## 我喜歡宇宙奇觀 (2篇文章)
+- [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 碎碎念 (1篇文章)
+## 碎碎念 (2篇文章)
+- [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
