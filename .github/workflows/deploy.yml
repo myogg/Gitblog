@@ -3,7 +3,7 @@ name: Deploy GitHub Pages
 on:
   workflow_dispatch:   # 手動觸發
   issues:
-    types: [labeled]  # 只監聽 labeled 事件（打標籤時）
+    types: [labeled, opened, edited]  # 增加 opened/edited，確保新文章也能自動更新
 
 permissions:
   contents: read
@@ -28,15 +28,17 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
+          cache: 'pip' # 使用緩存加速
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install markdown PyGithub marko
+          # 核心修改：在這裡補上 jinja2，並保留原有的庫
+          pip install markdown PyGithub marko jinja2 feedgen
 
       - name: Generate HTML page
         env:
-          G_TT: ${{ secrets.G_TT }}  # 設置環境變量
+          G_TT: ${{ secrets.G_TT }}  # 保持 G_TT 不變
         run: |
           echo "開始生成HTML頁面..."
           python generate_page.py
@@ -44,17 +46,24 @@ jobs:
           echo "檢查生成的文件:"
           ls -la
           
+          # 檢查主頁
           if [ -f "index.html" ]; then
             echo "✅ index.html 已生成"
-            echo "文件大小: $(wc -l < index.html) 行"
           else
             echo "❌ index.html 未生成"
             exit 1
           fi
           
+          # 檢查 3D 標籤球歸檔頁
+          if [ -f "archives.html" ]; then
+            echo "✅ archives.html (3D標籤球) 已生成"
+          else
+            echo "❌ archives.html 未生成，請檢查模板"
+            exit 1
+          fi
+          
           if [ -d "static" ]; then
             echo "✅ static 目錄已生成"
-            ls -la static/
           else
             echo "⚠️  static 目錄未生成"
           fi
@@ -65,7 +74,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 上傳根目錄，包含 index.html 和 static/
+          # 上傳包含所有生成 HTML 的根目錄
           path: .
 
       - name: Deploy to GitHub Pages
