@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
+- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 - [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
 - [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
-- [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
-- [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
 
-## 一些记录 (37篇文章)
+## 一些记录 (38篇文章)
+- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)--2025-12-16
-- [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)--2025-12-16
 
 <details>
-<summary>显示更多 (32篇)</summary>
+<summary>显示更多 (33篇)</summary>
 
+- [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)
 - [单光子单原子量子干涉仪](https://github.com/myogg/Gitblog/issues/126)
 - [SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究](https://github.com/myogg/Gitblog/issues/120)
 - [Notepad++ 遭流量劫持](https://github.com/myogg/Gitblog/issues/119)
@@ -89,16 +90,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (14篇文章)
+## 收录 (15篇文章)
+- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [ai听书软件](https://github.com/myogg/Gitblog/issues/132)--2025-12-17
 - [天文学家拍摄到类星战塔图因的系外行星](https://github.com/myogg/Gitblog/issues/131)--2025-12-17
 - [苹果"阔折叠"iPhone明年发布](https://github.com/myogg/Gitblog/issues/125)--2025-12-15
 - [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
-- [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 
 <details>
-<summary>显示更多 (9篇)</summary>
+<summary>显示更多 (10篇)</summary>
 
+- [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)
 - [WebGPU 正式在主流浏览器启用](https://github.com/myogg/Gitblog/issues/104)
@@ -111,16 +113,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (15篇文章)
+## notes (16篇文章)
+- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)--2025-12-10
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)--2025-12-04
-- [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)--2025-04-03
 
 <details>
-<summary>显示更多 (10篇)</summary>
+<summary>显示更多 (11篇)</summary>
 
+- [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)
 - [About Static Blog Generator](https://github.com/myogg/Gitblog/issues/79)
 - [[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本](https://github.com/myogg/Gitblog/issues/78)
 - [mihomo party什么情况？](https://github.com/myogg/Gitblog/issues/53)
@@ -214,4 +217,13 @@ My personal blog using issues and GitHub Actions
 - [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
+
+## 世界好精彩我想去看看 (1篇文章)
+- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
+
+## 我喜歡宇宙奇觀 (1篇文章)
+- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
+
+## 碎碎念 (1篇文章)
+- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
