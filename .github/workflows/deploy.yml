@@ -3,16 +3,16 @@ name: Deploy GitHub Pages
 on:
   workflow_dispatch:   # 手動觸發
   issues:
-    types: [labeled]  # 只監聽 labeled 事件（打標籤時）
+    types: [opened, edited, labeled, unlabeled, closed, reopened] # 監聽所有 Issue 變動
 
 permissions:
-  contents: read
+  contents: write      # 需要寫入權限來提交快取文件（如果有的話）
   pages: write
   id-token: write
 
 concurrency:
   group: "pages-deploy"
-  cancel-in-progress: true  # 取消正在運行的舊部署
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -23,6 +23,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # 獲取完整歷史以利於部署
 
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -32,31 +34,35 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install markdown PyGithub marko
+          # 安裝核心依賴，確保包含 jinja2
+          pip install markdown PyGithub jinja2 marko
+          # 如果有 requirements.txt 則也安裝裡面的內容
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Prepare Directories
+        run: |
+          # 確保腳本需要的目錄都存在
+          mkdir -p templates
+          mkdir -p static
+          mkdir -p articles
 
       - name: Generate HTML page
         env:
-          G_TT: ${{ secrets.G_TT }}  # 設置環境變量
+          G_TT: ${{ secrets.G_TT }}
         run: |
-          echo "開始生成HTML頁面..."
+          echo "🚀 開始生成 HTML 頁面..."
           python generate_page.py
           
-          echo "檢查生成的文件:"
-          ls -la
-          
+          echo "🔍 檢查生成結果:"
           if [ -f "index.html" ]; then
-            echo "✅ index.html 已生成"
-            echo "文件大小: $(wc -l < index.html) 行"
+            echo "✅ index.html 已生成 (大小: $(stat -c%s index.html) bytes)"
           else
-            echo "❌ index.html 未生成"
+            echo "❌ 錯誤: index.html 未生成！"
             exit 1
           fi
           
-          if [ -d "static" ]; then
-            echo "✅ static 目錄已生成"
-            ls -la static/
-          else
-            echo "⚠️  static 目錄未生成"
+          if [ -d "articles" ]; then
+            echo "✅ articles 目錄存在，包含 $(ls articles/*.html 2>/dev/null | wc -l) 個文件"
           fi
 
       - name: Setup GitHub Pages
@@ -65,7 +71,7 @@ jobs:
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # 上傳根目錄，包含 index.html 和 static/
+          # 上傳當前目錄下所有生成好的文件
           path: .
 
       - name: Deploy to GitHub Pages
