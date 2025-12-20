@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>文章歸檔 - 北方的博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="static/style.css">
+    <style>
+        .archive-container { max-width: 800px; margin: 0 auto; padding: 20px; }
+        .sphere-section { background: #f6f8fa; border-radius: 12px; padding: 20px; margin-bottom: 40px; text-align: center; }
+        .year-section { margin-bottom: 30px; border-left: 3px solid #0366d6; padding-left: 20px; }
+        .archive-list { list-style: none; padding: 0; }
+        .archive-item { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px dashed #eee; }
+        .archive-date { color: #666; font-family: monospace; }
+        #tag-list { display: none; }
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        <div class="archive-container">
+            <a href="index.html" style="margin-bottom: 20px; display: inline-block;">← 返回首頁</a>
+            <h1>文章歸檔</h1>
+
+            <div class="sphere-section">
+                <canvas width="400" height="400" id="archiveCanvas" style="max-width: 100%;">
+                    <ul id="tag-list">
+                        {% for name, items in label_dict.items() %}
+                        <li><a href="index.html" onclick="localStorage.setItem('filter', '{{ label_info[name].safe_name }}')" 
+                               style="color: #{{ label_info[name].color }}; font-size: {{ [14 + items|length, 24]|min }}px;">{{ name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </canvas>
+            </div>
+
+            {% for year in sorted_years %}
+            <div class="year-section">
+                <h2>{{ year }} 年</h2>
+                <ul class="archive-list">
+                    {% for issue in articles_by_year[year] %}
+                    <li class="archive-item">
+                        <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
+                        <span class="archive-date">{{ issue.created_at.strftime('%m-%d') }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        <footer>© {{ YEAR }} 北方的博客</footer>
+    </div>
+
+    <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
+    <script>
+        window.onload = function() {
+            TagCanvas.Start('archiveCanvas', 'tag-list', {
+                textColour: null, outlineColour: '#0366d6', reverse: true,
+                depth: 0.8, maxSpeed: 0.05, weight: true, initial: [0.1, -0.1]
+            });
+        };
+    </script>
+</body>
+  </html>
