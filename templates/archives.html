@@ -85,11 +85,10 @@
 
         <div class="filter-info" id="filterDisplay"></div>
 
-        <!-- 修改这里：添加权重数据 -->
+        <!-- 标签数据 -->
         <ul id="tag-data">
             {% for name, items in label_dict.items() %}
             <li>
-                <!-- 添加 data-weight 属性，值为文章数量 -->
                 <a href="javascript:void(0)" onclick="filterByTag('{{ name }}')" 
                    style="color: #{{ label_info[name].color }};"
                    data-weight="{{ items|length }}">
@@ -124,19 +123,21 @@
             return window.innerWidth <= 768;
         }
         
-        // 获取字体大小配置（移动版缩小一半）
+        // 获取字体大小配置
         function getFontConfig() {
             if (isMobileDevice()) {
+                // 移动版 6-15px
                 return {
-                    minFontSize: 16,
-                    maxFontSize: 35,
-                    textHeight: 12
+                    minFontSize: 6,
+                    maxFontSize: 15,
+                    textHeight: 8
                 };
             } else {
+                // 电脑版 12-30px
                 return {
-                    minFontSize: 24,
-                    maxFontSize: 60,
-                    textHeight: 18
+                    minFontSize: 12,
+                    maxFontSize: 30,
+                    textHeight: 14
                 };
             }
         }
@@ -308,7 +309,7 @@
             } catch(e) {}
         }
         
-        // 初始化TagCanvas - 关键修改
+        // 初始化TagCanvas
         function initTagCanvas() {
             const fontConfig = getFontConfig();
             
@@ -318,7 +319,7 @@
                     outlineColour: 'transparent',
                     reverse: true,
                     
-                    // 字体大小
+                    // 字体大小 - 调整为指定范围
                     minFontSize: fontConfig.minFontSize,
                     maxFontSize: fontConfig.maxFontSize,
                     textHeight: fontConfig.textHeight,
@@ -338,15 +339,15 @@
                     freezeActive: true,
                     frontSelect: true,
                     
-                    // 关键：启用权重功能
+                    // 权重功能
                     weight: true,
-                    weightMode: 'size',          // 权重影响字体大小
-                    weightSize: 2.5,             // 增加权重系数，让大小差异更明显
-                    weightFrom: 'data-weight',   // 从 data-weight 属性获取权重值
+                    weightMode: 'size',
+                    weightSize: 1.8,          // 适当权重系数
+                    weightFrom: 'data-weight',
                     
                     // 字体和布局
-                    textFont: 'Impact, Arial Black, sans-serif',
-                    padding: 12,
+                    textFont: 'Arial, sans-serif',  // 改用更清晰的字体
+                    padding: 10,             // 增加间距
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
@@ -360,9 +361,13 @@
                     radiusZ: 1.0,
                     
                     // 移动版调整
-                    padding: isMobileDevice() ? 8 : 12,
+                    padding: isMobileDevice() ? 8 : 10,
                     depth: isMobileDevice() ? 0.3 : 0.4,
                     zoom: isMobileDevice() ? 1.1 : 1.2,
+                    
+                    // 根据字体大小调整其他参数
+                    minBrightness: 0.2,
+                    maxBrightness: 1.0,
                     
                     // 其他参数
                     offsetX: 0,
