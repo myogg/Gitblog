@@ -9,7 +9,7 @@ from jinja2 import Environment, FileSystemLoader
 
 # --- 配置區 ---
 GITHUB_TOKEN = os.getenv("G_TT")
-REPO_NAME = "myogg/Gitblog" # 確保這是你的倉庫路徑
+REPO_NAME = "myogg/Gitblog" 
 MAX_PER_CATEGORY = 5
 CACHE_FILE = "github_cache.json"
 CACHE_DURATION = 3600 
@@ -19,7 +19,7 @@ ARTICLES_DIR = "articles"
 env = Environment(loader=FileSystemLoader('templates'))
 
 def get_text_color(hex_color):
-    """根據背景色亮度決定文字顏色（黑或白），保證標籤可讀性"""
+    """根據背景色亮度決定文字顏色"""
     try:
         r, g, b = int(hex_color[0:2], 16), int(hex_color[2:4], 16), int(hex_color[4:6], 16)
         brightness = (r * 299 + g * 587 + b * 114) / 1000
@@ -60,9 +60,9 @@ def fetch_issues(repo):
     if cached:
         issues = []
         for item in cached:
-            # 模擬 GitHub Issue 對象
             issue = type('CachedIssue', (), {
                 "number": item["number"], "title": item["title"], "body": item["body"],
+                "html_url": item.get("html_url", ""),
                 "created_at": datetime.fromisoformat(item["created_at"]),
                 "labels": [type('CachedLabel', (), {"name": l["name"], "color": l["color"]}) for l in item["labels"]],
                 "pull_request": False
@@ -71,7 +71,7 @@ def fetch_issues(repo):
         return issues
     
     all_issues = [i for i in repo.get_issues(state="open") if not i.pull_request]
-    cache_data = [{"number": i.number, "title": i.title, "body": i.body, 
+    cache_data = [{"number": i.number, "title": i.title, "body": i.body, "html_url": i.html_url,
                    "created_at": i.created_at.isoformat(), 
                    "labels": [{"name": l.name, "color": l.color} for l in i.labels]} for i in all_issues]
     save_to_cache(cache_key, cache_data)
@@ -95,54 +95,26 @@ def generate_article_page(issue):
     with open(os.path.join(ARTICLES_DIR, f"article-{issue.number}.html"), "w", encoding="utf-8") as f:
         f.write(output)
 
-def should_generate_about_page():
-    """
-    檢查是否需要生成 about.html:
-    1. 如果 about.html 不存在 → 生成
-    2. 如果 templates/about.html 比現有的 about.html 新 → 重新生成
-    3. 否則 → 跳過生成，保留現有文件
-    """
-    output_file = "about.html"
-    template_file = "templates/about.html"
-    
-    # 如果模板文件不存在，直接返回 False（不需要生成）
-    if not os.path.exists(template_file):
-        print("Warning: templates/about.html not found, skipping about page generation.")
-        return False
-    
-    # 如果输出文件不存在，需要生成
-    if not os.path.exists(output_file):
-        print("about.html not found, will generate.")
-        return True
-    
-    # 比较模板文件和新文件的修改时间
-    template_mtime = os.path.getmtime(template_file)
-    output_mtime = os.path.getmtime(output_file)
-    
-    # 如果模板文件比输出文件新，需要重新生成
-    if template_mtime > output_mtime:
-        print("templates/about.html is newer than about.html, will regenerate.")
-        return True
-    
-    # 否则跳过生成
-    print("about.html is up-to-date, skipping generation.")
-    return False
-
 def main():
     g = login()
     repo = g.get_repo(REPO_NAME)
     issues = fetch_issues(repo)
     
     # --- 數據整理 ---
-    label_dict = {}    # 標籤對應的文章列表
-    label_info = {}    # 標籤的顏色與屬性
-    articles_by_year = {} # 歸檔數據：按年份分組
+    label_dict = {}    
+    label_info = {}    
+    articles_by_year = {} 
     
-    # 提取置頂文章
+    # 1. 處理置頂文章
     pinned_issues = sort_issues([i for i in issues if any(l.name.lower() == "pinned" for l in i.labels)])
+    pinned_ids = {i.number for i in pinned_issues}
+
+    # 2. 處理最近文章 (排除置頂)
+    all_sorted_issues = sort_issues(list(issues))
+    recent_issues = [i for i in all_sorted_issues if i.number not in pinned_ids][:5]
     
     for issue in issues:
-        # 歸檔分組
+        # 歸檔分組 (按年份)
         year = issue.created_at.strftime('%Y')
         articles_by_year.setdefault(year, []).append(issue)
         
@@ -154,48 +126,55 @@ def main():
                 label_info[label.name] = {
                     "color": label.color,
                     "text_color": get_text_color(label.color),
+                    # 生成與 JS 過濾邏輯一致的 safe_name
                     "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
                 }
 
-    # 排序各個列表
+    # 排序
     for label in label_dict: label_dict[label] = sort_issues(label_dict[label])
     sorted_years = sorted(articles_by_year.keys(), reverse=True)
     for year in sorted_years: articles_by_year[year] = sort_issues(articles_by_year[year])
 
-    # --- 生成單篇文章 ---
+    # --- 生成單篇文章頁 ---
     for issue in issues:
         generate_article_page(issue)
 
-    # --- 生成主頁 (index.html) ---
+    # --- 生成首頁 (index.html) ---
     index_template = env.get_template('base.html')
     index_html = index_template.render(
-        pinned_issues=pinned_issues, label_dict=label_dict, 
-        label_info=label_info, MAX_PER_CATEGORY=MAX_PER_CATEGORY, YEAR=datetime.now().year
+        pinned_issues=pinned_issues, 
+        recent_issues=recent_issues, # 傳入最近 5 篇文章
+        label_dict=label_dict, 
+        label_info=label_info, 
+        MAX_PER_CATEGORY=MAX_PER_CATEGORY, 
+        YEAR=datetime.now().year
     )
     with open("index.html", "w", encoding="utf-8") as f: f.write(index_html)
 
     # --- 生成歸檔頁 (archives.html) ---
-    # 提示：你需要在 templates 目錄下創建 archives.html 模板
     try:
         archive_template = env.get_template('archives.html')
         archive_html = archive_template.render(
-            sorted_years=sorted_years, articles_by_year=articles_by_year,
-            label_dict=label_dict, label_info=label_info, YEAR=datetime.now().year
+            sorted_years=sorted_years, 
+            articles_by_year=articles_by_year,
+            label_dict=label_dict, 
+            label_info=label_info, 
+            YEAR=datetime.now().year
         )
         with open("archives.html", "w", encoding="utf-8") as f: f.write(archive_html)
-    except:
-        print("Warning: archives.html template not found, skipping archive page generation.")
+        print("✅ archives.html 已生成")
+    except Exception as e:
+        print(f"Warning: archives.html generation failed: {e}")
 
     # --- 生成關於頁 (about.html) ---
-    if should_generate_about_page():
-        try:
-            about_template = env.get_template('about.html')
-            about_html = about_template.render(YEAR=datetime.now().year)
-            with open("about.html", "w", encoding="utf-8") as f: 
-                f.write(about_html)
-            print("✅ about.html generated successfully.")
-        except Exception as e:
-            print(f"Error generating about.html: {e}")
+    try:
+        about_template = env.get_template('about.html')
+        # 僅進行基礎渲染，不傳入 Issue 數據，保留手寫內容
+        about_html = about_template.render(YEAR=datetime.now().year)
+        with open("about.html", "w", encoding="utf-8") as f: f.write(about_html)
+        print("✅ about.html 已生成")
+    except Exception as e:
+        print(f"Warning: about.html generation failed: {e}")
 
     # --- 處理靜態資源 ---
     os.makedirs("static", exist_ok=True)
@@ -204,7 +183,13 @@ def main():
             shutil.copy(src, "static/style.css")
             break
     
-    print("🎉 博客與歸檔頁生成完成！")
+    # 複製 JS
+    for src in ["templates/script.js", "script.js"]:
+        if os.path.exists(src):
+            shutil.copy(src, "static/script.js")
+            break
+    
+    print("🎉 博客生成任務完成！")
 
 if __name__ == "__main__":
     main()
