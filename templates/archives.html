@@ -9,34 +9,27 @@
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         
-        /* 椭圆形3D球体容器 */
-        #sphere-container {
+        /* 横屏区域容器 */
+        #horizontal-container {
             width: 100%;
             height: 0;
-            padding-bottom: 66.67%; /* 3:2 比例 */
+            padding-bottom: 40%; /* 横屏比例 5:2 */
             position: relative;
             margin: 20px 0;
             overflow: hidden;
             background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
         }
 
-        /* 两个canvas绝对定位 */
-        #tagCanvas, #gridCanvas {
+        /* 标签容器 */
+        #tagCanvas {
             position: absolute;
             top: 0;
             left: 0;
             width: 100% !important;
             height: 100% !important;
             cursor: pointer;
-        }
-        
-        #tagCanvas {
-            z-index: 2;
-        }
-        
-        #gridCanvas {
-            z-index: 1;
-            pointer-events: none;
         }
 
         .filter-info { text-align: center; margin-bottom: 20px; min-height: 30px; }
@@ -64,8 +57,10 @@
                 padding: 20px 15px;
             }
             
-            #sphere-container {
+            #horizontal-container {
+                padding-bottom: 60%; /* 手机版更高一些 */
                 margin: 15px 0;
+                box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
             }
         }
     </style>
@@ -75,10 +70,8 @@
         <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回首頁</a>
         <h1 style="text-align: center; border-bottom: none; margin-bottom: 0;">文章歸檔</h1>
 
-        <!-- 椭圆形3D球体容器 -->
-        <div id="sphere-container">
-            <!-- 已移除网格canvas，但保留结构以防需要 -->
-            <canvas id="gridCanvas"></canvas>
+        <!-- 横屏区域容器 -->
+        <div id="horizontal-container">
             <canvas id="tagCanvas">
                 <p>您的瀏覽器不支持 Canvas</p>
             </canvas>
@@ -127,39 +120,20 @@
         // 获取字体大小配置
         function getFontConfig() {
             if (isMobileDevice()) {
-                // 移动版：最大15px（对应100篇文章的标签）
+                // 移动版 8-20px
                 return {
-                    minFontSize: 6,
-                    maxFontSize: 15,  // 手机版最大15px
-                    textHeight: 8
+                    minFontSize: 8,
+                    maxFontSize: 20,
+                    textHeight: 12
                 };
             } else {
-                // 电脑版：最大30px
+                // 电脑版 12-28px
                 return {
                     minFontSize: 12,
-                    maxFontSize: 30,
-                    textHeight: 14
+                    maxFontSize: 28,
+                    textHeight: 16
                 };
             }
-        }
-        
-        // 计算标签权重 - 基于8个等级
-        function calculateWeightScale(maxArticles) {
-            // 8个权重等级
-            const weightLevels = 8;
-            // 权重范围：0.3 到 1.8
-            const minWeight = 0.3;
-            const maxWeight = 1.8;
-            
-            // 每篇文章对应的权重增量
-            const weightIncrement = (maxWeight - minWeight) / (maxArticles || 100);
-            
-            return function(articleCount) {
-                // 基础权重 + 文章数量对应的增量
-                let weight = minWeight + (articleCount - 1) * weightIncrement;
-                // 限制在范围内
-                return Math.max(minWeight, Math.min(maxWeight, weight));
-            };
         }
         
         // 初始化标签权重
@@ -173,80 +147,94 @@
                 if (count > maxArticles) maxArticles = count;
             });
             
-            // 创建权重计算函数
-            const calculateWeight = calculateWeightScale(maxArticles);
-            
-            // 为每个标签设置权重
+            // 计算权重（基于文章数量）
             tagLinks.forEach(link => {
                 const count = parseInt(link.getAttribute('data-weight') || '1');
-                const weight = calculateWeight(count);
+                const weight = 0.5 + (count / maxArticles) * 1.5; // 0.5 到 2.0
                 link.setAttribute('data-weight', weight.toFixed(2));
             });
             
             return maxArticles;
         }
         
-        // 绘制若有若无的经纬线轮廓 - 已移除，改为空函数
-        function drawSubtleGrid() {
-            // 清空canvas但不绘制任何内容
-            const container = document.getElementById('sphere-container');
-            const canvas = document.getElementById('gridCanvas');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+        // 生成随机位置和速度
+        function generateRandomMovement() {
+            const movements = [];
+            const tagCount = document.querySelectorAll('#tag-data li a').length;
             
-            canvas.width = width;
-            canvas.height = height;
-            
-            const ctx = canvas.getContext('2d');
-            ctx.clearRect(0, 0, width, height);
-        }
-        
-        // 更开阔的随机旋转
-        function startOpenRotation() {
-            const canvas = document.getElementById('tagCanvas');
-            
-            let speeds = [
-                (Math.random() - 0.5) * 0.015,
-                (Math.random() - 0.5) * 0.010,
-                (Math.random() - 0.5) * 0.008
-            ];
-            
-            function rotateOpen() {
-                try {
-                    TagCanvas.textId = 'tag-data';
-                    TagCanvas.Reload('tagCanvas');
-                    
-                    const currentRot = TagCanvas.GetObject('tagCanvas');
-                    if (currentRot && currentRot.rotation) {
-                        if (Math.random() < 0.01) {
-                            speeds = [
-                                (Math.random() - 0.5) * 0.018,
-                                (Math.random() - 0.5) * 0.012,
-                                (Math.random() - 0.5) * 0.009
-                            ];
-                        }
-                        
-                        currentRot.rotation[0] += speeds[0];
-                        currentRot.rotation[1] += speeds[1];
-                        
-                        if (Math.random() < 0.05) {
-                            currentRot.rotation[2] += speeds[2] * 0.5;
-                        }
-                        
-                        speeds[0] = Math.max(-0.012, Math.min(0.012, speeds[0]));
-                        speeds[1] = Math.max(-0.008, Math.min(0.008, speeds[1]));
-                    }
-                } catch(e) {}
-                
-                requestAnimationFrame(rotateOpen);
+            for (let i = 0; i < tagCount; i++) {
+                movements.push({
+                    x: Math.random() * 0.8 - 0.4, // -0.4 到 0.4
+                    y: Math.random() * 0.6 - 0.3, // -0.3 到 0.3
+                    speedX: (Math.random() - 0.5) * 0.002,
+                    speedY: (Math.random() - 0.5) * 0.0015,
+                    bounce: Math.random() * 0.003 + 0.001
+                });
             }
             
-            rotateOpen();
+            return movements;
+        }
+        
+        // 横屏区域随机转动
+        function startHorizontalMovement() {
+            const canvas = document.getElementById('tagCanvas');
+            let movements = generateRandomMovement();
+            let lastTime = 0;
+            
+            function updateMovement(timestamp) {
+                if (!lastTime) lastTime = timestamp;
+                const deltaTime = timestamp - lastTime;
+                lastTime = timestamp;
+                
+                try {
+                    const currentObj = TagCanvas.GetObject('tagCanvas');
+                    if (currentObj && currentObj.lx) {
+                        // 更新每个标签的位置
+                        movements.forEach((movement, index) => {
+                            // 更新位置
+                            movement.x += movement.speedX * deltaTime;
+                            movement.y += movement.speedY * deltaTime;
+                            
+                            // 边界检查
+                            if (Math.abs(movement.x) > 0.4) {
+                                movement.speedX = -movement.speedX * (0.9 + Math.random() * 0.1);
+                                movement.x = Math.sign(movement.x) * 0.4;
+                            }
+                            
+                            if (Math.abs(movement.y) > 0.3) {
+                                movement.speedY = -movement.speedY * (0.9 + Math.random() * 0.1);
+                                movement.y = Math.sign(movement.y) * 0.3;
+                            }
+                            
+                            // 轻微随机速度变化
+                            if (Math.random() < 0.01) {
+                                movement.speedX += (Math.random() - 0.5) * 0.0005;
+                                movement.speedY += (Math.random() - 0.5) * 0.0003;
+                            }
+                            
+                            // 应用到标签位置
+                            if (currentObj.lx[index] !== undefined) {
+                                currentObj.lx[index] = movement.x;
+                                currentObj.ly[index] = movement.y;
+                            }
+                        });
+                        
+                        TagCanvas.Reload('tagCanvas');
+                    }
+                } catch(e) {
+                    // 重新生成运动数据
+                    movements = generateRandomMovement();
+                }
+                
+                requestAnimationFrame(updateMovement);
+            }
+            
+            requestAnimationFrame(updateMovement);
         }
         
         // 自适应调整
         function adaptSize() {
-            const container = document.getElementById('sphere-container');
+            const container = document.getElementById('horizontal-container');
             const tagCanvas = document.getElementById('tagCanvas');
             const width = container.clientWidth;
             const height = container.clientHeight;
@@ -254,15 +242,12 @@
             tagCanvas.width = width;
             tagCanvas.height = height;
             
-            // 清空网格但不绘制
-            drawSubtleGrid();
-            
             try {
                 TagCanvas.Reload('tagCanvas');
             } catch(e) {}
         }
         
-        // 初始化TagCanvas
+        // 初始化TagCanvas - 横屏平面布局
         function initTagCanvas() {
             const fontConfig = getFontConfig();
             
@@ -270,87 +255,88 @@
                 TagCanvas.Start('tagCanvas', 'tag-data', {
                     textColour: null,
                     outlineColour: 'transparent',
-                    reverse: true,
+                    reverse: false,
                     
-                    // 字体大小 - 调整为指定范围
+                    // 字体大小
                     minFontSize: fontConfig.minFontSize,
                     maxFontSize: fontConfig.maxFontSize,
                     textHeight: fontConfig.textHeight,
                     
-                    // 3D效果
-                    depth: 0.4,
-                    zoom: 1.2,
+                    // 关闭3D效果
+                    depth: 0,
+                    zoom: 1.0,
                     
-                    // 动画
-                    maxSpeed: 0.05,
-                    initial: [0.15, 0.08],
+                    // 动画速度
+                    maxSpeed: 0.01,
+                    initial: [0, 0],
                     
                     // 交互
                     wheelZoom: false,
                     dragControl: true,
-                    clickToFront: 700,
+                    clickToFront: 600,
                     freezeActive: true,
                     frontSelect: true,
                     
-                    // 权重功能 - 使用8个权重等级
+                    // 权重功能
                     weight: true,
                     weightMode: 'size',
-                    weightSize: 1.8,          // 适当权重系数
+                    weightSize: 1.5,
                     weightFrom: 'data-weight',
                     
                     // 字体和布局
                     textFont: 'Arial, sans-serif',
-                    padding: 10,
+                    padding: 12,
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
-                    // 椭圆形参数
-                    stretchX: 2.0,
-                    stretchY: 0.65,
+                    // 平面布局（禁用球体效果）
+                    shape: 'hcylinder', // 水平圆柱形，类似横屏效果
+                    lock: 'xy', // 锁定在平面
                     
-                    // 球体参数
-                    radiusX: 1.6,
-                    radiusY: 0.85,
-                    radiusZ: 1.0,
+                    // 横屏区域参数
+                    stretchX: 1.8,
+                    stretchY: 0.8,
+                    radiusX: 0,
+                    radiusY: 0,
+                    radiusZ: 0,
                     
                     // 移动版调整
-                    padding: isMobileDevice() ? 8 : 10,
-                    depth: isMobileDevice() ? 0.3 : 0.4,
-                    zoom: isMobileDevice() ? 1.1 : 1.2,
+                    padding: isMobileDevice() ? 10 : 12,
+                    minFontSize: isMobileDevice() ? 8 : 12,
+                    maxFontSize: isMobileDevice() ? 20 : 28,
                     
-                    // 根据字体大小调整其他参数
-                    minBrightness: 0.2,
+                    // 颜色和外观
+                    minBrightness: 0.4,
                     maxBrightness: 1.0,
                     
                     // 其他参数
                     offsetX: 0,
                     offsetY: 0,
-                    fadeIn: 1200,
+                    fadeIn: 800,
                     freezeDecel: true,
                     shadow: false,
                     shadowBlur: 0,
-                    
-                    // 无轮廓线
                     outlineThickness: 0,
-                    outlineMethod: 'none'
+                    outlineMethod: 'none',
+                    
+                    // 布局参数 - 平面分布
+                    distributed: true,
+                    centreFunc: function() { return [0, 0]; }
                 });
                 
-                // 开始旋转
-                setTimeout(startOpenRotation, 1000);
+                // 开始随机运动
+                setTimeout(startHorizontalMovement, 1000);
                 
             } catch(e) {
-                console.log(e);
-                document.getElementById('sphere-container').style.display = 'none';
+                console.error('初始化标签云失败:', e);
+                document.getElementById('horizontal-container').style.display = 'none';
             }
         }
         
         window.onload = function() {
-            // 初始化标签权重（8个等级）
+            // 初始化标签权重
             const maxArticles = initTagWeights();
-            console.log(`最大文章数量: ${maxArticles}, 使用8个权重等级`);
-            
-            // 清空网格（不绘制）
-            drawSubtleGrid();
+            console.log(`标签数量: ${document.querySelectorAll('#tag-data li a').length}, 最大文章数量: ${maxArticles}`);
             
             // 初始化标签云
             initTagCanvas();
@@ -361,7 +347,7 @@
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
                     adaptSize();
-                    if (isMobileDevice() && window.innerWidth <= 768) {
+                    if (isMobileDevice()) {
                         try {
                             TagCanvas.Reload('tagCanvas');
                         } catch(e) {
