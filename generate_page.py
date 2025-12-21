@@ -95,6 +95,39 @@ def generate_article_page(issue):
     with open(os.path.join(ARTICLES_DIR, f"article-{issue.number}.html"), "w", encoding="utf-8") as f:
         f.write(output)
 
+def should_generate_about_page():
+    """
+    檢查是否需要生成 about.html:
+    1. 如果 about.html 不存在 → 生成
+    2. 如果 templates/about.html 比現有的 about.html 新 → 重新生成
+    3. 否則 → 跳過生成，保留現有文件
+    """
+    output_file = "about.html"
+    template_file = "templates/about.html"
+    
+    # 如果模板文件不存在，直接返回 False（不需要生成）
+    if not os.path.exists(template_file):
+        print("Warning: templates/about.html not found, skipping about page generation.")
+        return False
+    
+    # 如果输出文件不存在，需要生成
+    if not os.path.exists(output_file):
+        print("about.html not found, will generate.")
+        return True
+    
+    # 比较模板文件和新文件的修改时间
+    template_mtime = os.path.getmtime(template_file)
+    output_mtime = os.path.getmtime(output_file)
+    
+    # 如果模板文件比输出文件新，需要重新生成
+    if template_mtime > output_mtime:
+        print("templates/about.html is newer than about.html, will regenerate.")
+        return True
+    
+    # 否则跳过生成
+    print("about.html is up-to-date, skipping generation.")
+    return False
+
 def main():
     g = login()
     repo = g.get_repo(REPO_NAME)
@@ -152,6 +185,17 @@ def main():
         with open("archives.html", "w", encoding="utf-8") as f: f.write(archive_html)
     except:
         print("Warning: archives.html template not found, skipping archive page generation.")
+
+    # --- 生成關於頁 (about.html) ---
+    if should_generate_about_page():
+        try:
+            about_template = env.get_template('about.html')
+            about_html = about_template.render(YEAR=datetime.now().year)
+            with open("about.html", "w", encoding="utf-8") as f: 
+                f.write(about_html)
+            print("✅ about.html generated successfully.")
+        except Exception as e:
+            print(f"Error generating about.html: {e}")
 
     # --- 處理靜態資源 ---
     os.makedirs("static", exist_ok=True)
