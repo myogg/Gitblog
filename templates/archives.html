@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文章歸檔 - 北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="static/style.css">
     <style>
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
@@ -12,7 +13,7 @@
         /* 設置 85% 寬度的隨機轉動容器 */
         #tag-cloud-container {
             width: 85%;
-            height: 300px; /* 您可以根據需要調整高度 */
+            height: 300px; 
             margin: 20px auto;
             position: relative;
             background: #fcfcfc;
@@ -52,8 +53,14 @@
 </head>
 <body>
     <div class="markdown-body">
-        <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回首頁</a>
-        <h1 style="text-align: center; border-bottom: none; margin-bottom: 10px;">文章歸檔</h1>
+        <div class="header-line"></div>
+        <h1 class="page-title">北方的博客</h1>
+        
+        <div class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="archives.html">歸檔</a>
+            <a href="about.html">關於</a>
+        </div>
 
         <div id="tag-cloud-container">
             <canvas id="tagCanvas">
@@ -89,6 +96,7 @@
             </div>
             {% endfor %}
         </div>
+        <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
     </div>
 
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
@@ -97,23 +105,19 @@
         function initTagCanvas() {
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
-                    textColour: null,      // 使用 HTML 中的顏色
+                    textColour: null,
                     outlineColour: '#f0f0f0',
                     reverse: true,
-                    depth: 0.1,            // 極低的深度值，取消 3D 感覺，讓它看起來像平面
-                    maxSpeed: 0.03,        // 隨機轉動的速度
+                    depth: 0.1,
+                    maxSpeed: 0.03,
                     initial: [0.1, -0.1],
                     wheelZoom: false,
-                    
-                    // 關鍵設定：字體大小一致
-                    weight: false,         // 關閉權重變化
-                    minFontSize: 16,       // 設定固定的字體大小
+                    weight: false, // 確保不加粗
+                    minFontSize: 16,
                     maxFontSize: 16,
-                    
-                    // 布局調整
                     stretchX: 1.0,         
-                    // 修改處：僅將字體改為微軟正黑體，且不使用權重(weight)
-                    textFont: '"Microsoft JhengHei", "微軟正黑體", sans-serif',
+                    // 字體改為與頂部鏈接一致的系統字體家族
+                    textFont: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
                     padding: 15,
                     clickToFront: 300,
                     activeCursor: 'pointer'
@@ -123,36 +127,22 @@
             }
         }
 
-        // 篩選功能
         function filterByTag(tagName) {
             const items = document.querySelectorAll('.archive-item');
             const sections = document.querySelectorAll('.year-section');
             const display = document.getElementById('filterDisplay');
-            
-            // 更新上方顯示狀態
-            display.innerHTML = `<span class=\"active-tag-hint\">正在查看標籤：#${tagName}</span> <button class=\"reset-btn\" onclick=\"resetFilter()\">顯示全部文章</button>`;
-            
-            // 遍歷所有文章
+            display.innerHTML = `<span class="active-tag-hint">正在查看標籤：#${tagName}</span> <button class="reset-btn" onclick="resetFilter()">顯示全部文章</button>`;
             items.forEach(item => {
                 const tags = item.getAttribute('data-tags').split(',');
-                if (tags.includes(tagName)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+                item.style.display = tags.includes(tagName) ? 'flex' : 'none';
             });
-
-            // 處理年份標題的隱藏與顯示
             sections.forEach(section => {
                 const hasVisible = Array.from(section.querySelectorAll('.archive-item')).some(i => i.style.display === 'flex');
                 section.style.display = hasVisible ? 'block' : 'none';
             });
-            
-            // 點擊後平滑滾動到內容區
             document.getElementById('filterDisplay').scrollIntoView({ behavior: 'smooth' });
         }
 
-        // 重置篩選
         function resetFilter() {
             document.querySelectorAll('.archive-item').forEach(i => i.style.display = 'flex');
             document.querySelectorAll('.year-section').forEach(s => s.style.display = 'block');
