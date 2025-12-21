@@ -9,75 +9,53 @@
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         
-        /* 椭圆形3D球体容器 */
-        #sphere-container {
-            width: 100%;
-            height: 0;
-            padding-bottom: 66.67%; /* 3:2 比例 */
+        /* 設置 85% 寬度的隨機轉動容器 */
+        #tag-cloud-container {
+            width: 85%;
+            height: 300px; /* 您可以根據需要調整高度 */
+            margin: 20px auto;
             position: relative;
-            margin: 20px 0;
+            background: #fcfcfc;
+            border-radius: 8px;
             overflow: hidden;
-            background: white;
         }
 
-        /* 两个canvas绝对定位 */
-        #tagCanvas, #gridCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100% !important;
-            height: 100% !important;
+        #tagCanvas {
+            width: 100%;
+            height: 100%;
             cursor: pointer;
         }
-        
-        #tagCanvas {
-            z-index: 2;
-        }
-        
-        #gridCanvas {
-            z-index: 1;
-            pointer-events: none;
-        }
 
-        .filter-info { text-align: center; margin-bottom: 20px; min-height: 30px; }
+        .filter-info { text-align: center; margin-bottom: 20px; min-height: 35px; }
         .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; }
         .archive-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
         .archive-date { color: #888; font-family: monospace; }
         #tag-data { display: none; }
+        
         .reset-btn {
             display: inline-block;
             margin-left: 10px;
-            padding: 2px 8px;
-            font-size: 12px;
-            background: #f6f8fa;
-            border: 1px solid #d1d5da;
-            border-radius: 3px;
+            padding: 4px 12px;
+            font-size: 13px;
+            background: #0366d6;
+            color: white;
+            border: none;
+            border-radius: 4px;
             cursor: pointer;
-            color: #24292e;
-            vertical-align: middle;
         }
         .active-tag-hint { color: #0366d6; font-weight: bold; font-size: 1.1em; }
         
-        /* 移动版调整 */
         @media (max-width: 768px) {
-            .markdown-body {
-                padding: 20px 15px;
-            }
-            
-            #sphere-container {
-                margin: 15px 0;
-            }
+            #tag-cloud-container { width: 95%; height: 250px; }
         }
     </style>
 </head>
 <body>
     <div class="markdown-body">
         <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回首頁</a>
-        <h1 style="text-align: center; border-bottom: none; margin-bottom: 0;">文章歸檔</h1>
+        <h1 style="text-align: center; border-bottom: none; margin-bottom: 10px;">文章歸檔</h1>
 
-        <!-- 椭圆形3D球体容器 -->
-        <div id="sphere-container">
-            <canvas id="gridCanvas"></canvas>
+        <div id="tag-cloud-container">
             <canvas id="tagCanvas">
                 <p>您的瀏覽器不支持 Canvas</p>
             </canvas>
@@ -85,13 +63,11 @@
 
         <div class="filter-info" id="filterDisplay"></div>
 
-        <!-- 标签数据 -->
         <ul id="tag-data">
             {% for name, items in label_dict.items() %}
             <li>
                 <a href="javascript:void(0)" onclick="filterByTag('{{ name }}')" 
-                   style="color: #{{ label_info[name].color }};"
-                   data-weight="{{ items|length }}">
+                   style="color: #{{ label_info[name].color }};">
                     {{ name }}
                 </a>
             </li>
@@ -118,318 +94,73 @@
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        // 检测是否为移动设备
-        function isMobileDevice() {
-            return window.innerWidth <= 768;
-        }
-        
-        // 获取字体大小配置
-        function getFontConfig() {
-            if (isMobileDevice()) {
-                // 移动版 6-15px
-                return {
-                    minFontSize: 6,
-                    maxFontSize: 15,
-                    textHeight: 8
-                };
-            } else {
-                // 电脑版 12-30px
-                return {
-                    minFontSize: 12,
-                    maxFontSize: 30,
-                    textHeight: 14
-                };
-            }
-        }
-        
-        // 绘制若有若无的经纬线轮廓
-        function drawSubtleGrid() {
-            const container = document.getElementById('sphere-container');
-            const canvas = document.getElementById('gridCanvas');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            
-            canvas.width = width;
-            canvas.height = height;
-            
-            const ctx = canvas.getContext('2d');
-            const centerX = width / 2;
-            const centerY = height / 2;
-            
-            const radiusX = width * 0.42;
-            const radiusY = height * 0.28;
-            const flattenTopBottom = 0.85;
-            
-            ctx.clearRect(0, 0, width, height);
-            
-            // 绘制椭圆外轮廓
-            ctx.beginPath();
-            for(let i = 0; i <= Math.PI * 2; i += 0.01) {
-                let yFactor = 1;
-                const angleY = Math.abs(Math.cos(i));
-                if(angleY > 0.7) {
-                    yFactor = flattenTopBottom;
-                }
-                
-                const x = centerX + radiusX * Math.cos(i);
-                const y = centerY + radiusY * Math.sin(i) * yFactor;
-                
-                if(i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            }
-            ctx.closePath();
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            
-            // 绘制经线
-            for (let i = 0; i < 12; i++) {
-                const lon = (i * Math.PI) / 6;
-                ctx.beginPath();
-                
-                for (let j = 0; j <= 100; j++) {
-                    const lat = (j * Math.PI) / 100 - Math.PI/2;
-                    
-                    let yFactor = 1;
-                    const latAbs = Math.abs(lat);
-                    if(latAbs > Math.PI/3) {
-                        yFactor = flattenTopBottom;
-                    }
-                    
-                    const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
-                    const y = centerY + radiusY * Math.sin(lat) * yFactor;
-                    
-                    if (j === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                }
-                if(Math.random() > 0.3) {
-                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.1 + Math.random() * 0.1})`;
-                    ctx.lineWidth = 0.5 + Math.random() * 0.3;
-                    ctx.stroke();
-                }
-            }
-            
-            // 绘制纬线
-            for (let i = 1; i < 8; i++) {
-                const lat = (i * Math.PI) / 8 - Math.PI/2;
-                
-                let yFactor = 1;
-                const latAbs = Math.abs(lat);
-                if(latAbs > Math.PI/3) {
-                    yFactor = flattenTopBottom;
-                }
-                
-                ctx.beginPath();
-                for (let j = 0; j <= 100; j++) {
-                    const lon = (j * 2 * Math.PI) / 100;
-                    const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
-                    const y = centerY + radiusY * Math.sin(lat) * yFactor;
-                    
-                    if (j === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                }
-                if(Math.random() > 0.4) {
-                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.08 + Math.random() * 0.12})`;
-                    ctx.lineWidth = 0.4 + Math.random() * 0.4;
-                    ctx.stroke();
-                }
-            }
-        }
-        
-        // 更开阔的随机旋转
-        function startOpenRotation() {
-            const canvas = document.getElementById('tagCanvas');
-            
-            let speeds = [
-                (Math.random() - 0.5) * 0.015,
-                (Math.random() - 0.5) * 0.010,
-                (Math.random() - 0.5) * 0.008
-            ];
-            
-            function rotateOpen() {
-                try {
-                    TagCanvas.textId = 'tag-data';
-                    TagCanvas.Reload('tagCanvas');
-                    
-                    const currentRot = TagCanvas.GetObject('tagCanvas');
-                    if (currentRot && currentRot.rotation) {
-                        if (Math.random() < 0.01) {
-                            speeds = [
-                                (Math.random() - 0.5) * 0.018,
-                                (Math.random() - 0.5) * 0.012,
-                                (Math.random() - 0.5) * 0.009
-                            ];
-                        }
-                        
-                        currentRot.rotation[0] += speeds[0];
-                        currentRot.rotation[1] += speeds[1];
-                        
-                        if (Math.random() < 0.05) {
-                            currentRot.rotation[2] += speeds[2] * 0.5;
-                        }
-                        
-                        speeds[0] = Math.max(-0.012, Math.min(0.012, speeds[0]));
-                        speeds[1] = Math.max(-0.008, Math.min(0.008, speeds[1]));
-                    }
-                } catch(e) {}
-                
-                if (Math.random() < 0.02) {
-                    drawSubtleGrid();
-                }
-                
-                requestAnimationFrame(rotateOpen);
-            }
-            
-            rotateOpen();
-        }
-        
-        // 自适应调整
-        function adaptSize() {
-            const container = document.getElementById('sphere-container');
-            const tagCanvas = document.getElementById('tagCanvas');
-            const width = container.clientWidth;
-            const height = container.clientHeight;
-            
-            tagCanvas.width = width;
-            tagCanvas.height = height;
-            
-            drawSubtleGrid();
-            
-            try {
-                TagCanvas.Reload('tagCanvas');
-            } catch(e) {}
-        }
-        
-        // 初始化TagCanvas
         function initTagCanvas() {
-            const fontConfig = getFontConfig();
-            
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
-                    textColour: null,
-                    outlineColour: 'transparent',
+                    textColour: null,      // 使用 HTML 中的顏色
+                    outlineColour: '#f0f0f0',
                     reverse: true,
-                    
-                    // 字体大小 - 调整为指定范围
-                    minFontSize: fontConfig.minFontSize,
-                    maxFontSize: fontConfig.maxFontSize,
-                    textHeight: fontConfig.textHeight,
-                    
-                    // 3D效果
-                    depth: 0.4,
-                    zoom: 1.2,
-                    
-                    // 动画
-                    maxSpeed: 0.05,
-                    initial: [0.15, 0.08],
-                    
-                    // 交互
+                    depth: 0.1,            // 極低的深度值，取消 3D 感覺，讓它看起來像平面
+                    maxSpeed: 0.03,        // 隨機轉動的速度
+                    initial: [0.1, -0.1],
                     wheelZoom: false,
-                    dragControl: true,
-                    clickToFront: 700,
-                    freezeActive: true,
-                    frontSelect: true,
                     
-                    // 权重功能
-                    weight: true,
-                    weightMode: 'size',
-                    weightSize: 1.8,          // 适当权重系数
-                    weightFrom: 'data-weight',
+                    // 關鍵設定：字體大小一致
+                    weight: false,         // 關閉根據文章數量改變大小
+                    minFontSize: 16,       // 設定固定的字體大小
+                    maxFontSize: 16,
                     
-                    // 字体和布局
-                    textFont: 'Arial, sans-serif',  // 改用更清晰的字体
-                    padding: 10,             // 增加间距
-                    outlineMethod: 'colour',
-                    activeCursor: 'pointer',
-                    
-                    // 椭圆形参数
-                    stretchX: 2.0,
-                    stretchY: 0.65,
-                    
-                    // 球体参数
-                    radiusX: 1.6,
-                    radiusY: 0.85,
-                    radiusZ: 1.0,
-                    
-                    // 移动版调整
-                    padding: isMobileDevice() ? 8 : 10,
-                    depth: isMobileDevice() ? 0.3 : 0.4,
-                    zoom: isMobileDevice() ? 1.1 : 1.2,
-                    
-                    // 根据字体大小调整其他参数
-                    minBrightness: 0.2,
-                    maxBrightness: 1.0,
-                    
-                    // 其他参数
-                    offsetX: 0,
-                    offsetY: 0,
-                    fadeIn: 1200,
-                    freezeDecel: true,
-                    shadow: false,
-                    shadowBlur: 0
+                    // 布局調整
+                    stretchX: 1.0,         // 取消 3D 橢圓拉伸
+                    textFont: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+                    padding: 15,
+                    clickToFront: 300,
+                    activeCursor: 'pointer'
                 });
-                
-                // 开始旋转
-                setTimeout(startOpenRotation, 1000);
-                
             } catch(e) {
-                console.log(e);
-                document.getElementById('sphere-container').style.display = 'none';
+                document.getElementById('tag-cloud-container').style.display = 'none';
             }
         }
-        
-        window.onload = function() {
-            drawSubtleGrid();
-            initTagCanvas();
-            
-            // 窗口大小改变时重新初始化
-            let resizeTimer;
-            window.addEventListener('resize', function() {
-                clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    adaptSize();
-                    if (isMobileDevice() && window.innerWidth <= 768) {
-                        try {
-                            TagCanvas.Reload('tagCanvas');
-                        } catch(e) {
-                            initTagCanvas();
-                        }
-                    }
-                }, 200);
-            });
-            
-            setTimeout(adaptSize, 100);
-        };
 
+        // 篩選功能
         function filterByTag(tagName) {
             const items = document.querySelectorAll('.archive-item');
             const sections = document.querySelectorAll('.year-section');
             const display = document.getElementById('filterDisplay');
-            display.innerHTML = `<span class="active-tag-hint">已選標籤：#${tagName}</span> <span class="reset-btn" onclick="resetFilter()">顯示全部</span>`;
+            
+            // 更新上方顯示狀態
+            display.innerHTML = `<span class="active-tag-hint">正在查看標籤：#${tagName}</span> <button class="reset-btn" onclick="resetFilter()">顯示全部文章</button>`;
+            
+            // 遍歷所有文章
             items.forEach(item => {
                 const tags = item.getAttribute('data-tags').split(',');
-                item.style.display = tags.includes(tagName) ? 'flex' : 'none';
+                if (tags.includes(tagName)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
             });
+
+            // 處理年份標題的隱藏與顯示
             sections.forEach(section => {
                 const hasVisible = Array.from(section.querySelectorAll('.archive-item')).some(i => i.style.display === 'flex');
                 section.style.display = hasVisible ? 'block' : 'none';
             });
+            
+            // 點擊後平滑滾動到內容區
+            document.getElementById('filterDisplay').scrollIntoView({ behavior: 'smooth' });
         }
 
+        // 重置篩選
         function resetFilter() {
             document.querySelectorAll('.archive-item').forEach(i => i.style.display = 'flex');
             document.querySelectorAll('.year-section').forEach(s => s.style.display = 'block');
             document.getElementById('filterDisplay').innerHTML = '';
         }
+
+        window.onload = function() {
+            initTagCanvas();
+        };
     </script>
 </body>
 </html>
