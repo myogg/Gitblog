@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
-- [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
 
 ## 一些记录 (38篇文章)
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
@@ -90,16 +90,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (15篇文章)
+## 收录 (16篇文章)
+- [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [ai听书软件](https://github.com/myogg/Gitblog/issues/132)--2025-12-17
 - [天文学家拍摄到类星战塔图因的系外行星](https://github.com/myogg/Gitblog/issues/131)--2025-12-17
 - [苹果"阔折叠"iPhone明年发布](https://github.com/myogg/Gitblog/issues/125)--2025-12-15
-- [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)--2025-12-11
 
 <details>
-<summary>显示更多 (10篇)</summary>
+<summary>显示更多 (11篇)</summary>
 
+- [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)
 - [2025 年 11 月新游盘点](https://github.com/myogg/Gitblog/issues/107)
@@ -223,11 +224,15 @@ My personal blog using issues and GitHub Actions
 ## 世界好精彩我想去看看 (1篇文章)
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
+## 人生感悟不隨太晚 (1篇文章)
+- [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
+
 ## 我喜歡宇宙奇觀 (2篇文章)
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 碎碎念 (2篇文章)
+## 碎碎念 (3篇文章)
+- [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
