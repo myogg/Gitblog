@@ -77,6 +77,7 @@
 
         <!-- 椭圆形3D球体容器 -->
         <div id="sphere-container">
+            <!-- 已移除网格canvas，但保留结构以防需要 -->
             <canvas id="gridCanvas"></canvas>
             <canvas id="tagCanvas">
                 <p>您的瀏覽器不支持 Canvas</p>
@@ -126,14 +127,14 @@
         // 获取字体大小配置
         function getFontConfig() {
             if (isMobileDevice()) {
-                // 移动版 6-15px
+                // 移动版：最大15px（对应100篇文章的标签）
                 return {
                     minFontSize: 6,
-                    maxFontSize: 15,
+                    maxFontSize: 15,  // 手机版最大15px
                     textHeight: 8
                 };
             } else {
-                // 电脑版 12-30px
+                // 电脑版：最大30px
                 return {
                     minFontSize: 12,
                     maxFontSize: 30,
@@ -142,8 +143,52 @@
             }
         }
         
-        // 绘制若有若无的经纬线轮廓
+        // 计算标签权重 - 基于8个等级
+        function calculateWeightScale(maxArticles) {
+            // 8个权重等级
+            const weightLevels = 8;
+            // 权重范围：0.3 到 1.8
+            const minWeight = 0.3;
+            const maxWeight = 1.8;
+            
+            // 每篇文章对应的权重增量
+            const weightIncrement = (maxWeight - minWeight) / (maxArticles || 100);
+            
+            return function(articleCount) {
+                // 基础权重 + 文章数量对应的增量
+                let weight = minWeight + (articleCount - 1) * weightIncrement;
+                // 限制在范围内
+                return Math.max(minWeight, Math.min(maxWeight, weight));
+            };
+        }
+        
+        // 初始化标签权重
+        function initTagWeights() {
+            const tagLinks = document.querySelectorAll('#tag-data li a');
+            let maxArticles = 0;
+            
+            // 找出最大文章数量
+            tagLinks.forEach(link => {
+                const count = parseInt(link.getAttribute('data-weight') || '1');
+                if (count > maxArticles) maxArticles = count;
+            });
+            
+            // 创建权重计算函数
+            const calculateWeight = calculateWeightScale(maxArticles);
+            
+            // 为每个标签设置权重
+            tagLinks.forEach(link => {
+                const count = parseInt(link.getAttribute('data-weight') || '1');
+                const weight = calculateWeight(count);
+                link.setAttribute('data-weight', weight.toFixed(2));
+            });
+            
+            return maxArticles;
+        }
+        
+        // 绘制若有若无的经纬线轮廓 - 已移除，改为空函数
         function drawSubtleGrid() {
+            // 清空canvas但不绘制任何内容
             const container = document.getElementById('sphere-container');
             const canvas = document.getElementById('gridCanvas');
             const width = container.clientWidth;
@@ -153,96 +198,7 @@
             canvas.height = height;
             
             const ctx = canvas.getContext('2d');
-            const centerX = width / 2;
-            const centerY = height / 2;
-            
-            const radiusX = width * 0.42;
-            const radiusY = height * 0.28;
-            const flattenTopBottom = 0.85;
-            
             ctx.clearRect(0, 0, width, height);
-            
-            // 绘制椭圆外轮廓
-            ctx.beginPath();
-            for(let i = 0; i <= Math.PI * 2; i += 0.01) {
-                let yFactor = 1;
-                const angleY = Math.abs(Math.cos(i));
-                if(angleY > 0.7) {
-                    yFactor = flattenTopBottom;
-                }
-                
-                const x = centerX + radiusX * Math.cos(i);
-                const y = centerY + radiusY * Math.sin(i) * yFactor;
-                
-                if(i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            }
-            ctx.closePath();
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-            
-            // 绘制经线
-            for (let i = 0; i < 12; i++) {
-                const lon = (i * Math.PI) / 6;
-                ctx.beginPath();
-                
-                for (let j = 0; j <= 100; j++) {
-                    const lat = (j * Math.PI) / 100 - Math.PI/2;
-                    
-                    let yFactor = 1;
-                    const latAbs = Math.abs(lat);
-                    if(latAbs > Math.PI/3) {
-                        yFactor = flattenTopBottom;
-                    }
-                    
-                    const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
-                    const y = centerY + radiusY * Math.sin(lat) * yFactor;
-                    
-                    if (j === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                }
-                if(Math.random() > 0.3) {
-                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.1 + Math.random() * 0.1})`;
-                    ctx.lineWidth = 0.5 + Math.random() * 0.3;
-                    ctx.stroke();
-                }
-            }
-            
-            // 绘制纬线
-            for (let i = 1; i < 8; i++) {
-                const lat = (i * Math.PI) / 8 - Math.PI/2;
-                
-                let yFactor = 1;
-                const latAbs = Math.abs(lat);
-                if(latAbs > Math.PI/3) {
-                    yFactor = flattenTopBottom;
-                }
-                
-                ctx.beginPath();
-                for (let j = 0; j <= 100; j++) {
-                    const lon = (j * 2 * Math.PI) / 100;
-                    const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
-                    const y = centerY + radiusY * Math.sin(lat) * yFactor;
-                    
-                    if (j === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                }
-                if(Math.random() > 0.4) {
-                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.08 + Math.random() * 0.12})`;
-                    ctx.lineWidth = 0.4 + Math.random() * 0.4;
-                    ctx.stroke();
-                }
-            }
         }
         
         // 更开阔的随机旋转
@@ -282,10 +238,6 @@
                     }
                 } catch(e) {}
                 
-                if (Math.random() < 0.02) {
-                    drawSubtleGrid();
-                }
-                
                 requestAnimationFrame(rotateOpen);
             }
             
@@ -302,6 +254,7 @@
             tagCanvas.width = width;
             tagCanvas.height = height;
             
+            // 清空网格但不绘制
             drawSubtleGrid();
             
             try {
@@ -339,15 +292,15 @@
                     freezeActive: true,
                     frontSelect: true,
                     
-                    // 权重功能
+                    // 权重功能 - 使用8个权重等级
                     weight: true,
                     weightMode: 'size',
                     weightSize: 1.8,          // 适当权重系数
                     weightFrom: 'data-weight',
                     
                     // 字体和布局
-                    textFont: 'Arial, sans-serif',  // 改用更清晰的字体
-                    padding: 10,             // 增加间距
+                    textFont: 'Arial, sans-serif',
+                    padding: 10,
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
@@ -375,7 +328,11 @@
                     fadeIn: 1200,
                     freezeDecel: true,
                     shadow: false,
-                    shadowBlur: 0
+                    shadowBlur: 0,
+                    
+                    // 无轮廓线
+                    outlineThickness: 0,
+                    outlineMethod: 'none'
                 });
                 
                 // 开始旋转
@@ -388,7 +345,14 @@
         }
         
         window.onload = function() {
+            // 初始化标签权重（8个等级）
+            const maxArticles = initTagWeights();
+            console.log(`最大文章数量: ${maxArticles}, 使用8个权重等级`);
+            
+            // 清空网格（不绘制）
             drawSubtleGrid();
+            
+            // 初始化标签云
             initTagCanvas();
             
             // 窗口大小改变时重新初始化
