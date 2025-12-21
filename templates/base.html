@@ -22,7 +22,7 @@
             <div class="sidebar">
                 <div class="filter-controls">
                     <h3>標籤</h3>
-                    <span class="clear-filter" id="clear-filter">清除篩選</span>
+                    <span class="clear-filter" id="clear-filter" style="display:none;">清除篩選</span>
                 </div>
                 <div class="tags-container">
                     {% for name, info in label_info.items() %}
@@ -35,16 +35,12 @@
             </div>
 
             <div id="categories-container">
-                
                 {% if pinned_issues %}
                 <div class="category-section">
-                    <h2>置頂文章 <small>({{pinned_issues|length}}篇)</small></h2>
+                    <h2>置頂文章</h2>
                     <ul class="article-list">
                         {% for i in pinned_issues %}
-                        <li>
-                            <a href="articles/article-{{i.number}}.html">{{i.title}}</a> 
-                            <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span>
-                        </li>
+                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -52,13 +48,10 @@
 
                 {% if recent_issues %}
                 <div class="category-section">
-                    <h2>最近文章 <small>(5篇最新)</small></h2>
+                    <h2>最近文章</h2>
                     <ul class="article-list">
                         {% for i in recent_issues %}
-                        <li>
-                            <a href="articles/article-{{i.number}}.html">{{i.title}}</a> 
-                            <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span>
-                        </li>
+                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -66,36 +59,26 @@
 
                 {% for label, items in label_dict.items() %}
                 <div class="category-section" data-label="{{label_info[label].safe_name}}">
-                    <h2>{{label}} <small>({{items|length}}篇)</small></h2>
+                    <h2>{{label}}</h2>
                     <ul class="article-list">
                         {% for i in items[:MAX_PER_CATEGORY] %}
-                        <li>
-                            <a href="articles/article-{{i.number}}.html">{{i.title}}</a> 
-                            <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span>
-                        </li>
+                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
                         {% endfor %}
                     </ul>
-
                     {% if items|length > MAX_PER_CATEGORY %}
-                    <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
+                    <div id="hidden-{{label_info[label].safe_name}}-hidden" style="display:none;">
                         <ul class="article-list">
                             {% for i in items[MAX_PER_CATEGORY:] %}
-                            <li>
-                                <a href="articles/article-{{i.number}}.html">{{i.title}}</a> 
-                                <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span>
-                            </li>
+                            <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
                             {% endfor %}
                         </ul>
                     </div>
-                    <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">
-                        顯示更多
-                    </button>
+                    <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">顯示更多</button>
                     {% endif %}
                 </div>
                 {% endfor %}
             </div>
         </div>
-
         <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
     </div>
     <script src="static/script.js"></script>
