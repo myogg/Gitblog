@@ -209,7 +209,7 @@
                     }
                 }
                 if(Math.random() > 0.3) {
-                    ctx.strokeStyle = rgba(76, 175, 80, ${0.1 + Math.random() * 0.1});
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.1 + Math.random() * 0.1})`;
                     ctx.lineWidth = 0.5 + Math.random() * 0.3;
                     ctx.stroke();
                 }
@@ -238,7 +238,7 @@
                     }
                 }
                 if(Math.random() > 0.4) {
-                    ctx.strokeStyle = rgba(76, 175, 80, ${0.08 + Math.random() * 0.12});
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.08 + Math.random() * 0.12})`;
                     ctx.lineWidth = 0.4 + Math.random() * 0.4;
                     ctx.stroke();
                 }
@@ -414,7 +414,7 @@
             const items = document.querySelectorAll('.archive-item');
             const sections = document.querySelectorAll('.year-section');
             const display = document.getElementById('filterDisplay');
-            display.innerHTML = <span class="active-tag-hint">已選標籤：#${tagName}</span> <span class="reset-btn" onclick="resetFilter()">顯示全部</span>;
+            display.innerHTML = `<span class="active-tag-hint">已選標籤：#${tagName}</span> <span class="reset-btn" onclick="resetFilter()">顯示全部</span>`;
             items.forEach(item => {
                 const tags = item.getAttribute('data-tags').split(',');
                 item.style.display = tags.includes(tagName) ? 'flex' : 'none';
