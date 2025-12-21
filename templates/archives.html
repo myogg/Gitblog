@@ -57,6 +57,17 @@
             vertical-align: middle;
         }
         .active-tag-hint { color: #0366d6; font-weight: bold; font-size: 1.1em; }
+        
+        /* 移动版调整 */
+        @media (max-width: 768px) {
+            .markdown-body {
+                padding: 20px 15px;
+            }
+            
+            #sphere-container {
+                margin: 15px 0;
+            }
+        }
     </style>
 </head>
 <body>
@@ -74,10 +85,14 @@
 
         <div class="filter-info" id="filterDisplay"></div>
 
+        <!-- 修改这里：添加权重数据 -->
         <ul id="tag-data">
             {% for name, items in label_dict.items() %}
             <li>
-                <a href="javascript:void(0)" onclick="filterByTag('{{ name }}')" style="color: #{{ label_info[name].color }};">
+                <!-- 添加 data-weight 属性，值为文章数量 -->
+                <a href="javascript:void(0)" onclick="filterByTag('{{ name }}')" 
+                   style="color: #{{ label_info[name].color }};"
+                   data-weight="{{ items|length }}">
                     {{ name }}
                 </a>
             </li>
@@ -104,6 +119,28 @@
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
+        // 检测是否为移动设备
+        function isMobileDevice() {
+            return window.innerWidth <= 768;
+        }
+        
+        // 获取字体大小配置（移动版缩小一半）
+        function getFontConfig() {
+            if (isMobileDevice()) {
+                return {
+                    minFontSize: 16,
+                    maxFontSize: 35,
+                    textHeight: 12
+                };
+            } else {
+                return {
+                    minFontSize: 24,
+                    maxFontSize: 60,
+                    textHeight: 18
+                };
+            }
+        }
+        
         // 绘制若有若无的经纬线轮廓
         function drawSubtleGrid() {
             const container = document.getElementById('sphere-container');
@@ -118,21 +155,19 @@
             const centerX = width / 2;
             const centerY = height / 2;
             
-            // 椭圆形参数 - 上下平头效果
             const radiusX = width * 0.42;
-            const radiusY = height * 0.28; // 更扁平，上下平头
-            const flattenTopBottom = 0.85; // 上下平头系数
+            const radiusY = height * 0.28;
+            const flattenTopBottom = 0.85;
             
             ctx.clearRect(0, 0, width, height);
             
-            // 绘制椭圆外轮廓 - 若有若无
+            // 绘制椭圆外轮廓
             ctx.beginPath();
             for(let i = 0; i <= Math.PI * 2; i += 0.01) {
-                // 上下平头效果
                 let yFactor = 1;
                 const angleY = Math.abs(Math.cos(i));
                 if(angleY > 0.7) {
-                    yFactor = flattenTopBottom; // 上下部分更扁平
+                    yFactor = flattenTopBottom;
                 }
                 
                 const x = centerX + radiusX * Math.cos(i);
@@ -145,22 +180,21 @@
                 }
             }
             ctx.closePath();
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)'; // 非常淡的绿色
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)';
             ctx.lineWidth = 1;
             ctx.stroke();
             
-            // 绘制经线（纵向） - 若有若无
+            // 绘制经线
             for (let i = 0; i < 12; i++) {
-                const lon = (i * Math.PI) / 6; // 经度
+                const lon = (i * Math.PI) / 6;
                 ctx.beginPath();
                 
                 for (let j = 0; j <= 100; j++) {
-                    const lat = (j * Math.PI) / 100 - Math.PI/2; // 纬度（-90到90度）
+                    const lat = (j * Math.PI) / 100 - Math.PI/2;
                     
-                    // 上下平头效果
                     let yFactor = 1;
                     const latAbs = Math.abs(lat);
-                    if(latAbs > Math.PI/3) { // 高纬度区域
+                    if(latAbs > Math.PI/3) {
                         yFactor = flattenTopBottom;
                     }
                     
@@ -173,7 +207,6 @@
                         ctx.lineTo(x, y);
                     }
                 }
-                // 随机淡出一些经线
                 if(Math.random() > 0.3) {
                     ctx.strokeStyle = `rgba(76, 175, 80, ${0.1 + Math.random() * 0.1})`;
                     ctx.lineWidth = 0.5 + Math.random() * 0.3;
@@ -181,11 +214,10 @@
                 }
             }
             
-            // 绘制纬线（横向） - 若有若无
+            // 绘制纬线
             for (let i = 1; i < 8; i++) {
-                const lat = (i * Math.PI) / 8 - Math.PI/2; // 纬度
+                const lat = (i * Math.PI) / 8 - Math.PI/2;
                 
-                // 上下平头效果
                 let yFactor = 1;
                 const latAbs = Math.abs(lat);
                 if(latAbs > Math.PI/3) {
@@ -204,50 +236,22 @@
                         ctx.lineTo(x, y);
                     }
                 }
-                // 随机淡出一些纬线
                 if(Math.random() > 0.4) {
                     ctx.strokeStyle = `rgba(76, 175, 80, ${0.08 + Math.random() * 0.12})`;
                     ctx.lineWidth = 0.4 + Math.random() * 0.4;
                     ctx.stroke();
                 }
             }
-            
-            // 绘制几个关键点
-            const keyPoints = [
-                {lon: 0, lat: 0, size: 1}, // 中心
-                {lon: Math.PI/2, lat: 0, size: 0.8},
-                {lon: Math.PI, lat: 0, size: 0.8},
-                {lon: -Math.PI/2, lat: 0, size: 0.8},
-                {lon: 0, lat: Math.PI/4, size: 0.6},
-                {lon: 0, lat: -Math.PI/4, size: 0.6}
-            ];
-            
-            keyPoints.forEach(point => {
-                let yFactor = 1;
-                const latAbs = Math.abs(point.lat);
-                if(latAbs > Math.PI/3) {
-                    yFactor = flattenTopBottom;
-                }
-                
-                const x = centerX + radiusX * Math.cos(point.lat) * Math.cos(point.lon);
-                const y = centerY + radiusY * Math.sin(point.lat) * yFactor;
-                
-                ctx.beginPath();
-                ctx.arc(x, y, point.size, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(76, 175, 80, 0.3)';
-                ctx.fill();
-            });
         }
         
         // 更开阔的随机旋转
         function startOpenRotation() {
             const canvas = document.getElementById('tagCanvas');
             
-            // 设置更随机的初始速度和方向
             let speeds = [
-                (Math.random() - 0.5) * 0.015, // X
-                (Math.random() - 0.5) * 0.010, // Y
-                (Math.random() - 0.5) * 0.008  // Z
+                (Math.random() - 0.5) * 0.015,
+                (Math.random() - 0.5) * 0.010,
+                (Math.random() - 0.5) * 0.008
             ];
             
             function rotateOpen() {
@@ -257,7 +261,6 @@
                     
                     const currentRot = TagCanvas.GetObject('tagCanvas');
                     if (currentRot && currentRot.rotation) {
-                        // 每100帧随机改变一次速度和方向
                         if (Math.random() < 0.01) {
                             speeds = [
                                 (Math.random() - 0.5) * 0.018,
@@ -266,22 +269,18 @@
                             ];
                         }
                         
-                        // 应用更开阔的旋转
                         currentRot.rotation[0] += speeds[0];
                         currentRot.rotation[1] += speeds[1];
                         
-                        // 偶尔添加Z轴旋转
                         if (Math.random() < 0.05) {
                             currentRot.rotation[2] += speeds[2] * 0.5;
                         }
                         
-                        // 速度限制 - 让旋转更稳定
                         speeds[0] = Math.max(-0.012, Math.min(0.012, speeds[0]));
                         speeds[1] = Math.max(-0.008, Math.min(0.008, speeds[1]));
                     }
                 } catch(e) {}
                 
-                // 偶尔重绘轮廓
                 if (Math.random() < 0.02) {
                     drawSubtleGrid();
                 }
@@ -309,8 +308,9 @@
             } catch(e) {}
         }
         
-        window.onload = function() {
-            drawSubtleGrid();
+        // 初始化TagCanvas - 关键修改
+        function initTagCanvas() {
+            const fontConfig = getFontConfig();
             
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
@@ -318,77 +318,88 @@
                     outlineColour: 'transparent',
                     reverse: true,
                     
-                    // 字体大小 - 更大
-                    minFontSize: 32,
-                    maxFontSize: 70,
-                    textHeight: 24,
+                    // 字体大小
+                    minFontSize: fontConfig.minFontSize,
+                    maxFontSize: fontConfig.maxFontSize,
+                    textHeight: fontConfig.textHeight,
                     
-                    // 3D效果 - 调整椭圆形和平头
-                    depth: 0.4,          // 增加深度
-                    zoom: 1.2,           // 放大
+                    // 3D效果
+                    depth: 0.4,
+                    zoom: 1.2,
                     
-                    // 动画 - 更开阔
+                    // 动画
                     maxSpeed: 0.05,
                     initial: [0.15, 0.08],
                     
                     // 交互
                     wheelZoom: false,
                     dragControl: true,
-                    clickToFront: 700,   // 增加距离
+                    clickToFront: 700,
                     freezeActive: true,
                     frontSelect: true,
                     
-                    // 标签权重
+                    // 关键：启用权重功能
                     weight: true,
-                    weightMode: 'size',
-                    weightSize: 2.2,     // 增加权重
+                    weightMode: 'size',          // 权重影响字体大小
+                    weightSize: 2.5,             // 增加权重系数，让大小差异更明显
+                    weightFrom: 'data-weight',   // 从 data-weight 属性获取权重值
                     
-                    // 字体和布局 - 让标签分布更开
+                    // 字体和布局
                     textFont: 'Impact, Arial Black, sans-serif',
-                    padding: 12,         // 增加间距
+                    padding: 12,
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
-                    // 关键：椭圆形参数 - 上下平头
-                    stretchX: 2.0,       // 更水平拉伸
-                    stretchY: 0.65,      // 更垂直压缩（上下平头）
+                    // 椭圆形参数
+                    stretchX: 2.0,
+                    stretchY: 0.65,
                     
-                    // 球体参数 - 调整平头效果
+                    // 球体参数
                     radiusX: 1.6,
-                    radiusY: 0.85,       // 减小Y轴半径（上下平头）
+                    radiusY: 0.85,
                     radiusZ: 1.0,
                     
-                    // 位置偏移让标签分布更开
+                    // 移动版调整
+                    padding: isMobileDevice() ? 8 : 12,
+                    depth: isMobileDevice() ? 0.3 : 0.4,
+                    zoom: isMobileDevice() ? 1.1 : 1.2,
+                    
+                    // 其他参数
                     offsetX: 0,
                     offsetY: 0,
-                    
-                    // 让标签更分散
-                    weightFrom: 'data-weight',
-                    weightGrow: 1.5,
-                    weightMode: 'both',
-                    
-                    // 激活状态
                     fadeIn: 1200,
                     freezeDecel: true,
-                    
-                    // 阴影
                     shadow: false,
                     shadowBlur: 0
                 });
                 
-                // 开始更开阔的旋转
+                // 开始旋转
                 setTimeout(startOpenRotation, 1000);
                 
             } catch(e) {
                 console.log(e);
                 document.getElementById('sphere-container').style.display = 'none';
             }
+        }
+        
+        window.onload = function() {
+            drawSubtleGrid();
+            initTagCanvas();
             
-            // 窗口大小自适应
+            // 窗口大小改变时重新初始化
             let resizeTimer;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(adaptSize, 200);
+                resizeTimer = setTimeout(() => {
+                    adaptSize();
+                    if (isMobileDevice() && window.innerWidth <= 768) {
+                        try {
+                            TagCanvas.Reload('tagCanvas');
+                        } catch(e) {
+                            initTagCanvas();
+                        }
+                    }
+                }, 200);
             });
             
             setTimeout(adaptSize, 100);
