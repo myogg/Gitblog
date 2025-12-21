@@ -7,14 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
     <style>
-        /* 保留您原本關於頁特有的友情連結樣式 */
-        .profile-photo { width: 200px; height: 200px; margin: 0 auto 30px; border-radius: 50%; overflow: hidden; border: 4px solid #f0f0f0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .about-container { margin: 40px 0 60px; text-align: center; }
+        .profile-photo { width: 200px; height: 200px; margin: 0 auto 30px; border-radius: 50%; overflow: hidden; border: 4px solid #f0f0f0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); background-color: #f9f9f9; }
         .profile-photo img { width: 100%; height: 100%; object-fit: cover; }
-        .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; margin: 30px 0; }
-        .link-item { display: block; padding: 15px; background: #f8f9fa; border-radius: 8px; text-decoration: none !important; color: #24292e !important; border: 1px solid #e1e4e8; transition: all 0.2s; }
-        .link-item:hover { background: #f1f8ff; border-color: #0366d6; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
-        .link-title { font-weight: bold; margin-bottom: 5px; display: block; }
-        .link-url { font-size: 0.85em; color: #586069; word-break: break-all; }
+        .intro { max-width: 700px; margin: 0 auto 60px; line-height: 1.8; color: #333; font-size: 18px; padding: 0 20px; }
+        .friend-links { margin-top: 50px; padding-top: 40px; border-top: 1px solid #eaeaea; }
+        .friend-links h2 { text-align: center; margin-bottom: 30px; color: #333; font-size: 24px; }
+        .links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 20px; }
+        .link-item { background: #f9f9f9; border-radius: 8px; padding: 20px; transition: all 0.3s ease; border: 1px solid #eaeaea; text-decoration: none; color: inherit; display: block; }
+        .link-item:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); border-color: #0366d6; background: white; }
+        .link-title { font-weight: 600; margin-bottom: 8px; color: #0366d6; font-size: 18px; }
+        .link-desc { color: #666; font-size: 14px; line-height: 1.6; margin-bottom: 10px; }
+        .link-url { font-size: 12px; color: #888; word-break: break-all; font-family: monospace; background: #f0f0f0; padding: 4px 8px; border-radius: 4px; display: inline-block; }
+        .favicon { width: 20px; height: 20px; margin-right: 10px; vertical-align: middle; border-radius: 3px; }
+        .link-header { display: flex; align-items: center; margin-bottom: 12px; }
+        @media (max-width: 768px) { .links-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
@@ -26,49 +33,89 @@
             <a href="archives.html">歸檔</a>
             <a href="about.html">關於</a>
         </div>
-
+        
         <div class="about-container">
+            <h2 style="text-align: center; border-bottom: none; margin-bottom: 20px;">關於我</h2>
             <div class="profile-photo">
-                <img src="https://github.com/myogg.png" alt="Profile">
+                <img src="https://pic.imgdd.cc/item/68975648abb08ec37a9cd5e8.png" alt="我的照片">
             </div>
-            
-            <section>
-                <h2 style="text-align:center; border:none;">關於我</h2>
-                <p>這裡是我的個人空間，記錄生活與技術。</p>
-            </section>
-
-            <section style="margin-top: 50px;">
-                <h2 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">友情連結</h2>
-                <div class="links-grid" id="linksGrid">
-                    <div style="grid-column: 1/-1; text-align: center; color: #888;">正在加載連結...</div>
-                </div>
-            </section>
+            <div class="intro">
+                <p>用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行動。</p>
+                <p>记录在这个时代下的焦虑、迷茫、挣扎与希望。</p>
+            </div>
         </div>
-
+        
+        <div class="friend-links">
+            <h2>🔗 友情链接</h2>
+            <div class="links-grid">
+                <a href="https://829259.xyz" target="_blank" class="link-item">
+                    <div class="link-header">
+                        <img src="https://829259.xyz/favicon.ico" class="favicon" onerror="this.style.display='none'">
+                        <div class="link-title">829259.xyz</div>
+                    </div>
+                    <div class="link-desc">一个个人网站</div>
+                    <div class="link-url">829259.xyz</div>
+                </a>
+                <a href="https://jianghaiyia.com" target="_blank" class="link-item">
+                    <div class="link-header">
+                        <img src="https://jianghaiyia.com/favicon.ico" class="favicon" onerror="this.style.display='none'">
+                        <div class="link-title">jianghaiyia.com</div>
+                    </div>
+                    <div class="link-desc">一个个人网站</div>
+                    <div class="link-url">jianghaiyia.com</div>
+                </a>
+                <a href="https://jreely.dpdns.org" target="_blank" class="link-item">
+                    <div class="link-header">
+                        <img src="https://jreely.dpdns.org/favicon.ico" class="favicon" onerror="this.style.display='none'">
+                        <div class="link-title">jreely.dpdns.org</div>
+                    </div>
+                    <div class="link-desc">一个个人网站</div>
+                    <div class="link-url">jreely.dpdns.org</div>
+                </a>
+                <a href="https://tel.qzz.io" target="_blank" class="link-item">
+                    <div class="link-header">
+                        <img src="https://tel.qzz.io/favicon.ico" class="favicon" onerror="this.style.display='none'">
+                        <div class="link-title">tel.qzz.io</div>
+                    </div>
+                    <div class="link-desc">一个个人网站</div>
+                    <div class="link-url">tel.qzz.io</div>
+                </a>
+                <a href="https://myogg.hidns.co" target="_blank" class="link-item">
+                    <div class="link-header">
+                        <img src="https://myogg.hidns.co/favicon.ico" class="favicon" onerror="this.style.display='none'">
+                        <div class="link-title">myogg.hidns.co</div>
+                    </div>
+                    <div class="link-desc">一个个人网站</div>
+                    <div class="link-url">myogg.hidns.co</div>
+                </a>
+            </div>
+        </div>
         <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
     </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            fetch('friendship_links.json')
-                .then(response => response.json())
-                .then(data => {
-                    const grid = document.getElementById('linksGrid');
-                    grid.innerHTML = '';
-                    if (data.links && data.links.length > 0) {
-                        data.links.forEach(link => {
-                            const a = document.createElement('a');
-                            a.className = 'link-item';
-                            a.href = link.url;
-                            a.target = '_blank';
-                            a.innerHTML = `<span class="link-title">${link.name}</span><span class="link-url">${link.url.replace(/^https?:\/\//, '')}</span>`;
-                            grid.appendChild(a);
-                        });
-                    }
-                })
-                .catch(err => {
-                    document.getElementById('linksGrid').innerHTML = '<div style="grid-column: 1/-1; text-align: center; color: #d73a49;">無法加載連結</div>';
-                });
+            setTimeout(async function() {
+                const linkItems = document.querySelectorAll('.link-item');
+                for (let linkItem of linkItems) {
+                    const url = linkItem.href;
+                    const titleElement = linkItem.querySelector('.link-title');
+                    const domain = titleElement.textContent;
+                    if (!domain.includes('.') || domain === '一个个人网站') continue;
+                    try {
+                        const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+                        const data = await response.json();
+                        const html = data.contents;
+                        const titleMatch = html.match(/<title>([^<]*)<\/title>/i);
+                        if (titleMatch && titleMatch[1]) {
+                            const title = titleMatch[1].trim();
+                            if (title && title !== '' && title !== domain) {
+                                titleElement.textContent = title;
+                            }
+                        }
+                    } catch (error) {}
+                }
+            }, 1000);
         });
     </script>
 </body>
