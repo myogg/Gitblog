@@ -11,11 +11,11 @@
         
         /* 椭圆形3D球体容器 */
         #sphere-container {
-            width: 85%;
+            width: 100%;
             height: 0;
-            padding-bottom: calc(85% * 2/3); /* 3:2 比例 */
+            padding-bottom: 66.67%; /* 3:2 比例 */
             position: relative;
-            margin: 20px auto;
+            margin: 20px 0;
             overflow: hidden;
             background: white;
         }
@@ -65,9 +65,7 @@
             }
             
             #sphere-container {
-                width: 90%;
-                padding-bottom: calc(90% * 2/3);
-                margin: 15px auto;
+                margin: 15px 0;
             }
         }
     </style>
@@ -87,15 +85,13 @@
 
         <div class="filter-info" id="filterDisplay"></div>
 
-        <!-- 标签数据 - 添加8种权重等级 -->
+        <!-- 标签数据 -->
         <ul id="tag-data">
             {% for name, items in label_dict.items() %}
-            {% set article_count = items|length %}
             <li>
                 <a href="javascript:void(0)" onclick="filterByTag('{{ name }}')" 
                    style="color: #{{ label_info[name].color }};"
-                   data-weight="{{ article_count }}"
-                   data-level="{{ getWeightLevel(article_count) }}">
+                   data-weight="{{ items|length }}">
                     {{ name }}
                 </a>
             </li>
@@ -127,31 +123,27 @@
             return window.innerWidth <= 768;
         }
         
-        // 8种权重等级的字体大小配置
-        function getFontSizeByLevel(articleCount, isMobile) {
-            // 权重等级划分（8种等级）
-            const levels = [
-                { min: 100, size: isMobile ? 15 : 30 },  // 等级8: 100+文章
-                { min: 50,  size: isMobile ? 13 : 26 },  // 等级7: 50-99文章
-                { min: 30,  size: isMobile ? 11 : 22 },  // 等级6: 30-49文章
-                { min: 20,  size: isMobile ? 10 : 20 },  // 等级5: 20-29文章
-                { min: 15,  size: isMobile ? 9 : 18 },   // 等级4: 15-19文章
-                { min: 10,  size: isMobile ? 8 : 16 },   // 等级3: 10-14文章
-                { min: 5,   size: isMobile ? 7 : 14 },   // 等级2: 5-9文章
-                { min: 1,   size: isMobile ? 6 : 12 }    // 等级1: 1-4文章
-            ];
-            
-            for (let level of levels) {
-                if (articleCount >= level.min) {
-                    return level.size;
-                }
+        // 获取字体大小配置
+        function getFontConfig() {
+            if (isMobileDevice()) {
+                // 移动版 6-15px
+                return {
+                    minFontSize: 6,
+                    maxFontSize: 15,
+                    textHeight: 8
+                };
+            } else {
+                // 电脑版 12-30px
+                return {
+                    minFontSize: 12,
+                    maxFontSize: 30,
+                    textHeight: 14
+                };
             }
-            
-            return isMobile ? 6 : 12; // 默认值
         }
         
-        // 绘制25条经纬线的轮廓
-        function drawGrid25Lines() {
+        // 绘制若有若无的经纬线轮廓
+        function drawSubtleGrid() {
             const container = document.getElementById('sphere-container');
             const canvas = document.getElementById('gridCanvas');
             const width = container.clientWidth;
@@ -164,31 +156,47 @@
             const centerX = width / 2;
             const centerY = height / 2;
             
-            // 椭圆参数 - 上下刀削平头效果
-            const radiusX = width * 0.45;  // 占85%宽度，内部椭圆占90%
-            const radiusY = height * 0.25; // 更扁平的椭圆
+            const radiusX = width * 0.42;
+            const radiusY = height * 0.28;
+            const flattenTopBottom = 0.85;
             
             ctx.clearRect(0, 0, width, height);
             
-            // 设置绿色线条
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.3)';
-            ctx.lineWidth = 0.8;
+            // 绘制椭圆外轮廓
+            ctx.beginPath();
+            for(let i = 0; i <= Math.PI * 2; i += 0.01) {
+                let yFactor = 1;
+                const angleY = Math.abs(Math.cos(i));
+                if(angleY > 0.7) {
+                    yFactor = flattenTopBottom;
+                }
+                
+                const x = centerX + radiusX * Math.cos(i);
+                const y = centerY + radiusY * Math.sin(i) * yFactor;
+                
+                if(i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
             
-            // 绘制25条经线（纵向）
-            for (let i = 0; i < 25; i++) {
-                const lon = (i * Math.PI * 2) / 25; // 经度
+            // 绘制经线
+            for (let i = 0; i < 12; i++) {
+                const lon = (i * Math.PI) / 6;
                 ctx.beginPath();
                 
                 for (let j = 0; j <= 100; j++) {
-                    const lat = (j * Math.PI) / 100 - Math.PI/2; // 纬度
+                    const lat = (j * Math.PI) / 100 - Math.PI/2;
                     
-                    // 刀削平头效果 - 上下更平
                     let yFactor = 1;
                     const latAbs = Math.abs(lat);
-                    if (latAbs > Math.PI/4) { // 45度以上开始平头
-                        // 使用二次函数让平头效果更明显
-                        yFactor = 0.7 - (latAbs - Math.PI/4) * 0.8;
-                        yFactor = Math.max(0.4, yFactor); // 最小0.4，非常平
+                    if(latAbs > Math.PI/3) {
+                        yFactor = flattenTopBottom;
                     }
                     
                     const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
@@ -200,26 +208,21 @@
                         ctx.lineTo(x, y);
                     }
                 }
-                
-                // 随机淡出效果
-                if (Math.random() > 0.2) {
-                    const alpha = 0.1 + Math.random() * 0.15;
-                    ctx.strokeStyle = `rgba(76, 175, 80, ${alpha})`;
-                    ctx.lineWidth = 0.5 + Math.random() * 0.5;
+                if(Math.random() > 0.3) {
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.1 + Math.random() * 0.1})`;
+                    ctx.lineWidth = 0.5 + Math.random() * 0.3;
                     ctx.stroke();
                 }
             }
             
-            // 绘制25条纬线（横向）
-            for (let i = 0; i < 25; i++) {
-                const lat = (i * Math.PI) / 25 - Math.PI/2;
+            // 绘制纬线
+            for (let i = 1; i < 8; i++) {
+                const lat = (i * Math.PI) / 8 - Math.PI/2;
                 
-                // 刀削平头效果
                 let yFactor = 1;
                 const latAbs = Math.abs(lat);
-                if (latAbs > Math.PI/4) {
-                    yFactor = 0.7 - (latAbs - Math.PI/4) * 0.8;
-                    yFactor = Math.max(0.4, yFactor);
+                if(latAbs > Math.PI/3) {
+                    yFactor = flattenTopBottom;
                 }
                 
                 ctx.beginPath();
@@ -234,66 +237,12 @@
                         ctx.lineTo(x, y);
                     }
                 }
-                
-                // 随机淡出效果
-                if (Math.random() > 0.3) {
-                    const alpha = 0.08 + Math.random() * 0.12;
-                    ctx.strokeStyle = `rgba(76, 175, 80, ${alpha})`;
+                if(Math.random() > 0.4) {
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.08 + Math.random() * 0.12})`;
                     ctx.lineWidth = 0.4 + Math.random() * 0.4;
                     ctx.stroke();
                 }
             }
-            
-            // 绘制外轮廓 - 明显的刀削平头椭圆
-            ctx.beginPath();
-            for(let i = 0; i <= Math.PI * 2; i += 0.01) {
-                let yFactor = 1;
-                const angleY = Math.abs(Math.sin(i));
-                if (angleY > 0.5) { // 上下部分
-                    // 刀削效果 - 非常平的顶部和底部
-                    yFactor = 0.4 + (1 - angleY) * 0.3;
-                }
-                
-                const x = centerX + radiusX * Math.cos(i);
-                const y = centerY + radiusY * Math.sin(i) * yFactor;
-                
-                if(i === 0) {
-                    ctx.moveTo(x, y);
-                } else {
-                    ctx.lineTo(x, y);
-                }
-            }
-            ctx.closePath();
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.4)';
-            ctx.lineWidth = 1.5;
-            ctx.stroke();
-            
-            // 绘制几个关键点
-            const keyPoints = [
-                {lon: 0, lat: 0, size: 1.2, label: '赤道'},
-                {lon: Math.PI/2, lat: 0, size: 1, label: '东经90°'},
-                {lon: Math.PI, lat: 0, size: 1, label: '东经180°'},
-                {lon: -Math.PI/2, lat: 0, size: 1, label: '西经90°'},
-                {lon: 0, lat: Math.PI/3, size: 0.8, label: '北纬60°'},
-                {lon: 0, lat: -Math.PI/3, size: 0.8, label: '南纬60°'}
-            ];
-            
-            keyPoints.forEach(point => {
-                let yFactor = 1;
-                const latAbs = Math.abs(point.lat);
-                if (latAbs > Math.PI/4) {
-                    yFactor = 0.7 - (latAbs - Math.PI/4) * 0.8;
-                    yFactor = Math.max(0.4, yFactor);
-                }
-                
-                const x = centerX + radiusX * Math.cos(point.lat) * Math.cos(point.lon);
-                const y = centerY + radiusY * Math.sin(point.lat) * yFactor;
-                
-                ctx.beginPath();
-                ctx.arc(x, y, point.size, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(76, 175, 80, 0.25)';
-                ctx.fill();
-            });
         }
         
         // 更开阔的随机旋转
@@ -334,7 +283,7 @@
                 } catch(e) {}
                 
                 if (Math.random() < 0.02) {
-                    drawGrid25Lines();
+                    drawSubtleGrid();
                 }
                 
                 requestAnimationFrame(rotateOpen);
@@ -353,41 +302,31 @@
             tagCanvas.width = width;
             tagCanvas.height = height;
             
-            drawGrid25Lines();
+            drawSubtleGrid();
             
             try {
                 TagCanvas.Reload('tagCanvas');
             } catch(e) {}
         }
         
-        // 初始化TagCanvas - 使用动态字体大小
+        // 初始化TagCanvas
         function initTagCanvas() {
+            const fontConfig = getFontConfig();
+            
             try {
-                // 先计算所有标签的字体大小
-                const tagLinks = document.querySelectorAll('#tag-data a');
-                const isMobile = isMobileDevice();
-                
-                // 为每个标签设置动态字体大小
-                tagLinks.forEach(link => {
-                    const articleCount = parseInt(link.getAttribute('data-weight')) || 1;
-                    const fontSize = getFontSizeByLevel(articleCount, isMobile);
-                    
-                    // 存储计算出的字体大小
-                    link.setAttribute('data-fontsize', fontSize);
-                });
-                
                 TagCanvas.Start('tagCanvas', 'tag-data', {
                     textColour: null,
                     outlineColour: 'transparent',
                     reverse: true,
                     
-                    // 字体大小 - 使用固定范围，实际大小由权重控制
-                    minFontSize: isMobile ? 6 : 12,
-                    maxFontSize: isMobile ? 15 : 30,
+                    // 字体大小 - 调整为指定范围
+                    minFontSize: fontConfig.minFontSize,
+                    maxFontSize: fontConfig.maxFontSize,
+                    textHeight: fontConfig.textHeight,
                     
-                    // 3D效果 - 调整以适应刀削平头
-                    depth: 0.45,
-                    zoom: 1.25,
+                    // 3D效果
+                    depth: 0.4,
+                    zoom: 1.2,
                     
                     // 动画
                     maxSpeed: 0.05,
@@ -400,32 +339,35 @@
                     freezeActive: true,
                     frontSelect: true,
                     
-                    // 权重功能 - 增强权重影响
+                    // 权重功能
                     weight: true,
                     weightMode: 'size',
-                    weightSize: 2.2,
+                    weightSize: 1.8,          // 适当权重系数
                     weightFrom: 'data-weight',
-                    weightGrow: 1.8,
                     
                     // 字体和布局
-                    textFont: 'Arial, sans-serif',
-                    padding: 12,
+                    textFont: 'Arial, sans-serif',  // 改用更清晰的字体
+                    padding: 10,             // 增加间距
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
-                    // 椭圆形参数 - 刀削平头效果
-                    stretchX: 2.2,
-                    stretchY: 0.6,  // 更压缩的Y轴，实现刀削平头
+                    // 椭圆形参数
+                    stretchX: 2.0,
+                    stretchY: 0.65,
                     
                     // 球体参数
-                    radiusX: 1.7,
-                    radiusY: 0.8,   // 减小Y轴半径
-                    radiusZ: 1.1,
+                    radiusX: 1.6,
+                    radiusY: 0.85,
+                    radiusZ: 1.0,
                     
                     // 移动版调整
-                    padding: isMobile ? 10 : 12,
-                    depth: isMobile ? 0.35 : 0.45,
-                    zoom: isMobile ? 1.15 : 1.25,
+                    padding: isMobileDevice() ? 8 : 10,
+                    depth: isMobileDevice() ? 0.3 : 0.4,
+                    zoom: isMobileDevice() ? 1.1 : 1.2,
+                    
+                    // 根据字体大小调整其他参数
+                    minBrightness: 0.2,
+                    maxBrightness: 1.0,
                     
                     // 其他参数
                     offsetX: 0,
@@ -433,9 +375,7 @@
                     fadeIn: 1200,
                     freezeDecel: true,
                     shadow: false,
-                    shadowBlur: 0,
-                    txtOpt: true,
-                    txtScale: 2.0
+                    shadowBlur: 0
                 });
                 
                 // 开始旋转
@@ -448,7 +388,7 @@
         }
         
         window.onload = function() {
-            drawGrid25Lines();
+            drawSubtleGrid();
             initTagCanvas();
             
             // 窗口大小改变时重新初始化
@@ -457,8 +397,7 @@
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
                     adaptSize();
-                    // 如果是移动设备，重新初始化以调整字体大小
-                    if (isMobileDevice()) {
+                    if (isMobileDevice() && window.innerWidth <= 768) {
                         try {
                             TagCanvas.Reload('tagCanvas');
                         } catch(e) {
