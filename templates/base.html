@@ -22,7 +22,7 @@
             <div class="sidebar">
                 <div class="filter-controls">
                     <h3>標籤</h3>
-                    <span class="clear-filter" id="clear-filter" style="display:none;">清除篩選</span>
+                    <span class="clear-filter" id="clear-filter">清除篩選</span>
                 </div>
                 <div class="tags-container">
                     {% for name, info in label_info.items() %}
@@ -40,7 +40,7 @@
                     <h2>置頂文章</h2>
                     <ul class="article-list">
                         {% for i in pinned_issues %}
-                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
+                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -51,7 +51,7 @@
                     <h2>最近文章</h2>
                     <ul class="article-list">
                         {% for i in recent_issues %}
-                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
+                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -59,17 +59,17 @@
 
                 {% for label, items in label_dict.items() %}
                 <div class="category-section" data-label="{{label_info[label].safe_name}}">
-                    <h2>{{label}}</h2>
+                    <h2>{{label}} <small>({{items|length}}篇)</small></h2>
                     <ul class="article-list">
                         {% for i in items[:MAX_PER_CATEGORY] %}
-                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
+                        <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
                         {% endfor %}
                     </ul>
                     {% if items|length > MAX_PER_CATEGORY %}
-                    <div id="hidden-{{label_info[label].safe_name}}-hidden" style="display:none;">
+                    <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
                         <ul class="article-list">
                             {% for i in items[MAX_PER_CATEGORY:] %}
-                            <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
+                            <li><a href="articles/article-{{i.number}}.html">{{i.title}}</a> <span class="article-date">({{i.created_at.strftime('%Y-%m-%d')}})</span></li>
                             {% endfor %}
                         </ul>
                     </div>
