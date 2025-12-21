@@ -9,18 +9,18 @@
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
         .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
         
-        /* 容器扁平 3:2 比例 */
+        /* 椭圆形3D球体容器 */
         #sphere-container {
             width: 100%;
             height: 0;
-            padding-bottom: 66.67%; /* 3:2 比例的高度计算 (2/3 = 66.67%) */
+            padding-bottom: 66.67%; /* 3:2 比例的椭圆形 */
             position: relative;
             margin: 20px 0;
             overflow: hidden;
             background: white;
         }
 
-        /* 两个canvas绝对定位，填满容器 */
+        /* 两个canvas绝对定位 */
         #tagCanvas, #gridCanvas {
             position: absolute;
             top: 0;
@@ -41,135 +41,31 @@
 
         .filter-info { 
             text-align: center; 
-            margin: 25px 0; 
-            min-height: 30px;
-            padding: 12px;
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-radius: 8px;
-            border-left: 4px solid #0366d6;
+            margin-bottom: 20px; 
+            min-height: 30px; 
         }
-        
-        .year-section { 
-            margin-top: 30px; 
-            border-left: 4px solid #0366d6; 
-            padding-left: 15px; 
-            background: #f8f9fa;
-            border-radius: 0 8px 8px 0;
-            padding: 15px;
-            transition: all 0.3s ease;
-        }
-        
-        .year-section:hover {
-            background: #f1f8ff;
-            transform: translateX(5px);
-        }
-        
-        .archive-item { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center;
-            padding: 12px 0; 
-            border-bottom: 1px solid #e1e4e8; 
-            transition: all 0.2s ease;
-        }
-        
-        .archive-item:hover {
-            background: #f6f8fa;
-            padding-left: 10px;
-            border-radius: 4px;
-        }
-        
-        .archive-item a {
-            color: #24292e;
-            text-decoration: none;
-            font-weight: 500;
-            flex: 1;
-            transition: color 0.2s ease;
-        }
-        
-        .archive-item a:hover {
-            color: #0366d6;
-            text-decoration: underline;
-        }
-        
-        .archive-date { 
-            color: #6a737d; 
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; 
-            font-size: 14px;
-            background: #f6f8fa;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid #e1e4e8;
-        }
-        
+        .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; }
+        .archive-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .archive-date { color: #888; font-family: monospace; }
         #tag-data { display: none; }
-        
         .reset-btn {
             display: inline-block;
-            margin-left: 12px;
-            padding: 6px 14px;
-            font-size: 13px;
-            background: #0366d6;
-            color: white;
-            border: none;
-            border-radius: 6px;
+            margin-left: 10px;
+            padding: 2px 8px;
+            font-size: 12px;
+            background: #f6f8fa;
+            border: 1px solid #d1d5da;
+            border-radius: 3px;
             cursor: pointer;
-            vertical-align: middle;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
-        
-        .reset-btn:hover {
-            background: #0256b9;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(3, 102, 214, 0.2);
-        }
-        
-        .active-tag-hint { 
-            color: #0366d6; 
-            font-weight: bold; 
-            font-size: 16px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .active-tag-hint::before {
-            content: "#";
-            color: #6f42c1;
-            font-weight: 900;
-        }
-        
-        h1 {
-            text-align: center; 
-            border-bottom: none;
-            margin-bottom: 10px;
             color: #24292e;
-            position: relative;
-            padding-bottom: 15px;
+            vertical-align: middle;
         }
-        
-        h1::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background: linear-gradient(90deg, #0366d6, #4CAF50);
-            border-radius: 2px;
-        }
+        .active-tag-hint { color: #0366d6; font-weight: bold; font-size: 1.1em; }
         
         /* 响应式设计 */
         @media (max-width: 768px) {
-            .markdown-body {
-                padding: 20px 15px;
-            }
-            
             #sphere-container {
                 padding-bottom: 66.67%; /* 保持3:2比例 */
-                margin: 15px 0;
             }
             
             .archive-item {
@@ -180,44 +76,20 @@
             
             .archive-date {
                 align-self: flex-end;
-                font-size: 13px;
-            }
-            
-            .year-section {
-                padding: 12px;
-                margin-top: 25px;
-            }
-            
-            h1 {
-                font-size: 28px;
-            }
-        }
-        
-        @media (min-width: 1200px) {
-            #sphere-container {
-                max-width: 900px;
-                margin: 20px auto;
             }
         }
     </style>
 </head>
 <body>
     <div class="markdown-body">
-        <a href="index.html" style="text-decoration: none; color: #0366d6; display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; background: #f6f8fa; border-radius: 8px; margin-bottom: 25px;">
-            <span>←</span>
-            <span>返回首頁</span>
-        </a>
-        
+        <a href="index.html" style="text-decoration: none; color: #0366d6;">← 返回首頁</a>
         <h1 style="text-align: center; border-bottom: none; margin-bottom: 0;">文章歸檔</h1>
 
-        <!-- 3:2 比例的扁平容器 -->
+        <!-- 椭圆形3D球体容器 -->
         <div id="sphere-container">
             <canvas id="gridCanvas"></canvas>
             <canvas id="tagCanvas">
-                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #666; text-align: center;">
-                    <p>您的瀏覽器不支持 Canvas</p>
-                    <p>請使用現代瀏覽器訪問</p>
-                </div>
+                <p>您的瀏覽器不支持 Canvas</p>
             </canvas>
         </div>
 
@@ -253,55 +125,44 @@
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        // 彩色轮廓线颜色数组
-        const outlineColors = [
-            '#FF6B6B', '#4ECDC4', '#FFD166', '#06D6A0', 
-            '#118AB2', '#EF476F', '#FF9A8B', '#4CAF50',
-            '#9C27B0', '#3F51B5', '#00BCD4', '#8BC34A'
-        ];
-        
-        // 绘制彩色轮廓线
-        function drawColorfulOutline() {
+        // 绘制绿色椭圆形轮廓线
+        function drawEllipseOutline() {
             const container = document.getElementById('sphere-container');
             const canvas = document.getElementById('gridCanvas');
             const width = container.clientWidth;
             const height = container.clientHeight;
             
-            // 设置canvas实际尺寸（避免模糊）
+            // 设置canvas实际尺寸
             canvas.width = width;
             canvas.height = height;
             
             const ctx = canvas.getContext('2d');
             const centerX = width / 2;
             const centerY = height / 2;
-            const radius = Math.min(width, height) * 0.4;
+            const radiusX = width * 0.4;  // 椭圆形X轴半径
+            const radiusY = height * 0.3; // 椭圆形Y轴半径
             
             ctx.clearRect(0, 0, width, height);
             
-            // 绘制外圈彩色轮廓
+            // 设置绿色线条
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 1.2;
+            ctx.fillStyle = 'transparent';
+            
+            // 绘制椭圆形外轮廓
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+            ctx.stroke();
+            
+            // 绘制经线（纵向）
             for (let i = 0; i < 12; i++) {
-                const startAngle = (i * Math.PI * 2) / 12;
-                const endAngle = ((i + 1) * Math.PI * 2) / 12;
-                
-                ctx.beginPath();
-                ctx.arc(centerX, centerY, radius, startAngle, endAngle);
-                ctx.strokeStyle = outlineColors[i % outlineColors.length];
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
-            
-            // 绘制内部网格线
-            ctx.strokeStyle = 'rgba(76, 175, 80, 0.3)';
-            ctx.lineWidth = 0.8;
-            
-            // 经线
-            for (let i = 0; i < 8; i++) {
-                const angle = (i * Math.PI) / 4;
+                const angle = (i * Math.PI) / 6;
                 ctx.beginPath();
                 for (let j = 0; j <= 100; j++) {
                     const phi = (j * Math.PI) / 100;
-                    const x = centerX + radius * Math.sin(phi) * Math.cos(angle);
-                    const y = centerY + radius * Math.cos(phi);
+                    // 椭圆形坐标计算
+                    const x = centerX + radiusX * Math.sin(phi) * Math.cos(angle);
+                    const y = centerY + radiusY * Math.cos(phi);
                     if (j === 0) {
                         ctx.moveTo(x, y);
                     } else {
@@ -311,16 +172,17 @@
                 ctx.stroke();
             }
             
-            // 纬线
-            for (let i = 1; i < 4; i++) {
-                const phi = (i * Math.PI) / 4;
-                const currentRadius = radius * Math.sin(phi);
-                const y = centerY + radius * Math.cos(phi);
+            // 绘制纬线（横向）
+            for (let i = 1; i < 5; i++) {
+                const phi = (i * Math.PI) / 5;
+                const currentRadiusX = radiusX * Math.sin(phi);
+                const currentRadiusY = radiusY * Math.sin(phi);
+                const y = centerY + radiusY * Math.cos(phi);
                 
                 ctx.beginPath();
                 for (let j = 0; j <= 100; j++) {
                     const theta = (j * 2 * Math.PI) / 100;
-                    const x = centerX + currentRadius * Math.cos(theta);
+                    const x = centerX + currentRadiusX * Math.cos(theta);
                     if (j === 0) {
                         ctx.moveTo(x, y);
                     } else {
@@ -331,62 +193,57 @@
                 ctx.stroke();
             }
             
-            // 随机动态点
-            for (let i = 0; i < 20; i++) {
-                const phi = Math.random() * Math.PI;
-                const theta = Math.random() * Math.PI * 2;
-                const pointRadius = radius * 0.9 + Math.random() * radius * 0.1;
-                
-                const x = centerX + pointRadius * Math.sin(phi) * Math.cos(theta);
-                const y = centerY + pointRadius * Math.cos(phi);
-                
-                ctx.beginPath();
-                ctx.arc(x, y, 1.5, 0, Math.PI * 2);
-                ctx.fillStyle = outlineColors[Math.floor(Math.random() * outlineColors.length)];
-                ctx.fill();
-            }
+            // 绘制更强的外轮廓
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+            ctx.strokeStyle = '#4CAF50';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // 添加内部填充效果
+            ctx.beginPath();
+            ctx.ellipse(centerX, centerY, radiusX * 0.95, radiusY * 0.95, 0, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(76, 175, 80, 0.02)';
+            ctx.fill();
         }
         
         // 随机旋转函数
-        function startRandomRotation() {
+        function startEllipticalRotation() {
             const canvas = document.getElementById('tagCanvas');
-            let rotation = [Math.random() * 0.02 - 0.01, Math.random() * 0.02 - 0.01];
+            let rotationSpeedX = (Math.random() * 0.02 - 0.01) * 0.8; // X轴旋转速度
+            let rotationSpeedY = (Math.random() * 0.02 - 0.01) * 0.5; // Y轴旋转速度（较慢，适应椭圆形）
             
-            function rotate() {
+            function rotateEllipse() {
                 try {
                     TagCanvas.textId = 'tag-data';
                     TagCanvas.Reload('tagCanvas');
                     
-                    // 获取当前旋转角度
                     const currentRot = TagCanvas.GetObject('tagCanvas');
                     if (currentRot && currentRot.rotation) {
-                        // 添加随机偏移
-                        rotation[0] += (Math.random() - 0.5) * 0.002;
-                        rotation[1] += (Math.random() - 0.5) * 0.002;
-                        
-                        // 限制旋转速度
-                        rotation[0] = Math.max(-0.015, Math.min(0.015, rotation[0]));
-                        rotation[1] = Math.max(-0.015, Math.min(0.015, rotation[1]));
+                        // 偶尔随机改变旋转方向
+                        if (Math.random() < 0.01) {
+                            rotationSpeedX = (Math.random() * 0.02 - 0.01) * 0.8;
+                            rotationSpeedY = (Math.random() * 0.02 - 0.01) * 0.5;
+                        }
                         
                         // 应用旋转
-                        currentRot.rotation[0] += rotation[0];
-                        currentRot.rotation[1] += rotation[1];
-                    }
-                    
-                    // 随机改变轮廓线（每60帧改变一次）
-                    if (Math.random() < 0.017) {
-                        drawColorfulOutline();
+                        currentRot.rotation[0] += rotationSpeedX;
+                        currentRot.rotation[1] += rotationSpeedY;
+                        
+                        // 限制旋转角度，防止过快
+                        rotationSpeedX = Math.max(-0.008, Math.min(0.008, rotationSpeedX));
+                        rotationSpeedY = Math.max(-0.004, Math.min(0.004, rotationSpeedY));
                     }
                 } catch(e) {}
                 
-                requestAnimationFrame(rotate);
+                requestAnimationFrame(rotateEllipse);
             }
             
-            rotate();
+            rotateEllipse();
         }
         
-        // 自适应尺寸调整
-        function adaptSize() {
+        // 自适应调整
+        function adaptEllipseSize() {
             const container = document.getElementById('sphere-container');
             const tagCanvas = document.getElementById('tagCanvas');
             const width = container.clientWidth;
@@ -396,8 +253,8 @@
             tagCanvas.width = width;
             tagCanvas.height = height;
             
-            // 重绘轮廓
-            drawColorfulOutline();
+            // 重绘轮廓线
+            drawEllipseOutline();
             
             // 重新加载标签云
             try {
@@ -406,8 +263,8 @@
         }
         
         window.onload = function() {
-            // 先绘制彩色轮廓
-            drawColorfulOutline();
+            // 先绘制绿色椭圆形轮廓
+            drawEllipseOutline();
             
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
@@ -415,49 +272,64 @@
                     outlineColour: 'transparent',
                     reverse: true,
                     
-                    // 字体大小 - 自适应
-                    minFontSize: 24,
-                    maxFontSize: 60,
-                    textHeight: 20,
+                    // 字体大小
+                    minFontSize: 28,  // 增大字体
+                    maxFontSize: 65,  // 增大字体
+                    textHeight: 22,
                     
-                    // 3D效果
-                    depth: 0.25,
-                    zoom: 1.1,
+                    // 椭圆形3D效果 - 关键调整
+                    depth: 0.35,      // 增加深度感
+                    zoom: 1.15,       // 放大显示
                     
                     // 动画控制
-                    maxSpeed: 0.02,
-                    initial: [0.05, -0.05],
+                    maxSpeed: 0.04,   // 增加速度
+                    initial: [0.1, 0.05], // 初始角度
                     
                     // 交互设置
                     wheelZoom: false,
                     dragControl: true,
-                    clickToFront: 500,
+                    clickToFront: 600,
                     freezeActive: true,
                     frontSelect: true,
                     
                     // 标签权重
                     weight: true,
                     weightMode: 'size',
-                    weightSize: 1.8,
+                    weightSize: 2.0,   // 增加权重
                     
                     // 字体和布局
-                    textFont: 'Impact, Arial Black, "Microsoft YaHei", sans-serif',
-                    padding: 6,
+                    textFont: 'Impact, Arial Black, sans-serif',
+                    padding: 8,        // 增加间距
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
-                    // 扁平3:2比例调整
-                    stretchX: 1.5,  // 横向拉伸适应3:2比例
-                    stretchY: 0.8,  // 纵向压缩
+                    // 关键：调整为椭圆形参数
+                    stretchX: 1.8,     // X轴拉伸（水平方向）
+                    stretchY: 0.7,     // Y轴压缩（垂直方向）
                     
-                    // 球体形状 - 调整为椭圆形适应容器
-                    radiusX: 1.2,
-                    radiusY: 0.8,
-                    radiusZ: 0.9
+                    // 椭圆形球体参数
+                    radiusX: 1.5,      // X轴半径（水平方向）
+                    radiusY: 0.9,      // Y轴半径（垂直方向）减小以形成椭圆形
+                    radiusZ: 1.2,      // Z轴半径
+                    
+                    // 位置调整
+                    offsetX: 0,
+                    offsetY: 0,
+                    lock: null,
+                    
+                    // 阴影效果
+                    shadow: false,
+                    shadowBlur: 0,
+                    shadowOffset: [0, 0],
+                    
+                    // 其他参数
+                    tooltip: null,
+                    tooltipDelay: 0,
+                    tooltipFont: null
                 });
                 
-                // 开始随机旋转
-                setTimeout(startRandomRotation, 1000);
+                // 开始椭圆形随机旋转
+                setTimeout(startEllipticalRotation, 800);
                 
             } catch(e) {
                 console.log(e);
@@ -469,12 +341,12 @@
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
                 resizeTimer = setTimeout(() => {
-                    adaptSize();
+                    adaptEllipseSize();
                 }, 200);
             });
             
             // 初始自适应
-            setTimeout(adaptSize, 100);
+            setTimeout(adaptEllipseSize, 100);
         };
 
         function filterByTag(tagName) {
