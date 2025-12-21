@@ -2,29 +2,39 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文章歸檔 - 北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        /* 保留您原本歸檔頁特有的樣式 */
+        #tag-cloud-container {
+            width: 85%; height: 300px; margin: 20px auto;
+            position: relative; background: #fcfcfc;
+            border-radius: 8px; overflow: hidden;
+        }
+        #tagCanvas { width: 100%; height: 100%; cursor: pointer; }
+        .filter-info { text-align: center; margin-bottom: 20px; min-height: 35px; }
+        .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; }
+        .archive-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
+        .reset-btn { display: inline-block; margin-left: 10px; padding: 4px 12px; font-size: 13px; background: #0366d6; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    </style>
 </head>
 <body>
     <div class="markdown-body">
         <div class="header-line"></div>
         <h1 class="page-title">北方的博客</h1>
-        
         <div class="nav-links">
             <a href="index.html">首頁</a>
             <a href="archives.html">歸檔</a>
             <a href="about.html">關於</a>
         </div>
 
-        <h2 style="text-align: center; border: none; margin-top: 30px;">文章歸檔</h2>
-
-        <div id="tag-cloud-container" style="width: 85%; height: 250px; margin: 20px auto; position: relative; background: #fafafa; border-radius: 12px; border: 1px solid #eee;">
-            <canvas id="tagCanvas" style="width:100%; height:100%;"></canvas>
+        <div id="tag-cloud-container">
+            <canvas id="tagCanvas"></canvas>
         </div>
 
-        <div id="filterDisplay" style="text-align: center; margin: 20px 0; min-height: 40px;"></div>
+        <div class="filter-info" id="filterDisplay"></div>
 
         <ul id="tag-data" style="display: none;">
             {% for name, items in label_dict.items() %}
@@ -35,12 +45,12 @@
         <div id="archive-content">
             {% for year in sorted_years %}
             <div class="year-section" data-year="{{ year }}">
-                <h3 style="border-bottom: 2px solid #eaecef; padding-bottom: 10px;">{{ year }} 年</h3>
+                <h2>{{ year }} 年</h2>
                 <ul style="list-style: none; padding: 0;">
                     {% for issue in articles_by_year[year] %}
-                    <li class="archive-item" data-tags="{{ issue.labels | map(attribute='name') | join(',') }}" style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #f6f8fa;">
+                    <li class="archive-item" data-tags="{{ issue.labels | map(attribute='name') | join(',') }}">
                         <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
-                        <span style="color: #6a737d;">{{ issue.created_at.strftime('%m-%d') }}</span>
+                        <span class="archive-date">{{ issue.created_at.strftime('%m-%d') }}</span>
                     </li>
                     {% endfor %}
                 </ul>
@@ -49,22 +59,33 @@
         </div>
         <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
     </div>
+
     <script src="https://www.goat1000.com/tagcanvas.min.js"></script>
     <script>
         function initTagCanvas() {
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
-                    textColour: null, outlineColour: 'transparent', reverse: true,
-                    depth: 0.05, maxSpeed: 0.02, initial: [0.1, -0.1], wheelZoom: false,
-                    weight: false, minFontSize: 16, maxFontSize: 16, padding: 10
+                    textColour: null, outlineColour: '#f0f0f0', reverse: true,
+                    depth: 0.1, maxSpeed: 0.03, initial: [0.1, -0.1], wheelZoom: false,
+                    weight: false, minFontSize: 16, maxFontSize: 16, padding: 15
                 });
             } catch(e) {}
         }
         function filterByTag(tagName) {
-            document.getElementById('filterDisplay').innerHTML = `<b style="color:#0366d6;">已選標籤: #${tagName}</b> <button onclick="location.reload()" style="margin-left:10px; cursor:pointer;">清除</button>`;
+            const display = document.getElementById('filterDisplay');
+            display.innerHTML = `<span class="active-tag-hint">正在查看標籤：#${tagName}</span> <button class="reset-btn" onclick="resetFilter()">顯示全部</button>`;
             document.querySelectorAll('.archive-item').forEach(item => {
                 item.style.display = item.getAttribute('data-tags').split(',').includes(tagName) ? 'flex' : 'none';
             });
+            document.querySelectorAll('.year-section').forEach(section => {
+                const hasVisible = Array.from(section.querySelectorAll('.archive-item')).some(i => i.style.display === 'flex');
+                section.style.display = hasVisible ? 'block' : 'none';
+            });
+        }
+        function resetFilter() {
+            document.querySelectorAll('.archive-item').forEach(i => i.style.display = 'flex');
+            document.querySelectorAll('.year-section').forEach(s => s.style.display = 'block');
+            document.getElementById('filterDisplay').innerHTML = '';
         }
         window.onload = initTagCanvas;
     </script>
