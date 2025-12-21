@@ -13,7 +13,7 @@
         #sphere-container {
             width: 100%;
             height: 0;
-            padding-bottom: 66.67%; /* 3:2 比例的椭圆形 */
+            padding-bottom: 66.67%; /* 3:2 比例 */
             position: relative;
             margin: 20px 0;
             overflow: hidden;
@@ -39,11 +39,7 @@
             pointer-events: none;
         }
 
-        .filter-info { 
-            text-align: center; 
-            margin-bottom: 20px; 
-            min-height: 30px; 
-        }
+        .filter-info { text-align: center; margin-bottom: 20px; min-height: 30px; }
         .year-section { margin-top: 30px; border-left: 4px solid #0366d6; padding-left: 15px; }
         .archive-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f0f0f0; }
         .archive-date { color: #888; font-family: monospace; }
@@ -61,23 +57,6 @@
             vertical-align: middle;
         }
         .active-tag-hint { color: #0366d6; font-weight: bold; font-size: 1.1em; }
-        
-        /* 响应式设计 */
-        @media (max-width: 768px) {
-            #sphere-container {
-                padding-bottom: 66.67%; /* 保持3:2比例 */
-            }
-            
-            .archive-item {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 8px;
-            }
-            
-            .archive-date {
-                align-self: flex-end;
-            }
-        }
     </style>
 </head>
 <body>
@@ -125,146 +104,213 @@
     <script src="https://www.goat1000.com/tagcanvas.min.js" type="text/javascript"></script>
 
     <script type="text/javascript">
-        // 绘制绿色椭圆形轮廓线
-        function drawEllipseOutline() {
+        // 绘制若有若无的经纬线轮廓
+        function drawSubtleGrid() {
             const container = document.getElementById('sphere-container');
             const canvas = document.getElementById('gridCanvas');
             const width = container.clientWidth;
             const height = container.clientHeight;
             
-            // 设置canvas实际尺寸
             canvas.width = width;
             canvas.height = height;
             
             const ctx = canvas.getContext('2d');
             const centerX = width / 2;
             const centerY = height / 2;
-            const radiusX = width * 0.4;  // 椭圆形X轴半径
-            const radiusY = height * 0.3; // 椭圆形Y轴半径
+            
+            // 椭圆形参数 - 上下平头效果
+            const radiusX = width * 0.42;
+            const radiusY = height * 0.28; // 更扁平，上下平头
+            const flattenTopBottom = 0.85; // 上下平头系数
             
             ctx.clearRect(0, 0, width, height);
             
-            // 设置绿色线条
-            ctx.strokeStyle = '#4CAF50';
-            ctx.lineWidth = 1.2;
-            ctx.fillStyle = 'transparent';
-            
-            // 绘制椭圆形外轮廓
+            // 绘制椭圆外轮廓 - 若有若无
             ctx.beginPath();
-            ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+            for(let i = 0; i <= Math.PI * 2; i += 0.01) {
+                // 上下平头效果
+                let yFactor = 1;
+                const angleY = Math.abs(Math.cos(i));
+                if(angleY > 0.7) {
+                    yFactor = flattenTopBottom; // 上下部分更扁平
+                }
+                
+                const x = centerX + radiusX * Math.cos(i);
+                const y = centerY + radiusY * Math.sin(i) * yFactor;
+                
+                if(i === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.lineTo(x, y);
+                }
+            }
+            ctx.closePath();
+            ctx.strokeStyle = 'rgba(76, 175, 80, 0.25)'; // 非常淡的绿色
+            ctx.lineWidth = 1;
             ctx.stroke();
             
-            // 绘制经线（纵向）
+            // 绘制经线（纵向） - 若有若无
             for (let i = 0; i < 12; i++) {
-                const angle = (i * Math.PI) / 6;
+                const lon = (i * Math.PI) / 6; // 经度
                 ctx.beginPath();
+                
                 for (let j = 0; j <= 100; j++) {
-                    const phi = (j * Math.PI) / 100;
-                    // 椭圆形坐标计算
-                    const x = centerX + radiusX * Math.sin(phi) * Math.cos(angle);
-                    const y = centerY + radiusY * Math.cos(phi);
+                    const lat = (j * Math.PI) / 100 - Math.PI/2; // 纬度（-90到90度）
+                    
+                    // 上下平头效果
+                    let yFactor = 1;
+                    const latAbs = Math.abs(lat);
+                    if(latAbs > Math.PI/3) { // 高纬度区域
+                        yFactor = flattenTopBottom;
+                    }
+                    
+                    const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
+                    const y = centerY + radiusY * Math.sin(lat) * yFactor;
+                    
                     if (j === 0) {
                         ctx.moveTo(x, y);
                     } else {
                         ctx.lineTo(x, y);
                     }
                 }
-                ctx.stroke();
+                // 随机淡出一些经线
+                if(Math.random() > 0.3) {
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.1 + Math.random() * 0.1})`;
+                    ctx.lineWidth = 0.5 + Math.random() * 0.3;
+                    ctx.stroke();
+                }
             }
             
-            // 绘制纬线（横向）
-            for (let i = 1; i < 5; i++) {
-                const phi = (i * Math.PI) / 5;
-                const currentRadiusX = radiusX * Math.sin(phi);
-                const currentRadiusY = radiusY * Math.sin(phi);
-                const y = centerY + radiusY * Math.cos(phi);
+            // 绘制纬线（横向） - 若有若无
+            for (let i = 1; i < 8; i++) {
+                const lat = (i * Math.PI) / 8 - Math.PI/2; // 纬度
+                
+                // 上下平头效果
+                let yFactor = 1;
+                const latAbs = Math.abs(lat);
+                if(latAbs > Math.PI/3) {
+                    yFactor = flattenTopBottom;
+                }
                 
                 ctx.beginPath();
                 for (let j = 0; j <= 100; j++) {
-                    const theta = (j * 2 * Math.PI) / 100;
-                    const x = centerX + currentRadiusX * Math.cos(theta);
+                    const lon = (j * 2 * Math.PI) / 100;
+                    const x = centerX + radiusX * Math.cos(lat) * Math.cos(lon);
+                    const y = centerY + radiusY * Math.sin(lat) * yFactor;
+                    
                     if (j === 0) {
                         ctx.moveTo(x, y);
                     } else {
                         ctx.lineTo(x, y);
                     }
                 }
-                ctx.closePath();
-                ctx.stroke();
+                // 随机淡出一些纬线
+                if(Math.random() > 0.4) {
+                    ctx.strokeStyle = `rgba(76, 175, 80, ${0.08 + Math.random() * 0.12})`;
+                    ctx.lineWidth = 0.4 + Math.random() * 0.4;
+                    ctx.stroke();
+                }
             }
             
-            // 绘制更强的外轮廓
-            ctx.beginPath();
-            ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
-            ctx.strokeStyle = '#4CAF50';
-            ctx.lineWidth = 2;
-            ctx.stroke();
+            // 绘制几个关键点
+            const keyPoints = [
+                {lon: 0, lat: 0, size: 1}, // 中心
+                {lon: Math.PI/2, lat: 0, size: 0.8},
+                {lon: Math.PI, lat: 0, size: 0.8},
+                {lon: -Math.PI/2, lat: 0, size: 0.8},
+                {lon: 0, lat: Math.PI/4, size: 0.6},
+                {lon: 0, lat: -Math.PI/4, size: 0.6}
+            ];
             
-            // 添加内部填充效果
-            ctx.beginPath();
-            ctx.ellipse(centerX, centerY, radiusX * 0.95, radiusY * 0.95, 0, 0, Math.PI * 2);
-            ctx.fillStyle = 'rgba(76, 175, 80, 0.02)';
-            ctx.fill();
+            keyPoints.forEach(point => {
+                let yFactor = 1;
+                const latAbs = Math.abs(point.lat);
+                if(latAbs > Math.PI/3) {
+                    yFactor = flattenTopBottom;
+                }
+                
+                const x = centerX + radiusX * Math.cos(point.lat) * Math.cos(point.lon);
+                const y = centerY + radiusY * Math.sin(point.lat) * yFactor;
+                
+                ctx.beginPath();
+                ctx.arc(x, y, point.size, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(76, 175, 80, 0.3)';
+                ctx.fill();
+            });
         }
         
-        // 随机旋转函数
-        function startEllipticalRotation() {
+        // 更开阔的随机旋转
+        function startOpenRotation() {
             const canvas = document.getElementById('tagCanvas');
-            let rotationSpeedX = (Math.random() * 0.02 - 0.01) * 0.8; // X轴旋转速度
-            let rotationSpeedY = (Math.random() * 0.02 - 0.01) * 0.5; // Y轴旋转速度（较慢，适应椭圆形）
             
-            function rotateEllipse() {
+            // 设置更随机的初始速度和方向
+            let speeds = [
+                (Math.random() - 0.5) * 0.015, // X
+                (Math.random() - 0.5) * 0.010, // Y
+                (Math.random() - 0.5) * 0.008  // Z
+            ];
+            
+            function rotateOpen() {
                 try {
                     TagCanvas.textId = 'tag-data';
                     TagCanvas.Reload('tagCanvas');
                     
                     const currentRot = TagCanvas.GetObject('tagCanvas');
                     if (currentRot && currentRot.rotation) {
-                        // 偶尔随机改变旋转方向
+                        // 每100帧随机改变一次速度和方向
                         if (Math.random() < 0.01) {
-                            rotationSpeedX = (Math.random() * 0.02 - 0.01) * 0.8;
-                            rotationSpeedY = (Math.random() * 0.02 - 0.01) * 0.5;
+                            speeds = [
+                                (Math.random() - 0.5) * 0.018,
+                                (Math.random() - 0.5) * 0.012,
+                                (Math.random() - 0.5) * 0.009
+                            ];
                         }
                         
-                        // 应用旋转
-                        currentRot.rotation[0] += rotationSpeedX;
-                        currentRot.rotation[1] += rotationSpeedY;
+                        // 应用更开阔的旋转
+                        currentRot.rotation[0] += speeds[0];
+                        currentRot.rotation[1] += speeds[1];
                         
-                        // 限制旋转角度，防止过快
-                        rotationSpeedX = Math.max(-0.008, Math.min(0.008, rotationSpeedX));
-                        rotationSpeedY = Math.max(-0.004, Math.min(0.004, rotationSpeedY));
+                        // 偶尔添加Z轴旋转
+                        if (Math.random() < 0.05) {
+                            currentRot.rotation[2] += speeds[2] * 0.5;
+                        }
+                        
+                        // 速度限制 - 让旋转更稳定
+                        speeds[0] = Math.max(-0.012, Math.min(0.012, speeds[0]));
+                        speeds[1] = Math.max(-0.008, Math.min(0.008, speeds[1]));
                     }
                 } catch(e) {}
                 
-                requestAnimationFrame(rotateEllipse);
+                // 偶尔重绘轮廓
+                if (Math.random() < 0.02) {
+                    drawSubtleGrid();
+                }
+                
+                requestAnimationFrame(rotateOpen);
             }
             
-            rotateEllipse();
+            rotateOpen();
         }
         
         // 自适应调整
-        function adaptEllipseSize() {
+        function adaptSize() {
             const container = document.getElementById('sphere-container');
             const tagCanvas = document.getElementById('tagCanvas');
             const width = container.clientWidth;
             const height = container.clientHeight;
             
-            // 设置canvas实际尺寸
             tagCanvas.width = width;
             tagCanvas.height = height;
             
-            // 重绘轮廓线
-            drawEllipseOutline();
+            drawSubtleGrid();
             
-            // 重新加载标签云
             try {
                 TagCanvas.Reload('tagCanvas');
             } catch(e) {}
         }
         
         window.onload = function() {
-            // 先绘制绿色椭圆形轮廓
-            drawEllipseOutline();
+            drawSubtleGrid();
             
             try {
                 TagCanvas.Start('tagCanvas', 'tag-data', {
@@ -272,81 +318,80 @@
                     outlineColour: 'transparent',
                     reverse: true,
                     
-                    // 字体大小
-                    minFontSize: 28,  // 增大字体
-                    maxFontSize: 65,  // 增大字体
-                    textHeight: 22,
+                    // 字体大小 - 更大
+                    minFontSize: 32,
+                    maxFontSize: 70,
+                    textHeight: 24,
                     
-                    // 椭圆形3D效果 - 关键调整
-                    depth: 0.35,      // 增加深度感
-                    zoom: 1.15,       // 放大显示
+                    // 3D效果 - 调整椭圆形和平头
+                    depth: 0.4,          // 增加深度
+                    zoom: 1.2,           // 放大
                     
-                    // 动画控制
-                    maxSpeed: 0.04,   // 增加速度
-                    initial: [0.1, 0.05], // 初始角度
+                    // 动画 - 更开阔
+                    maxSpeed: 0.05,
+                    initial: [0.15, 0.08],
                     
-                    // 交互设置
+                    // 交互
                     wheelZoom: false,
                     dragControl: true,
-                    clickToFront: 600,
+                    clickToFront: 700,   // 增加距离
                     freezeActive: true,
                     frontSelect: true,
                     
                     // 标签权重
                     weight: true,
                     weightMode: 'size',
-                    weightSize: 2.0,   // 增加权重
+                    weightSize: 2.2,     // 增加权重
                     
-                    // 字体和布局
+                    // 字体和布局 - 让标签分布更开
                     textFont: 'Impact, Arial Black, sans-serif',
-                    padding: 8,        // 增加间距
+                    padding: 12,         // 增加间距
                     outlineMethod: 'colour',
                     activeCursor: 'pointer',
                     
-                    // 关键：调整为椭圆形参数
-                    stretchX: 1.8,     // X轴拉伸（水平方向）
-                    stretchY: 0.7,     // Y轴压缩（垂直方向）
+                    // 关键：椭圆形参数 - 上下平头
+                    stretchX: 2.0,       // 更水平拉伸
+                    stretchY: 0.65,      // 更垂直压缩（上下平头）
                     
-                    // 椭圆形球体参数
-                    radiusX: 1.5,      // X轴半径（水平方向）
-                    radiusY: 0.9,      // Y轴半径（垂直方向）减小以形成椭圆形
-                    radiusZ: 1.2,      // Z轴半径
+                    // 球体参数 - 调整平头效果
+                    radiusX: 1.6,
+                    radiusY: 0.85,       // 减小Y轴半径（上下平头）
+                    radiusZ: 1.0,
                     
-                    // 位置调整
+                    // 位置偏移让标签分布更开
                     offsetX: 0,
                     offsetY: 0,
-                    lock: null,
                     
-                    // 阴影效果
+                    // 让标签更分散
+                    weightFrom: 'data-weight',
+                    weightGrow: 1.5,
+                    weightMode: 'both',
+                    
+                    // 激活状态
+                    fadeIn: 1200,
+                    freezeDecel: true,
+                    
+                    // 阴影
                     shadow: false,
-                    shadowBlur: 0,
-                    shadowOffset: [0, 0],
-                    
-                    // 其他参数
-                    tooltip: null,
-                    tooltipDelay: 0,
-                    tooltipFont: null
+                    shadowBlur: 0
                 });
                 
-                // 开始椭圆形随机旋转
-                setTimeout(startEllipticalRotation, 800);
+                // 开始更开阔的旋转
+                setTimeout(startOpenRotation, 1000);
                 
             } catch(e) {
                 console.log(e);
                 document.getElementById('sphere-container').style.display = 'none';
             }
             
-            // 窗口大小改变时自适应
+            // 窗口大小自适应
             let resizeTimer;
             window.addEventListener('resize', function() {
                 clearTimeout(resizeTimer);
-                resizeTimer = setTimeout(() => {
-                    adaptEllipseSize();
-                }, 200);
+                resizeTimer = setTimeout(adaptSize, 200);
             });
             
-            // 初始自适应
-            setTimeout(adaptEllipseSize, 100);
+            setTimeout(adaptSize, 100);
         };
 
         function filterByTag(tagName) {
