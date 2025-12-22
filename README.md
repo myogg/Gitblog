@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
-- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 
 ## 一些记录 (38篇文章)
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
@@ -142,7 +142,8 @@ My personal blog using issues and GitHub Actions
 ## 世界好精彩我想去看看 (1篇文章)
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 人生感悟不隨太晚 (1篇文章)
+## 人生感悟不隨太晚 (2篇文章)
+- [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
 ## 天天一句話 (1篇文章)
@@ -160,16 +161,17 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## blog (50篇文章)
+## blog (51篇文章)
+- [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
 - [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)--2025-12-19
-- [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)--2025-12-18
 
 <details>
-<summary>显示更多 (45篇)</summary>
+<summary>显示更多 (46篇)</summary>
 
+- [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)
 - [[ 折腾 ] 这个就这样吧](https://github.com/myogg/Gitblog/issues/135)
 - [皮毛、霜冻和盛宴](https://github.com/myogg/Gitblog/issues/133)
