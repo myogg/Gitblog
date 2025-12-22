@@ -8,7 +8,8 @@
     <link rel="stylesheet" href="static/style.css">
     <style>
         body { background: white; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif; }
-        .markdown-body { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        /* 修改處：移除固定 padding，確保頭部高度與其他頁面統一 */
+        .markdown-body { max-width: 900px; margin: 0 auto; }
         
         /* 設置 85% 寬度的隨機轉動容器 */
         #tag-cloud-container {
@@ -112,11 +113,11 @@
                     maxSpeed: 0.03,
                     initial: [0.1, -0.1],
                     wheelZoom: false,
-                    weight: false, // 確保不加粗
+                    weight: false, 
                     minFontSize: 16,
                     maxFontSize: 16,
                     stretchX: 1.0,         
-                    // 字體改為與頂部鏈接一致的系統字體家族
+                    // 保持與導航欄字體家族一致
                     textFont: '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif',
                     padding: 15,
                     clickToFront: 300,
