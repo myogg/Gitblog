@@ -1,12 +1,13 @@
-/* 1. 基礎重置：純白呼吸感 */
+/* 基於 cai.im 風格的極簡深色字體設計 */
 body {
     background: #ffffff !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", "PingFang SC", sans-serif;
-    color: #1a1a1a;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif;
+    color: #111;
+    -webkit-font-smoothing: antialiased;
 }
 
 .markdown-body {
-    max-width: 720px !important; /* 縮窄內容寬度 */
+    max-width: 720px !important;
     margin: 0 auto !important;
     padding: 3rem 1.5rem !important;
     box-shadow: none !important;
@@ -14,115 +15,127 @@ body {
     background: #fff !important;
 }
 
-/* 2. 標題與導航 */
+/* 標題與導航 */
 .page-title {
-    font-size: 1.8rem !important;
-    font-weight: 800 !important;
-    letter-spacing: -0.03em;
+    font-size: 2rem !important;
+    font-weight: 850 !important;
+    letter-spacing: -0.04em;
     margin-bottom: 0.5rem !important;
     text-align: left !important;
+    color: #000 !important;
 }
 
-.nav-links {
-    margin-bottom: 2rem;
-}
-
+.nav-links { margin-bottom: 2rem; }
 .nav-links a {
-    color: #999 !important;
-    margin-right: 1rem;
-    font-size: 0.9rem;
+    color: #666 !important;
+    margin-right: 1.2rem;
+    font-size: 0.95rem;
+    font-weight: 500;
     text-decoration: none !important;
 }
+.nav-links a:hover { color: #000 !important; }
 
-.nav-links a:hover { color: #1a1a1a !important; }
-
-/* 3. 頂部標籤欄樣式 */
+/* 頂部標籤欄 */
 .top-tags-bar {
-    margin-bottom: 3rem;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f0f0f0;
-}
-
-.tags-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
+    margin-bottom: 3.5rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid #eee;
 }
 
 .tag {
     background: transparent !important;
+    color: #222 !important;
     border-radius: 4px !important;
-    padding: 2px 10px !important;
+    padding: 3px 10px !important;
     font-size: 0.8rem !important;
+    font-weight: 600 !important;
     cursor: pointer;
     transition: 0.2s;
-    font-weight: 400 !important;
 }
-
-.tag:hover { background: #f5f5f5 !important; color: #000 !important; }
+.tag:hover { background: #f0f0f0 !important; }
 
 .clear-filter {
-    font-size: 0.75rem;
-    color: #ff4d4f;
+    font-size: 0.8rem;
+    color: #d73a49;
     cursor: pointer;
     display: none;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.8rem;
+    font-weight: 600;
 }
 
-/* 4. 非對稱文章列表 */
-.article-list {
-    list-style: none !important;
-    padding: 0 !important;
-}
-
+/* 文章列表與非對稱佈局 */
+.article-list { list-style: none !important; padding: 0 !important; }
 .article-list li {
     display: flex !important;
-    align-items: baseline !important;
-    background: transparent !important;
-    border: none !important;
-    padding: 0.5rem 0 !important;
-    margin: 0 !important;
+    align-items: flex-start !important;
+    padding: 1.2rem 0 !important;
+    border-bottom: 1px solid #f9f9f9;
 }
 
 .article-date {
     font-family: "JetBrains Mono", monospace;
-    color: #ccc !important; /* 極淺灰色日期 */
-    font-size: 0.85rem !important;
-    min-width: 60px;
-    margin-right: 15px;
-}
-
-.article-list li a {
-    font-size: 1.1rem;
-    color: #1a1a1a !important;
-    font-weight: 600;
-    text-decoration: none !important;
-}
-
-.article-list li a:hover { opacity: 0.5; }
-
-/* 5. 分類區塊 */
-.category-section h2.section-label {
+    color: #333 !important; /* 日期顏色顯著加深 */
     font-size: 0.9rem !important;
-    color: #bbb !important;
-    text-transform: uppercase;
-    border-bottom: none !important;
-    margin-top: 3rem !important;
-    margin-bottom: 1rem !important;
-    font-weight: 400 !important;
+    font-weight: 700;
+    min-width: 60px;
+    margin-right: 18px;
+    padding-top: 0.3rem;
 }
 
-.category-section h2.section-label small { margin-left: 5px; opacity: 0.5; }
+.article-info { flex: 1; min-width: 0; }
+.article-title-link {
+    font-size: 1.25rem;
+    color: #000 !important;
+    font-weight: 800;
+    text-decoration: none !important;
+    line-height: 1.3;
+}
+.article-title-link:hover { opacity: 0.6; }
 
-/* 6. 其他 UI */
+/* 摘要：強制單行 */
+.article-summary {
+    margin-top: 0.5rem;
+    color: #555 !important;
+    font-size: 0.92rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 分類標籤樣式 (置頂、最近文章等) */
+.category-section h2.section-label {
+    font-size: 1rem !important;
+    color: #000 !important;
+    font-weight: 900 !important;
+    border-left: 4px solid #000 !important;
+    padding-left: 12px;
+    margin: 3.5rem 0 1.5rem 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.category-section h2.section-label small { font-weight: 400; color: #999; margin-left: 8px; }
+
+/* 其他 UI */
 .show-more-btn {
-    background: #f5f5f5 !important;
-    color: #888 !important;
+    background: #111 !important;
+    color: #fff !important;
     border: none !important;
     font-size: 0.75rem !important;
-    padding: 4px 12px !important;
-    margin-top: 1rem !important;
+    font-weight: 700;
+    padding: 6px 15px !important;
+    margin-top: 1.5rem !important;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
-footer { color: #ccc !important; font-size: 0.75rem !important; margin-top: 5rem !important; }
-.header-line { display: none; } /* 移除彩色條 */
+.hidden-articles { display: none; }
+footer {
+    color: #444 !important;
+    font-size: 0.85rem !important;
+    font-weight: 500;
+    text-align: center;
+    margin-top: 6rem !important;
+    padding-bottom: 3rem;
+}
+.header-line { display: none; }
