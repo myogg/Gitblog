@@ -7,32 +7,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
     <style>
-        /* 標籤容器樣式：與首頁風格對齊 */
+        /* 僅保留篩選器特有樣式，刪除所有影響字體和佈局的重複定義 */
         .archives-tags-container {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
             justify-content: center;
-            margin: 2rem 0 3rem 0;
+            margin: 1rem 0 2rem 0;
             padding-bottom: 2rem;
             border-bottom: 1px solid #f0f0f0;
         }
-
-        .filter-info { 
-            text-align: center; 
-            margin-bottom: 2rem; 
-            min-height: 40px; 
-        }
-
-        /* 讓篩選狀態下的文章條目顯示更流暢 */
-        .archive-item {
-            transition: opacity 0.3s ease;
-        }
+        .filter-info { text-align: center; margin-bottom: 2rem; min-height: 40px; }
     </style>
 </head>
 <body>
     <div class="markdown-body">
-        <div class="header-line"></div>
         <h1 class="page-title">北方的博客</h1>
         
         <div class="nav-links">
@@ -43,9 +32,7 @@
 
         <div class="archives-tags-container">
             {% for name, info in label_info.items() %}
-            <span class="tag" 
-                  style="border: 1px solid #{{info.color}}; cursor: pointer;" 
-                  onclick="filterByTag('{{ name }}')">
+            <span class="tag" style="border: 1px solid #{{info.color}}; cursor: pointer;" onclick="filterByTag('{{ name }}')">
                 {{ name }}
             </span>
             {% endfor %}
@@ -68,64 +55,33 @@
             </div>
             {% endfor %}
         </div>
-        
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
 
     <script type="text/javascript">
-        /**
-         * 標籤篩選邏輯
-         * @param {string} tagName - 選中的標籤名稱
-         */
         function filterByTag(tagName) {
             const items = document.querySelectorAll('.archive-item');
             const sections = document.querySelectorAll('.category-section');
             const display = document.getElementById('filterDisplay');
-            
-            // 更新篩選提示文字與重置按鈕
-            display.innerHTML = `
-                <span style="color:#888; font-weight:bold;">正在查看標籤：#${tagName}</span> 
-                <button class="show-more-btn" 
-                        style="margin-left:15px; padding:4px 12px; cursor:pointer; font-size:0.8rem;" 
-                        onclick="resetFilter()">
-                    顯示全部文章
-                </button>
-            `;
-            
+            display.innerHTML = `<span style="color:#888; font-weight:bold;">正在查看標籤：#${tagName}</span> <button class="show-more-btn" style="margin-left:15px; padding:4px 12px; cursor:pointer; font-size:0.8rem;" onclick="resetFilter()">顯示全部</button>`;
             items.forEach(item => {
                 const tags = item.getAttribute('data-tags').split(',');
-                // 核心修復：使用 setProperty 確保覆蓋 CSS 中的 !important
                 if (tags.includes(tagName)) {
                     item.style.setProperty('display', 'flex', 'important');
                 } else {
                     item.style.setProperty('display', 'none', 'important');
                 }
             });
-
-            // 控制年份標題的顯示：如果該年份下沒有匹配文章，則隱藏整個區塊
             sections.forEach(section => {
-                const hasVisible = Array.from(section.querySelectorAll('.archive-item'))
-                                       .some(i => i.style.display !== 'none');
+                const hasVisible = Array.from(section.querySelectorAll('.archive-item')).some(i => i.style.display !== 'none');
                 section.style.display = hasVisible ? 'block' : 'none';
             });
-            
-            // 平滑滾動到篩選提示區，提升用戶體驗
             window.scrollTo({ top: display.offsetTop - 50, behavior: 'smooth' });
         }
-
-        /**
-         * 重置篩選，顯示所有文章
-         */
         function resetFilter() {
-            document.querySelectorAll('.archive-item').forEach(i => {
-                i.style.setProperty('display', 'flex', 'important');
-            });
-            document.querySelectorAll('.category-section').forEach(s => {
-                s.style.display = 'block';
-            });
+            document.querySelectorAll('.archive-item').forEach(i => i.style.setProperty('display', 'flex', 'important'));
+            document.querySelectorAll('.category-section').forEach(s => s.style.display = 'block');
             document.getElementById('filterDisplay').innerHTML = '';
-            
-            // 返回頂部
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     </script>
