@@ -9,21 +9,27 @@
 </head>
 <body>
     <div class="markdown-body">
-        <div class="header-line"></div>
-        <div class="article-header">
-            <h1 class="article-title">{{issue.title}}</h1>
-            <div class="article-meta">发布于: {{issue.created_at.strftime('%Y-%m-%d')}} | ID: {{issue.number}}</div>
-            <div class="article-labels">
-                {% for l in labels_data %}
-                <span class="tag" style="background-color:#{{l.color}}; color:{{l.text_color}};">{{l.name}}</span>
-                {% endfor %}
+        <h1 class="page-title">北方的博客</h1>
+        <div class="nav-links">
+            <a href="../index.html">← 首頁</a>
+            <a href="../archives.html">歸檔</a>
+            <a href="../about.html">關於</a>
+        </div>
+
+        <header class="article-header" style="margin: 3rem 0;">
+            <h1 style="font-size: 2rem; font-weight: 800; color: #000; border-bottom: none; margin-bottom: 0.5rem;">{{issue.title}}</h1>
+            <div class="article-meta" style="color: #bbb; font-family: monospace; font-size: 0.9rem;">
+                {{issue.created_at.strftime('%Y/%m/%d')}}
             </div>
-        </div>
-        <div class="article-content">{{content|safe}}</div>
-        <div style="margin-top:2rem; text-align:center;">
-            <a href="../index.html" style="padding:10px 20px; background:#f0f0f0; border-radius:5px;">返回首頁</a>
-        </div>
-        <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
+        </header>
+
+        <article class="content-area">
+            {{ content | safe }}
+        </article>
+
+        <footer style="margin-top: 5rem; text-align: center; color: #bbb; font-size: 0.8rem;">
+            © 2025 Designed and developed by Jiang Sheng
+        </footer>
     </div>
 </body>
 </html>
