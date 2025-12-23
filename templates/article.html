@@ -9,27 +9,36 @@
 </head>
 <body>
     <div class="markdown-body">
+        <div class="header-line"></div>
         <h1 class="page-title">北方的博客</h1>
+        
         <div class="nav-links">
-            <a href="../index.html">← 首頁</a>
+            <a href="../index.html">首頁</a>
             <a href="../archives.html">歸檔</a>
             <a href="../about.html">關於</a>
         </div>
 
-        <header class="article-header" style="margin: 3rem 0;">
-            <h1 style="font-size: 2rem; font-weight: 800; color: #000; border-bottom: none; margin-bottom: 0.5rem;">{{issue.title}}</h1>
-            <div class="article-meta" style="color: #bbb; font-family: monospace; font-size: 0.9rem;">
-                {{issue.created_at.strftime('%Y/%m/%d')}}
+        <div style="margin-top: 3rem;">
+            <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
+            <div style="color: #bbb; font-size: 0.85rem; margin-bottom: 20px;">
+                發佈於 {{issue.created_at.strftime('%Y-%m-%d')}} | ID: {{issue.number}}
             </div>
-        </header>
+            
+            <div style="margin-bottom: 30px;">
+                {% for l in labels_data %}
+                <span class="tag" style="border: 1px solid #{{l.color}}; margin-right: 5px; padding: 2px 8px;">{{l.name}}</span>
+                {% endfor %}
+            </div>
 
-        <article class="content-area">
-            {{ content | safe }}
-        </article>
+            <article class="content-area">
+                {{content|safe}}
+            </article>
+        </div>
 
-        <footer style="margin-top: 5rem; text-align: center; color: #bbb; font-size: 0.8rem;">
-            © 2025 Designed and developed by Jiang Sheng
-        </footer>
+        <div style="margin-top:4rem; text-align:center;">
+            <a href="../index.html" class="show-more-btn" style="text-decoration:none;">返回首頁</a>
+        </div>
+        <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
 </body>
 </html>
