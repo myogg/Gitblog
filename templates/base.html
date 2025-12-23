@@ -23,7 +23,7 @@
             </div>
             <div class="tags-container">
                 {% for name, info in label_info.items() %}
-                <span class="tag" style="border: 1px solid #{{info.color}}; color:#555;" 
+                <span class="tag" style="border: 1px solid #{{info.color}};" 
                       data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">
                     {{name}}
                 </span>
@@ -31,53 +31,55 @@
             </div>
         </div>
 
-        <div class="main-container">
-            <div id="categories-container">
-                {% if pinned_issues %}
-                <div class="category-section">
-                    <h2 class="section-label">置頂文章</h2>
-                    <ul class="article-list">
-                        {% for i in pinned_issues %}
-                        <li><span class="article-date">{{i.created_at.strftime('%m/%d')}}</span><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
+        <div id="categories-container">
+            {# 列表組件定義：重用邏輯 #}
+            {% macro render_list(issues_list) %}
+                <ul class="article-list">
+                    {% for i in issues_list %}
+                    <li>
+                        <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
+                        <div class="article-info">
+                            <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
+                            {% if i.body and not i.body.strip().startswith('![') %}
+                            <p class="article-summary">{{ i.body | truncate(100) }}</p>
+                            {% endif %}
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endmacro %}
 
-                {% if recent_issues %}
-                <div class="category-section">
-                    <h2 class="section-label">最近文章</h2>
-                    <ul class="article-list">
-                        {% for i in recent_issues %}
-                        <li><span class="article-date">{{i.created_at.strftime('%m/%d')}}</span><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
-                        {% endfor %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                {% for label, items in label_dict.items() %}
-                <div class="category-section" data-label="{{label_info[label].safe_name}}">
-                    <h2 class="section-label">{{label}} <small>{{items|length}}</small></h2>
-                    <ul class="article-list">
-                        {% for i in items[:MAX_PER_CATEGORY] %}
-                        <li><span class="article-date">{{i.created_at.strftime('%m/%d')}}</span><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
-                        {% endfor %}
-                    </ul>
-                    {% if items|length > MAX_PER_CATEGORY %}
-                    <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
-                        <ul class="article-list">
-                            {% for i in items[MAX_PER_CATEGORY:] %}
-                            <li><span class="article-date">{{i.created_at.strftime('%m/%d')}}</span><a href="articles/article-{{i.number}}.html">{{i.title}}</a></li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">MORE</button>
-                    {% endif %}
-                </div>
-                {% endfor %}
+            {% if pinned_issues %}
+            <div class="category-section">
+                <h2 class="section-label">置頂文章</h2>
+                {{ render_list(pinned_issues) }}
             </div>
+            {% endif %}
+
+            {% if recent_issues %}
+            <div class="category-section">
+                <h2 class="section-label">最近文章</h2>
+                {{ render_list(recent_issues) }}
+            </div>
+            {% endif %}
+
+            {% for label, items in label_dict.items() %}
+            <div class="category-section" data-label="{{label_info[label].safe_name}}">
+                <h2 class="section-label">{{label}} <small>{{items|length}}</small></h2>
+                
+                {{ render_list(items[:MAX_PER_CATEGORY]) }}
+
+                {% if items|length > MAX_PER_CATEGORY %}
+                <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
+                    {{ render_list(items[MAX_PER_CATEGORY:]) }}
+                </div>
+                <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">MORE</button>
+                {% endif %}
+            </div>
+            {% endfor %}
         </div>
-        <footer>© {{YEAR}} 北方的博客. All rights reserved.</footer>
+        
+        <footer>© 2025 Designed and developed by Jiang Shan Sheng</footer>
     </div>
     <script src="static/script.js"></script>
 </body>
