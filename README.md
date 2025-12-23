@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [红色精灵与圆形精灵闪电](https://github.com/myogg/Gitblog/issues/152)--2025-12-23
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
-- [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
-## 一些记录 (39篇文章)
+## 一些记录 (40篇文章)
+- [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
-- [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)--2025-12-17
 
 <details>
-<summary>显示更多 (34篇)</summary>
+<summary>显示更多 (35篇)</summary>
 
+- [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)
 - [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)
 - [单光子单原子量子干涉仪](https://github.com/myogg/Gitblog/issues/126)
@@ -147,7 +148,8 @@ My personal blog using issues and GitHub Actions
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
-## 天天一句話 (1篇文章)
+## 天天一句話 (2篇文章)
+- [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 
 ## 我喜歡宇宙奇觀 (3篇文章)
