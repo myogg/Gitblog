@@ -9,7 +9,6 @@
 </head>
 <body>
     <div class="markdown-body">
-        <div class="header-line"></div>
         <h1 class="page-title">北方的博客</h1>
         
         <div class="nav-links">
@@ -35,10 +34,29 @@
             </article>
         </div>
 
-        <div style="margin-top:4rem; text-align:center;">
-            <a href="../index.html" class="show-more-btn" style="text-decoration:none;">返回首頁</a>
+        <div style="margin-top: 5rem; padding: 1.5rem; background: #fafafa; border-radius: 8px; font-size: 0.85rem; color: #888; border: 1px solid #f0f0f0;">
+            <p style="margin: 0;"><strong>本文作者：</strong>Jiang Sheng</p>
+            <p style="margin: 8px 0;"><strong>版權聲明：</strong>本站文章採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" style="color: #666; text-decoration: underline;">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明出處。</p>
+            <p style="margin: 0;"><strong>永久鏈接：</strong><span id="post-url" style="word-break: break-all; opacity: 0.7;"></span></p>
         </div>
+
+        <div style="margin: 4rem 0; text-align: center; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
+            <a href="../index.html" class="show-more-btn" style="text-decoration: none; padding: 10px 24px; background: #1a1a1a !important; color: #fff !important; border-radius: 6px;">← 返回首頁</a>
+            
+            <a href="https://github.com/myogg/Gitblog/issues/{{issue.number}}" 
+               target="_blank" 
+               class="show-more-btn" 
+               style="text-decoration: none; padding: 10px 24px; background: #fff !important; border: 1px solid #eee !important; color: #666 !important; border-radius: 6px;">
+                💬 去 GitHub 參與互動
+            </a>
+        </div>
+
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
+
+    <script>
+        // 自動獲取並顯示當前文章網址
+        document.getElementById('post-url').textContent = window.location.href;
+    </script>
 </body>
 </html>
