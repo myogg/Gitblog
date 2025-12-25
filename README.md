@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155)--2025-12-25
 - [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [红色精灵与圆形精灵闪电](https://github.com/myogg/Gitblog/issues/152)--2025-12-23
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
-- [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 
 ## 一些记录 (40篇文章)
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
@@ -226,16 +226,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 突发的一些小想法 (8篇文章)
+## 突发的一些小想法 (9篇文章)
+- [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155)--2025-12-25
 - [修改了博客结构](https://github.com/myogg/Gitblog/issues/124)--2025-12-15
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 - [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
 - [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
-- [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)--2025-04-14
 
 <details>
-<summary>显示更多 (3篇)</summary>
+<summary>显示更多 (4篇)</summary>
 
+- [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)
 - [[ 胡思乱想 ]  万恶的小视频](https://github.com/myogg/Gitblog/issues/56)
@@ -246,4 +247,7 @@ My personal blog using issues and GitHub Actions
 - [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
 - [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
+
+## TODO
+TODO list from [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155) all done
 
