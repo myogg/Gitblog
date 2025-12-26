@@ -7,52 +7,64 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
     <style>
-        /* 标签实体颜色样式 */
-        .tag {
-            display: inline-block;
-            padding: 4px 12px !important;
-            font-size: 0.8rem !important;
-            border-radius: 16px !important;
+        /* 覆盖原有标签样式为实体颜色 */
+        .top-tags-bar .tag {
+            background-color: #{{info.color}} !important;  /* 这里需要动态生成，见下面的修改 */
+            color: {{info.text_color}} !important;         /* 这里需要动态生成，见下面的修改 */
+            border: none !important;
+            padding: 6px 14px !important;
+            border-radius: 20px !important;
+            font-size: 0.85rem !important;
             cursor: pointer;
             transition: all 0.2s ease;
-            white-space: nowrap;
-            border: none !important;
-            margin: 2px;
+            display: inline-block;
+            margin: 4px 6px;
             font-weight: 500;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
-        /* 悬停效果 */
-        .tag:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        .top-tags-bar .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
             opacity: 0.9;
         }
         
-        /* 清除筛选按钮样式 */
+        .top-tags-bar .tag.active {
+            box-shadow: 0 0 0 2px rgba(0,0,0,0.2) inset;
+            transform: translateY(-1px);
+        }
+        
+        .filter-controls {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            min-height: 36px;
+        }
+        
         .clear-filter {
             background: #f5f5f5;
-            color: #999;
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 0.8rem;
+            color: #666;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85rem;
             cursor: pointer;
             display: none;
             margin-right: 10px;
             transition: all 0.2s ease;
-            border: 1px solid #eee;
+            border: 1px solid #e0e0e0;
         }
         
         .clear-filter:hover {
-            background: #eee;
-            color: #666;
+            background: #e8e8e8;
         }
         
-        /* 筛选控制区域 */
-        .filter-controls {
-            margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            min-height: 32px;
+        /* 导航栏添加搜索链接 */
+        .nav-links a[href*="search"] {
+            color: #888 !important;
+        }
+        
+        .nav-links a[href*="search"]:hover {
+            color: #000 !important;
         }
     </style>
 </head>
@@ -74,9 +86,8 @@
             <div class="tags-container">
                 {% for name, info in label_info.items() %}
                 <span class="tag" 
-                      style="background-color: #{{info.color}}; color: {{info.text_color}};" 
-                      data-label="{{info.safe_name}}" 
-                      onclick="filterByLabel('{{info.safe_name}}')">
+                      style="background-color: #{{info.color}}; color: {{info.text_color}};"
+                      data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">
                     {{name}}
                 </span>
                 {% endfor %}
@@ -126,62 +137,55 @@
         
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
+    
     <script src="static/script.js"></script>
     <script>
-        // 标签筛选功能
-        let currentFilter = null;
+        // 标签筛选功能 - 增强版
+        let activeTag = null;
         
         function filterByLabel(labelName) {
             const sections = document.querySelectorAll('.category-section');
             const tags = document.querySelectorAll('.tag');
             const clearFilterBtn = document.getElementById('clear-filter');
             
-            // 更新当前筛选状态
-            currentFilter = labelName;
+            // 移除之前的活动状态
+            if (activeTag) {
+                const prevTag = document.querySelector(`.tag[data-label="${activeTag}"]`);
+                if (prevTag) {
+                    prevTag.classList.remove('active');
+                }
+            }
+            
+            // 设置新的活动标签
+            activeTag = labelName;
+            const currentTag = document.querySelector(`.tag[data-label="${labelName}"]`);
+            if (currentTag) {
+                currentTag.classList.add('active');
+            }
             
             // 显示清除筛选按钮
             if (clearFilterBtn) {
                 clearFilterBtn.style.display = 'inline-block';
             }
             
-            // 更新标签样式
-            tags.forEach(tag => {
-                const tagLabel = tag.getAttribute('data-label');
-                if (tagLabel === labelName) {
-                    // 当前选中的标签增加边框
-                    tag.style.boxShadow = '0 0 0 2px rgba(0, 0, 0, 0.1)';
-                    tag.style.transform = 'translateY(-1px)';
-                } else {
-                    // 未选中的标签降低透明度
-                    tag.style.opacity = '0.4';
-                    tag.style.transform = 'none';
-                    tag.style.boxShadow = 'none';
-                }
-            });
-            
             // 筛选分类
             sections.forEach(section => {
                 const sectionLabel = section.getAttribute('data-label');
-                if (sectionLabel === labelName || 
-                    (labelName === null && sectionLabel !== null) || 
-                    (labelName === null && !sectionLabel) || 
-                    section.querySelector('.section-label').textContent.includes('置頂') ||
-                    section.querySelector('.section-label').textContent.includes('最近')) {
-                    
-                    if (sectionLabel === labelName || 
-                        section.querySelector('.section-label').textContent.includes('置頂') ||
-                        section.querySelector('.section-label').textContent.includes('最近')) {
-                        section.style.display = 'block';
-                    } else {
-                        section.style.display = 'none';
-                    }
+                if (!sectionLabel) {
+                    // 置顶和最近文章区域始终显示
+                    section.style.display = 'block';
+                } else if (sectionLabel === labelName) {
+                    // 匹配的标签区域显示
+                    section.style.display = 'block';
+                    section.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 } else {
+                    // 不匹配的标签区域隐藏
                     section.style.display = 'none';
                 }
             });
             
-            // 滚动到顶部
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            // 更新URL（可选）
+            // history.pushState(null, '', `?filter=${labelName}`);
         }
         
         function clearFilter() {
@@ -189,30 +193,31 @@
             const tags = document.querySelectorAll('.tag');
             const clearFilterBtn = document.getElementById('clear-filter');
             
-            currentFilter = null;
+            // 移除所有活动状态
+            tags.forEach(tag => {
+                tag.classList.remove('active');
+            });
+            
+            activeTag = null;
             
             // 隐藏清除筛选按钮
             if (clearFilterBtn) {
                 clearFilterBtn.style.display = 'none';
             }
             
-            // 重置所有标签样式
-            tags.forEach(tag => {
-                tag.style.opacity = '1';
-                tag.style.transform = 'none';
-                tag.style.boxShadow = 'none';
-            });
-            
             // 显示所有分类
             sections.forEach(section => {
                 section.style.display = 'block';
             });
             
-            // 滚动到顶部
+            // 清除URL参数（可选）
+            // history.pushState(null, '', window.location.pathname);
+            
+            // 滚动回顶部
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
         
-        // 页面加载时检查是否需要显示清除筛选按钮
+        // 页面加载时检查URL参数
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const filterParam = urlParams.get('filter');
