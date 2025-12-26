@@ -6,17 +6,66 @@
     <title>北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        /* 标签实体颜色样式 */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px !important;
+            font-size: 0.8rem !important;
+            border-radius: 16px !important;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+            border: none !important;
+            margin: 2px;
+            font-weight: 500;
+        }
+        
+        /* 悬停效果 */
+        .tag:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            opacity: 0.9;
+        }
+        
+        /* 清除筛选按钮样式 */
+        .clear-filter {
+            background: #f5f5f5;
+            color: #999;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            display: none;
+            margin-right: 10px;
+            transition: all 0.2s ease;
+            border: 1px solid #eee;
+        }
+        
+        .clear-filter:hover {
+            background: #eee;
+            color: #666;
+        }
+        
+        /* 筛选控制区域 */
+        .filter-controls {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            min-height: 32px;
+        }
+    </style>
 </head>
 <body>
     <div class="markdown-body">
         <h1 class="page-title">北方的博客</h1>
         
         <div class="nav-links">
-    <a href="index.html">首頁</a>
-    <a href="archives.html">歸檔</a>
-    <a href="search.html">搜索</a>
-    <a href="about.html">關於</a>
-     </div>
+            <a href="index.html">首頁</a>
+            <a href="archives.html">歸檔</a>
+            <a href="search.html">搜索</a>
+            <a href="about.html">關於</a>
+        </div>
 
         <div class="top-tags-bar">
             <div class="filter-controls">
@@ -24,8 +73,10 @@
             </div>
             <div class="tags-container">
                 {% for name, info in label_info.items() %}
-                <span class="tag" style="border: 1px solid #{{info.color}};" 
-                      data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">
+                <span class="tag" 
+                      style="background-color: #{{info.color}}; color: {{info.text_color}};" 
+                      data-label="{{info.safe_name}}" 
+                      onclick="filterByLabel('{{info.safe_name}}')">
                     {{name}}
                 </span>
                 {% endfor %}
@@ -76,5 +127,102 @@
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
     <script src="static/script.js"></script>
+    <script>
+        // 标签筛选功能
+        let currentFilter = null;
+        
+        function filterByLabel(labelName) {
+            const sections = document.querySelectorAll('.category-section');
+            const tags = document.querySelectorAll('.tag');
+            const clearFilterBtn = document.getElementById('clear-filter');
+            
+            // 更新当前筛选状态
+            currentFilter = labelName;
+            
+            // 显示清除筛选按钮
+            if (clearFilterBtn) {
+                clearFilterBtn.style.display = 'inline-block';
+            }
+            
+            // 更新标签样式
+            tags.forEach(tag => {
+                const tagLabel = tag.getAttribute('data-label');
+                if (tagLabel === labelName) {
+                    // 当前选中的标签增加边框
+                    tag.style.boxShadow = '0 0 0 2px rgba(0, 0, 0, 0.1)';
+                    tag.style.transform = 'translateY(-1px)';
+                } else {
+                    // 未选中的标签降低透明度
+                    tag.style.opacity = '0.4';
+                    tag.style.transform = 'none';
+                    tag.style.boxShadow = 'none';
+                }
+            });
+            
+            // 筛选分类
+            sections.forEach(section => {
+                const sectionLabel = section.getAttribute('data-label');
+                if (sectionLabel === labelName || 
+                    (labelName === null && sectionLabel !== null) || 
+                    (labelName === null && !sectionLabel) || 
+                    section.querySelector('.section-label').textContent.includes('置頂') ||
+                    section.querySelector('.section-label').textContent.includes('最近')) {
+                    
+                    if (sectionLabel === labelName || 
+                        section.querySelector('.section-label').textContent.includes('置頂') ||
+                        section.querySelector('.section-label').textContent.includes('最近')) {
+                        section.style.display = 'block';
+                    } else {
+                        section.style.display = 'none';
+                    }
+                } else {
+                    section.style.display = 'none';
+                }
+            });
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function clearFilter() {
+            const sections = document.querySelectorAll('.category-section');
+            const tags = document.querySelectorAll('.tag');
+            const clearFilterBtn = document.getElementById('clear-filter');
+            
+            currentFilter = null;
+            
+            // 隐藏清除筛选按钮
+            if (clearFilterBtn) {
+                clearFilterBtn.style.display = 'none';
+            }
+            
+            // 重置所有标签样式
+            tags.forEach(tag => {
+                tag.style.opacity = '1';
+                tag.style.transform = 'none';
+                tag.style.boxShadow = 'none';
+            });
+            
+            // 显示所有分类
+            sections.forEach(section => {
+                section.style.display = 'block';
+            });
+            
+            // 滚动到顶部
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 页面加载时检查是否需要显示清除筛选按钮
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const filterParam = urlParams.get('filter');
+            
+            if (filterParam) {
+                setTimeout(() => {
+                    filterByLabel(filterParam);
+                }, 100);
+            }
+        });
+    </script>
 </body>
 </html>
