@@ -24,14 +24,161 @@ body {
     color: #000 !important;
 }
 
-.nav-links { margin-bottom: 2rem; }
+.nav-links { 
+    margin-bottom: 2rem; 
+    display: flex;
+    gap: 1.2rem;
+    flex-wrap: wrap;
+}
 .nav-links a {
     color: #888 !important; /* 還原為灰色 */
-    margin-right: 1.2rem;
     font-size: 0.9rem;
     text-decoration: none !important;
+    padding: 2px 0;
+    position: relative;
+    transition: color 0.2s ease;
 }
-.nav-links a:hover { color: #000 !important; }
+.nav-links a:hover { 
+    color: #000 !important; 
+}
+.nav-links a[href*="search"] {
+    /* 搜索链接无特殊样式，保持极简 */
+}
+
+/* 搜索页面样式 */
+.search-container {
+    max-width: 700px !important;
+    margin: 0 auto 3rem !important;
+}
+
+#searchBox {
+    width: 100%;
+    padding: 12px 18px;
+    font-size: 0.95rem;
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "PingFang SC", sans-serif;
+    color: #1a1a1a;
+    background: #ffffff;
+    border: 1px solid #f0f0f0 !important;
+    border-radius: 8px;
+    outline: none;
+    transition: all 0.2s ease;
+    box-sizing: border-box;
+    margin-bottom: 2rem;
+}
+
+#searchBox:focus {
+    border-color: #d0d0d0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+#searchBox::placeholder {
+    color: #bbb;
+    font-weight: 400;
+}
+
+#searchResults {
+    min-height: 100px;
+}
+
+/* 搜索结果样式 - 保持极简 */
+.search-result {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #f5f5f5;
+    transition: opacity 0.2s ease;
+}
+
+.search-result:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.search-result-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+}
+
+.search-result-title a {
+    color: #1a1a1a !important;
+    text-decoration: none !important;
+    transition: opacity 0.2s ease;
+}
+
+.search-result-title a:hover {
+    opacity: 0.5;
+    text-decoration: none !important;
+}
+
+.search-result-snippet {
+    color: #666 !important;
+    font-size: 0.9rem !important;
+    line-height: 1.5;
+    margin-bottom: 0.8rem;
+}
+
+.search-result-meta {
+    color: #bbb !important;
+    font-size: 0.8rem !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-tags {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.search-tag {
+    padding: 2px 8px;
+    background: #f8f8f8;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    color: #666;
+    letter-spacing: 0.01em;
+}
+
+.highlight {
+    background-color: #fff8c5;
+    padding: 0 1px;
+    border-radius: 2px;
+    font-weight: 500;
+}
+
+.search-stats {
+    text-align: center;
+    color: #bbb !important;
+    margin: 2rem 0;
+    font-size: 0.85rem;
+    font-weight: 400;
+}
+
+.no-results {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #bbb !important;
+}
+
+.no-results i {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    opacity: 0.3;
+    display: block;
+}
+
+.no-results p {
+    margin: 0.5rem 0;
+    font-size: 0.95rem;
+}
+
+.no-results strong {
+    color: #666;
+    font-weight: 500;
+}
 
 /* 頂部標籤欄修正 */
 .top-tags-bar {
@@ -104,6 +251,22 @@ body {
 
 .category-section h2.section-label small { margin-left: 8px; opacity: 0.5; }
 
+/* 評論系統樣式 - 保持極簡 */
+.comments-container {
+    margin-top: 4rem;
+    padding-top: 3rem;
+    border-top: 1px solid #f0f0f0;
+}
+
+.comments-container h2 {
+    font-size: 0.9rem !important;
+    color: #bbb !important;
+    font-weight: 500 !important;
+    text-transform: uppercase;
+    margin: 0 0 2rem 0 !important;
+    letter-spacing: 0.05em;
+}
+
 /* 按鈕與底部 */
 .show-more-btn {
     background: #f5f5f5 !important;
@@ -125,3 +288,67 @@ footer {
 
 .header-line { display: none; }
 .hidden-articles { display: none; }
+
+/* 響應式設計 */
+@media (max-width: 768px) {
+    .markdown-body {
+        padding: 2rem 1rem !important;
+    }
+    
+    .nav-links {
+        gap: 1rem;
+    }
+    
+    .nav-links a {
+        font-size: 0.85rem;
+    }
+    
+    #searchBox {
+        padding: 10px 15px;
+        font-size: 0.9rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .search-result-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .search-result {
+        margin-bottom: 1.2rem;
+        padding-bottom: 1.2rem;
+    }
+    
+    .search-result-title {
+        font-size: 1rem;
+    }
+    
+    .search-result-snippet {
+        font-size: 0.85rem !important;
+    }
+    
+    .comments-container {
+        margin-top: 3rem;
+        padding-top: 2rem;
+    }
+}
+
+/* 動畫效果 */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.search-result {
+    animation: fadeIn 0.3s ease-out;
+}
+
+/* 防止 GitHub Markdown CSS 覆蓋 */
+.markdown-body .search-container,
+.markdown-body .search-result,
+.markdown-body .search-stats,
+.markdown-body .no-results,
+.markdown-body .comments-container {
+    all: revert;
+}
