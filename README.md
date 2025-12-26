@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
 - [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
 - [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155)--2025-12-25
 - [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
-- [红色精灵与圆形精灵闪电](https://github.com/myogg/Gitblog/issues/152)--2025-12-23
 
 ## 一些记录 (40篇文章)
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
@@ -153,7 +153,8 @@ My personal blog using issues and GitHub Actions
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 
-## 我喜歡宇宙奇觀 (3篇文章)
+## 我喜歡宇宙奇觀 (4篇文章)
+- [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
 - [红色精灵与圆形精灵闪电](https://github.com/myogg/Gitblog/issues/152)--2025-12-23
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
