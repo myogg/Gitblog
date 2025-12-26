@@ -6,17 +6,49 @@
     <title>{{issue.title}} - 北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="../static/style.css">
+    <style>
+        /* Giscus评论区域样式 */
+        .giscus-section {
+            margin-top: 5rem;
+            padding-top: 3rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .giscus-section h3 {
+            font-size: 0.9rem;
+            color: #bbb;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 1.5rem 0;
+            padding: 0;
+            border: none;
+        }
+        
+        .giscus-frame {
+            width: 100%;
+            border: none;
+            min-height: 250px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        /* 添加搜索链接到导航栏 */
+        .nav-links a[href*="search"] {
+            /* 保持与其他链接一致 */
+        }
+    </style>
 </head>
 <body>
     <div class="markdown-body">
         <h1 class="page-title">北方的博客</h1>
         
         <div class="nav-links">
-    <a href="index.html">首頁</a>
-    <a href="archives.html">歸檔</a>
-    <a href="search.html">搜索</a>
-    <a href="about.html">關於</a>
-     </div>
+            <a href="../index.html">首頁</a>
+            <a href="../archives.html">歸檔</a>
+            <a href="../search.html">搜索</a>
+            <a href="../about.html">關於</a>
+        </div>
 
         <div style="margin-top: 3rem;">
             <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
@@ -39,6 +71,26 @@
             <p style="margin: 0;"><strong>本文作者：</strong>Jiang Sheng</p>
             <p style="margin: 8px 0;"><strong>版權聲明：</strong>本站文章採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" style="color: #666; text-decoration: underline;">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明出處。</p>
             <p style="margin: 0;"><strong>永久鏈接：</strong><span id="post-url" style="word-break: break-all; opacity: 0.7;"></span></p>
+        </div>
+
+        <!-- Giscus评论区域 -->
+        <div class="giscus-section">
+            <h3>💬 評論</h3>
+            <script src="https://giscus.app/client.js"
+                data-repo="myogg/Gitblog"
+                data-repo-id="R_kgDONsRqQg"
+                data-category="Announcements"
+                data-category-id="DIC_kwDONsRqQs4C0PCO"
+                data-mapping="pathname"
+                data-strict="0"
+                data-reactions-enabled="1"
+                data-emit-metadata="0"
+                data-input-position="bottom"
+                data-theme="preferred_color_scheme"
+                data-lang="zh-TW"
+                crossorigin="anonymous"
+                async>
+            </script>
         </div>
 
         <div style="margin: 4rem 0; text-align: center; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
