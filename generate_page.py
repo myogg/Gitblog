@@ -44,14 +44,63 @@ def sort_issues(issue_list):
         return (0 if is_pinned else 1, -issue.created_at.timestamp())
     return sorted(issue_list, key=sort_key)
 
-def generate_article_page(issue):
+def generate_search_index(issues):
+    """生成搜索索引"""
+    search_data = []
+    for issue in issues:
+        # 清理HTML标签，获取纯文本内容
+        import re
+        clean_content = re.sub(r'<[^>]+>', '', issue.body or "")
+        
+        search_data.append({
+            'id': issue.number,
+            'title': issue.title,
+            'content': clean_content[:500],  # 截取前500字符
+            'date': issue.created_at.strftime('%Y-%m-%d'),
+            'url': f'articles/article-{issue.number}.html',
+            'tags': [label.name for label in issue.labels if label.name.lower() != "pinned"]
+        })
+    
+    # 保存到static目录
+    os.makedirs("static", exist_ok=True)
+    output_path = os.path.join("static", "search-index.json")
+    with open(output_path, 'w', encoding='utf-8') as f:
+        json.dump(search_data, f, ensure_ascii=False, indent=2)
+    print(f"✓ 搜索索引已生成: {output_path}")
+    
+    return search_data
+
+def generate_article_page(issue, giscus_config=None):
+    """生成文章页面"""
     os.makedirs(ARTICLES_DIR, exist_ok=True)
     template = env.get_template('article.html')
     html_content = markdown.markdown(issue.body or "暫無內容", extensions=['extra', 'codehilite', 'tables'])
     labels_data = [{"name": l.name, "color": l.color, "text_color": get_text_color(l.color)} 
                    for l in issue.labels if l.name.lower() != "pinned"]
-    output = template.render(issue=issue, content=html_content, labels_data=labels_data, YEAR=datetime.now().year)
-    with open(os.path.join(ARTICLES_DIR, f"article-{issue.number}.html"), "w", encoding="utf-8") as f:
+    
+    # 默认的Giscus配置（需要你修改为实际的配置）
+    default_giscus_config = {
+        'repo': 'myogg/Gitblog',
+        'repo_id': '',  # 需要从giscus.app获取
+        'category': 'General',
+        'category_id': '',  # 需要从giscus.app获取
+        'theme': 'light',
+        'lang': 'zh-CN'
+    }
+    
+    # 使用传入的配置或默认配置
+    giscus_config = giscus_config or default_giscus_config
+    
+    output = template.render(
+        issue=issue, 
+        content=html_content, 
+        labels_data=labels_data, 
+        YEAR=datetime.now().year,
+        giscus_config=giscus_config
+    )
+    
+    output_file = os.path.join(ARTICLES_DIR, f"article-{issue.number}.html")
+    with open(output_file, "w", encoding="utf-8") as f:
         f.write(output)
 
 def main():
@@ -88,9 +137,23 @@ def main():
     for label in label_dict: label_dict[label] = sort_issues(label_dict[label])
     sorted_years = sorted(articles_by_year.keys(), reverse=True)
 
+    # --- 生成搜索索引 ---
+    generate_search_index(issues)
+    
+    # --- 配置Giscus评论系统 ---
+    # 注意：你需要访问 https://giscus.app 获取以下配置
+    giscus_config = {
+        'repo': 'myogg/Gitblog',  # 你的仓库名
+        'repo_id': '',  # 从giscus.app获取
+        'category': 'Announcements',  # 或 'General'
+        'category_id': '',  # 从giscus.app获取
+        'theme': 'light',
+        'lang': 'zh-CN'
+    }
+
     # --- 生成頁面 ---
     for issue in issues:
-        generate_article_page(issue)
+        generate_article_page(issue, giscus_config)
 
     # 1. 生成主頁
     index_template = env.get_template('base.html')
@@ -112,20 +175,37 @@ def main():
             label_dict=label_dict, label_info=label_info, YEAR=datetime.now().year
         )
         with open("archives.html", "w", encoding="utf-8") as f: f.write(archive_html)
-    except: pass
+    except Exception as e: 
+        print(f"⚠️ 生成歸檔頁失敗: {e}")
 
-    # 3. 生成關於頁
+    # 3. 生成搜索頁
+    try:
+        search_template = env.get_template('search.html')
+        search_html = search_template.render(
+            YEAR=datetime.now().year,
+            label_info=label_info
+        )
+        with open("search.html", "w", encoding="utf-8") as f: 
+            f.write(search_html)
+        print("✓ 搜索頁面已生成")
+    except Exception as e: 
+        print(f"⚠️ 生成搜索頁失敗: {e}")
+
+    # 4. 生成關於頁
     try:
         about_template = env.get_template('about.html')
         about_html = about_template.render(YEAR=datetime.now().year)
         with open("about.html", "w", encoding="utf-8") as f: f.write(about_html)
-    except: pass
+    except Exception as e: 
+        print(f"⚠️ 生成關於頁失敗: {e}")
 
     # 複製靜態資源
     os.makedirs("static", exist_ok=True)
     for f in ["style.css", "script.js"]:
         src = os.path.join("templates", f)
-        if os.path.exists(src): shutil.copy(src, f"static/{f}")
+        if os.path.exists(src): 
+            shutil.copy(src, f"static/{f}")
+            print(f"✓ 複製靜態文件: {f}")
 
     print("🎉 任務完成！")
 
