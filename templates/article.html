@@ -53,7 +53,7 @@
         <div style="margin-top: 3rem;">
             <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
             <div style="color: #bbb; font-size: 0.85rem; margin-bottom: 20px;">
-                發佈於 {{issue.created_at.strftime('%Y-%m-%d')}} | ID: {{issue.number}}
+                {{issue.created_at.strftime('%B %d, %Y')}} | ID: {{issue.number}}
             </div>
             
             <div style="margin-bottom: 30px;">
