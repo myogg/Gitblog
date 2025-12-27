@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [有需要公益站Anyrouter](https://github.com/myogg/Gitblog/issues/160)--2025-12-27
 - [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
 - [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
 - [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155)--2025-12-25
-- [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
 
-## 一些记录 (40篇文章)
+## 一些记录 (41篇文章)
+- [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
-- [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)--2025-12-17
 
 <details>
-<summary>显示更多 (35篇)</summary>
+<summary>显示更多 (36篇)</summary>
 
+- [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)
 - [DeepSeek R1 和 Qwen 3 引领行业变革](https://github.com/myogg/Gitblog/issues/127)
