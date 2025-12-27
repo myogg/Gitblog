@@ -10,6 +10,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  # ▼▼▼ 已添加锁定 Issue 所需的权限 ▼▼▼
+  issues: write
+  # ▲▲▲ ▲▲▲ ▲▲▲
 
 # 使用唯一的併發組，確保同一issue不會同時部署
 concurrency:
