@@ -10,7 +10,9 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  issues: write  # 保留权限，便于未来扩展
+  # ▼▼▼ 已添加锁定 Issue 所需的权限 ▼▼▼
+  issues: write
+  # ▲▲▲ ▲▲▲ ▲▲▲
 
 # 使用唯一的併發組，確保同一issue不會同時部署
 concurrency:
@@ -161,6 +163,23 @@ jobs:
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
+
+      # ===== 新增：自動鎖定已處理的 Issue =====
+      - name: Lock processed issue
+        # 只有當事件是由給Issue打標籤觸發時才執行
+        if: github.event_name == 'issues' && github.event.action == 'labeled'
+        env:
+          # 使用內置的GITHUB_TOKEN來調用API
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "正在自動鎖定已發布文章的 Issue #${{ github.event.issue.number }}..."
+          curl -s -X PUT \
+            -H "Authorization: token $GITHUB_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/lock \
+            -d '{"lock_reason": "resolved"}'
+          echo "✅ Issue #${{ github.event.issue.number }} 已自動鎖定。"
+      # ======================================
 
   # 部署後通知（可選）
   notify:
