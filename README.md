@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [有需要公益站Anyrouter](https://github.com/myogg/Gitblog/issues/160)--2025-12-27
 - [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
-- [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
 
-## 一些记录 (41篇文章)
+## 一些记录 (42篇文章)
+- [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
-- [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)--2025-12-19
 
 <details>
-<summary>显示更多 (36篇)</summary>
+<summary>显示更多 (37篇)</summary>
 
+- [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)
 - [成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史](https://github.com/myogg/Gitblog/issues/128)
@@ -150,8 +151,7 @@ My personal blog using issues and GitHub Actions
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
-## 天天一句話 (3篇文章)
-- [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
+## 天天一句話 (2篇文章)
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 
@@ -161,8 +161,9 @@ My personal blog using issues and GitHub Actions
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 碎碎念 (4篇文章)
+## 碎碎念 (5篇文章)
 - [有需要公益站Anyrouter](https://github.com/myogg/Gitblog/issues/160)--2025-12-27
+- [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
@@ -170,17 +171,16 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## blog (53篇文章)
+## blog (52篇文章)
 - [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
-- [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
 - [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
+- [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 
 <details>
-<summary>显示更多 (48篇)</summary>
+<summary>显示更多 (47篇)</summary>
 
-- [ai资讯](https://github.com/myogg/Gitblog/issues/141)
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)
