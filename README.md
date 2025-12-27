@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [有需要公益站Anyrouter](https://github.com/myogg/Gitblog/issues/160)--2025-12-27
 - [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
 - [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
-- [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155)--2025-12-25
 
 ## 一些记录 (41篇文章)
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
@@ -142,7 +142,8 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 世界好精彩我想去看看 (1篇文章)
+## 世界好精彩我想去看看 (2篇文章)
+- [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
 ## 人生感悟不隨太晚 (2篇文章)
