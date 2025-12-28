@@ -92,8 +92,7 @@ def fetch_issues(repo):
 
 def sort_issues(issue_list):
     def sort_key(issue):
-        is_pinned = any(l.name.lower() == "pinned" for l in issue.labels)
-        return (0 if is_pinned else 1, -issue.created_at.timestamp())
+        return -issue.created_at.timestamp()
     return sorted(issue_list, key=sort_key)
 
 def generate_search_index(issues):
@@ -211,66 +210,10 @@ def main():
     print(f"找到 {len(issues)} 個issues")
     
     # --- 數據整理 ---
-    label_info = {}    # 标签信息（用于顶部标签栏）
-    label_issues = {}  # 每个标签对应的文章（用于筛选功能）
-    articles_by_year = {}  # 归档页需要
-    # 新增：按年月分组（用于首页的时间流显示）
-    articles_by_year_month = {}
+    # 按时间排序所有文章（最新在前）
+    timeline_issues = sort_issues(issues)
     
-    # 不再单独处理置顶和最近文章
-    all_sorted_issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
-    
-    for issue in issues:
-        year = issue.created_at.strftime('%Y')
-        articles_by_year.setdefault(year, []).append(issue)
-        
-        # 新增：按年月分组，格式如 "2024年12月"
-        year_month_key = issue.created_at.strftime('%Y年%m月')
-        articles_by_year_month.setdefault(year_month_key, []).append(issue)
-        
-        # 收集标签信息和文章关联（用于筛选功能）
-        for label in issue.labels:
-            if label.name.lower() == "pinned": 
-                continue
-            
-            # 收集标签信息
-            if label.name not in label_info:
-                label_info[label.name] = {
-                    "color": label.color,
-                    "text_color": get_text_color(label.color),
-                    "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
-                }
-            
-            # 收集每个标签对应的文章（用于筛选）
-            label_issues.setdefault(label.name, []).append(issue)
-    
-    # 新增：对月份分组进行排序（新的在前）
-    articles_by_year_month = dict(sorted(
-        articles_by_year_month.items(), 
-        key=lambda x: x[0], 
-        reverse=True
-    ))
-    
-    # 对每个月份内的文章进行排序（新的在前）
-    for month in articles_by_year_month:
-        articles_by_year_month[month] = sorted(
-            articles_by_year_month[month],
-            key=lambda x: x.created_at,
-            reverse=True
-        )
-    
-    # 对每个标签下的文章进行排序（新的在前）
-    for label in label_issues:
-        label_issues[label] = sorted(
-            label_issues[label],
-            key=lambda x: x.created_at,
-            reverse=True
-        )
-    
-    sorted_years = sorted(articles_by_year.keys(), reverse=True)
-    print(f"文章年份分佈: {', '.join(sorted_years)}")
-    print(f"找到 {len(articles_by_year_month)} 個月份分組")
-    print(f"找到 {len(label_info)} 個標籤")
+    print(f"時間流顯示 {len(timeline_issues)} 篇文章")
 
     # --- 生成搜索索引 ---
     generate_search_index(issues)
@@ -302,10 +245,7 @@ def main():
     try:
         index_template = env.get_template('base.html')
         index_html = index_template.render(
-            # 传递月份分组数据和标签信息
-            articles_by_year_month=articles_by_year_month,
-            label_info=label_info, 
-            label_issues=label_issues,  # 新增：用于筛选功能
+            timeline_issues=timeline_issues,
             YEAR=datetime.now().year
         )
         with open("index.html", "w", encoding="utf-8") as f: 
@@ -318,10 +258,45 @@ def main():
     if os.path.exists('templates/archives.html'):
         print("生成歸檔頁...")
         try:
+            # 按年份分组文章
+            articles_by_year = {}
+            for issue in issues:
+                year = issue.created_at.strftime('%Y')
+                articles_by_year.setdefault(year, []).append(issue)
+            
+            # 按年份排序
+            sorted_years = sorted(articles_by_year.keys(), reverse=True)
+            
+            # 為歸檔頁準備label_info（如果模板需要）
+            label_info = {}
+            for issue in issues:
+                for label in issue.labels:
+                    if label.name.lower() == "pinned": 
+                        continue
+                    if label.name not in label_info:
+                        label_info[label.name] = {
+                            "color": label.color,
+                            "text_color": get_text_color(label.color),
+                            "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
+                        }
+            
+            # 為歸檔頁準備label_dict（如果模板需要）
+            label_dict = {}
+            for issue in issues:
+                for label in issue.labels:
+                    if label.name.lower() == "pinned": 
+                        continue
+                    label_dict.setdefault(label.name, []).append(issue)
+            
+            # 排序每個標籤下的文章
+            for label in label_dict: 
+                label_dict[label] = sort_issues(label_dict[label])
+            
             archive_template = env.get_template('archives.html')
             archive_html = archive_template.render(
                 sorted_years=sorted_years, 
                 articles_by_year=articles_by_year,
+                label_dict=label_dict, 
                 label_info=label_info, 
                 YEAR=datetime.now().year
             )
@@ -337,6 +312,19 @@ def main():
     if os.path.exists('templates/search.html'):
         print("生成搜索頁...")
         try:
+            # 為搜索頁準備label_info（如果模板需要）
+            label_info = {}
+            for issue in issues:
+                for label in issue.labels:
+                    if label.name.lower() == "pinned": 
+                        continue
+                    if label.name not in label_info:
+                        label_info[label.name] = {
+                            "color": label.color,
+                            "text_color": get_text_color(label.color),
+                            "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
+                        }
+            
             search_template = env.get_template('search.html')
             search_html = search_template.render(
                 YEAR=datetime.now().year,
