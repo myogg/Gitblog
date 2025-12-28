@@ -1,5 +1,3 @@
-[file name]: generate_page.py
-[file content begin]
 import os
 import re
 import json
@@ -213,14 +211,14 @@ def main():
     print(f"找到 {len(issues)} 個issues")
     
     # --- 數據整理 ---
-    label_dict = {}    
-    label_info = {}    
-    articles_by_year = {} 
+    label_info = {}    # 标签信息（用于顶部标签栏）
+    label_issues = {}  # 每个标签对应的文章（用于筛选功能）
+    articles_by_year = {}  # 归档页需要
     # 新增：按年月分组（用于首页的时间流显示）
     articles_by_year_month = {}
     
-    # 处理所有文章，不再区分置顶和最近
-    all_issues = sort_issues(list(issues))
+    # 不再单独处理置顶和最近文章
+    all_sorted_issues = sorted(issues, key=lambda x: x.created_at, reverse=True)
     
     for issue in issues:
         year = issue.created_at.strftime('%Y')
@@ -230,20 +228,21 @@ def main():
         year_month_key = issue.created_at.strftime('%Y年%m月')
         articles_by_year_month.setdefault(year_month_key, []).append(issue)
         
+        # 收集标签信息和文章关联（用于筛选功能）
         for label in issue.labels:
             if label.name.lower() == "pinned": 
                 continue
-            label_dict.setdefault(label.name, []).append(issue)
+            
+            # 收集标签信息
             if label.name not in label_info:
                 label_info[label.name] = {
                     "color": label.color,
                     "text_color": get_text_color(label.color),
                     "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
                 }
-
-    # 排序每個標籤下的文章
-    for label in label_dict: 
-        label_dict[label] = sort_issues(label_dict[label])
+            
+            # 收集每个标签对应的文章（用于筛选）
+            label_issues.setdefault(label.name, []).append(issue)
     
     # 新增：对月份分组进行排序（新的在前）
     articles_by_year_month = dict(sorted(
@@ -260,10 +259,18 @@ def main():
             reverse=True
         )
     
+    # 对每个标签下的文章进行排序（新的在前）
+    for label in label_issues:
+        label_issues[label] = sorted(
+            label_issues[label],
+            key=lambda x: x.created_at,
+            reverse=True
+        )
+    
     sorted_years = sorted(articles_by_year.keys(), reverse=True)
     print(f"文章年份分佈: {', '.join(sorted_years)}")
     print(f"找到 {len(articles_by_year_month)} 個月份分組")
-    print(f"找到 {len(label_dict)} 個標籤")
+    print(f"找到 {len(label_info)} 個標籤")
 
     # --- 生成搜索索引 ---
     generate_search_index(issues)
@@ -295,11 +302,10 @@ def main():
     try:
         index_template = env.get_template('base.html')
         index_html = index_template.render(
-            # 只传递月份分组数据，不传递置顶和最近文章数据
+            # 传递月份分组数据和标签信息
             articles_by_year_month=articles_by_year_month,
-            label_dict=label_dict, 
             label_info=label_info, 
-            MAX_PER_CATEGORY=MAX_PER_CATEGORY, 
+            label_issues=label_issues,  # 新增：用于筛选功能
             YEAR=datetime.now().year
         )
         with open("index.html", "w", encoding="utf-8") as f: 
@@ -316,7 +322,6 @@ def main():
             archive_html = archive_template.render(
                 sorted_years=sorted_years, 
                 articles_by_year=articles_by_year,
-                label_dict=label_dict, 
                 label_info=label_info, 
                 YEAR=datetime.now().year
             )
@@ -382,4 +387,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-[file content end]
