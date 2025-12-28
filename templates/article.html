@@ -77,6 +77,7 @@
             flex-wrap: wrap;
             gap: 12px;
             margin-top: 1rem;
+            min-height: 50px;
         }
         
         .commenter-avatar {
@@ -149,6 +150,16 @@
             margin-bottom: 20px;
             font-weight: 600;
         }
+        
+        /* 没有留言时的提示 */
+        .no-comments-hint {
+            color: #999;
+            font-size: 0.9rem;
+            font-style: italic;
+            text-align: center;
+            width: 100%;
+            padding: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -191,7 +202,10 @@
             </h3>
             
             <div id="commenters-avatars-container" class="commenters-avatars">
-                <!-- 头像将动态添加 -->
+                <!-- 没有留言时的提示 -->
+                <div class="no-comments-hint" id="no-comments-hint">
+                    暫無留言
+                </div>
             </div>
             
             <div style="margin-top: 2rem; text-align: center;">
@@ -234,6 +248,7 @@
     <script>
         let commenters = new Map();
         let hasLoaded = false;
+        let giscusObserver = null;
         
         document.addEventListener('DOMContentLoaded', function() {
             const toggleBtn = document.getElementById('toggle-comments-btn');
@@ -243,7 +258,8 @@
                 giscusSection.classList.toggle('visible');
                 
                 if (giscusSection.classList.contains('visible') && !hasLoaded) {
-                    setTimeout(loadCommenters, 1500);
+                    // 显示评论框后，等待Giscus加载
+                    setupGiscusObserver();
                     hasLoaded = true;
                 }
                 
@@ -254,20 +270,49 @@
                 }
             });
             
+            // 10秒后如果还没加载，自动检查一次
             setTimeout(() => {
                 if (!hasLoaded) {
-                    loadCommenters();
+                    checkForComments();
                     hasLoaded = true;
                 }
             }, 10000);
         });
         
-        function loadCommenters() {
+        // 监听Giscus留言变化
+        function setupGiscusObserver() {
+            // 监听Giscus iframe的加载
+            const checkGiscusInterval = setInterval(() => {
+                const giscusIframe = document.querySelector('.giscus-frame iframe');
+                if (giscusIframe) {
+                    clearInterval(checkGiscusInterval);
+                    
+                    // Giscus加载完成后，检查现有评论
+                    setTimeout(() => {
+                        checkForComments();
+                        
+                        // 监听Giscus内部的消息（留言提交）
+                        window.addEventListener('message', function(event) {
+                            if (event.origin === 'https://giscus.app') {
+                                // 当检测到评论相关消息时，重新检查
+                                if (event.data && event.data.giscus && 
+                                    (event.data.giscus.discussion || 
+                                     event.data.giscus.error ||
+                                     event.data.giscus.createdDiscussion)) {
+                                    // 留言提交后，延迟2秒重新检查（给Giscus时间更新）
+                                    setTimeout(checkForComments, 2000);
+                                }
+                            }
+                        });
+                    }, 2000);
+                }
+            }, 500);
+        }
+        
+        // 检查并更新留言者
+        function checkForComments() {
             const giscusIframe = document.querySelector('.giscus-frame iframe');
-            if (!giscusIframe) {
-                setTimeout(loadCommenters, 2000);
-                return;
-            }
+            if (!giscusIframe) return;
             
             try {
                 const iframeDoc = giscusIframe.contentDocument || giscusIframe.contentWindow.document;
@@ -275,13 +320,19 @@
                 
                 if (comments.length > 0) {
                     updateCommenters(comments);
+                } else {
+                    // 没有评论
+                    updateCommentCount(0);
                 }
             } catch (error) {
-                setTimeout(loadCommenters, 2000);
+                // 跨域错误，可能是Giscus还没完全加载
+                setTimeout(checkForComments, 1000);
             }
         }
         
         function updateCommenters(comments) {
+            const oldSize = commenters.size;
+            
             comments.forEach(comment => {
                 const authorLink = comment.querySelector('.giscus-comment-author a');
                 const avatarImg = comment.querySelector('.giscus-comment-avatar img');
@@ -301,21 +352,27 @@
                 }
             });
             
-            renderCommenters();
+            // 如果有新留言者，更新显示
+            if (commenters.size !== oldSize) {
+                renderCommenters();
+            }
+            
+            // 更新计数
+            updateCommentCount(commenters.size);
         }
         
         function renderCommenters() {
             const container = document.getElementById('commenters-avatars-container');
-            const countBadge = document.getElementById('commenter-count');
-            const btnCountBadge = document.getElementById('comment-btn-count');
+            const noCommentsHint = document.getElementById('no-comments-hint');
             
             container.innerHTML = '';
             
             if (commenters.size === 0) {
-                countBadge.textContent = '0';
-                btnCountBadge.textContent = '0';
+                noCommentsHint.style.display = 'block';
                 return;
             }
+            
+            noCommentsHint.style.display = 'none';
             
             commenters.forEach((commenter, username) => {
                 const avatarDiv = document.createElement('div');
@@ -334,10 +391,18 @@
                     window.open(commenter.profileUrl, '_blank');
                 });
             });
-            
-            countBadge.textContent = commenters.size;
-            btnCountBadge.textContent = commenters.size;
         }
+        
+        function updateCommentCount(count) {
+            const countBadge = document.getElementById('commenter-count');
+            const btnCountBadge = document.getElementById('comment-btn-count');
+            
+            countBadge.textContent = count;
+            btnCountBadge.textContent = count;
+        }
+        
+        // 初始检查
+        setTimeout(checkForComments, 3000);
     </script>
 </body>
 </html>
