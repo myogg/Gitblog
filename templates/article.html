@@ -7,158 +7,76 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="../static/style.css">
     <style>
-        /* Giscus评论区域样式 */
+        /* Giscus 评论区默认隐藏 */
         .giscus-section {
-            margin-top: 5rem;
-            padding-top: 3rem;
+            margin-top: 2rem;
+            padding-top: 2rem;
             border-top: 1px solid #f0f0f0;
             display: none;
         }
-        
         .giscus-section.visible {
             display: block;
         }
-        
-        .giscus-section h3 {
-            font-size: 0.9rem;
-            color: #bbb;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin: 0 0 1.5rem 0;
-            padding: 0;
-            border: none;
-        }
-        
-        .giscus-frame {
-            width: 100%;
-            border: none;
-            min-height: 250px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        /* GitHub标签样式 */
-        .tag {
-            display: inline-block;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-right: 8px;
-            margin-bottom: 8px;
-            color: white;
-            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
-        }
-        
-        /* 头像展示区 */
+
+        /* 底部头像区域样式 */
         .commenters-section {
-            margin-top: 4rem;
-            padding-top: 3rem;
-            border-top: 1px solid #f0f0f0;
+            margin-top: 5rem; /* 与上方内容保持大间距 */
+            padding: 2rem 0;
+            border-top: 1px solid #eee;
         }
         
-        .commenters-section h3 {
-            font-size: 0.9rem;
-            color: #bbb;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin: 0 0 1.5rem 0;
-            padding: 0;
-            border: none;
+        .commenters-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
+            margin-bottom: 1rem;
         }
-        
+
+        .commenters-title {
+            font-size: 0.85rem;
+            color: #999;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .commenters-avatars {
             display: flex;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-top: 1rem;
-            min-height: 50px;
+            gap: 8px;
         }
-        
+
         .commenter-avatar {
-            width: 48px;
-            height: 48px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            overflow: hidden;
+            border: 1px solid #eee;
             cursor: pointer;
-            border: 2px solid #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s ease;
+            transition: transform 0.2s;
         }
-        
+
         .commenter-avatar:hover {
-            transform: scale(1.1);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: scale(1.2);
+            z-index: 10;
         }
-        
-        .commenter-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
+
+        .comment-count-badge {
+            background: #f0f0f0;
+            color: #666;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 0.75rem;
         }
-        
+
         /* 按钮样式 */
-        .action-buttons {
-            margin: 4rem 0;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            flex-wrap: wrap;
-        }
-        
         .action-btn {
             text-decoration: none;
-            padding: 10px 24px;
+            padding: 8px 16px;
             border-radius: 6px;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 0.85rem;
             border: 1px solid #e5e7eb;
             background: #fff;
-            color: #374151;
-        }
-        
-        .action-btn:hover {
-            background: #f9fafb;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border-color: #d1d5db;
-        }
-        
-        .comment-count-badge {
-            background: #e5e7eb;
-            color: #4b5563;
-            border-radius: 12px;
-            padding: 2px 8px;
-            font-size: 0.8rem;
-            font-weight: 500;
-        }
-        
-        /* 发布日期样式 */
-        .post-date {
-            color: #333;
-            font-size: 0.9rem;
-            margin-bottom: 20px;
-            font-weight: 600;
-        }
-        
-        /* 没有留言时的提示 */
-        .no-comments-hint {
-            color: #999;
-            font-size: 0.9rem;
-            font-style: italic;
-            text-align: center;
-            width: 100%;
-            padding: 20px 0;
+            cursor: pointer;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -174,51 +92,22 @@
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
-            
-            <div class="post-date">
+            <h2 style="border-bottom: none;">{{issue.title}}</h2>
+            <div style="color: #666; margin-bottom: 20px;">
                 {{issue.created_at.strftime('%B %d, %Y')}}
             </div>
-            
-            <!-- 标签直接使用GitHub颜色 -->
-            <div style="margin-bottom: 30px;">
-                {% for l in labels_data %}
-                <span class="tag" style="background-color: #{{l.color}}">
-                    {{l.name}}
-                </span>
-                {% endfor %}
-            </div>
-
             <article class="content-area">
                 {{content|safe}}
             </article>
         </div>
 
-        <!-- 留言者头像展示区 -->
-        <div class="commenters-section">
-            <h3>
-                <span>👥 留言者</span>
-                <span class="comment-count-badge" id="commenter-count">0</span>
-            </h3>
-            
-            <div id="commenters-avatars-container" class="commenters-avatars">
-                <!-- 没有留言时的提示 -->
-                <div class="no-comments-hint" id="no-comments-hint">
-                    暫無留言
-                </div>
-            </div>
-            
-            <div style="margin-top: 2rem; text-align: center;">
-                <button id="toggle-comments-btn" class="action-btn">
-                    <span>💬 查看/發表評論</span>
-                    <span class="comment-count-badge" id="comment-btn-count">0</span>
-                </button>
-            </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <button id="toggle-comments-btn" class="action-btn">
+                💬 展开评论区
+            </button>
         </div>
 
-        <!-- Giscus评论区域 -->
         <div id="giscus-section" class="giscus-section">
-            <h3>💬 評論</h3>
             <script src="https://giscus.app/client.js"
                 data-repo="myogg/Gitblog"
                 data-repo-id="R_kgDONsRqQg"
@@ -227,7 +116,7 @@
                 data-mapping="pathname"
                 data-strict="0"
                 data-reactions-enabled="1"
-                data-emit-metadata="0"
+                data-emit-metadata="1" 
                 data-input-position="bottom"
                 data-theme="preferred_color_scheme"
                 data-lang="zh-TW"
@@ -236,173 +125,73 @@
             </script>
         </div>
 
-        <div class="action-buttons">
-            <a href="../index.html" class="action-btn">
-                ← 返回首頁
-            </a>
+        <div class="commenters-section">
+            <div class="commenters-header">
+                <span class="commenters-title">Recent Commenters</span>
+                <span class="comment-count-badge" id="total-count">0 Comments</span>
+            </div>
+            <div id="avatar-row" class="commenters-avatars">
+                </div>
         </div>
 
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
 
     <script>
-        let commenters = new Map();
-        let hasLoaded = false;
-        let giscusObserver = null;
+        // 1. 评论区开关逻辑
+        const toggleBtn = document.getElementById('toggle-comments-btn');
+        const giscusSection = document.getElementById('giscus-section');
         
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('toggle-comments-btn');
-            const giscusSection = document.getElementById('giscus-section');
-            
-            toggleBtn.addEventListener('click', function() {
-                giscusSection.classList.toggle('visible');
-                
-                if (giscusSection.classList.contains('visible') && !hasLoaded) {
-                    // 显示评论框后，等待Giscus加载
-                    setupGiscusObserver();
-                    hasLoaded = true;
-                }
-                
-                if (giscusSection.classList.contains('visible')) {
-                    setTimeout(() => {
-                        giscusSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }, 100);
-                }
-            });
-            
-            // 10秒后如果还没加载，自动检查一次
-            setTimeout(() => {
-                if (!hasLoaded) {
-                    checkForComments();
-                    hasLoaded = true;
-                }
-            }, 10000);
+        toggleBtn.addEventListener('click', function() {
+            const isVisible = giscusSection.classList.toggle('visible');
+            toggleBtn.textContent = isVisible ? '收起评论区' : '展开评论区';
         });
-        
-        // 监听Giscus留言变化
-        function setupGiscusObserver() {
-            // 监听Giscus iframe的加载
-            const checkGiscusInterval = setInterval(() => {
-                const giscusIframe = document.querySelector('.giscus-frame iframe');
-                if (giscusIframe) {
-                    clearInterval(checkGiscusInterval);
-                    
-                    // Giscus加载完成后，检查现有评论
-                    setTimeout(() => {
-                        checkForComments();
-                        
-                        // 监听Giscus内部的消息（留言提交）
-                        window.addEventListener('message', function(event) {
-                            if (event.origin === 'https://giscus.app') {
-                                // 当检测到评论相关消息时，重新检查
-                                if (event.data && event.data.giscus && 
-                                    (event.data.giscus.discussion || 
-                                     event.data.giscus.error ||
-                                     event.data.giscus.createdDiscussion)) {
-                                    // 留言提交后，延迟2秒重新检查（给Giscus时间更新）
-                                    setTimeout(checkForComments, 2000);
-                                }
-                            }
+
+        // 2. 核心：监听 Giscus 消息并提取头像和总数
+        window.addEventListener('message', function(event) {
+            if (event.origin !== 'https://giscus.app') return;
+            
+            const data = event.data.giscus;
+            if (data && data.discussion) {
+                // 更新总评论数
+                const count = data.discussion.totalCommentCount + data.discussion.totalReplyCount;
+                document.getElementById('total-count').textContent = `${count} Comments`;
+
+                // 提取头像
+                const userMap = new Map();
+                // 遍历评论
+                if (data.discussion.comments) {
+                    data.discussion.comments.forEach(c => {
+                        userMap.set(c.author.login, {
+                            avatar: c.author.avatarUrl,
+                            url: c.author.url
                         });
-                    }, 2000);
+                        // 遍历回复
+                        if (c.replies) {
+                            c.replies.forEach(r => {
+                                userMap.set(r.author.login, {
+                                    avatar: r.author.avatarUrl,
+                                    url: r.author.url
+                                });
+                            });
+                        }
+                    });
                 }
-            }, 500);
-        }
-        
-        // 检查并更新留言者
-        function checkForComments() {
-            const giscusIframe = document.querySelector('.giscus-frame iframe');
-            if (!giscusIframe) return;
-            
-            try {
-                const iframeDoc = giscusIframe.contentDocument || giscusIframe.contentWindow.document;
-                const comments = iframeDoc.querySelectorAll('.giscus-comment');
+
+                // 渲染到最底部的头像行
+                const avatarRow = document.getElementById('avatar-row');
+                avatarRow.innerHTML = ''; // 清空原有内容
                 
-                if (comments.length > 0) {
-                    updateCommenters(comments);
-                } else {
-                    // 没有评论
-                    updateCommentCount(0);
-                }
-            } catch (error) {
-                // 跨域错误，可能是Giscus还没完全加载
-                setTimeout(checkForComments, 1000);
-            }
-        }
-        
-        function updateCommenters(comments) {
-            const oldSize = commenters.size;
-            
-            comments.forEach(comment => {
-                const authorLink = comment.querySelector('.giscus-comment-author a');
-                const avatarImg = comment.querySelector('.giscus-comment-avatar img');
-                
-                if (authorLink && avatarImg) {
-                    const username = authorLink.textContent.trim();
-                    const profileUrl = authorLink.href;
-                    const avatarUrl = avatarImg.src;
-                    
-                    if (!commenters.has(username)) {
-                        commenters.set(username, {
-                            avatar: avatarUrl,
-                            profileUrl: profileUrl,
-                            username: username
-                        });
-                    }
-                }
-            });
-            
-            // 如果有新留言者，更新显示
-            if (commenters.size !== oldSize) {
-                renderCommenters();
-            }
-            
-            // 更新计数
-            updateCommentCount(commenters.size);
-        }
-        
-        function renderCommenters() {
-            const container = document.getElementById('commenters-avatars-container');
-            const noCommentsHint = document.getElementById('no-comments-hint');
-            
-            container.innerHTML = '';
-            
-            if (commenters.size === 0) {
-                noCommentsHint.style.display = 'block';
-                return;
-            }
-            
-            noCommentsHint.style.display = 'none';
-            
-            commenters.forEach((commenter, username) => {
-                const avatarDiv = document.createElement('div');
-                avatarDiv.className = 'commenter-avatar';
-                avatarDiv.title = `@${username}`;
-                
-                const img = document.createElement('img');
-                img.src = commenter.avatar;
-                img.alt = username;
-                img.loading = 'lazy';
-                
-                avatarDiv.appendChild(img);
-                container.appendChild(avatarDiv);
-                
-                avatarDiv.addEventListener('click', function() {
-                    window.open(commenter.profileUrl, '_blank');
+                userMap.forEach((user, login) => {
+                    const img = document.createElement('img');
+                    img.src = user.avatar;
+                    img.className = 'commenter-avatar';
+                    img.title = `@${login}`;
+                    img.onclick = () => window.open(user.url, '_blank');
+                    avatarRow.appendChild(img);
                 });
-            });
-        }
-        
-        function updateCommentCount(count) {
-            const countBadge = document.getElementById('commenter-count');
-            const btnCountBadge = document.getElementById('comment-btn-count');
-            
-            countBadge.textContent = count;
-            btnCountBadge.textContent = count;
-        }
-        
-        // 初始检查
-        setTimeout(checkForComments, 3000);
+            }
+        });
     </script>
 </body>
 </html>
