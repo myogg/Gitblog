@@ -37,7 +37,7 @@
             {% macro render_list(issues_list) %}
                 <ul class="article-list">
                     {% for i in issues_list %}
-                    <li>
+                    <li class="article-item" data-labels="{% for label in i.labels %}{% if label.name.lower() != 'pinned' and label.name in label_info %}{{label_info[label.name].safe_name}} {% endif %}{% endfor %}">
                         <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
                         <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
                     </li>
@@ -46,7 +46,18 @@
             {% endmacro %}
 
             {% for month, articles in articles_by_year_month.items() %}
-            <div class="category-section">
+            {% set month_labels_set = [] %}
+            {% for issue in articles %}
+                {% for label in issue.labels %}
+                    {% if label.name.lower() != "pinned" and label.name in label_info %}
+                        {% if label_info[label.name].safe_name not in month_labels_set %}
+                            {% set _ = month_labels_set.append(label_info[label.name].safe_name) %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            
+            <div class="category-section" data-labels="{{ month_labels_set|join(' ') }}">
                 <h2 class="section-label">{{ month }}</h2>
                 {{ render_list(articles) }}
             </div>
