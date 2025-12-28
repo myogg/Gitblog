@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
 - [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
 - [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
-- [有需要公益站Anyrouter](https://github.com/myogg/Gitblog/issues/160)--2025-12-27
 
-## 一些记录 (42篇文章)
+## 一些记录 (43篇文章)
+- [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
 - [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
-- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 
 <details>
-<summary>显示更多 (37篇)</summary>
+<summary>显示更多 (38篇)</summary>
 
+- [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)
 - [Google Search 主页加入“+”按钮](https://github.com/myogg/Gitblog/issues/130)
@@ -118,16 +119,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (18篇文章)
+## notes (19篇文章)
+- [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
 - [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
-- [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)--2025-12-11
 
 <details>
-<summary>显示更多 (13篇)</summary>
+<summary>显示更多 (14篇)</summary>
 
+- [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)
 - [Claude推出教育专用学习模式](https://github.com/myogg/Gitblog/issues/80)
@@ -172,17 +174,16 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## blog (53篇文章)
-- [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
+## blog (52篇文章)
 - [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
 - [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
+- [ai资讯](https://github.com/myogg/Gitblog/issues/141)--2025-12-19
 
 <details>
-<summary>显示更多 (48篇)</summary>
+<summary>显示更多 (47篇)</summary>
 
-- [ai资讯](https://github.com/myogg/Gitblog/issues/141)
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)
 - [[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro](https://github.com/myogg/Gitblog/issues/136)
