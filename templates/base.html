@@ -6,21 +6,173 @@
     <title>北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        /* 月份时间流样式 */
+        .timeline-container {
+            margin: 40px 0;
+        }
+        
+        .month-divider {
+            position: relative;
+            margin: 50px 0 30px;
+            text-align: center;
+        }
+        
+        .month-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, 
+                transparent 0%, 
+                rgba(200, 200, 200, 0.3) 20%, 
+                rgba(200, 200, 200, 0.3) 80%, 
+                transparent 100%);
+            z-index: 1;
+        }
+        
+        .month-label {
+            position: relative;
+            display: inline-block;
+            background: white;
+            padding: 8px 25px;
+            color: #666;
+            font-size: 16px;
+            font-weight: 500;
+            z-index: 2;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            border: 1px solid #eee;
+        }
+        
+        .month-articles {
+            margin-left: 20px;
+        }
+        
+        .timeline-item {
+            margin: 25px 0;
+            padding-left: 30px;
+            position: relative;
+            border-left: 2px solid #eaeaea;
+            padding-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-item:last-child {
+            border-left-color: transparent;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 5px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #4a90e2;
+            border: 2px solid white;
+            box-shadow: 0 0 0 3px #eaeaea;
+            transition: all 0.3s ease;
+        }
+        
+        .timeline-date {
+            font-size: 13px;
+            color: #888;
+            margin-bottom: 5px;
+        }
+        
+        .timeline-title {
+            margin: 0 0 8px 0;
+            font-size: 18px;
+        }
+        
+        .timeline-title a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.2s;
+        }
+        
+        .timeline-title a:hover {
+            color: #4a90e2;
+        }
+        
+        .timeline-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 8px;
+        }
+        
+        .timeline-tag {
+            font-size: 12px;
+            padding: 2px 8px;
+            border-radius: 3px;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .timeline-tag:hover {
+            opacity: 1;
+            transform: translateY(-1px);
+        }
+        
+        /* 筛选相关样式 */
+        .timeline-item.filtered-out {
+            opacity: 0.3;
+            transform: scale(0.95);
+            height: 0;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            border: none;
+        }
+        
+        .timeline-item.filtered-out::before {
+            display: none;
+        }
+        
+        .month-divider.filtered-out {
+            opacity: 0.3;
+            transform: scale(0.95);
+            height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+        
+        .month-divider.filtered-out .month-label {
+            display: none;
+        }
+        
+        .month-divider.filtered-out::before {
+            display: none;
+        }
+        
+        .tag.active {
+            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
+            transform: translateY(-1px);
+        }
+    </style>
 </head>
 <body>
     <div class="markdown-body">
         <h1 class="page-title">北方的博客</h1>
         
         <div class="nav-links">
-    <a href="index.html">首頁</a>
-    <a href="archives.html">歸檔</a>
-    <a href="search.html">搜索</a>
-    <a href="about.html">關於</a>
-     </div>
+            <a href="index.html">首頁</a>
+            <a href="archives.html">歸檔</a>
+            <a href="search.html">搜索</a>
+            <a href="about.html">關於</a>
+        </div>
 
+        <!-- 标签筛选栏 -->
         <div class="top-tags-bar">
             <div class="filter-controls">
-                <span class="clear-filter" id="clear-filter" onclick="clearFilter()">清除篩選 ×</span>
+                <span class="clear-filter" id="clear-filter" onclick="clearFilter()" style="display: none;">清除篩選 ×</span>
             </div>
             <div class="tags-container">
                 {% for name, info in label_info.items() %}
@@ -33,49 +185,155 @@
             </div>
         </div>
 
-        <div id="categories-container">
-            {% macro render_list(issues_list) %}
-                <ul class="article-list">
-                    {% for i in issues_list %}
-                    <li>
-                        <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
-                        <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
-                    </li>
-                    {% endfor %}
-                </ul>
-            {% endmacro %}
-
-            {% if pinned_issues %}
-            <div class="category-section">
-                <h2 class="section-label">置頂文章</h2>
-                {{ render_list(pinned_issues) }}
+        <!-- 月份时间流容器 -->
+        <div id="timeline-container">
+            {% for month, articles in articles_by_year_month.items() %}
+            {% set month_has_labels = [] %}
+            {% for issue in articles %}
+                {% for label in issue.labels %}
+                    {% if label.name.lower() != "pinned" and label.name in label_info %}
+                        {% if label_info[label.name].safe_name not in month_has_labels %}
+                            {% set _ = month_has_labels.append(label_info[label.name].safe_name) %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endfor %}
+            
+            <div class="month-divider" data-labels="{{ month_has_labels|join(' ') }}">
+                <span class="month-label">{{ month }}</span>
             </div>
-            {% endif %}
-
-            {% if recent_issues %}
-            <div class="category-section">
-                <h2 class="section-label">最近文章</h2>
-                {{ render_list(recent_issues) }}
-            </div>
-            {% endif %}
-
-            {% for label, items in label_dict.items() %}
-            <div class="category-section" data-label="{{label_info[label].safe_name}}">
-                <h2 class="section-label">{{label}} <small>{{items|length}}</small></h2>
-                {{ render_list(items[:MAX_PER_CATEGORY]) }}
-
-                {% if items|length > MAX_PER_CATEGORY %}
-                <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
-                    {{ render_list(items[MAX_PER_CATEGORY:]) }}
+            
+            <div class="month-articles">
+                {% for issue in articles %}
+                {% set item_labels = [] %}
+                {% for label in issue.labels %}
+                    {% if label.name.lower() != "pinned" and label.name in label_info %}
+                        {% set _ = item_labels.append(label_info[label.name].safe_name) %}
+                    {% endif %}
+                {% endfor %}
+                
+                <div class="timeline-item" data-labels="{{ item_labels|join(' ') }}">
+                    <div class="timeline-date">
+                        {{ issue.created_at.strftime('%Y-%m-%d') }}
+                    </div>
+                    <h3 class="timeline-title">
+                        <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
+                    </h3>
+                    {% if item_labels %}
+                    <div class="timeline-tags">
+                        {% for label in issue.labels %}
+                            {% if label.name.lower() != "pinned" and label.name in label_info %}
+                            <span class="timeline-tag" 
+                                  style="background-color: #{{ label.color }}; color: {{ get_text_color(label.color) }};"
+                                  onclick="filterByLabel('{{ label_info[label.name].safe_name }}')">
+                                {{ label.name }}
+                            </span>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    {% endif %}
                 </div>
-                <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">MORE</button>
-                {% endif %}
+                {% endfor %}
             </div>
             {% endfor %}
         </div>
         
-        <footer>© 2025 Designed and developed by Jiang Sheng</footer>
+        <footer>© {{ YEAR }} Designed and developed by Jiang Sheng</footer>
     </div>
     <script src="static/script.js"></script>
+    <script>
+        // 筛选功能
+        let currentFilter = null;
+        
+        function filterByLabel(labelName) {
+            const allItems = document.querySelectorAll('.timeline-item');
+            const allDividers = document.querySelectorAll('.month-divider');
+            const clearFilterBtn = document.getElementById('clear-filter');
+            const allTags = document.querySelectorAll('.tag');
+            
+            // 更新当前筛选状态
+            currentFilter = labelName;
+            
+            // 更新标签状态
+            allTags.forEach(tag => {
+                tag.classList.remove('active');
+                if (tag.getAttribute('data-label') === labelName) {
+                    tag.classList.add('active');
+                }
+            });
+            
+            // 显示清除筛选按钮
+            clearFilterBtn.style.display = 'inline-block';
+            
+            // 筛选文章项
+            allItems.forEach(item => {
+                const itemLabels = item.getAttribute('data-labels').split(' ');
+                if (itemLabels.includes(labelName)) {
+                    item.classList.remove('filtered-out');
+                } else {
+                    item.classList.add('filtered-out');
+                }
+            });
+            
+            // 筛选月份分隔线
+            allDividers.forEach(divider => {
+                const dividerLabels = divider.getAttribute('data-labels').split(' ');
+                const monthItems = divider.nextElementSibling.querySelectorAll('.timeline-item');
+                let hasVisibleItems = false;
+                
+                monthItems.forEach(item => {
+                    if (!item.classList.contains('filtered-out')) {
+                        hasVisibleItems = true;
+                    }
+                });
+                
+                if (hasVisibleItems) {
+                    divider.classList.remove('filtered-out');
+                } else {
+                    divider.classList.add('filtered-out');
+                }
+            });
+            
+            // 滚动到第一个可见的月份
+            const firstVisibleDivider = document.querySelector('.month-divider:not(.filtered-out)');
+            if (firstVisibleDivider) {
+                firstVisibleDivider.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+        
+        function clearFilter() {
+            const allItems = document.querySelectorAll('.timeline-item');
+            const allDividers = document.querySelectorAll('.month-divider');
+            const clearFilterBtn = document.getElementById('clear-filter');
+            const allTags = document.querySelectorAll('.tag');
+            
+            // 重置当前筛选状态
+            currentFilter = null;
+            
+            // 重置标签状态
+            allTags.forEach(tag => {
+                tag.classList.remove('active');
+            });
+            
+            // 隐藏清除筛选按钮
+            clearFilterBtn.style.display = 'none';
+            
+            // 显示所有文章项
+            allItems.forEach(item => {
+                item.classList.remove('filtered-out');
+            });
+            
+            // 显示所有月份分隔线
+            allDividers.forEach(divider => {
+                divider.classList.remove('filtered-out');
+            });
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 确保数据属性正确设置
+            console.log('时间流页面加载完成');
+        });
+    </script>
 </body>
 </html>
