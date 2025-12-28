@@ -6,6 +6,24 @@
     <title>北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
+    <style>
+        .article-list li {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .article-date {
+            flex-shrink: 0;
+            width: 60px;
+            margin-right: 10px;
+        }
+        
+        .article-title-link {
+            flex: 1;
+            white-space: normal;
+            word-break: break-word;
+        }
+    </style>
 </head>
 <body>
     <div class="markdown-body">
@@ -60,7 +78,7 @@
                     {% endfor %}
                     
                     <li class="timeline-item" data-labels="{{ item_labels|join(' ') }}">
-                        <span class="article-date">{{ issue.created_at.strftime('%Y-%m-%d') }}</span>
+                        <span class="article-date">{{ issue.created_at.strftime('%m/%d') }}</span>
                         <a href="articles/article-{{ issue.number }}.html" class="article-title-link">{{ issue.title }}</a>
                     </li>
                     {% endfor %}
