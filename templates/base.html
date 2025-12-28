@@ -222,13 +222,13 @@
                     {% if item_labels %}
                     <div class="timeline-tags">
                         {% for label in issue.labels %}
-                            {% if label.name.lower() != "pinned" and label.name in label_info %}
-                            <span class="timeline-tag" 
-                                  style="background-color: #{{ label.color }}; color: {{ get_text_color(label.color) }};"
-                                  onclick="filterByLabel('{{ label_info[label.name].safe_name }}')">
-                                {{ label.name }}
-                            </span>
-                            {% endif %}
+                        {% if label.name.lower() != "pinned" and label.name in label_info %}
+                        <span class="timeline-tag" 
+                              style="background-color: #{{label_info[label.name].color}}; color: {{label_info[label.name].text_color}};"
+                              onclick="filterByLabel('{{label_info[label.name].safe_name}}')">
+                            {{ label.name }}
+                        </span>
+                        {% endif %}
                         {% endfor %}
                     </div>
                     {% endif %}
@@ -242,47 +242,48 @@
     </div>
     <script src="static/script.js"></script>
     <script>
-        // 筛选功能
-        let currentFilter = null;
+        // 标签筛选功能
+        let activeFilter = null;
         
         function filterByLabel(labelName) {
-            const allItems = document.querySelectorAll('.timeline-item');
-            const allDividers = document.querySelectorAll('.month-divider');
-            const clearFilterBtn = document.getElementById('clear-filter');
-            const allTags = document.querySelectorAll('.tag');
+            if (activeFilter === labelName) {
+                clearFilter();
+                return;
+            }
             
-            // 更新当前筛选状态
-            currentFilter = labelName;
+            activeFilter = labelName;
+            document.getElementById('clear-filter').style.display = 'inline';
             
             // 更新标签状态
-            allTags.forEach(tag => {
-                tag.classList.remove('active');
+            document.querySelectorAll('.tag').forEach(tag => {
                 if (tag.getAttribute('data-label') === labelName) {
                     tag.classList.add('active');
+                } else {
+                    tag.classList.remove('active');
                 }
             });
             
-            // 显示清除筛选按钮
-            clearFilterBtn.style.display = 'inline-block';
-            
-            // 筛选文章项
-            allItems.forEach(item => {
-                const itemLabels = item.getAttribute('data-labels').split(' ');
-                if (itemLabels.includes(labelName)) {
+            // 筛选时间流项目
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                const labels = item.getAttribute('data-labels').split(' ');
+                if (labels.includes(labelName)) {
                     item.classList.remove('filtered-out');
                 } else {
                     item.classList.add('filtered-out');
                 }
             });
             
-            // 筛选月份分隔线
-            allDividers.forEach(divider => {
-                const dividerLabels = divider.getAttribute('data-labels').split(' ');
-                const monthItems = divider.nextElementSibling.querySelectorAll('.timeline-item');
+            // 筛选月份分隔符
+            document.querySelectorAll('.month-divider').forEach(divider => {
+                const labels = divider.getAttribute('data-labels').split(' ');
                 let hasVisibleItems = false;
                 
-                monthItems.forEach(item => {
-                    if (!item.classList.contains('filtered-out')) {
+                // 检查该月份下是否有可见的文章
+                const monthArticles = divider.nextElementSibling;
+                const itemsInMonth = monthArticles.querySelectorAll('.timeline-item');
+                itemsInMonth.forEach(item => {
+                    const itemLabels = item.getAttribute('data-labels').split(' ');
+                    if (itemLabels.includes(labelName)) {
                         hasVisibleItems = true;
                     }
                 });
@@ -293,47 +294,27 @@
                     divider.classList.add('filtered-out');
                 }
             });
-            
-            // 滚动到第一个可见的月份
-            const firstVisibleDivider = document.querySelector('.month-divider:not(.filtered-out)');
-            if (firstVisibleDivider) {
-                firstVisibleDivider.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
         }
         
         function clearFilter() {
-            const allItems = document.querySelectorAll('.timeline-item');
-            const allDividers = document.querySelectorAll('.month-divider');
-            const clearFilterBtn = document.getElementById('clear-filter');
-            const allTags = document.querySelectorAll('.tag');
-            
-            // 重置当前筛选状态
-            currentFilter = null;
+            activeFilter = null;
+            document.getElementById('clear-filter').style.display = 'none';
             
             // 重置标签状态
-            allTags.forEach(tag => {
+            document.querySelectorAll('.tag').forEach(tag => {
                 tag.classList.remove('active');
             });
             
-            // 隐藏清除筛选按钮
-            clearFilterBtn.style.display = 'none';
-            
-            // 显示所有文章项
-            allItems.forEach(item => {
+            // 显示所有项目
+            document.querySelectorAll('.timeline-item.filtered-out').forEach(item => {
                 item.classList.remove('filtered-out');
             });
             
-            // 显示所有月份分隔线
-            allDividers.forEach(divider => {
+            // 显示所有月份分隔符
+            document.querySelectorAll('.month-divider.filtered-out').forEach(divider => {
                 divider.classList.remove('filtered-out');
             });
         }
-        
-        // 页面加载时初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            // 确保数据属性正确设置
-            console.log('时间流页面加载完成');
-        });
     </script>
 </body>
 </html>
