@@ -58,7 +58,7 @@
             
             <div style="margin-bottom: 30px;">
                 {% for l in labels_data %}
-                <span class="tag" style="border: 1px solid #{{l.color}}; margin-right: 5px; padding: 2px 8px;">{{l.name}}</span>
+                <span class="tag" style="background-color: #{{l.color}}; color: {{l.text_color}}; border: none; padding: 2px 10px; border-radius: 4px; margin-right: 5px;">{{l.name}}</span>
                 {% endfor %}
             </div>
 
