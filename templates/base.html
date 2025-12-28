@@ -8,72 +8,74 @@
     <link rel="stylesheet" href="static/style.css">
 </head>
 <body>
-<div class="markdown-body">
+    <div class="markdown-body">
+        <h1 class="page-title">北方的博客</h1>
+        
+        <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="archives.html">歸檔</a>
+    <a href="search.html">搜索</a>
+    <a href="about.html">關於</a>
+     </div>
 
-    <h1 class="page-title">北方的博客</h1>
-
-    <!-- 导航（不动） -->
-    <div class="nav-links">
-        <a href="index.html">首頁</a>
-        <a href="archives.html">歸檔</a>
-        <a href="search.html">搜索</a>
-        <a href="about.html">關於</a>
-    </div>
-
-    <!-- 顶部标签筛选（不动） -->
-    <div class="top-tags-bar">
-        <div class="filter-controls">
-            <span class="clear-filter" id="clear-filter" onclick="clearFilter()">清除篩選 ×</span>
+        <div class="top-tags-bar">
+            <div class="filter-controls">
+                <span class="clear-filter" id="clear-filter" onclick="clearFilter()">清除篩選 ×</span>
+            </div>
+            <div class="tags-container">
+                {% for name, info in label_info.items() %}
+                <span class="tag" 
+                      style="background-color: #{{info.color}}; color: {{info.text_color}}; border: none; padding: 2px 10px; border-radius: 4px;"
+                      data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">
+                    {{name}}
+                </span>
+                {% endfor %}
+            </div>
         </div>
-        <div class="tags-container">
-            {% for name, info in label_info.items() %}
-            <span class="tag"
-                  style="background-color: #{{info.color}}; color: {{info.text_color}}; border: none; padding: 2px 10px; border-radius: 4px;"
-                  data-label="{{info.safe_name}}"
-                  onclick="filterByLabel('{{info.safe_name}}')">
-                {{name}}
-            </span>
-            {% endfor %}
-        </div>
-    </div>
 
-    <!-- 时间流 + 月份淡分隔 -->
-    <div id="categories-container">
+        <div id="categories-container">
+            {% macro render_list(issues_list) %}
+                <ul class="article-list">
+                    {% for i in issues_list %}
+                    <li>
+                        <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
+                        <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            {% endmacro %}
 
-        <ul class="article-list">
+            {% if pinned_issues %}
+            <div class="category-section">
+                <h2 class="section-label">置頂文章</h2>
+                {{ render_list(pinned_issues) }}
+            </div>
+            {% endif %}
 
-            {% for i in issues %}
-                {% set current_month = i.created_at.strftime('%Y-%m') %}
-                {% set prev_month = loop.previtem.created_at.strftime('%Y-%m') if not loop.first else None %}
+            {% if recent_issues %}
+            <div class="category-section">
+                <h2 class="section-label">最近文章</h2>
+                {{ render_list(recent_issues) }}
+            </div>
+            {% endif %}
 
-                {% if current_month != prev_month %}
-                <li class="month-divider">
-                    <span class="month-text">
-                        {{ i.created_at.strftime('%Y 年 %m 月') }}
-                    </span>
-                </li>
+            {% for label, items in label_dict.items() %}
+            <div class="category-section" data-label="{{label_info[label].safe_name}}">
+                <h2 class="section-label">{{label}} <small>{{items|length}}</small></h2>
+                {{ render_list(items[:MAX_PER_CATEGORY]) }}
+
+                {% if items|length > MAX_PER_CATEGORY %}
+                <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
+                    {{ render_list(items[MAX_PER_CATEGORY:]) }}
+                </div>
+                <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">MORE</button>
                 {% endif %}
-
-                <li
-                    data-label="{% for l in i.labels if l.name.lower() != 'pinned' %}{{ l.name }} {% endfor %}">
-                    <span class="article-date">
-                        {{ i.created_at.strftime('%m/%d') }}
-                    </span>
-                    <a href="articles/article-{{i.number}}.html"
-                       class="article-title-link">
-                        {{ i.title }}
-                    </a>
-                </li>
+            </div>
             {% endfor %}
-
-        </ul>
-
+        </div>
+        
+        <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
-
-    <footer>© 2025 Designed and developed by Jiang Sheng</footer>
-
-</div>
-
-<script src="static/script.js"></script>
+    <script src="static/script.js"></script>
 </body>
 </html>
