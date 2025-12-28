@@ -12,6 +12,11 @@
             margin-top: 5rem;
             padding-top: 3rem;
             border-top: 1px solid #f0f0f0;
+            display: none; /* 默认隐藏 */
+        }
+        
+        .giscus-section.visible {
+            display: block; /* 点击后显示 */
         }
         
         .giscus-section h3 {
@@ -37,6 +42,97 @@
         .nav-links a[href*="search"] {
             /* 保持与其他链接一致 */
         }
+        
+        /* ====== 新增样式：头像展示区 ====== */
+        .commenters-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid #f0f0f0;
+        }
+        
+        .commenters-section h3 {
+            font-size: 0.9rem;
+            color: #bbb;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 1.5rem 0;
+            padding: 0;
+            border: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .commenters-avatars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 1rem;
+        }
+        
+        .commenter-avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .commenter-avatar:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        
+        .commenter-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .no-commenters {
+            text-align: center;
+            color: #999;
+            font-size: 0.9rem;
+            padding: 2rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+            border: 1px dashed #eee;
+        }
+        
+        /* 显示评论按钮 */
+        .show-comments-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #1a1a1a;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+        
+        .show-comments-btn:hover {
+            background: #333;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        
+        .comment-count-badge {
+            background: #666;
+            color: white;
+            border-radius: 12px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+        }
     </style>
 </head>
 <body>
@@ -52,13 +148,13 @@
 
         <div style="margin-top: 3rem;">
             <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
-            <div style="color: #666; font-size: 0.85rem; margin-bottom: 20px; font-weight: 600;">
-                {{issue.created_at.strftime('%B %d, %Y')}}
+            <div style="color: #bbb; font-size: 0.85rem; margin-bottom: 20px;">
+                {{issue.created_at.strftime('%B %d, %Y')}} | ID: {{issue.number}}
             </div>
             
             <div style="margin-bottom: 30px;">
                 {% for l in labels_data %}
-                <span class="tag" style="background-color: #{{l.color}}; color: {{l.text_color}}; border: none; padding: 2px 10px; border-radius: 4px; margin-right: 5px;">{{l.name}}</span>
+                <span class="tag" style="border: 1px solid #{{l.color}}; margin-right: 5px; padding: 2px 8px;">{{l.name}}</span>
                 {% endfor %}
             </div>
 
@@ -73,8 +169,30 @@
             <p style="margin: 0;"><strong>永久鏈接：</strong><span id="post-url" style="word-break: break-all; opacity: 0.7;"></span></p>
         </div>
 
-        <!-- Giscus评论区域 -->
-        <div class="giscus-section">
+        <!-- ====== 新增：留言者头像展示区 ====== -->
+        <div class="commenters-section">
+            <h3>
+                <span>👥 留言者</span>
+                <span class="comment-count-badge" id="commenter-count">0</span>
+            </h3>
+            
+            <div id="commenters-avatars-container" class="commenters-avatars">
+                <div class="no-commenters" id="no-commenters-message">
+                    暫無留言，快來搶沙發吧！
+                </div>
+            </div>
+            
+            <!-- 显示评论按钮 -->
+            <div style="margin-top: 2rem; text-align: center;">
+                <button id="toggle-comments-btn" class="show-comments-btn">
+                    <span>💬 查看/發表評論</span>
+                    <span class="comment-count-badge" id="comment-btn-count">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Giscus评论区域（默认隐藏） -->
+        <div id="giscus-section" class="giscus-section">
             <h3>💬 評論</h3>
             <script src="https://giscus.app/client.js"
                 data-repo="myogg/Gitblog"
@@ -98,8 +216,8 @@
             
             <a href="https://github.com/myogg/Gitblog/issues/{{issue.number}}" 
                target="_blank" 
-               class="show-more-btn" 
-               style="text-decoration: none; padding: 10px 24px; background: #fff !important; border: 1px solid #eee !important; color: #666 !important; border-radius: 6px;">
+               class="show-comments-btn" 
+               style="text-decoration: none;">
                 💬 去 GitHub 參與互動
             </a>
         </div>
@@ -110,6 +228,171 @@
     <script>
         // 自動獲取並顯示當前文章網址
         document.getElementById('post-url').textContent = window.location.href;
+        
+        // 留言者头像数据存储
+        let commenters = new Map(); // username -> {avatar, profileUrl}
+        
+        // DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 1. 点击显示/隐藏评论框
+            const toggleBtn = document.getElementById('toggle-comments-btn');
+            const giscusSection = document.getElementById('giscus-section');
+            
+            toggleBtn.addEventListener('click', function() {
+                giscusSection.classList.toggle('visible');
+                
+                // 滚动到评论区域
+                if (giscusSection.classList.contains('visible')) {
+                    setTimeout(() => {
+                        giscusSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }, 100);
+                }
+            });
+            
+            // 2. 监听Giscus加载
+            window.addEventListener('message', function(event) {
+                if (event.origin === 'https://giscus.app') {
+                    console.log('Giscus loaded');
+                    
+                    // 延迟加载评论数据
+                    setTimeout(() => {
+                        loadCommenters();
+                        startCommentMonitoring();
+                    }, 1500);
+                }
+            });
+            
+            // 3. 初始加载
+            setTimeout(loadCommenters, 3000);
+        });
+        
+        // 加载留言者信息
+        function loadCommenters() {
+            const giscusIframe = document.querySelector('.giscus-frame iframe');
+            if (!giscusIframe) {
+                console.log('Waiting for Giscus...');
+                return;
+            }
+            
+            try {
+                const iframeDoc = giscusIframe.contentDocument || giscusIframe.contentWindow.document;
+                const comments = iframeDoc.querySelectorAll('.giscus-comment');
+                
+                if (comments.length > 0) {
+                    updateCommenters(comments);
+                } else {
+                    console.log('No comments found yet');
+                }
+            } catch (error) {
+                console.log('Waiting for Giscus to load fully...');
+            }
+        }
+        
+        // 更新留言者信息
+        function updateCommenters(comments) {
+            const oldSize = commenters.size;
+            
+            comments.forEach(comment => {
+                // 获取用户信息
+                const authorLink = comment.querySelector('.giscus-comment-author a');
+                const avatarImg = comment.querySelector('.giscus-comment-avatar img');
+                
+                if (authorLink && avatarImg) {
+                    const username = authorLink.textContent.trim();
+                    const profileUrl = authorLink.href;
+                    const avatarUrl = avatarImg.src.replace('&s=64', '&s=96'); // 获取更大尺寸的头像
+                    
+                    // 存储用户信息
+                    if (!commenters.has(username)) {
+                        commenters.set(username, {
+                            avatar: avatarUrl,
+                            profileUrl: profileUrl,
+                            username: username
+                        });
+                    }
+                }
+            });
+            
+            // 如果有新留言者，更新显示
+            if (commenters.size > oldSize) {
+                renderCommenters();
+            }
+        }
+        
+        // 渲染留言者头像
+        function renderCommenters() {
+            const container = document.getElementById('commenters-avatars-container');
+            const noCommentersMsg = document.getElementById('no-commenters-message');
+            const countBadge = document.getElementById('commenter-count');
+            const btnCountBadge = document.getElementById('comment-btn-count');
+            
+            if (commenters.size === 0) {
+                noCommentersMsg.style.display = 'block';
+                container.innerHTML = '';
+                countBadge.textContent = '0';
+                btnCountBadge.textContent = '0';
+                return;
+            }
+            
+            // 隐藏"暂无留言"消息
+            noCommentersMsg.style.display = 'none';
+            
+            // 清空容器
+            container.innerHTML = '';
+            
+            // 添加所有留言者头像
+            commenters.forEach((commenter, username) => {
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'commenter-avatar';
+                avatarDiv.title = `@${username}`;
+                avatarDiv.dataset.username = username;
+                
+                const img = document.createElement('img');
+                img.src = commenter.avatar;
+                img.alt = username;
+                img.loading = 'lazy';
+                
+                avatarDiv.appendChild(img);
+                container.appendChild(avatarDiv);
+                
+                // 点击头像跳转到GitHub主页
+                avatarDiv.addEventListener('click', function() {
+                    window.open(commenter.profileUrl, '_blank');
+                });
+            });
+            
+            // 更新计数
+            countBadge.textContent = commenters.size;
+            btnCountBadge.textContent = commenters.size;
+        }
+        
+        // 开始监控评论变化
+        function startCommentMonitoring() {
+            // 每10秒检查一次新评论
+            setInterval(() => {
+                const giscusIframe = document.querySelector('.giscus-frame iframe');
+                if (!giscusIframe) return;
+                
+                try {
+                    const iframeDoc = giscusIframe.contentDocument || giscusIframe.contentWindow.document;
+                    const comments = iframeDoc.querySelectorAll('.giscus-comment');
+                    updateCommenters(comments);
+                } catch (error) {
+                    // 忽略跨域错误
+                }
+            }, 10000);
+            
+            // 监听Giscus内部变化
+            window.addEventListener('message', function(event) {
+                if (event.origin === 'https://giscus.app') {
+                    if (event.data && event.data.giscus && 
+                        (event.data.giscus.discussion || event.data.giscus.error)) {
+                        // 评论有变化，重新加载
+                        setTimeout(loadCommenters, 1000);
+                    }
+                }
+            });
+        }
     </script>
 </body>
 </html>
