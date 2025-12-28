@@ -1,3 +1,5 @@
+[file name]: generate_page.py
+[file content begin]
 import os
 import re
 import json
@@ -214,20 +216,20 @@ def main():
     label_dict = {}    
     label_info = {}    
     articles_by_year = {} 
+    # 新增：按年月分组（用于首页的时间流显示）
+    articles_by_year_month = {}
     
-    # 1. 處理置頂文章
-    pinned_issues = sort_issues([i for i in issues if any(l.name.lower() == "pinned" for l in i.labels)])
-    pinned_ids = {i.number for i in pinned_issues}
-    print(f"找到 {len(pinned_issues)} 個置頂文章")
-
-    # 2. 處理最近文章 (排除置頂)
-    all_sorted_issues = sort_issues(list(issues))
-    recent_issues = [i for i in all_sorted_issues if i.number not in pinned_ids][:5]
-    print(f"顯示 {len(recent_issues)} 個最近文章")
+    # 处理所有文章，不再区分置顶和最近
+    all_issues = sort_issues(list(issues))
     
     for issue in issues:
         year = issue.created_at.strftime('%Y')
         articles_by_year.setdefault(year, []).append(issue)
+        
+        # 新增：按年月分组，格式如 "2024年12月"
+        year_month_key = issue.created_at.strftime('%Y年%m月')
+        articles_by_year_month.setdefault(year_month_key, []).append(issue)
+        
         for label in issue.labels:
             if label.name.lower() == "pinned": 
                 continue
@@ -243,8 +245,24 @@ def main():
     for label in label_dict: 
         label_dict[label] = sort_issues(label_dict[label])
     
+    # 新增：对月份分组进行排序（新的在前）
+    articles_by_year_month = dict(sorted(
+        articles_by_year_month.items(), 
+        key=lambda x: x[0], 
+        reverse=True
+    ))
+    
+    # 对每个月份内的文章进行排序（新的在前）
+    for month in articles_by_year_month:
+        articles_by_year_month[month] = sorted(
+            articles_by_year_month[month],
+            key=lambda x: x.created_at,
+            reverse=True
+        )
+    
     sorted_years = sorted(articles_by_year.keys(), reverse=True)
     print(f"文章年份分佈: {', '.join(sorted_years)}")
+    print(f"找到 {len(articles_by_year_month)} 個月份分組")
     print(f"找到 {len(label_dict)} 個標籤")
 
     # --- 生成搜索索引 ---
@@ -277,8 +295,8 @@ def main():
     try:
         index_template = env.get_template('base.html')
         index_html = index_template.render(
-            pinned_issues=pinned_issues, 
-            recent_issues=recent_issues,
+            # 只传递月份分组数据，不传递置顶和最近文章数据
+            articles_by_year_month=articles_by_year_month,
             label_dict=label_dict, 
             label_info=label_info, 
             MAX_PER_CATEGORY=MAX_PER_CATEGORY, 
@@ -364,3 +382,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+[file content end]
