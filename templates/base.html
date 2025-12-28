@@ -6,138 +6,6 @@
     <title>北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
-    <style>
-        /* 月份分隔符样式 */
-        .month-divider {
-            margin: 40px 0 20px;
-            padding-bottom: 10px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .month-label {
-            color: #666;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 5px 0;
-        }
-        
-        /* 文章列表样式 */
-        .article-list {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-        }
-        
-        .article-item {
-            margin: 25px 0; /* 增加上下间距，每篇文章空一行 */
-            padding: 10px 15px;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border-left: 4px solid #4a90e2;
-            transition: all 0.2s ease;
-        }
-        
-        .article-item:hover {
-            background: #f0f7ff;
-            transform: translateX(5px);
-            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
-        }
-        
-        .article-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-        
-        .article-date {
-            color: #888;
-            font-size: 14px;
-            min-width: 90px;
-        }
-        
-        .article-title {
-            margin: 0;
-            flex: 1;
-        }
-        
-        .article-title a {
-            text-decoration: none;
-            color: #333;
-            font-size: 16px;
-            font-weight: 500;
-            transition: color 0.2s;
-        }
-        
-        .article-title a:hover {
-            color: #4a90e2;
-        }
-        
-        .article-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin-top: 8px;
-        }
-        
-        .article-tag {
-            font-size: 12px;
-            padding: 3px 10px;
-            border-radius: 12px;
-            text-decoration: none;
-            opacity: 0.8;
-            transition: all 0.2s;
-            cursor: pointer;
-            display: inline-block;
-        }
-        
-        .article-tag:hover {
-            opacity: 1;
-            transform: translateY(-1px);
-        }
-        
-        /* 筛选相关样式 */
-        .article-item.filtered-out {
-            opacity: 0.3;
-            transform: scale(0.95);
-            height: 0;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            border: none;
-        }
-        
-        .month-divider.filtered-out {
-            opacity: 0.3;
-            transform: scale(0.95);
-            height: 0;
-            margin: 0;
-            padding: 0;
-            overflow: hidden;
-            border: none;
-        }
-        
-        .month-divider.filtered-out .month-label {
-            display: none;
-        }
-        
-        .tag.active {
-            box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.5);
-            transform: translateY(-1px);
-        }
-        
-        /* 响应式调整 */
-        @media (max-width: 768px) {
-            .article-header {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            
-            .article-date {
-                margin-bottom: 5px;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="markdown-body">
@@ -150,10 +18,9 @@
             <a href="about.html">關於</a>
         </div>
 
-        <!-- 标签筛选栏 -->
         <div class="top-tags-bar">
             <div class="filter-controls">
-                <span class="clear-filter" id="clear-filter" onclick="clearFilter()" style="display: none;">清除篩選 ×</span>
+                <span class="clear-filter" id="clear-filter" onclick="clearFilter()">清除篩選 ×</span>
             </div>
             <div class="tags-container">
                 {% for name, info in label_info.items() %}
@@ -166,8 +33,8 @@
             </div>
         </div>
 
-        <!-- 月份文章列表 -->
-        <div id="articles-container">
+        <!-- 时间流显示 -->
+        <div id="timeline-container">
             {% for month, articles in articles_by_year_month.items() %}
             {% set month_has_labels = [] %}
             {% for issue in articles %}
@@ -180,42 +47,25 @@
                 {% endfor %}
             {% endfor %}
             
-            <div class="month-divider" data-labels="{{ month_has_labels|join(' ') }}">
-                <h2 class="month-label">{{ month }}</h2>
-            </div>
-            
-            <ul class="article-list">
-                {% for issue in articles %}
-                {% set item_labels = [] %}
-                {% for label in issue.labels %}
-                    {% if label.name.lower() != "pinned" and label.name in label_info %}
-                        {% set _ = item_labels.append(label_info[label.name].safe_name) %}
-                    {% endif %}
-                {% endfor %}
+            <div class="category-section" data-labels="{{ month_has_labels|join(' ') }}">
+                <h2 class="section-label">{{ month }}</h2>
                 
-                <li class="article-item" data-labels="{{ item_labels|join(' ') }}">
-                    <div class="article-header">
-                        <span class="article-date">{{ issue.created_at.strftime('%Y-%m-%d') }}</span>
-                        <h3 class="article-title">
-                            <a href="articles/article-{{ issue.number }}.html">{{ issue.title }}</a>
-                        </h3>
-                    </div>
-                    {% if item_labels %}
-                    <div class="article-tags">
-                        {% for label in issue.labels %}
+                <ul class="article-list">
+                    {% for issue in articles %}
+                    {% set item_labels = [] %}
+                    {% for label in issue.labels %}
                         {% if label.name.lower() != "pinned" and label.name in label_info %}
-                        <span class="article-tag" 
-                              style="background-color: #{{label_info[label.name].color}}; color: {{label_info[label.name].text_color}};"
-                              onclick="filterByLabel('{{label_info[label.name].safe_name}}')">
-                            {{ label.name }}
-                        </span>
+                            {% set _ = item_labels.append(label_info[label.name].safe_name) %}
                         {% endif %}
-                        {% endfor %}
-                    </div>
-                    {% endif %}
-                </li>
-                {% endfor %}
-            </ul>
+                    {% endfor %}
+                    
+                    <li class="timeline-item" data-labels="{{ item_labels|join(' ') }}">
+                        <span class="article-date">{{ issue.created_at.strftime('%Y-%m-%d') }}</span>
+                        <a href="articles/article-{{ issue.number }}.html" class="article-title-link">{{ issue.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
             {% endfor %}
         </div>
         
@@ -245,34 +95,32 @@
             });
             
             // 筛选文章项目
-            document.querySelectorAll('.article-item').forEach(item => {
+            document.querySelectorAll('.timeline-item').forEach(item => {
                 const labels = item.getAttribute('data-labels').split(' ');
                 if (labels.includes(labelName)) {
-                    item.classList.remove('filtered-out');
+                    item.style.display = '';
                 } else {
-                    item.classList.add('filtered-out');
+                    item.style.display = 'none';
                 }
             });
             
-            // 筛选月份分隔符
-            document.querySelectorAll('.month-divider').forEach(divider => {
-                const labels = divider.getAttribute('data-labels').split(' ');
+            // 筛选月份分类
+            document.querySelectorAll('.category-section').forEach(section => {
+                const labels = section.getAttribute('data-labels').split(' ');
                 let hasVisibleItems = false;
                 
                 // 检查该月份下是否有可见的文章
-                const monthArticles = divider.nextElementSibling;
-                const itemsInMonth = monthArticles.querySelectorAll('.article-item');
-                itemsInMonth.forEach(item => {
-                    const itemLabels = item.getAttribute('data-labels').split(' ');
-                    if (itemLabels.includes(labelName)) {
+                const itemsInSection = section.querySelectorAll('.timeline-item');
+                itemsInSection.forEach(item => {
+                    if (item.style.display !== 'none') {
                         hasVisibleItems = true;
                     }
                 });
                 
                 if (hasVisibleItems) {
-                    divider.classList.remove('filtered-out');
+                    section.style.display = '';
                 } else {
-                    divider.classList.add('filtered-out');
+                    section.style.display = 'none';
                 }
             });
         }
@@ -287,13 +135,13 @@
             });
             
             // 显示所有项目
-            document.querySelectorAll('.article-item.filtered-out').forEach(item => {
-                item.classList.remove('filtered-out');
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.style.display = '';
             });
             
-            // 显示所有月份分隔符
-            document.querySelectorAll('.month-divider.filtered-out').forEach(divider => {
-                divider.classList.remove('filtered-out');
+            // 显示所有分类
+            document.querySelectorAll('.category-section').forEach(section => {
+                section.style.display = '';
             });
         }
     </script>
