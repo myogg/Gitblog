@@ -37,7 +37,13 @@
             {% macro render_list(issues_list) %}
                 <ul class="article-list">
                     {% for i in issues_list %}
-                    <li class="article-item" data-labels="{% for label in i.labels %}{% if label.name.lower() != 'pinned' and label.name in label_info %}{{label_info[label.name].safe_name}} {% endif %}{% endfor %}">
+                    {% set article_labels = [] %}
+                    {% for label in i.labels %}
+                        {% if label.name.lower() != 'pinned' and label.name in label_info %}
+                            {% set _ = article_labels.append(label_info[label.name].safe_name) %}
+                        {% endif %}
+                    {% endfor %}
+                    <li class="article-item" data-labels="{{ article_labels|join(' ') }}">
                         <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
                         <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
                     </li>
