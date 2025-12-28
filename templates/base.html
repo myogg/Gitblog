@@ -1,3 +1,5 @@
+[file name]: base.html
+[file content begin]
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -18,20 +20,7 @@
             <a href="about.html">關於</a>
         </div>
 
-        <div class="top-tags-bar">
-            <div class="filter-controls">
-                <span class="clear-filter" id="clear-filter" onclick="clearFilter()">清除篩選 ×</span>
-            </div>
-            <div class="tags-container">
-                {% for name, info in label_info.items() %}
-                <span class="tag" 
-                      style="background-color: #{{info.color}}; color: {{info.text_color}}; border: none; padding: 2px 10px; border-radius: 4px;"
-                      data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">
-                    {{name}}
-                </span>
-                {% endfor %}
-            </div>
-        </div>
+        <!-- 已刪除标签栏 -->
 
         <div id="categories-container">
             {% macro render_list(issues_list) %}
@@ -75,3 +64,4 @@
     <script src="static/script.js"></script>
 </body>
 </html>
+[file content end]
