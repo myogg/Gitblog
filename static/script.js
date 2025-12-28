@@ -1,6 +1,6 @@
 let currentFilter = null;
 
-// 標籤篩選功能
+// 標籤篩選功能 - 修改為支持時間流
 function filterByLabel(label) {
     // 1. 更新當前篩選狀態
     currentFilter = label;
@@ -20,20 +20,27 @@ function filterByLabel(label) {
     const clearBtn = document.getElementById('clear-filter');
     if (clearBtn) clearBtn.style.display = 'inline';
     
-    // 4. 執行過濾邏輯
+    // 4. 執行過濾邏輯 - 修改為時間流篩選
     const sections = document.querySelectorAll('.category-section');
     sections.forEach(section => {
-        const sectionLabel = section.getAttribute('data-label');
+        const sectionLabels = section.getAttribute('data-labels');
         
-        // 邏輯：
-        // 如果是置頂文章區塊（沒有 data-label），隱藏它
-        // 如果是最近文章區塊（沒有 data-label），隱藏它
-        // 如果是符合標籤的區塊，顯示它
-        if (!sectionLabel) {
-            section.style.display = 'none';
-        } else if (sectionLabel === label) {
+        if (sectionLabels && sectionLabels.includes(label)) {
+            // 顯示該月份分類
             section.style.display = 'block';
+            
+            // 篩選該月份內的文章
+            const articles = section.querySelectorAll('.article-item');
+            articles.forEach(article => {
+                const articleLabels = article.getAttribute('data-labels');
+                if (articleLabels && articleLabels.includes(label)) {
+                    article.style.display = '';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
         } else {
+            // 隱藏沒有該標籤的月份分類
             section.style.display = 'none';
         }
     });
@@ -43,7 +50,7 @@ function filterByLabel(label) {
     if (container) container.scrollIntoView({ behavior: 'smooth' });
 }
 
-// 清除篩選功能
+// 清除篩選功能 - 修改為支持時間流
 function clearFilter() {
     currentFilter = null;
     
@@ -57,13 +64,19 @@ function clearFilter() {
     const clearBtn = document.getElementById('clear-filter');
     if (clearBtn) clearBtn.style.display = 'none';
     
-    // 3. 顯示所有區塊（包括置頂和最近文章）
+    // 3. 顯示所有月份分類和所有文章
     document.querySelectorAll('.category-section').forEach(section => {
         section.style.display = 'block';
+        
+        // 顯示該分類內的所有文章
+        const articles = section.querySelectorAll('.article-item');
+        articles.forEach(article => {
+            article.style.display = '';
+        });
     });
 }
 
-// 顯示更多文章切換
+// 顯示更多文章切換 - 時間流不需要這個功能，但保留以免出錯
 function toggleMore(categoryId) {
     // 對應 base.html 裡的 id="hidden-{{safe_name}}-hidden"
     const hiddenDiv = document.getElementById('hidden-' + categoryId);
