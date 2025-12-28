@@ -43,7 +43,35 @@
             /* 保持与其他链接一致 */
         }
         
-        /* ====== 新增样式：头像展示区 ====== */
+        /* ====== GitHub风格彩色标签样式 ====== */
+        .tag {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+            border: none !important; /* 移除原来的边框 */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        
+        /* 自动计算文字颜色（确保可读性） */
+        .tag span {
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 使用GitHub颜色的样式 - 自动生成 */
+        /* 注意：具体颜色值会在标签的inline style中设置 */
+        
+        /* ====== 头像展示区 ====== */
         .commenters-section {
             margin-top: 4rem;
             padding-top: 3rem;
@@ -94,44 +122,57 @@
             object-fit: cover;
         }
         
-        .no-commenters {
+        /* ====== 按钮样式 ====== */
+        .action-buttons {
+            margin: 4rem 0;
             text-align: center;
-            color: #999;
-            font-size: 0.9rem;
-            padding: 2rem;
-            background: #f9f9f9;
-            border-radius: 8px;
-            border: 1px dashed #eee;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
         }
         
-        /* 显示评论按钮 */
-        .show-comments-btn {
+        .action-btn {
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 20px;
-            background: #1a1a1a;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s ease;
-            text-decoration: none;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
         }
         
-        .show-comments-btn:hover {
-            background: #333;
+        .action-btn:hover {
+            background: #f9fafb;
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-color: #d1d5db;
+        }
+        
+        .show-comments-btn {
+            /* 复用action-btn样式 */
         }
         
         .comment-count-badge {
-            background: #666;
-            color: white;
+            background: #e5e7eb;
+            color: #4b5563;
             border-radius: 12px;
             padding: 2px 8px;
             font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        /* ====== 发布日期样式 ====== */
+        .post-date {
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 600; /* 加黑加粗 */
         }
     </style>
 </head>
@@ -148,13 +189,36 @@
 
         <div style="margin-top: 3rem;">
             <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
-            <div style="color: #bbb; font-size: 0.85rem; margin-bottom: 20px;">
-                {{issue.created_at.strftime('%B %d, %Y')}} | ID: {{issue.number}}
+            
+            <!-- 修改：发布日期加黑加粗，去掉ID -->
+            <div class="post-date">
+                {{issue.created_at.strftime('%B %d, %Y')}}
             </div>
             
+            <!-- 修改：标签直接使用GitHub的颜色 -->
             <div style="margin-bottom: 30px;">
                 {% for l in labels_data %}
-                <span class="tag" style="border: 1px solid #{{l.color}}; margin-right: 5px; padding: 2px 8px;">{{l.name}}</span>
+                {% set bg_color = '#' + l.color %}
+                {% set text_color = '#ffffff' %} {# 默认白色文字 #}
+                
+                {# 计算文字颜色确保可读性 #}
+                {% if l.color %}
+                    {% set r = int(l.color[0:2], 16) %}
+                    {% set g = int(l.color[2:4], 16) %}
+                    {% set b = int(l.color[4:6], 16) %}
+                    
+                    {# 计算亮度 (0-255) #}
+                    {% set brightness = (r * 299 + g * 587 + b * 114) / 1000 %}
+                    
+                    {# 如果背景色较亮，使用深色文字 #}
+                    {% if brightness > 160 %}
+                        {% set text_color = '#000000' %}
+                    {% endif %}
+                {% endif %}
+                
+                <span class="tag" style="background-color: {{ bg_color }}; color: {{ text_color }};">
+                    {{l.name}}
+                </span>
                 {% endfor %}
             </div>
 
@@ -163,13 +227,7 @@
             </article>
         </div>
 
-        <div style="margin-top: 5rem; padding: 1.5rem; background: #fafafa; border-radius: 8px; font-size: 0.85rem; color: #888; border: 1px solid #f0f0f0;">
-            <p style="margin: 0;"><strong>本文作者：</strong>Jiang Sheng</p>
-            <p style="margin: 8px 0;"><strong>版權聲明：</strong>本站文章採用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh-hans" target="_blank" style="color: #666; text-decoration: underline;">CC BY-NC-SA 4.0</a> 許可協議。轉載請註明出處。</p>
-            <p style="margin: 0;"><strong>永久鏈接：</strong><span id="post-url" style="word-break: break-all; opacity: 0.7;"></span></p>
-        </div>
-
-        <!-- ====== 新增：留言者头像展示区 ====== -->
+        <!-- 留言者头像展示区 -->
         <div class="commenters-section">
             <h3>
                 <span>👥 留言者</span>
@@ -177,14 +235,12 @@
             </h3>
             
             <div id="commenters-avatars-container" class="commenters-avatars">
-                <div class="no-commenters" id="no-commenters-message">
-                    暫無留言，快來搶沙發吧！
-                </div>
+                <!-- 头像将动态添加 -->
             </div>
             
             <!-- 显示评论按钮 -->
             <div style="margin-top: 2rem; text-align: center;">
-                <button id="toggle-comments-btn" class="show-comments-btn">
+                <button id="toggle-comments-btn" class="action-btn show-comments-btn">
                     <span>💬 查看/發表評論</span>
                     <span class="comment-count-badge" id="comment-btn-count">0</span>
                 </button>
@@ -211,14 +267,10 @@
             </script>
         </div>
 
-        <div style="margin: 4rem 0; text-align: center; display: flex; justify-content: center; gap: 15px; flex-wrap: wrap;">
-            <a href="../index.html" class="show-more-btn" style="text-decoration: none; padding: 10px 24px; background: #1a1a1a !important; color: #fff !important; border-radius: 6px;">← 返回首頁</a>
-            
-            <a href="https://github.com/myogg/Gitblog/issues/{{issue.number}}" 
-               target="_blank" 
-               class="show-comments-btn" 
-               style="text-decoration: none;">
-                💬 去 GitHub 參與互動
+        <!-- 底部按钮 -->
+        <div class="action-buttons">
+            <a href="../index.html" class="action-btn">
+                ← 返回首頁
             </a>
         </div>
 
@@ -226,9 +278,6 @@
     </div>
 
     <script>
-        // 自動獲取並顯示當前文章網址
-        document.getElementById('post-url').textContent = window.location.href;
-        
         // 留言者头像数据存储
         let commenters = new Map(); // username -> {avatar, profileUrl}
         
@@ -322,23 +371,17 @@
         // 渲染留言者头像
         function renderCommenters() {
             const container = document.getElementById('commenters-avatars-container');
-            const noCommentersMsg = document.getElementById('no-commenters-message');
             const countBadge = document.getElementById('commenter-count');
             const btnCountBadge = document.getElementById('comment-btn-count');
             
+            // 清空容器
+            container.innerHTML = '';
+            
             if (commenters.size === 0) {
-                noCommentersMsg.style.display = 'block';
-                container.innerHTML = '';
                 countBadge.textContent = '0';
                 btnCountBadge.textContent = '0';
                 return;
             }
-            
-            // 隐藏"暂无留言"消息
-            noCommentersMsg.style.display = 'none';
-            
-            // 清空容器
-            container.innerHTML = '';
             
             // 添加所有留言者头像
             commenters.forEach((commenter, username) => {
