@@ -1,6 +1,6 @@
 let currentFilter = null;
 
-// 標籤篩選功能 - 修改為支持時間流
+// 標籤篩選功能 - 支持時間流
 function filterByLabel(label) {
     // 1. 更新當前篩選狀態
     currentFilter = label;
@@ -20,7 +20,7 @@ function filterByLabel(label) {
     const clearBtn = document.getElementById('clear-filter');
     if (clearBtn) clearBtn.style.display = 'inline';
     
-    // 4. 執行過濾邏輯 - 修改為時間流篩選
+    // 4. 執行時間流過濾邏輯
     const sections = document.querySelectorAll('.category-section');
     sections.forEach(section => {
         const sectionLabels = section.getAttribute('data-labels');
@@ -50,7 +50,7 @@ function filterByLabel(label) {
     if (container) container.scrollIntoView({ behavior: 'smooth' });
 }
 
-// 清除篩選功能 - 修改為支持時間流
+// 清除篩選功能 - 支持時間流
 function clearFilter() {
     currentFilter = null;
     
@@ -76,7 +76,7 @@ function clearFilter() {
     });
 }
 
-// 顯示更多文章切換 - 時間流不需要這個功能，但保留以免出錯
+// 顯示更多文章切換 - 保留但不影響時間流
 function toggleMore(categoryId) {
     // 對應 base.html 裡的 id="hidden-{{safe_name}}-hidden"
     const hiddenDiv = document.getElementById('hidden-' + categoryId);
