@@ -82,7 +82,7 @@ body {
 
 .article-date {
     font-family: "JetBrains Mono", monospace;
-    color: #bbb !important; /* 還原為淡灰色 */
+    color: #666 !important; /* 修改：從 #bbb 改為 #666，與導航鏈接顏色一致 */
     font-size: 0.85rem !important;
     min-width: 55px;
     margin-right: 15px;
@@ -99,7 +99,7 @@ body {
 /* 置頂與分類標籤 */
 .category-section h2.section-label {
     font-size: 0.9rem !important;
-    color: #bbb !important; /* 還原為淡灰色 */
+    color: #666 !important; /* 還原為淡灰色 */
     font-weight: 500 !important;
     text-transform: uppercase;
     margin: 3rem 0 1rem 0 !important;
@@ -121,7 +121,7 @@ body {
 }
 
 footer {
-    color: #bbb !important; /* 還原為淡灰色 */
+    color: #666 !important; /* 還原為淡灰色 */
     font-size: 0.8rem !important;
     text-align: center;
     margin-top: 5rem !important;
