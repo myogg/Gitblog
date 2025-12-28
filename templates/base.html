@@ -6,24 +6,6 @@
     <title>北方的博客</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
-    <style>
-        .article-list li {
-            display: flex;
-            align-items: flex-start;
-        }
-        
-        .article-date {
-            flex-shrink: 0;
-            width: 60px;
-            margin-right: 10px;
-        }
-        
-        .article-title-link {
-            flex: 1;
-            white-space: normal;
-            word-break: break-word;
-        }
-    </style>
 </head>
 <body>
     <div class="markdown-body">
@@ -51,38 +33,22 @@
             </div>
         </div>
 
-        <!-- 时间流显示 -->
-        <div id="timeline-container">
-            {% for month, articles in articles_by_year_month.items() %}
-            {% set month_has_labels = [] %}
-            {% for issue in articles %}
-                {% for label in issue.labels %}
-                    {% if label.name.lower() != "pinned" and label.name in label_info %}
-                        {% if label_info[label.name].safe_name not in month_has_labels %}
-                            {% set _ = month_has_labels.append(label_info[label.name].safe_name) %}
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endfor %}
-            
-            <div class="category-section" data-labels="{{ month_has_labels|join(' ') }}">
-                <h2 class="section-label">{{ month }}</h2>
-                
+        <div id="categories-container">
+            {% macro render_list(issues_list) %}
                 <ul class="article-list">
-                    {% for issue in articles %}
-                    {% set item_labels = [] %}
-                    {% for label in issue.labels %}
-                        {% if label.name.lower() != "pinned" and label.name in label_info %}
-                            {% set _ = item_labels.append(label_info[label.name].safe_name) %}
-                        {% endif %}
-                    {% endfor %}
-                    
-                    <li class="timeline-item" data-labels="{{ item_labels|join(' ') }}">
-                        <span class="article-date">{{ issue.created_at.strftime('%m/%d') }}</span>
-                        <a href="articles/article-{{ issue.number }}.html" class="article-title-link">{{ issue.title }}</a>
+                    {% for i in issues_list %}
+                    <li>
+                        <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
+                        <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
                     </li>
                     {% endfor %}
                 </ul>
+            {% endmacro %}
+
+            {% for month, articles in articles_by_year_month.items() %}
+            <div class="category-section">
+                <h2 class="section-label">{{ month }}</h2>
+                {{ render_list(articles) }}
             </div>
             {% endfor %}
         </div>
@@ -90,78 +56,5 @@
         <footer>© {{ YEAR }} Designed and developed by Jiang Sheng</footer>
     </div>
     <script src="static/script.js"></script>
-    <script>
-        // 标签筛选功能
-        let activeFilter = null;
-        
-        function filterByLabel(labelName) {
-            if (activeFilter === labelName) {
-                clearFilter();
-                return;
-            }
-            
-            activeFilter = labelName;
-            document.getElementById('clear-filter').style.display = 'inline';
-            
-            // 更新标签状态
-            document.querySelectorAll('.tag').forEach(tag => {
-                if (tag.getAttribute('data-label') === labelName) {
-                    tag.classList.add('active');
-                } else {
-                    tag.classList.remove('active');
-                }
-            });
-            
-            // 筛选文章项目
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                const labels = item.getAttribute('data-labels').split(' ');
-                if (labels.includes(labelName)) {
-                    item.style.display = '';
-                } else {
-                    item.style.display = 'none';
-                }
-            });
-            
-            // 筛选月份分类
-            document.querySelectorAll('.category-section').forEach(section => {
-                const labels = section.getAttribute('data-labels').split(' ');
-                let hasVisibleItems = false;
-                
-                // 检查该月份下是否有可见的文章
-                const itemsInSection = section.querySelectorAll('.timeline-item');
-                itemsInSection.forEach(item => {
-                    if (item.style.display !== 'none') {
-                        hasVisibleItems = true;
-                    }
-                });
-                
-                if (hasVisibleItems) {
-                    section.style.display = '';
-                } else {
-                    section.style.display = 'none';
-                }
-            });
-        }
-        
-        function clearFilter() {
-            activeFilter = null;
-            document.getElementById('clear-filter').style.display = 'none';
-            
-            // 重置标签状态
-            document.querySelectorAll('.tag').forEach(tag => {
-                tag.classList.remove('active');
-            });
-            
-            // 显示所有项目
-            document.querySelectorAll('.timeline-item').forEach(item => {
-                item.style.display = '';
-            });
-            
-            // 显示所有分类
-            document.querySelectorAll('.category-section').forEach(section => {
-                section.style.display = '';
-            });
-        }
-    </script>
 </body>
 </html>
