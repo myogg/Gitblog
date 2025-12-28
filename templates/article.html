@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="../static/style.css">
     <style>
+        /* 标签样式 */
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            color: white;
+        }
+
         /* Giscus 评论区默认隐藏 */
         .giscus-section {
             margin-top: 2rem;
@@ -20,7 +31,7 @@
 
         /* 底部头像区域样式 */
         .commenters-section {
-            margin-top: 5rem; /* 与上方内容保持大间距 */
+            margin-top: 5rem;
             padding: 2rem 0;
             border-top: 1px solid #eee;
         }
@@ -43,6 +54,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            min-height: 40px;
         }
 
         .commenter-avatar {
@@ -52,6 +64,7 @@
             border: 1px solid #eee;
             cursor: pointer;
             transition: transform 0.2s;
+            object-fit: cover;
         }
 
         .commenter-avatar:hover {
@@ -75,8 +88,31 @@
             font-size: 0.85rem;
             border: 1px solid #e5e7eb;
             background: #fff;
+            color: #374151;
             cursor: pointer;
-            margin: 20px 0;
+            transition: all 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #f9fafb;
+            transform: translateY(-1px);
+        }
+
+        /* 发布日期样式 */
+        .post-date {
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .no-comments {
+            color: #999;
+            font-size: 0.85rem;
+            width: 100%;
+            text-align: center;
+            padding: 20px 0;
+            font-style: italic;
         }
     </style>
 </head>
@@ -92,21 +128,34 @@
         </div>
 
         <div style="margin-top: 3rem;">
-            <h2 style="border-bottom: none;">{{issue.title}}</h2>
-            <div style="color: #666; margin-bottom: 20px;">
+            <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
+            
+            <div class="post-date">
                 {{issue.created_at.strftime('%B %d, %Y')}}
             </div>
+            
+            <!-- 标签区域 -->
+            <div style="margin-bottom: 30px;">
+                {% for l in labels_data %}
+                <span class="tag" style="background-color: #{{l.color}}">
+                    {{l.name}}
+                </span>
+                {% endfor %}
+            </div>
+
             <article class="content-area">
                 {{content|safe}}
             </article>
         </div>
 
+        <!-- 评论开关按钮 -->
         <div style="text-align: center; margin-top: 3rem;">
             <button id="toggle-comments-btn" class="action-btn">
                 💬 展开评论区
             </button>
         </div>
 
+        <!-- Giscus评论区 -->
         <div id="giscus-section" class="giscus-section">
             <script src="https://giscus.app/client.js"
                 data-repo="myogg/Gitblog"
@@ -116,7 +165,7 @@
                 data-mapping="pathname"
                 data-strict="0"
                 data-reactions-enabled="1"
-                data-emit-metadata="1" 
+                data-emit-metadata="1"
                 data-input-position="bottom"
                 data-theme="preferred_color_scheme"
                 data-lang="zh-TW"
@@ -125,13 +174,22 @@
             </script>
         </div>
 
+        <!-- 底部留言者头像区域 -->
         <div class="commenters-section">
             <div class="commenters-header">
                 <span class="commenters-title">Recent Commenters</span>
                 <span class="comment-count-badge" id="total-count">0 Comments</span>
             </div>
             <div id="avatar-row" class="commenters-avatars">
-                </div>
+                <div class="no-comments">暂无留言</div>
+            </div>
+        </div>
+
+        <!-- 返回首页按钮 -->
+        <div style="text-align: center; margin: 3rem 0;">
+            <a href="../index.html" class="action-btn">
+                ← 返回首頁
+            </a>
         </div>
 
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
@@ -145,53 +203,162 @@
         toggleBtn.addEventListener('click', function() {
             const isVisible = giscusSection.classList.toggle('visible');
             toggleBtn.textContent = isVisible ? '收起评论区' : '展开评论区';
-        });
-
-        // 2. 核心：监听 Giscus 消息并提取头像和总数
-        window.addEventListener('message', function(event) {
-            if (event.origin !== 'https://giscus.app') return;
             
-            const data = event.data.giscus;
-            if (data && data.discussion) {
-                // 更新总评论数
-                const count = data.discussion.totalCommentCount + data.discussion.totalReplyCount;
-                document.getElementById('total-count').textContent = `${count} Comments`;
-
-                // 提取头像
-                const userMap = new Map();
-                // 遍历评论
-                if (data.discussion.comments) {
-                    data.discussion.comments.forEach(c => {
-                        userMap.set(c.author.login, {
-                            avatar: c.author.avatarUrl,
-                            url: c.author.url
-                        });
-                        // 遍历回复
-                        if (c.replies) {
-                            c.replies.forEach(r => {
-                                userMap.set(r.author.login, {
-                                    avatar: r.author.avatarUrl,
-                                    url: r.author.url
-                                });
-                            });
-                        }
-                    });
-                }
-
-                // 渲染到最底部的头像行
-                const avatarRow = document.getElementById('avatar-row');
-                avatarRow.innerHTML = ''; // 清空原有内容
+            if (isVisible) {
+                setTimeout(() => {
+                    giscusSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
                 
-                userMap.forEach((user, login) => {
-                    const img = document.createElement('img');
-                    img.src = user.avatar;
-                    img.className = 'commenter-avatar';
-                    img.title = `@${login}`;
-                    img.onclick = () => window.open(user.url, '_blank');
-                    avatarRow.appendChild(img);
-                });
+                // 展开评论区后，尝试获取头像数据
+                setTimeout(extractAvatarsFromDOM, 1000);
             }
         });
+
+        // 2. 主函数：从DOM提取头像（最可靠的方法）
+        function extractAvatarsFromDOM() {
+            console.log('开始从DOM提取头像...');
+            
+            const giscusIframe = document.querySelector('.giscus-frame iframe');
+            if (!giscusIframe) {
+                console.log('Giscus iframe 未找到');
+                setTimeout(extractAvatarsFromDOM, 1000);
+                return;
+            }
+            
+            try {
+                const iframeDoc = giscusIframe.contentDocument || giscusIframe.contentWindow.document;
+                
+                // 等待Giscus内容加载
+                if (!iframeDoc.body || iframeDoc.body.textContent.includes('Loading')) {
+                    console.log('Giscus 仍在加载中...');
+                    setTimeout(extractAvatarsFromDOM, 1000);
+                    return;
+                }
+                
+                // 查找所有评论
+                const comments = iframeDoc.querySelectorAll('.giscus-comment-main');
+                console.log(`找到 ${comments.length} 条评论`);
+                
+                if (comments.length === 0) {
+                    // 检查是否有"暂无评论"的提示
+                    const noComments = iframeDoc.querySelector('.giscus-comments-no-comments');
+                    if (noComments) {
+                        updateAvatarDisplay([], 0);
+                        return;
+                    }
+                    
+                    // 如果没找到评论，可能是还没加载完
+                    setTimeout(extractAvatarsFromDOM, 1000);
+                    return;
+                }
+                
+                // 提取所有评论者信息
+                const commenters = new Map();
+                
+                comments.forEach((comment, index) => {
+                    // 查找作者头像和链接
+                    const authorLink = comment.querySelector('.giscus-comment-author a');
+                    const avatarImg = comment.querySelector('.giscus-comment-avatar img');
+                    
+                    if (authorLink && avatarImg) {
+                        const username = authorLink.textContent.trim().replace('@', '');
+                        const profileUrl = authorLink.href;
+                        const avatarUrl = avatarImg.src;
+                        
+                        console.log(`找到评论者 ${index + 1}: ${username}`);
+                        
+                        if (!commenters.has(username)) {
+                            commenters.set(username, {
+                                avatar: avatarUrl,
+                                url: profileUrl,
+                                username: username
+                            });
+                        }
+                    }
+                });
+                
+                // 更新显示
+                updateAvatarDisplay(commenters, comments.length);
+                
+            } catch (error) {
+                console.log('提取头像时出错:', error);
+                // 可能是跨域错误，等Giscus完全加载后再试
+                setTimeout(extractAvatarsFromDOM, 2000);
+            }
+        }
+        
+        // 3. 更新头像显示
+        function updateAvatarDisplay(commenters, totalComments) {
+            const avatarRow = document.getElementById('avatar-row');
+            const totalCount = document.getElementById('total-count');
+            
+            // 更新评论计数
+            totalCount.textContent = `${totalComments} Comment${totalComments !== 1 ? 's' : ''}`;
+            
+            // 清空现有内容
+            avatarRow.innerHTML = '';
+            
+            if (!commenters || commenters.size === 0) {
+                const noCommentsDiv = document.createElement('div');
+                noCommentsDiv.className = 'no-comments';
+                noCommentsDiv.textContent = '暂无留言';
+                avatarRow.appendChild(noCommentsDiv);
+                return;
+            }
+            
+            // 添加所有头像
+            commenters.forEach((commenter, username) => {
+                const img = document.createElement('img');
+                img.src = commenter.avatar;
+                img.className = 'commenter-avatar';
+                img.alt = `@${username}`;
+                img.title = `@${username}`;
+                img.loading = 'lazy';
+                img.onclick = () => window.open(commenter.url, '_blank');
+                avatarRow.appendChild(img);
+            });
+            
+            console.log(`成功显示 ${commenters.size} 个留言者头像`);
+        }
+        
+        // 4. 页面加载后开始检查
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('页面加载完成，开始检查Giscus...');
+            
+            // 方法1：监听Giscus iframe加载
+            const checkGiscusInterval = setInterval(() => {
+                const giscusIframe = document.querySelector('.giscus-frame iframe');
+                if (giscusIframe) {
+                    clearInterval(checkGiscusInterval);
+                    console.log('Giscus iframe 已加载');
+                    
+                    // 等待Giscus内容加载
+                    setTimeout(() => {
+                        extractAvatarsFromDOM();
+                    }, 2000);
+                }
+            }, 500);
+            
+            // 方法2：备用方案，10秒后强制检查
+            setTimeout(() => {
+                extractAvatarsFromDOM();
+            }, 10000);
+            
+            // 方法3：监听页面可见性变化（用户返回页面时检查）
+            document.addEventListener('visibilitychange', function() {
+                if (!document.hidden) {
+                    setTimeout(extractAvatarsFromDOM, 1000);
+                }
+            });
+        });
+        
+        // 5. 留言提交后重新检查（简单的轮询）
+        setInterval(() => {
+            // 如果评论区是展开的，检查是否有新评论
+            if (giscusSection.classList.contains('visible')) {
+                extractAvatarsFromDOM();
+            }
+        }, 10000); // 每10秒检查一次
     </script>
 </body>
 </html>
