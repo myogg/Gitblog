@@ -1,5 +1,3 @@
-[file name]: script.js
-[file content begin]
 let currentFilter = null;
 
 // 標籤篩選功能 - 支持時間流
@@ -24,98 +22,40 @@ function filterByLabel(label) {
     const clearBtn = document.getElementById('clear-filter');
     if (clearBtn) clearBtn.style.display = 'inline';
     
-    // 4. 執行時間流過濾邏輯 - 修復版
+    // 4. 執行時間流過濾邏輯
     const sections = document.querySelectorAll('.category-section');
-    let anySectionVisible = false;
-    let anyArticleVisible = false;
+    let foundAny = false; // 調試信息
     
     sections.forEach(section => {
-        // 先隱藏整個分類，然後逐個檢查文章
-        section.style.display = 'none';
+        const sectionLabels = section.getAttribute('data-labels');
+        console.log('月份標籤:', sectionLabels, '尋找:', label); // 調試信息
         
-        const articles = section.querySelectorAll('.article-item');
-        let sectionHasVisibleArticles = false;
-        
-        // 檢查分類中的每一篇文章
-        articles.forEach(article => {
-            const articleLabels = article.getAttribute('data-labels');
-            
-            // 如果文章包含該標籤，顯示這篇文章
-            if (articleLabels && articleLabels.indexOf(label) !== -1) {
-                article.style.display = '';
-                sectionHasVisibleArticles = true;
-                anyArticleVisible = true;
-            } else {
-                article.style.display = 'none';
-            }
-        });
-        
-        // 如果分類中有可見的文章，顯示整個分類
-        if (sectionHasVisibleArticles) {
+        if (sectionLabels && sectionLabels.indexOf(label) !== -1) {
+            // 顯示該月份分類
             section.style.display = 'block';
-            anySectionVisible = true;
+            foundAny = true;
+            
+            // 篩選該月份內的文章
+            const articles = section.querySelectorAll('.article-item');
+            articles.forEach(article => {
+                const articleLabels = article.getAttribute('data-labels');
+                if (articleLabels && articleLabels.indexOf(label) !== -1) {
+                    article.style.display = '';
+                } else {
+                    article.style.display = 'none';
+                }
+            });
+        } else {
+            // 隱藏沒有該標籤的月份分類
+            section.style.display = 'none';
         }
     });
     
-    console.log('有顯示的分類?', anySectionVisible);
-    console.log('有顯示的文章?', anyArticleVisible);
-    
-    // 如果沒有任何文章符合，顯示提示
-    if (!anyArticleVisible) {
-        showNoResultsMessage(label);
-    } else {
-        removeNoResultsMessage();
-        
-        // 平滑滾動到內容區頂部
-        const container = document.getElementById('categories-container');
-        if (container) {
-            // 先滾動到頁面頂部，再滾動到分類容器
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-            setTimeout(() => {
-                container.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }, 300);
-        }
-    }
-}
+    console.log('找到符合的月份?', foundAny); // 調試信息
 
-// 顯示無結果提示
-function showNoResultsMessage(label) {
-    // 移除現有的提示
-    removeNoResultsMessage();
-    
-    // 創建提示元素
-    const message = document.createElement('div');
-    message.id = 'no-results-message';
-    message.className = 'no-results-message';
-    message.innerHTML = `
-        <p>沒有找到標籤為 "<strong>${getLabelName(label)}</strong>" 的文章</p>
-        <p><button onclick="clearFilter()">顯示所有文章</button></p>
-    `;
-    
-    // 插入到分類容器前
+    // 平滑滾動到內容區頂部
     const container = document.getElementById('categories-container');
-    if (container && container.parentNode) {
-        container.parentNode.insertBefore(message, container);
-    }
-}
-
-// 移除無結果提示
-function removeNoResultsMessage() {
-    const existing = document.getElementById('no-results-message');
-    if (existing) {
-        existing.remove();
-    }
-}
-
-// 根據安全名稱獲取原始標籤名稱
-function getLabelName(safeName) {
-    const tags = document.querySelectorAll('.tag');
-    for (const tag of tags) {
-        if (tag.getAttribute('data-label') === safeName) {
-            return tag.textContent.trim();
-        }
-    }
-    return safeName;
+    if (container) container.scrollIntoView({ behavior: 'smooth' });
 }
 
 // 清除篩選功能 - 支持時間流
@@ -132,10 +72,7 @@ function clearFilter() {
     const clearBtn = document.getElementById('clear-filter');
     if (clearBtn) clearBtn.style.display = 'none';
     
-    // 3. 移除無結果提示
-    removeNoResultsMessage();
-    
-    // 4. 顯示所有月份分類和所有文章
+    // 3. 顯示所有月份分類和所有文章
     document.querySelectorAll('.category-section').forEach(section => {
         section.style.display = 'block';
         
@@ -182,12 +119,4 @@ document.addEventListener('DOMContentLoaded', function() {
     if (firstArticle) {
         console.log('第一篇文章標籤:', firstArticle.getAttribute('data-labels'));
     }
-    
-    // 調試：檢查所有分類的標籤
-    console.log('檢查分類標籤:');
-    document.querySelectorAll('.category-section').forEach(section => {
-        console.log('分類:', section.querySelector('h2')?.textContent, 
-                    'data-labels:', section.getAttribute('data-labels'));
-    });
 });
-[file content end]
