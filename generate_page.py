@@ -225,6 +225,19 @@ def main():
     recent_issues = [i for i in all_sorted_issues if i.number not in pinned_ids][:5]
     print(f"顯示 {len(recent_issues)} 個最近文章")
     
+    # 先收集所有标签的唯一信息
+    all_unique_labels = {}
+    for issue in issues:
+        for label in issue.labels:
+            if label.name.lower() == "pinned": 
+                continue
+            # 记录标签信息
+            all_unique_labels[label.name] = {
+                "color": label.color,
+                "text_color": get_text_color(label.color),
+                "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
+            }
+
     for issue in issues:
         year = issue.created_at.strftime('%Y')
         articles_by_year.setdefault(year, []).append(issue)
@@ -232,13 +245,10 @@ def main():
             if label.name.lower() == "pinned": 
                 continue
             label_dict.setdefault(label.name, []).append(issue)
-            if label.name not in label_info:
-                label_info[label.name] = {
-                    "color": label.color,
-                    "text_color": get_text_color(label.color),
-                    "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
-                }
 
+    # 将收集的标签信息赋值给 label_info
+    label_info = all_unique_labels
+    
     # 排序每個標籤下的文章
     for label in label_dict: 
         label_dict[label] = sort_issues(label_dict[label])
