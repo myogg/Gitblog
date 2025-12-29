@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [记录下主业](https://github.com/myogg/Gitblog/issues/171)--2025-12-29
 - [用 Any Router 改代码](https://github.com/myogg/Gitblog/issues/170)--2025-12-29
 - [位于大麦哲伦星系的球状星团](https://github.com/myogg/Gitblog/issues/169)--2025-12-29
 - [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
 - [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
-- [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 
-## 一些记录 (43篇文章)
+## 一些记录 (44篇文章)
+- [记录下主业](https://github.com/myogg/Gitblog/issues/171)--2025-12-29
 - [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
 - [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
-- [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)--2025-12-23
 
 <details>
-<summary>显示更多 (38篇)</summary>
+<summary>显示更多 (39篇)</summary>
 
+- [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)
 - [三星发布全球首款 2 纳米手机芯片 Exynos 2600](https://github.com/myogg/Gitblog/issues/140)
 - [The new ChatGPT Images is here](https://github.com/myogg/Gitblog/issues/134)
