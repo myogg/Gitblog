@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [位于大麦哲伦星系的球状星团](https://github.com/myogg/Gitblog/issues/169)--2025-12-29
 - [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
 - [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
 - [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
-- [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)--2025-12-27
 
 ## 一些记录 (43篇文章)
 - [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
@@ -150,7 +150,7 @@ My personal blog using issues and GitHub Actions
 - [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 人生感悟不隨太晚 (2篇文章)
+## 人生感悟不算太晚 (2篇文章)
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
@@ -158,7 +158,8 @@ My personal blog using issues and GitHub Actions
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 
-## 我喜歡宇宙奇觀 (4篇文章)
+## 我喜歡宇宙奇觀 (5篇文章)
+- [位于大麦哲伦星系的球状星团](https://github.com/myogg/Gitblog/issues/169)--2025-12-29
 - [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
 - [红色精灵与圆形精灵闪电](https://github.com/myogg/Gitblog/issues/152)--2025-12-23
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
