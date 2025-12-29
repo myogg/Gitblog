@@ -63,15 +63,16 @@
             {% endif %}
 
             {% for label, items in label_dict.items() %}
-            <div class="category-section" data-label="{{label_info[label].safe_name}}">
+            {% set info = label_info[label] %}
+            <div class="category-section" data-label="{{info.safe_name}}">
                 <h2 class="section-label">{{label}} <small>{{items|length}}</small></h2>
                 {{ render_list(items[:MAX_PER_CATEGORY]) }}
 
                 {% if items|length > MAX_PER_CATEGORY %}
-                <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
+                <div id="hidden-{{info.safe_name}}-hidden" class="hidden-articles">
                     {{ render_list(items[MAX_PER_CATEGORY:]) }}
                 </div>
-                <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">MORE</button>
+                <button class="show-more-btn" onclick="toggleMore('{{info.safe_name}}-hidden')" id="btn-{{info.safe_name}}-hidden">MORE</button>
                 {% endif %}
             </div>
             {% endfor %}
