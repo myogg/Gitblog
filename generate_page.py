@@ -10,6 +10,7 @@ from jinja2 import Environment, FileSystemLoader
 # --- 配置區 ---
 GITHUB_TOKEN = os.getenv("G_TT")
 REPO_NAME = "myogg/Gitblog" 
+MAX_PER_CATEGORY = 5
 CACHE_FILE = "github_cache.json"
 CACHE_DURATION = 3600 
 ARTICLES_DIR = "articles"
@@ -90,9 +91,9 @@ def fetch_issues(repo):
     return all_issues
 
 def sort_issues(issue_list):
-    """按創建時間排序（最新在前）"""
     def sort_key(issue):
-        return -issue.created_at.timestamp()
+        is_pinned = any(l.name.lower() == "pinned" for l in issue.labels)
+        return (0 if is_pinned else 1, -issue.created_at.timestamp())
     return sorted(issue_list, key=sort_key)
 
 def generate_search_index(issues):
@@ -210,36 +211,41 @@ def main():
     print(f"找到 {len(issues)} 個issues")
     
     # --- 數據整理 ---
-    # 1. 按年月分組文章（時間流需要）
-    articles_by_year_month = {}
+    label_dict = {}    
+    label_info = {}    
+    articles_by_year = {} 
+    
+    # 1. 處理置頂文章
+    pinned_issues = sort_issues([i for i in issues if any(l.name.lower() == "pinned" for l in i.labels)])
+    pinned_ids = {i.number for i in pinned_issues}
+    print(f"找到 {len(pinned_issues)} 個置頂文章")
+
+    # 2. 處理最近文章 (排除置頂)
+    all_sorted_issues = sort_issues(list(issues))
+    recent_issues = [i for i in all_sorted_issues if i.number not in pinned_ids][:5]
+    print(f"顯示 {len(recent_issues)} 個最近文章")
+    
     for issue in issues:
-        # 格式: "2023-12月"
-        month_key = issue.created_at.strftime('%Y-%m月')
-        if month_key not in articles_by_year_month:
-            articles_by_year_month[month_key] = []
-        articles_by_year_month[month_key].append(issue)
-    
-    # 2. 為每個月份的文章排序（最新在前）
-    for month in articles_by_year_month:
-        articles_by_year_month[month] = sort_issues(articles_by_year_month[month])
-    
-    # 3. 按年月排序（最新在前）
-    sorted_months = sorted(articles_by_year_month.keys(), reverse=True)
-    
-    # 4. 為標籤篩選準備label_info
-    label_info = {}
-    for issue in issues:
+        year = issue.created_at.strftime('%Y')
+        articles_by_year.setdefault(year, []).append(issue)
         for label in issue.labels:
             if label.name.lower() == "pinned": 
                 continue
+            label_dict.setdefault(label.name, []).append(issue)
             if label.name not in label_info:
                 label_info[label.name] = {
                     "color": label.color,
                     "text_color": get_text_color(label.color),
                     "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
                 }
+
+    # 排序每個標籤下的文章
+    for label in label_dict: 
+        label_dict[label] = sort_issues(label_dict[label])
     
-    print(f"文章已按 {len(sorted_months)} 個月分組")
+    sorted_years = sorted(articles_by_year.keys(), reverse=True)
+    print(f"文章年份分佈: {', '.join(sorted_years)}")
+    print(f"找到 {len(label_dict)} 個標籤")
 
     # --- 生成搜索索引 ---
     generate_search_index(issues)
@@ -271,8 +277,11 @@ def main():
     try:
         index_template = env.get_template('base.html')
         index_html = index_template.render(
-            articles_by_year_month=articles_by_year_month,
-            label_info=label_info,
+            pinned_issues=pinned_issues, 
+            recent_issues=recent_issues,
+            label_dict=label_dict, 
+            label_info=label_info, 
+            MAX_PER_CATEGORY=MAX_PER_CATEGORY, 
             YEAR=datetime.now().year
         )
         with open("index.html", "w", encoding="utf-8") as f: 
@@ -280,42 +289,17 @@ def main():
         print("✓ 主頁已生成")
     except Exception as e: 
         print(f"❌ 生成主頁失敗: {e}")
-        print(f"錯誤詳情: {str(e)}")
 
     # 2. 生成歸檔頁
     if os.path.exists('templates/archives.html'):
         print("生成歸檔頁...")
         try:
-            # 按年份分组文章
-            articles_by_year = {}
-            for issue in issues:
-                year = issue.created_at.strftime('%Y')
-                articles_by_year.setdefault(year, []).append(issue)
-            
-            # 按年份排序
-            sorted_years = sorted(articles_by_year.keys(), reverse=True)
-            
-            # 為歸檔頁準備標籤數據
-            label_info_for_archive = {}
-            label_dict_for_archive = {}
-            for issue in issues:
-                for label in issue.labels:
-                    if label.name.lower() == "pinned": 
-                        continue
-                    if label.name not in label_info_for_archive:
-                        label_info_for_archive[label.name] = {
-                            "color": label.color,
-                            "text_color": get_text_color(label.color),
-                            "safe_name": re.sub(r'[^a-zA-Z0-9]', '-', label.name).lower()
-                        }
-                    label_dict_for_archive.setdefault(label.name, []).append(issue)
-            
             archive_template = env.get_template('archives.html')
             archive_html = archive_template.render(
                 sorted_years=sorted_years, 
                 articles_by_year=articles_by_year,
-                label_dict=label_dict_for_archive, 
-                label_info=label_info_for_archive, 
+                label_dict=label_dict, 
+                label_info=label_info, 
                 YEAR=datetime.now().year
             )
             with open("archives.html", "w", encoding="utf-8") as f: 
