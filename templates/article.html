@@ -11,7 +11,7 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://134688.xyz/articles/article-{{issue.number}}.html">
     
-    <!-- 只用你自己的默认图片 -->
+    <!-- 图片 -->
     <meta property="og:image" content="https://134688.xyz/static/og-default.png">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
@@ -19,6 +19,19 @@
     <meta property="og:image:alt" content="{{issue.title}} - 北方的博客">
     
     <meta property="og:site_name" content="北方的博客">
+    <meta property="fb:app_id" content="123456789">  <!-- 随便写一个 -->
+    
+    <!-- 文章作者信息 -->
+    <meta property="article:author" content="https://www.facebook.com/lengyu.jiang">
+    <meta property="article:author:username" content="lengyu.jiang">
+    <meta property="fb:profile_id" content="100006838422002">  <!-- 你的Facebook ID -->
+    
+    <!-- 文章元数据 -->
+    <meta property="article:published_time" content="{{issue.created_at.isoformat()}}">
+    <meta property="article:modified_time" content="{{issue.created_at.isoformat()}}">
+    {% for label in labels_data %}
+    <meta property="article:tag" content="{{label.name}}">
+    {% endfor %}
     
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
@@ -97,7 +110,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
-        /* 按钮容器 */
+        /* 按钮容器 -->
         .action-buttons {
             margin: 4rem 0;
             text-align: center;
