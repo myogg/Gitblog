@@ -5,24 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{issue.title}} - 北方的博客</title>
     
-    <!-- ========== 新增：Open Graph Meta Tags ========== -->
+    <!-- ========== Open Graph Meta Tags ========== -->
     <meta property="og:title" content="{{issue.title}}">
-    <meta property="og:description" content="北方的博客文章 - {{issue.title}}">
+    <meta property="og:description" content="技术博客文章">
     <meta property="og:type" content="article">
-    <meta property="og:url" content="https://myogg.github.io/Gitblog/articles/article-{{issue.number}}.html">
-    <!-- 使用GitHub的OpenGraph服务 -->
-    <meta property="og:image" content="https://opengraph.githubassets.com/myogg/Gitblog/issues/{{issue.number}}">
+    <meta property="og:url" content="https://134688.xyz/articles/article-{{issue.number}}.html">
+    
+    <!-- 使用默认图片 -->
+    <meta property="og:image" content="https://134688.xyz/static/og-default.png">
     <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{issue.title}}">
+    
     <meta property="og:site_name" content="北方的博客">
     
-    <!-- Twitter Card Meta Tags -->
+    <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="{{issue.title}}">
-    <meta name="twitter:description" content="北方的博客文章 - {{issue.title}}">
-    <meta name="twitter:image" content="https://opengraph.githubassets.com/myogg/Gitblog/issues/{{issue.number}}">
-    <meta name="twitter:creator" content="@你的Twitter账号">
-    <!-- ========== 新增结束 ========== -->
+    <meta name="twitter:description" content="技术博客文章">
+    <meta name="twitter:image" content="https://134688.xyz/static/og-default.png">
+    <!-- ========== Open Graph结束 ========== -->
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="../static/style.css">
