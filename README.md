@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [GitHub官方的OpenGraph服务为每个Issue都自动生成了OpenGraph图片](https://github.com/myogg/Gitblog/issues/172)--2025-12-31
 - [记录下主业](https://github.com/myogg/Gitblog/issues/171)--2025-12-29
 - [用 Any Router 改代码](https://github.com/myogg/Gitblog/issues/170)--2025-12-29
 - [位于大麦哲伦星系的球状星团](https://github.com/myogg/Gitblog/issues/169)--2025-12-29
 - [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
-- [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
 
 ## 一些记录 (44篇文章)
 - [记录下主业](https://github.com/myogg/Gitblog/issues/171)--2025-12-29
@@ -237,16 +237,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 突发的一些小想法 (9篇文章)
+## 突发的一些小想法 (10篇文章)
+- [GitHub官方的OpenGraph服务为每个Issue都自动生成了OpenGraph图片](https://github.com/myogg/Gitblog/issues/172)--2025-12-31
 - [配置好了Claude code ，准备大干一场](https://github.com/myogg/Gitblog/issues/155)--2025-12-25
 - [修改了博客结构](https://github.com/myogg/Gitblog/issues/124)--2025-12-15
 - [了解xlog](https://github.com/myogg/Gitblog/issues/115)--2025-12-07
 - [增加一個玉米](https://github.com/myogg/Gitblog/issues/114)--2025-12-05
-- [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)--2025-12-03
 
 <details>
-<summary>显示更多 (4篇)</summary>
+<summary>显示更多 (5篇)</summary>
 
+- [不让 AI 写博文](https://github.com/myogg/Gitblog/issues/103)
 - [[ 胡思亂想 ] 吉卜力图片，為什麼](https://github.com/myogg/Gitblog/issues/83)
 - [[ 胡思乱想 ] 算盘打的几里外都能听到响](https://github.com/myogg/Gitblog/issues/58)
 - [[ 胡思乱想 ] 屯洗洁精](https://github.com/myogg/Gitblog/issues/57)
@@ -254,9 +255,8 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## Pinned (3篇文章)
+## Pinned (2篇文章)
 - [完全手搓一个博客](https://github.com/myogg/Gitblog/issues/142)--2025-12-19
-- [使用 GitHub Issues 来写博.有些地區打不開](https://github.com/myogg/Gitblog/issues/110)--2025-12-04
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
 ## TODO
