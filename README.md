@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [2025年最后一天，好运撞了一下腰](https://github.com/myogg/Gitblog/issues/174)--2025-12-31
 - [王勃的《滕王阁序》](https://github.com/myogg/Gitblog/issues/173)--2025-12-31
 - [GitHub官方的OpenGraph服务为每个Issue都自动生成了OpenGraph图片](https://github.com/myogg/Gitblog/issues/172)--2025-12-31
 - [记录下主业](https://github.com/myogg/Gitblog/issues/171)--2025-12-29
 - [用 Any Router 改代码](https://github.com/myogg/Gitblog/issues/170)--2025-12-29
-- [位于大麦哲伦星系的球状星团](https://github.com/myogg/Gitblog/issues/169)--2025-12-29
 
 ## 一些记录 (45篇文章)
 - [王勃的《滕王阁序》](https://github.com/myogg/Gitblog/issues/173)--2025-12-31
@@ -177,16 +177,17 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## blog (53篇文章)
+## blog (54篇文章)
+- [2025年最后一天，好运撞了一下腰](https://github.com/myogg/Gitblog/issues/174)--2025-12-31
 - [用 Any Router 改代码](https://github.com/myogg/Gitblog/issues/170)--2025-12-29
 - [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [測試](https://github.com/myogg/Gitblog/issues/146)--2025-12-20
-- [精彩预告](https://github.com/myogg/Gitblog/issues/143)--2025-12-19
 
 <details>
-<summary>显示更多 (48篇)</summary>
+<summary>显示更多 (49篇)</summary>
 
+- [精彩预告](https://github.com/myogg/Gitblog/issues/143)
 - [ai资讯](https://github.com/myogg/Gitblog/issues/141)
 - [「 胡思乱想 」无无题](https://github.com/myogg/Gitblog/issues/139)
 - [[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞](https://github.com/myogg/Gitblog/issues/137)
