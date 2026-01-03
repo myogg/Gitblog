@@ -130,3 +130,136 @@ footer {
 
 .header-line { display: none; }
 .hidden-articles { display: none; }
+
+/* ========== 文章列表项 ========== */
+.article-item {
+    margin-bottom: 0.8rem;
+}
+
+.article-header {
+    display: flex;
+    align-items: baseline;
+}
+
+/* ========== 文章摘要样式 ========== */
+.article-summary {
+    color: #586069;
+    font-size: 0.9rem;
+    margin: 8px 0 0 70px; /* 与标题对齐（日期宽度约55px + 间距15px） */
+    line-height: 1.6;
+    padding-left: 10px;
+    border-left: 3px solid #e1e4e8;
+}
+
+/* ========== 文章上下文导航 ========== */
+.article-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 50px 0 30px;
+    padding: 20px 0;
+    border-top: 1px solid #e1e4e8;
+    border-bottom: 1px solid #e1e4e8;
+}
+
+.nav-section {
+    flex: 1;
+}
+
+.nav-item.next {
+    text-align: right;
+}
+
+.nav-label {
+    display: block;
+    font-size: 0.85rem;
+    color: #586069;
+    margin-bottom: 8px;
+}
+
+.nav-title {
+    display: block;
+    font-size: 1rem;
+    color: #0366d6;
+    text-decoration: none;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.nav-title:hover {
+    text-decoration: underline;
+}
+
+/* ========== 相关文章 ========== */
+.related-articles {
+    margin: 40px 0;
+    padding: 20px;
+    background: #f6f8fa;
+    border-radius: 6px;
+}
+
+.related-articles h3 {
+    margin: 0 0 15px;
+    font-size: 1.1rem;
+    border-bottom: none;
+}
+
+.related-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.related-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid #e1e4e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 15px;
+}
+
+.related-list li:last-child {
+    border-bottom: none;
+}
+
+.related-list a {
+    color: #0366d6;
+    text-decoration: none;
+    font-weight: 500;
+    flex: 1;
+}
+
+.related-list a:hover {
+    text-decoration: underline;
+}
+
+.related-date {
+    font-size: 0.85rem;
+    color: #586069;
+    white-space: nowrap;
+}
+
+/* ========== 移动端适配 ========== */
+@media (max-width: 768px) {
+    .article-summary {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+
+    .article-navigation {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .nav-item.next {
+        text-align: left;
+    }
+
+    .related-list li {
+        flex-direction: column;
+        gap: 5px;
+        align-items: flex-start;
+    }
+}
+
