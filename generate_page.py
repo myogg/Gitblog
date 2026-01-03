@@ -90,7 +90,7 @@ def find_prev_next_articles(current_issue, all_issues):
 
     return prev_article, next_article
 
-def find_related_articles(current_issue, all_issues, max_count=5):
+def find_related_articles(current_issue, all_issues, max_count=2):
     """基于标签相似度推荐相关文章"""
     current_labels = set(l.name for l in current_issue.labels if l.name.lower() != "pinned")
 
@@ -304,6 +304,10 @@ def main():
 
     print(f"找到 {len(issues)} 個issues")
 
+    # 为所有文章添加摘要字段（必须在使用前添加）
+    for issue in issues:
+        issue.summary = extract_summary(issue.body)
+
     # --- 數據整理 ---
     label_dict = {}
     label_info = {}
@@ -369,10 +373,6 @@ def main():
     print("開始生成文章頁面...")
     for issue in issues:
         generate_article_page(issue, issues, giscus_config)
-
-    # 为所有文章添加摘要字段
-    for issue in issues:
-        issue.summary = extract_summary(issue.body)
 
     # 1. 生成主頁
     print("生成主頁...")
