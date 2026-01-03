@@ -130,9 +130,12 @@
 
         <div style="margin-top: 3rem;">
             <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
-            
+
             <div class="post-date">
                 {{issue.created_at.strftime('%B %d, %Y')}}
+                {% if word_count > 0 %}
+                <span class="word-count"> · 全文约 {{word_count}} 字</span>
+                {% endif %}
             </div>
             
             <!-- 彩色标签 -->
@@ -215,5 +218,77 @@
 
         <footer>© 2025 Designed and developed by Jiang Sheng</footer>
     </div>
+
+    <!-- Lightbox 图片放大 -->
+    <div id="lightbox" class="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script>
+        // 图片点击放大功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxClose = document.querySelector('.lightbox-close');
+
+            // 为文章中所有图片添加点击事件
+            const contentImages = document.querySelectorAll('.content-area img');
+            contentImages.forEach(img => {
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', function() {
+                    lightbox.style.display = 'flex';
+                    lightboxImg.src = this.src;
+                    lightboxImg.alt = this.alt;
+                });
+            });
+
+            // 关闭 Lightbox
+            lightboxClose.addEventListener('click', function() {
+                lightbox.style.display = 'none';
+            });
+
+            // 点击背景关闭
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.style.display = 'none';
+                }
+            });
+
+            // ESC 键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.style.display === 'flex') {
+                    lightbox.style.display = 'none';
+                }
+            });
+
+            // 返回顶部按钮功能
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            // 监听滚动事件
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            // 点击返回顶部
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
 </body>
 </html>
