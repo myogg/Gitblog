@@ -69,6 +69,21 @@ def extract_summary(body):
     # 没有分隔符则不显示摘要
     return None
 
+def calculate_word_count(body):
+    """计算文章字数"""
+    if not body:
+        return 0
+
+    # 移除 Markdown 标记和代码块
+    import re
+    clean_text = re.sub(r'```[\s\S]*?```', '', body)  # 移除代码块
+    clean_text = re.sub(r'`[^`]*`', '', clean_text)   # 移除行内代码
+    clean_text = re.sub(r'[#*`\[\]()!>\-]', '', clean_text)  # 移除 Markdown 标记
+    clean_text = re.sub(r'\n+', ' ', clean_text)  # 移除换行
+    clean_text = clean_text.strip()
+
+    return len(clean_text)
+
 def find_prev_next_articles(current_issue, all_issues):
     """查找上一篇和下一篇文章（按时间排序）"""
     # 过滤掉pinned文章，按创建时间排序（最新的在前）
@@ -257,6 +272,9 @@ def generate_article_page(issue, all_issues, giscus_config=None):
         prev_article, next_article = find_prev_next_articles(issue, all_issues)
         related_articles = find_related_articles(issue, all_issues)
 
+        # 计算字数
+        word_count = calculate_word_count(issue.body)
+
         # 渲染模板
         output = template.render(
             issue=issue,
@@ -265,6 +283,7 @@ def generate_article_page(issue, all_issues, giscus_config=None):
             prev_article=prev_article,
             next_article=next_article,
             related_articles=related_articles,
+            word_count=word_count,
             YEAR=datetime.now().year,
             giscus_config=giscus_config
         )
