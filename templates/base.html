@@ -41,8 +41,15 @@
                 <ul class="article-list">
                     {% for i in issues_list %}
                     <li>
-                        <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
-                        <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
+                        <div class="article-item">
+                            <div class="article-header">
+                                <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
+                                <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
+                            </div>
+                            {% if i.summary %}
+                            <div class="article-summary">{{i.summary}}</div>
+                            {% endif %}
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
