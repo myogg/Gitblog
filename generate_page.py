@@ -175,10 +175,8 @@ def fetch_issues(repo):
     return all_issues
 
 def sort_issues(issue_list):
-    def sort_key(issue):
-        is_pinned = any(l.name.lower() == "pinned" for l in issue.labels)
-        return (0 if is_pinned else 1, -issue.created_at.timestamp())
-    return sorted(issue_list, key=sort_key)
+    """按创建时间倒序排序（最新的在前）"""
+    return sorted(issue_list, key=lambda x: x.created_at, reverse=True)
 
 def generate_search_index(issues):
     """生成搜索索引"""
@@ -313,17 +311,7 @@ def main():
     label_info = {}
     articles_by_year = {}
 
-    # 1. 處理置頂文章
-    pinned_issues = sort_issues([i for i in issues if any(l.name.lower() == "pinned" for l in i.labels)])
-    pinned_ids = {i.number for i in pinned_issues}
-    print(f"找到 {len(pinned_issues)} 個置頂文章")
-
-    # 2. 處理最近文章 (排除置頂)
-    all_sorted_issues = sort_issues(list(issues))
-    recent_issues = [i for i in all_sorted_issues if i.number not in pinned_ids][:5]
-    print(f"顯示 {len(recent_issues)} 個最近文章")
-
-    # 收集所有唯一的标签并生成唯一的 safe_name
+    # 收集所有唯一的标签并生成唯一的 safe_name，同时按年份分组
     existing_safe_names = set()
     for issue in issues:
         year = issue.created_at.strftime('%Y')
@@ -340,6 +328,10 @@ def main():
                     "text_color": get_text_color(label.color),
                     "safe_name": safe_name
                 }
+
+    # 排序每个年份下的文章（按时间倒序）
+    for year in articles_by_year:
+        articles_by_year[year] = sort_issues(articles_by_year[year])
 
     # 排序每個標籤下的文章
     for label in label_dict:
@@ -374,15 +366,12 @@ def main():
     for issue in issues:
         generate_article_page(issue, issues, giscus_config)
 
-    # 1. 生成主頁（时间流显示）
+    # 1. 生成主頁（按年份分组显示）
     print("生成主頁...")
     try:
-        # 按时间排序所有文章（包括置顶，统一显示）
-        all_issues_sorted = sort_issues(list(issues))
-
         index_template = env.get_template('base.html')
         index_html = index_template.render(
-            all_issues=all_issues_sorted,
+            articles_by_year=articles_by_year,
             YEAR=datetime.now().year
         )
         with open("index.html", "w", encoding="utf-8") as f:
