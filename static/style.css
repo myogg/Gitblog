@@ -147,8 +147,7 @@ footer {
     font-size: 0.9rem;
     margin: 8px 0 0 70px; /* 与标题对齐（日期宽度约55px + 间距15px） */
     line-height: 1.6;
-    padding-left: 10px;
-    border-left: 3px solid #e1e4e8;
+    /* 移除引用线和内边距 */
 }
 
 /* ========== 文章上下文导航 ========== */
@@ -243,7 +242,8 @@ footer {
 /* ========== 移动端适配 ========== */
 @media (max-width: 768px) {
     .article-summary {
-        margin-left: 0;
+        /* 手机端保持和标题对齐，不移到日期下方 */
+        margin-left: 70px;
         margin-top: 8px;
     }
 
