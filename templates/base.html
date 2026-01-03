@@ -18,14 +18,15 @@
         </div>
 
         <div id="timeline-container">
-            {% if all_issues %}
-            <div class="timeline-section">
+            {% for year, issues in articles_by_year.items() %}
+            <div class="year-section">
+                <h2 class="year-label">{{year}}年</h2>
                 <ul class="article-list">
-                    {% for i in all_issues %}
+                    {% for i in issues %}
                     <li>
                         <div class="article-item">
                             <div class="article-header">
-                                <span class="article-date">{{i.created_at.strftime('%Y-%m-%d')}}</span>
+                                <span class="article-date">{{i.created_at.strftime('%m-%d')}}</span>
                                 <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
                             </div>
                             {% if i.summary %}
@@ -36,7 +37,7 @@
                     {% endfor %}
                 </ul>
             </div>
-            {% endif %}
+            {% endfor %}
         </div>
 
         <footer>© {{YEAR}} Designed and developed by Jiang Sheng</footer>
