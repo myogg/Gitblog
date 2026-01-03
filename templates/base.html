@@ -10,40 +10,22 @@
 <body>
     <div class="markdown-body">
         <h1 class="page-title">北方的博客</h1>
-        
-        <div class="nav-links" style="display: flex; justify-content: space-between; align-items: center;">
-            <div>
-                <a href="index.html">首頁</a>
-                <a href="archives.html">歸檔</a>
-                <a href="search.html">搜索</a>
-                <a href="about.html">關於</a>
-            </div>
-            <!-- RSS链接已移除 -->
+
+        <div class="nav-links">
+            <a href="index.html">首頁</a>
+            <a href="search.html">搜索</a>
+            <a href="about.html">關於</a>
         </div>
 
-        <div class="top-tags-bar">
-            <div class="filter-controls">
-                <span class="clear-filter" id="clear-filter" onclick="clearFilter()">清除篩選 ×</span>
-            </div>
-            <div class="tags-container">
-                {% for name, info in label_info.items() %}
-                <span class="tag" 
-                      style="background-color: #{{info.color}}; color: {{info.text_color}}; border: none; padding: 2px 10px; border-radius: 4px;"
-                      data-label="{{info.safe_name}}" onclick="filterByLabel('{{info.safe_name}}')">
-                    {{name}}
-                </span>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div id="categories-container">
-            {% macro render_list(issues_list) %}
+        <div id="timeline-container">
+            {% if all_issues %}
+            <div class="timeline-section">
                 <ul class="article-list">
-                    {% for i in issues_list %}
+                    {% for i in all_issues %}
                     <li>
                         <div class="article-item">
                             <div class="article-header">
-                                <span class="article-date">{{i.created_at.strftime('%m/%d')}}</span>
+                                <span class="article-date">{{i.created_at.strftime('%Y-%m-%d')}}</span>
                                 <a href="articles/article-{{i.number}}.html" class="article-title-link">{{i.title}}</a>
                             </div>
                             {% if i.summary %}
@@ -53,39 +35,11 @@
                     </li>
                     {% endfor %}
                 </ul>
-            {% endmacro %}
-
-            {% if pinned_issues %}
-            <div class="category-section">
-                <h2 class="section-label">置頂文章</h2>
-                {{ render_list(pinned_issues) }}
             </div>
             {% endif %}
-
-            {% if recent_issues %}
-            <div class="category-section">
-                <h2 class="section-label">最近文章</h2>
-                {{ render_list(recent_issues) }}
-            </div>
-            {% endif %}
-
-            {% for label, items in label_dict.items() %}
-            <div class="category-section" data-label="{{label_info[label].safe_name}}">
-                <h2 class="section-label">{{label}} <small>{{items|length}}</small></h2>
-                {{ render_list(items[:MAX_PER_CATEGORY]) }}
-
-                {% if items|length > MAX_PER_CATEGORY %}
-                <div id="hidden-{{label_info[label].safe_name}}-hidden" class="hidden-articles">
-                    {{ render_list(items[MAX_PER_CATEGORY:]) }}
-                </div>
-                <button class="show-more-btn" onclick="toggleMore('{{label_info[label].safe_name}}-hidden')" id="btn-{{label_info[label].safe_name}}-hidden">MORE</button>
-                {% endif %}
-            </div>
-            {% endfor %}
         </div>
-        
-        <footer>© 2026 Designed and developed by Jiang Sheng</footer>
+
+        <footer>© {{YEAR}} Designed and developed by Jiang Sheng</footer>
     </div>
-    <script src="static/script.js"></script>
 </body>
 </html>
