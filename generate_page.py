@@ -56,6 +56,65 @@ def generate_safe_name(label_name, existing_names=None):
 
     return safe
 
+def extract_summary(body):
+    """提取手动设置的文章摘要（仅支持 <!-- more --> 分隔符）"""
+    if not body:
+        return None
+
+    # 检查是否有手动摘要分隔符
+    if "<!-- more -->" in body:
+        summary = body.split("<!-- more -->")[0].strip()
+        return summary if summary else None
+
+    # 没有分隔符则不显示摘要
+    return None
+
+def find_prev_next_articles(current_issue, all_issues):
+    """查找上一篇和下一篇文章（按时间排序）"""
+    # 过滤掉pinned文章，按创建时间排序（最新的在前）
+    sorted_issues = sorted(
+        [i for i in all_issues if not any(l.name.lower() == "pinned" for l in i.labels)],
+        key=lambda x: x.created_at,
+        reverse=True
+    )
+
+    try:
+        current_index = next(i for i, issue in enumerate(sorted_issues) if issue.number == current_issue.number)
+    except StopIteration:
+        return None, None
+
+    # 上一篇 = 时间更早的 (索引+1)
+    prev_article = sorted_issues[current_index + 1] if current_index + 1 < len(sorted_issues) else None
+    # 下一篇 = 时间更晚的 (索引-1)
+    next_article = sorted_issues[current_index - 1] if current_index - 1 >= 0 else None
+
+    return prev_article, next_article
+
+def find_related_articles(current_issue, all_issues, max_count=5):
+    """基于标签相似度推荐相关文章"""
+    current_labels = set(l.name for l in current_issue.labels if l.name.lower() != "pinned")
+
+    if not current_labels:
+        return []
+
+    # 计算每篇文章的相似度分数
+    related = []
+    for issue in all_issues:
+        if issue.number == current_issue.number:
+            continue
+
+        issue_labels = set(l.name for l in issue.labels if l.name.lower() != "pinned")
+
+        # 计算标签交集数量作为相似度
+        common_labels = current_labels & issue_labels
+        if common_labels:
+            score = len(common_labels)
+            related.append((issue, score))
+
+    # 按相似度排序（相同分数按时间倒序），取前max_count篇
+    related.sort(key=lambda x: (x[1], x[0].created_at), reverse=True)
+    return [issue for issue, score in related[:max_count]]
+
 def login():
     if not GITHUB_TOKEN:
         print("Error: G_TT token not found.")
@@ -151,7 +210,7 @@ def generate_search_index(issues):
 
     return search_data
 
-def generate_article_page(issue, giscus_config=None):
+def generate_article_page(issue, all_issues, giscus_config=None):
     """生成文章页面"""
     try:
         os.makedirs(ARTICLES_DIR, exist_ok=True)
@@ -194,11 +253,18 @@ def generate_article_page(issue, giscus_config=None):
         if not giscus_config.get('repo_id'):
             print(f"⚠️ 文章 #{issue.number}: Giscus repo_id 未配置，评论系统将不可用")
 
+        # 查找上下文和相关文章
+        prev_article, next_article = find_prev_next_articles(issue, all_issues)
+        related_articles = find_related_articles(issue, all_issues)
+
         # 渲染模板
         output = template.render(
             issue=issue,
             content=html_content,
             labels_data=labels_data,
+            prev_article=prev_article,
+            next_article=next_article,
+            related_articles=related_articles,
             YEAR=datetime.now().year,
             giscus_config=giscus_config
         )
@@ -302,7 +368,11 @@ def main():
     # --- 生成文章頁面 ---
     print("開始生成文章頁面...")
     for issue in issues:
-        generate_article_page(issue, giscus_config)
+        generate_article_page(issue, issues, giscus_config)
+
+    # 为所有文章添加摘要字段
+    for issue in issues:
+        issue.summary = extract_summary(issue.body)
 
     # 1. 生成主頁
     print("生成主頁...")
