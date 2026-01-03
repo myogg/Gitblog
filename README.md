@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [致我们70后](https://github.com/myogg/Gitblog/issues/177)--2026-01-03
 - [該吃就吃，該喝就喝](https://github.com/myogg/Gitblog/issues/176)--2026-01-01
 - [2026，新年快樂！平安喜樂，所求皆所願](https://github.com/myogg/Gitblog/issues/175)--2025-12-31
 - [2025年最后一天，好运撞了一下腰](https://github.com/myogg/Gitblog/issues/174)--2025-12-31
 - [王勃的《滕王阁序》](https://github.com/myogg/Gitblog/issues/173)--2025-12-31
-- [GitHub官方的OpenGraph服务为每个Issue都自动生成了OpenGraph图片](https://github.com/myogg/Gitblog/issues/172)--2025-12-31
 
 ## 一些记录 (45篇文章)
 - [王勃的《滕王阁序》](https://github.com/myogg/Gitblog/issues/173)--2025-12-31
@@ -177,16 +177,17 @@ My personal blog using issues and GitHub Actions
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
 
-## blog (56篇文章)
+## blog (57篇文章)
+- [致我们70后](https://github.com/myogg/Gitblog/issues/177)--2026-01-03
 - [該吃就吃，該喝就喝](https://github.com/myogg/Gitblog/issues/176)--2026-01-01
 - [2026，新年快樂！平安喜樂，所求皆所願](https://github.com/myogg/Gitblog/issues/175)--2025-12-31
 - [2025年最后一天，好运撞了一下腰](https://github.com/myogg/Gitblog/issues/174)--2025-12-31
 - [用 Any Router 改代码](https://github.com/myogg/Gitblog/issues/170)--2025-12-29
-- [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)--2025-12-26
 
 <details>
-<summary>显示更多 (51篇)</summary>
+<summary>显示更多 (52篇)</summary>
 
+- [增加了搜索页和评论功能](https://github.com/myogg/Gitblog/issues/157)
 - [执念](https://github.com/myogg/Gitblog/issues/150)
 - [測試](https://github.com/myogg/Gitblog/issues/146)
 - [精彩预告](https://github.com/myogg/Gitblog/issues/143)
