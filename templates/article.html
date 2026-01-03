@@ -221,7 +221,6 @@
 
     <!-- Lightbox 图片放大 -->
     <div id="lightbox" class="lightbox">
-        <span class="lightbox-close">&times;</span>
         <img class="lightbox-content" id="lightbox-img">
     </div>
 
@@ -237,7 +236,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             const lightbox = document.getElementById('lightbox');
             const lightboxImg = document.getElementById('lightbox-img');
-            const lightboxClose = document.querySelector('.lightbox-close');
 
             // 为文章中所有图片添加点击事件
             const contentImages = document.querySelectorAll('.content-area img');
@@ -248,11 +246,6 @@
                     lightboxImg.src = this.src;
                     lightboxImg.alt = this.alt;
                 });
-            });
-
-            // 关闭 Lightbox
-            lightboxClose.addEventListener('click', function() {
-                lightbox.style.display = 'none';
             });
 
             // 点击背景关闭
