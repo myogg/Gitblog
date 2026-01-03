@@ -69,21 +69,6 @@ def extract_summary(body):
     # 没有分隔符则不显示摘要
     return None
 
-def calculate_word_count(body):
-    """计算文章字数"""
-    if not body:
-        return 0
-
-    # 移除 Markdown 标记和代码块
-    import re
-    clean_text = re.sub(r'```[\s\S]*?```', '', body)  # 移除代码块
-    clean_text = re.sub(r'`[^`]*`', '', clean_text)   # 移除行内代码
-    clean_text = re.sub(r'[#*`\[\]()!>\-]', '', clean_text)  # 移除 Markdown 标记
-    clean_text = re.sub(r'\n+', ' ', clean_text)  # 移除换行
-    clean_text = clean_text.strip()
-
-    return len(clean_text)
-
 def find_prev_next_articles(current_issue, all_issues):
     """查找上一篇和下一篇文章（按时间排序）"""
     # 过滤掉pinned文章，按创建时间排序（最新的在前）
@@ -272,9 +257,6 @@ def generate_article_page(issue, all_issues, giscus_config=None):
         prev_article, next_article = find_prev_next_articles(issue, all_issues)
         related_articles = find_related_articles(issue, all_issues)
 
-        # 计算字数
-        word_count = calculate_word_count(issue.body)
-
         # 渲染模板
         output = template.render(
             issue=issue,
@@ -283,7 +265,6 @@ def generate_article_page(issue, all_issues, giscus_config=None):
             prev_article=prev_article,
             next_article=next_article,
             related_articles=related_articles,
-            word_count=word_count,
             YEAR=datetime.now().year,
             giscus_config=giscus_config
         )
@@ -393,16 +374,15 @@ def main():
     for issue in issues:
         generate_article_page(issue, issues, giscus_config)
 
-    # 1. 生成主頁
+    # 1. 生成主頁（时间流显示）
     print("生成主頁...")
     try:
+        # 按时间排序所有文章（包括置顶，统一显示）
+        all_issues_sorted = sort_issues(list(issues))
+
         index_template = env.get_template('base.html')
         index_html = index_template.render(
-            pinned_issues=pinned_issues,
-            recent_issues=recent_issues,
-            label_dict=label_dict,
-            label_info=label_info,
-            MAX_PER_CATEGORY=MAX_PER_CATEGORY,
+            all_issues=all_issues_sorted,
             YEAR=datetime.now().year
         )
         with open("index.html", "w", encoding="utf-8") as f:
@@ -411,27 +391,7 @@ def main():
     except Exception as e:
         print(f"❌ 生成主頁失敗: {e}")
 
-    # 2. 生成歸檔頁
-    if os.path.exists('templates/archives.html'):
-        print("生成歸檔頁...")
-        try:
-            archive_template = env.get_template('archives.html')
-            archive_html = archive_template.render(
-                sorted_years=sorted_years,
-                articles_by_year=articles_by_year,
-                label_dict=label_dict,
-                label_info=label_info,
-                YEAR=datetime.now().year
-            )
-            with open("archives.html", "w", encoding="utf-8") as f:
-                f.write(archive_html)
-            print("✓ 歸檔頁已生成")
-        except Exception as e:
-            print(f"⚠️ 生成歸檔頁失敗: {e}")
-    else:
-        print("⏭️ 跳過歸檔頁生成 (模板不存在)")
-
-    # 3. 生成搜索頁
+    # 2. 生成搜索頁
     if os.path.exists('templates/search.html'):
         print("生成搜索頁...")
         try:
@@ -448,7 +408,7 @@ def main():
     else:
         print("⏭️ 跳過搜索頁生成 (模板不存在)")
 
-    # 4. 生成關於頁
+    # 3. 生成關於頁
     if os.path.exists('templates/about.html'):
         print("生成關於頁...")
         try:
