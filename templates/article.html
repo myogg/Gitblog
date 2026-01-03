@@ -149,6 +149,43 @@
             </article>
         </div>
 
+        <!-- 上下文导航 -->
+        {% if prev_article or next_article %}
+        <div class="article-navigation">
+            <div class="nav-section">
+                {% if prev_article %}
+                <div class="nav-item prev">
+                    <span class="nav-label">← 上一篇</span>
+                    <a href="article-{{prev_article.number}}.html" class="nav-title">{{prev_article.title}}</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="nav-section">
+                {% if next_article %}
+                <div class="nav-item next">
+                    <span class="nav-label">下一篇 →</span>
+                    <a href="article-{{next_article.number}}.html" class="nav-title">{{next_article.title}}</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 相关文章 -->
+        {% if related_articles %}
+        <div class="related-articles">
+            <h3>相關文章</h3>
+            <ul class="related-list">
+                {% for article in related_articles %}
+                <li>
+                    <a href="article-{{article.number}}.html">{{article.title}}</a>
+                    <span class="related-date">{{article.created_at.strftime('%Y-%m-%d')}}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
         <!-- Giscus评论区 - 直接显示 -->
         <div class="giscus-section">
             <h3>💬 留言區</h3>
