@@ -40,12 +40,14 @@
     <meta name="twitter:image" content="https://134688.xyz/static/og-default.png">
     <!-- ========== Open Graph结束 ========== -->
 
-    <!-- Work Sans 字体 -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Work Sans 字体 - 使用国内CDN加速 -->
+    <link rel="preconnect" href="https://fonts.loli.net">
+    <link href="https://fonts.loli.net/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <!-- GitHub Markdown CSS - 使用jsDelivr国内加速 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <!-- Waline 样式 - 使用国内CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.css">
     <link rel="stylesheet" href="../static/style.css">
     <style>
         /* GitHub标签样式 */
@@ -67,14 +69,14 @@
             font-weight: 600;
         }
 
-        /* Giscus评论区样式 - 直接显示 */
-        .giscus-section {
+        /* Waline评论区样式 */
+        .comment-section {
             margin-top: 4rem;
             padding-top: 3rem;
             border-top: 1px solid #f0f0f0;
         }
 
-        .giscus-section h3 {
+        .comment-section h3 {
             font-size: 0.9rem;
             color: #bbb;
             font-weight: 500;
@@ -85,12 +87,191 @@
             border: none;
         }
 
-        .giscus-frame {
+        #waline-container {
             width: 100%;
-            border: none;
-            min-height: 250px;
-            border-radius: 8px;
-            overflow: hidden;
+        }
+
+        /* Waline 极简风格定制 */
+        .wl-container {
+            font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+        }
+
+        /* 评论框样式 */
+        .wl-editor {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        .wl-editor:focus-within {
+            border-color: #0366d6 !important;
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1) !important;
+        }
+
+        /* 输入框 */
+        .wl-editor textarea {
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
+            color: #1a1a1a !important;
+        }
+
+        /* 按钮样式 */
+        .wl-btn {
+            background: #ffffff !important;
+            color: #1a1a1a !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+            box-shadow: none !important;
+        }
+
+        .wl-btn:hover {
+            background: #f6f8fa !important;
+            border-color: #0366d6 !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .wl-btn.primary {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border-color: #000000 !important;
+        }
+
+        .wl-btn.primary:hover {
+            background: #1a1a1a !important;
+            border-color: #1a1a1a !important;
+        }
+
+        /* 信息输入框 */
+        .wl-input {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            padding: 8px 12px !important;
+            font-size: 0.9rem !important;
+            background: #ffffff !important;
+            transition: all 0.2s !important;
+        }
+
+        .wl-input:focus {
+            border-color: #0366d6 !important;
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* 评论列表样式 */
+        .wl-card {
+            border: none !important;
+            border-bottom: 1px solid #f0f0f0 !important;
+            border-radius: 0 !important;
+            padding: 20px 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .wl-card:last-child {
+            border-bottom: none !important;
+        }
+
+        /* 评论者信息 */
+        .wl-user {
+            font-weight: 600 !important;
+            color: #1a1a1a !important;
+            font-size: 0.95rem !important;
+        }
+
+        /* 评论时间 */
+        .wl-time {
+            font-size: 0.85rem !important;
+            color: #666 !important;
+        }
+
+        /* 评论内容 */
+        .wl-content {
+            font-size: 0.95rem !important;
+            line-height: 1.7 !important;
+            color: #1a1a1a !important;
+            margin-top: 10px !important;
+        }
+
+        .wl-content p {
+            margin: 0.5em 0 !important;
+        }
+
+        /* 回复按钮 */
+        .wl-reply,
+        .wl-like {
+            color: #666 !important;
+            font-size: 0.85rem !important;
+            transition: color 0.2s !important;
+        }
+
+        .wl-reply:hover,
+        .wl-like:hover {
+            color: #000 !important;
+        }
+
+        /* 浏览量统计 */
+        .wl-pageview {
+            font-size: 0.85rem !important;
+            color: #666 !important;
+        }
+
+        /* 表情选择器 */
+        .wl-panel {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* 加载动画 */
+        .wl-loading {
+            color: #666 !important;
+        }
+
+        /* 分页按钮 */
+        .wl-pagination button {
+            background: #ffffff !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            color: #1a1a1a !important;
+            font-weight: 500 !important;
+        }
+
+        .wl-pagination button:hover {
+            background: #f6f8fa !important;
+            border-color: #0366d6 !important;
+        }
+
+        .wl-pagination button.active {
+            background: #000000 !important;
+            border-color: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        /* 头像样式 */
+        .wl-avatar {
+            border-radius: 50% !important;
+            border: 2px solid #f0f0f0 !important;
+        }
+
+        /* 移除版权信息的 margin */
+        .wl-power {
+            display: none !important;
+        }
+
+        /* 表情反应 */
+        .wl-reaction {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            padding: 8px 12px !important;
+            transition: all 0.2s !important;
+        }
+
+        .wl-reaction:hover {
+            background: #f6f8fa !important;
+            border-color: #0366d6 !important;
         }
 
         /* 按钮样式 */
@@ -153,24 +334,10 @@
             </article>
         </div>
 
-        <!-- Giscus评论区 - 直接显示 -->
-        <div class="giscus-section">
+        <!-- Waline评论区 -->
+        <div class="comment-section">
             <h3>💬 留言區</h3>
-            <script src="https://giscus.app/client.js"
-                data-repo="myogg/Gitblog"
-                data-repo-id="R_kgDONsRqQg"
-                data-category="Announcements"
-                data-category-id="DIC_kwDONsRqQs4C0PCO"
-                data-mapping="pathname"
-                data-strict="0"
-                data-reactions-enabled="1"
-                data-emit-metadata="0"
-                data-input-position="bottom"
-                data-theme="preferred_color_scheme"
-                data-lang="zh-TW"
-                crossorigin="anonymous"
-                async>
-            </script>
+            <div id="waline-container"></div>
         </div>
 
         <!-- 上下文导航 -->
@@ -248,6 +415,30 @@
                     behavior: 'smooth'
                 });
             });
+        });
+    </script>
+
+    <!-- Waline 评论系统 - 使用国内CDN -->
+    <script type="module">
+        import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.js';
+
+        init({
+            el: '#waline-container',
+            serverURL: 'https://waline.134688.xyz',
+            lang: 'zh-TW',
+            locale: {
+                placeholder: '留下你的足跡吧～ (支持 Markdown 語法)',
+            },
+            login: 'disable',
+            dark: false,
+            meta: ['nick'],
+            requiredMeta: ['nick'],
+            pageSize: 10,
+            wordLimit: 0,
+            pageview: true,
+            comment: true,
+            copyright: false,
+            reaction: true,
         });
     </script>
 </body>
