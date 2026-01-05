@@ -261,7 +261,7 @@ def generate_search_index(issues):
 
     return search_data
 
-def generate_article_page(issue, all_issues, giscus_config=None):
+def generate_article_page(issue, all_issues, giscus_config=None, label_info=None):
     """生成文章页面"""
     try:
         os.makedirs(ARTICLES_DIR, exist_ok=True)
@@ -283,6 +283,9 @@ def generate_article_page(issue, all_issues, giscus_config=None):
             if l.name.lower() != "pinned":
                 safe_name = generate_safe_name(l.name, existing_safe_names)
                 existing_safe_names.add(safe_name)
+                # 尝试从 label_info 获取 safe_name
+                if label_info and l.name in label_info:
+                    safe_name = label_info[l.name].get('safe_name', safe_name)
                 labels_data.append({
                     "name": l.name,
                     "color": l.color,
@@ -290,8 +293,13 @@ def generate_article_page(issue, all_issues, giscus_config=None):
                     "safe_name": safe_name
                 })
 
-        # 处理内容标签（使用简单的样式，没有GitHub的颜色）
-        content_tags_data = [{"name": tag} for tag in content_tags]
+        # 处理内容标签（从 label_info 获取 safe_name）
+        content_tags_data = []
+        for tag in content_tags:
+            tag_data = {"name": tag}
+            if label_info and tag in label_info:
+                tag_data["safe_name"] = label_info[tag].get('safe_name')
+            content_tags_data.append(tag_data)
 
         # 默认的Giscus配置
         default_giscus_config = {
@@ -421,10 +429,69 @@ def main():
         print("  GISCUS_REPO_ID=你的repo_id")
         print("  GISCUS_CATEGORY_ID=你的category_id")
 
-    # --- 生成文章頁面 ---
+    # --- 收集内容标签（在生成文章前） ---
+    print("收集內容標籤...")
+    content_tags_dict = {}  # {tag_name: [issue1, issue2, ...]}
+    for issue in issues:
+        content_tags, _ = extract_content_tags(issue.body)
+        for tag in content_tags:
+            if tag not in content_tags_dict:
+                content_tags_dict[tag] = []
+            content_tags_dict[tag].append(issue)
+
+    # 为内容标签生成 safe_name（添加到 label_info 中）
+    for tag in content_tags_dict:
+        if tag not in label_info:  # 避免与GitHub标签重名
+            safe_name = generate_safe_name(tag, existing_safe_names)
+            existing_safe_names.add(safe_name)
+            label_info[tag] = {
+                "color": None,  # 内容标签没有颜色
+                "text_color": None,
+                "safe_name": safe_name
+            }
+        # 排序该标签下的文章
+        content_tags_dict[tag] = sort_issues(content_tags_dict[tag])
+
+    print(f"找到 {len(content_tags_dict)} 個內容標籤")
+
+    # --- 生成文章頁面（传入 label_info） ---
     print("開始生成文章頁面...")
     for issue in issues:
-        generate_article_page(issue, issues, giscus_config)
+        generate_article_page(issue, issues, giscus_config, label_info)
+
+    # --- 生成标签页面 ---
+    print("開始生成標籤頁面...")
+    os.makedirs("tags", exist_ok=True)
+
+    # 合并所有标签
+    all_tags_dict = {**label_dict, **content_tags_dict}
+
+    for tag_name, tag_articles in all_tags_dict.items():
+        try:
+            tag_template = env.get_template('tag.html')
+            tag_info = label_info.get(tag_name, {})
+            tag_html = tag_template.render(
+                tag_name=tag_name,
+                tag_color=tag_info.get('color'),
+                articles=tag_articles,
+                YEAR=datetime.now().year
+            )
+
+            safe_name = tag_info.get('safe_name', generate_safe_name(tag_name, set()))
+            output_file = os.path.join("tags", f"{safe_name}.html")
+            with open(output_file, "w", encoding="utf-8") as f:
+                f.write(tag_html)
+            print(f"✓ 生成標籤頁: {tag_name} ({len(tag_articles)} 篇文章)")
+        except Exception as e:
+            print(f"❌ 生成標籤頁 '{tag_name}' 失敗: {e}")
+
+    # --- 生成标签总览页面 --- (已禁用，用户不需要导航栏标签入口)
+    # print("生成標籤總覽頁...")
+    # try:
+    #     tags_template = env.get_template('tags.html')
+    #     ...
+    # except Exception as e:
+    #     print(f"❌ 生成標籤總覽頁失敗: {e}")
 
     # 1. 生成主頁（按年份分组显示）
     print("生成主頁...")
