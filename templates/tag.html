@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>标签: {{tag_name}} - GitBlog</title>
+    <link rel="stylesheet" href="../static/style.css">
+    <style>
+        .tag-header {
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .tag-title {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .tag-count {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #666;
+            text-decoration: none;
+        }
+        .back-link:hover {
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+    <div style="max-width: 50rem; margin: 0 auto; padding: 2rem 1rem;">
+        <div class="nav-links">
+            <a href="../index.html">首頁</a>
+            <a href="../search.html">搜索</a>
+            <a href="../about.html">關於</a>
+        </div>
+
+        <a href="../index.html" class="back-link">← 返回首页</a>
+
+        <div class="tag-header">
+            <h1 class="tag-title">
+                {% if tag_color %}
+                <span class="tag" style="background-color: #{{tag_color}}">{{tag_name}}</span>
+                {% else %}
+                <span class="content-tag">{{tag_name}}</span>
+                {% endif %}
+            </h1>
+            <div class="tag-count">共 {{articles|length}} 篇文章</div>
+        </div>
+
+        <ul class="article-list">
+            {% for article in articles %}
+            <li>
+                <span class="article-date">{{article.created_at.strftime('%m-%d')}}</span>
+                <a href="../articles/article-{{article.number}}.html" class="article-title-link">
+                    {{article.title}}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <footer style="margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #e0e0e0; text-align: center; color: #999; font-size: 0.85rem;">
+            <p>© {{YEAR}} GitBlog. Powered by GitHub Issues.</p>
+        </footer>
+    </div>
+</body>
+</html>

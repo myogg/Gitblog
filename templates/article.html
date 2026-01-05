@@ -320,22 +320,32 @@
                 {{issue.created_at.strftime('%B %d, %Y')}}
             </div>
 
-            <!-- GitHub标签（彩色） -->
+            <!-- GitHub标签（彩色，可点击） -->
             <div style="margin-bottom: 10px;">
                 {% for l in labels_data %}
-                <span class="tag" style="background-color: #{{l.color}}">
-                    {{l.name}}
-                </span>
+                <a href="../tags/{{l.safe_name}}.html" style="text-decoration: none;">
+                    <span class="tag" style="background-color: #{{l.color}}; cursor: pointer;">
+                        {{l.name}}
+                    </span>
+                </a>
                 {% endfor %}
             </div>
 
-            <!-- 内容标签（简单样式） -->
+            <!-- 内容标签（简单样式，可点击） -->
             {% if content_tags %}
             <div style="margin-bottom: 30px;">
                 {% for tag in content_tags %}
+                {% if tag.safe_name %}
+                <a href="../tags/{{tag.safe_name}}.html" style="text-decoration: none;">
+                    <span class="content-tag" style="cursor: pointer;">
+                        {{tag.name}}
+                    </span>
+                </a>
+                {% else %}
                 <span class="content-tag">
                     {{tag.name}}
                 </span>
+                {% endif %}
                 {% endfor %}
             </div>
             {% else %}
