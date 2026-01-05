@@ -42,6 +42,20 @@ body {
     border: none !important;
 }
 
+/* 内容标签样式 (从文章内容提取的标签) */
+.content-tag {
+    display: inline-block;
+    border-radius: 3px !important;
+    padding: 2px 8px !important;
+    font-size: 0.75rem !important;
+    white-space: nowrap;
+    background-color: #f0f0f0 !important;
+    color: #666 !important;
+    border: 1px solid #ddd !important;
+    margin-right: 6px;
+    margin-bottom: 4px;
+}
+
 /* 文章列表 */
 .article-list { list-style: none !important; padding: 0 !important; }
 .article-list li {
