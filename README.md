@@ -38,22 +38,23 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
 - [更改了评论系统](https://github.com/myogg/Gitblog/issues/180)--2026-01-04
 - [功能越來越多，代碼越來越長](https://github.com/myogg/Gitblog/issues/178)--2026-01-03
 - [致我们70后](https://github.com/myogg/Gitblog/issues/177)--2026-01-03
 - [該吃就吃，該喝就喝](https://github.com/myogg/Gitblog/issues/176)--2026-01-01
-- [2026，新年快樂！平安喜樂，所求皆所願](https://github.com/myogg/Gitblog/issues/175)--2025-12-31
 
-## 一些记录 (46篇文章)
+## 一些记录 (47篇文章)
+- [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
 - [更改了评论系统](https://github.com/myogg/Gitblog/issues/180)--2026-01-04
 - [王勃的《滕王阁序》](https://github.com/myogg/Gitblog/issues/173)--2025-12-31
 - [记录下主业](https://github.com/myogg/Gitblog/issues/171)--2025-12-29
 - [《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币](https://github.com/myogg/Gitblog/issues/166)--2025-12-28
-- [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 
 <details>
-<summary>显示更多 (41篇)</summary>
+<summary>显示更多 (42篇)</summary>
 
+- [直播源](https://github.com/myogg/Gitblog/issues/164)
 - [Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步](https://github.com/myogg/Gitblog/issues/161)
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)
 - [《使命召唤》联合创始人 Vince Zampella 车祸身亡](https://github.com/myogg/Gitblog/issues/151)
