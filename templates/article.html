@@ -319,15 +319,28 @@
             <div class="post-date">
                 {{issue.created_at.strftime('%B %d, %Y')}}
             </div>
-            
-            <!-- 彩色标签 -->
-            <div style="margin-bottom: 30px;">
+
+            <!-- GitHub标签（彩色） -->
+            <div style="margin-bottom: 10px;">
                 {% for l in labels_data %}
                 <span class="tag" style="background-color: #{{l.color}}">
                     {{l.name}}
                 </span>
                 {% endfor %}
             </div>
+
+            <!-- 内容标签（简单样式） -->
+            {% if content_tags %}
+            <div style="margin-bottom: 30px;">
+                {% for tag in content_tags %}
+                <span class="content-tag">
+                    {{tag.name}}
+                </span>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="margin-bottom: 20px;"></div>
+            {% endif %}
 
             <article class="content-area">
                 {{content|safe}}
