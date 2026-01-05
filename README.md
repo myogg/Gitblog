@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [Telegram更新，进一步优化Liquid Glass效果](https://github.com/myogg/Gitblog/issues/182)--2026-01-05
 - [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
 - [更改了评论系统](https://github.com/myogg/Gitblog/issues/180)--2026-01-04
 - [功能越來越多，代碼越來越長](https://github.com/myogg/Gitblog/issues/178)--2026-01-03
 - [致我们70后](https://github.com/myogg/Gitblog/issues/177)--2026-01-03
-- [該吃就吃，該喝就喝](https://github.com/myogg/Gitblog/issues/176)--2026-01-01
 
 ## 一些记录 (47篇文章)
 - [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
@@ -123,16 +123,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## notes (19篇文章)
+## notes (20篇文章)
+- [Telegram更新，进一步优化Liquid Glass效果](https://github.com/myogg/Gitblog/issues/182)--2026-01-05
 - [发文即锁定](https://github.com/myogg/Gitblog/issues/165)--2025-12-27
 - [直播源](https://github.com/myogg/Gitblog/issues/164)--2025-12-27
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
-- [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)--2025-12-19
 
 <details>
-<summary>显示更多 (14篇)</summary>
+<summary>显示更多 (15篇)</summary>
 
+- [[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章](https://github.com/myogg/Gitblog/issues/138)
 - [谷歌推出 Android 紧急视频直播功能](https://github.com/myogg/Gitblog/issues/117)
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)
 - [ClouDNS 免費二級域名](https://github.com/myogg/Gitblog/issues/109)
