@@ -56,6 +56,53 @@ def generate_safe_name(label_name, existing_names=None):
 
     return safe
 
+def extract_content_tags(body):
+    """从文章内容中提取标签（不创建GitHub Label）
+
+    支持两种格式：
+    1. 简单格式: tags: Python, AI, 机器学习
+    2. YAML frontmatter:
+       ---
+       tags: Python, AI, 机器学习
+       ---
+
+    返回: (标签列表, 清理后的内容)
+    """
+    if not body:
+        return [], body
+
+    tags = []
+    cleaned_body = body
+
+    # 方式1: 检查YAML frontmatter格式
+    yaml_pattern = r'^---\s*\n(.*?)\n---\s*\n'
+    yaml_match = re.match(yaml_pattern, body, re.DOTALL)
+
+    if yaml_match:
+        frontmatter = yaml_match.group(1)
+        # 提取tags行
+        tags_match = re.search(r'tags:\s*(.+)', frontmatter, re.IGNORECASE)
+        if tags_match:
+            tags_str = tags_match.group(1).strip()
+            # 分割标签（支持逗号或中文逗号分隔）
+            tags = [t.strip() for t in re.split(r'[,，]\s*', tags_str) if t.strip()]
+        # 移除frontmatter
+        cleaned_body = re.sub(yaml_pattern, '', body, count=1)
+
+    # 方式2: 检查简单格式（文章开头的tags: ...）
+    else:
+        simple_pattern = r'^tags:\s*(.+?)(?:\n|$)'
+        simple_match = re.match(simple_pattern, body, re.IGNORECASE | re.MULTILINE)
+
+        if simple_match:
+            tags_str = simple_match.group(1).strip()
+            # 分割标签
+            tags = [t.strip() for t in re.split(r'[,，]\s*', tags_str) if t.strip()]
+            # 移除tags行
+            cleaned_body = re.sub(simple_pattern, '', body, count=1).lstrip()
+
+    return tags, cleaned_body
+
 def extract_summary(body):
     """提取手动设置的文章摘要（仅支持 <!-- more --> 分隔符）"""
     if not body:
@@ -182,10 +229,16 @@ def generate_search_index(issues):
     """生成搜索索引"""
     search_data = []
     for issue in issues:
+        # 提取内容标签
+        content_tags, cleaned_body = extract_content_tags(issue.body)
+
         # 清理HTML标签，获取纯文本内容
-        clean_content = re.sub(r'<[^>]+>', '', issue.body or "")
+        clean_content = re.sub(r'<[^>]+>', '', cleaned_body or "")
         # 去除多余空格和换行
         clean_content = re.sub(r'\s+', ' ', clean_content).strip()
+
+        # 合并GitHub标签和内容标签
+        all_tags = [label.name for label in issue.labels if label.name.lower() != "pinned"] + content_tags
 
         search_data.append({
             'id': issue.number,
@@ -193,7 +246,7 @@ def generate_search_index(issues):
             'content': clean_content[:500],  # 截取前500字符
             'date': issue.created_at.strftime('%Y-%m-%d'),
             'url': f'articles/article-{issue.number}.html',
-            'tags': [label.name for label in issue.labels if label.name.lower() != "pinned"]
+            'tags': all_tags
         })
 
     # 保存到static目录
@@ -214,13 +267,16 @@ def generate_article_page(issue, all_issues, giscus_config=None):
         os.makedirs(ARTICLES_DIR, exist_ok=True)
         template = env.get_template('article.html')
 
-        # 转换Markdown为HTML
+        # 先提取内容标签
+        content_tags, cleaned_body = extract_content_tags(issue.body)
+
+        # 转换Markdown为HTML（使用清理后的内容）
         html_content = markdown.markdown(
-            issue.body or "暫無內容",
+            cleaned_body or "暫無內容",
             extensions=['extra', 'codehilite', 'tables', 'fenced_code']
         )
 
-        # 处理标签
+        # 处理GitHub标签
         existing_safe_names = set()
         labels_data = []
         for l in issue.labels:
@@ -233,6 +289,9 @@ def generate_article_page(issue, all_issues, giscus_config=None):
                     "text_color": get_text_color(l.color),
                     "safe_name": safe_name
                 })
+
+        # 处理内容标签（使用简单的样式，没有GitHub的颜色）
+        content_tags_data = [{"name": tag} for tag in content_tags]
 
         # 默认的Giscus配置
         default_giscus_config = {
@@ -260,6 +319,7 @@ def generate_article_page(issue, all_issues, giscus_config=None):
             issue=issue,
             content=html_content,
             labels_data=labels_data,
+            content_tags=content_tags_data,
             prev_article=prev_article,
             next_article=next_article,
             related_articles=related_articles,
