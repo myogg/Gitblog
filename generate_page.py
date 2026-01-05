@@ -12,7 +12,7 @@ GITHUB_TOKEN = os.getenv("G_TT")
 REPO_NAME = "myogg/Gitblog"
 MAX_PER_CATEGORY = 5
 CACHE_FILE = "github_cache.json"
-CACHE_DURATION = 3600
+CACHE_DURATION = 21600  # 6小时
 ARTICLES_DIR = "articles"
 
 # 初始化 Jinja2 模板引擎
