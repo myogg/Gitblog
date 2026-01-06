@@ -456,162 +456,31 @@
             background: #a8a8a8;
         }
 
-        /* ========== 图片灯箱样式 ========== */
-        /* 灯箱遮罩层 */
-        .lightbox-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 9999;
-            cursor: zoom-out;
-            animation: fadeIn 0.3s ease;
-        }
-
-        .lightbox-overlay.active {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        /* 灯箱图片容器 */
-        .lightbox-content {
-            position: relative;
-            max-width: 90%;
-            max-height: 90%;
-            animation: zoomIn 0.3s ease;
-        }
-
-        /* 灯箱图片 */
-        .lightbox-image {
-            max-width: 100%;
-            max-height: 90vh;
-            object-fit: contain;
-            border-radius: 4px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        }
-
-        /* 图片标题 */
-        .lightbox-caption {
-            position: absolute;
-            bottom: -40px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: #fff;
-            font-size: 14px;
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.5);
-            border-radius: 4px;
-        }
-
-        /* 关闭按钮 */
-        .lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 30px;
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid #fff;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-            z-index: 10000;
-        }
-
-        .lightbox-close:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
-
-        .lightbox-close::before,
-        .lightbox-close::after {
-            content: '';
-            position: absolute;
-            width: 20px;
-            height: 2px;
-            background: #fff;
-        }
-
-        .lightbox-close::before {
-            transform: rotate(45deg);
-        }
-
-        .lightbox-close::after {
-            transform: rotate(-45deg);
-        }
-
-        /* 加载动画 */
-        .lightbox-loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 50px;
-            height: 50px;
-            border: 4px solid rgba(255, 255, 255, 0.3);
-            border-top-color: #fff;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* 可点击图片样式提示 */
+        /* ========== Medium-zoom 图片样式 ========== */
+        /* 图片可点击提示 */
         .markdown-body .content-area img {
             cursor: zoom-in;
-            transition: transform 0.3s, box-shadow 0.3s;
+            transition: opacity 0.3s, transform 0.3s;
         }
 
         .markdown-body .content-area img:hover {
-            transform: scale(1.02);
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            opacity: 0.9;
+            transform: scale(1.01);
         }
 
-        /* 动画 */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Medium-zoom 放大后的样式 */
+        .medium-zoom-image--opened {
+            cursor: zoom-out;
         }
 
-        @keyframes zoomIn {
-            from {
-                opacity: 0;
-                transform: scale(0.8);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
+        /* Medium-zoom 覆盖层 */
+        .medium-zoom-overlay {
+            z-index: 9998;
         }
 
-        @keyframes spin {
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        /* 移动端优化 */
-        @media (max-width: 768px) {
-            .lightbox-close {
-                top: 10px;
-                right: 10px;
-                width: 36px;
-                height: 36px;
-            }
-
-            .lightbox-caption {
-                font-size: 12px;
-                bottom: -35px;
-            }
-
-            .lightbox-content {
-                max-width: 95%;
-                max-height: 95%;
-            }
+        /* Medium-zoom 图片 */
+        .medium-zoom-image {
+            z-index: 9999;
         }
     </style>
 </head>
@@ -811,97 +680,7 @@
                     });
                 });
             });
-
-            // 图片灯箱功能
-            initImageLightbox();
         });
-
-        // 图片灯箱初始化函数
-        function initImageLightbox() {
-            // 创建灯箱 HTML 结构
-            const lightboxHTML = `
-                <div class="lightbox-overlay" id="lightbox">
-                    <button class="lightbox-close" id="lightbox-close" aria-label="关闭"></button>
-                    <div class="lightbox-content">
-                        <div class="lightbox-loading" id="lightbox-loading"></div>
-                        <img class="lightbox-image" id="lightbox-img" alt="">
-                        <div class="lightbox-caption" id="lightbox-caption"></div>
-                    </div>
-                </div>
-            `;
-
-            // 插入页面
-            document.body.insertAdjacentHTML('beforeend', lightboxHTML);
-
-            // 获取元素
-            const lightbox = document.getElementById('lightbox');
-            const lightboxImg = document.getElementById('lightbox-img');
-            const lightboxCaption = document.getElementById('lightbox-caption');
-            const lightboxLoading = document.getElementById('lightbox-loading');
-            const lightboxClose = document.getElementById('lightbox-close');
-
-            // 获取所有文章内图片
-            const contentImages = document.querySelectorAll('.content-area img');
-
-            // 为每张图片添加点击事件
-            contentImages.forEach(function(img) {
-                img.addEventListener('click', function() {
-                    openLightbox(img.src, img.alt);
-                });
-            });
-
-            // 打开灯箱
-            function openLightbox(src, caption) {
-                lightbox.classList.add('active');
-                lightboxLoading.style.display = 'block';
-                lightboxImg.style.display = 'none';
-                document.body.style.overflow = 'hidden'; // 禁止背景滚动
-
-                // 加载图片
-                const tempImg = new Image();
-                tempImg.onload = function() {
-                    lightboxImg.src = src;
-                    lightboxImg.alt = caption || '';
-                    lightboxCaption.textContent = caption || '';
-                    lightboxCaption.style.display = caption ? 'block' : 'none';
-
-                    lightboxLoading.style.display = 'none';
-                    lightboxImg.style.display = 'block';
-                };
-                tempImg.onerror = function() {
-                    closeLightbox();
-                    alert('图片加载失败');
-                };
-                tempImg.src = src;
-            }
-
-            // 关闭灯箱
-            function closeLightbox() {
-                lightbox.classList.remove('active');
-                document.body.style.overflow = ''; // 恢复滚动
-                lightboxImg.src = '';
-            }
-
-            // 点击关闭按钮
-            lightboxClose.addEventListener('click', function(e) {
-                e.stopPropagation();
-                closeLightbox();
-            });
-
-            // 点击背景关闭
-            lightbox.addEventListener('click', function(e) {
-                if (e.target === lightbox) {
-                    closeLightbox();
-                }
-            });
-
-            // ESC 键关闭
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
-                    closeLightbox();
-                }
-            });
-        }
     </script>
 
     <!-- Waline 评论系统 - 使用国内CDN -->
@@ -925,6 +704,19 @@
             comment: true,
             copyright: false,
             reaction: true,
+        });
+    </script>
+
+    <!-- Medium-zoom 图片缩放 - 使用国内CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    <script>
+        // Medium-zoom 初始化
+        mediumZoom('.content-area img', {
+            margin: 24,
+            background: 'rgba(255, 255, 255, 0.95)',
+            scrollOffset: 0,
+            container: null,
+            template: null
         });
     </script>
 </body>
