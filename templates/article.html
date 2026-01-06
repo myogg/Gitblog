@@ -438,6 +438,27 @@
                     behavior: 'smooth'
                 });
             });
+
+            // 图片懒加载优化：监听图片加载完成
+            const lazyImages = document.querySelectorAll('img.lazyload');
+
+            // 为每个图片添加load事件监听
+            lazyImages.forEach(function(img) {
+                if (img.complete) {
+                    // 图片已经缓存，直接添加loaded类
+                    img.classList.add('loaded');
+                } else {
+                    // 监听图片加载完成
+                    img.addEventListener('load', function() {
+                        img.classList.add('loaded');
+                    });
+                    // 监听图片加载失败
+                    img.addEventListener('error', function() {
+                        img.classList.add('loaded'); // 失败也显示，避免一直透明
+                        console.warn('图片加载失败:', img.src);
+                    });
+                }
+            });
         });
     </script>
 
