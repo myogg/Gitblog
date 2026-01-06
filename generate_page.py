@@ -286,6 +286,82 @@ def generate_search_index(issues):
 
     return search_data
 
+def generate_sitemap(issues):
+    """生成 sitemap.xml"""
+    try:
+        base_url = "https://134688.xyz"
+
+        # XML 头部
+        xml_content = ['<?xml version="1.0" encoding="UTF-8"?>']
+        xml_content.append('<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">')
+
+        # 主页
+        xml_content.append('  <url>')
+        xml_content.append(f'    <loc>{base_url}/</loc>')
+        xml_content.append(f'    <lastmod>{datetime.now().strftime("%Y-%m-%d")}</lastmod>')
+        xml_content.append('    <changefreq>daily</changefreq>')
+        xml_content.append('    <priority>1.0</priority>')
+        xml_content.append('  </url>')
+
+        # 搜索页
+        xml_content.append('  <url>')
+        xml_content.append(f'    <loc>{base_url}/search.html</loc>')
+        xml_content.append(f'    <lastmod>{datetime.now().strftime("%Y-%m-%d")}</lastmod>')
+        xml_content.append('    <changefreq>weekly</changefreq>')
+        xml_content.append('    <priority>0.8</priority>')
+        xml_content.append('  </url>')
+
+        # 关于页
+        xml_content.append('  <url>')
+        xml_content.append(f'    <loc>{base_url}/about.html</loc>')
+        xml_content.append(f'    <lastmod>{datetime.now().strftime("%Y-%m-%d")}</lastmod>')
+        xml_content.append('    <changefreq>monthly</changefreq>')
+        xml_content.append('    <priority>0.7</priority>')
+        xml_content.append('  </url>')
+
+        # 文章页面
+        for issue in issues:
+            xml_content.append('  <url>')
+            xml_content.append(f'    <loc>{base_url}/articles/article-{issue.number}.html</loc>')
+            xml_content.append(f'    <lastmod>{issue.created_at.strftime("%Y-%m-%d")}</lastmod>')
+            xml_content.append('    <changefreq>monthly</changefreq>')
+            xml_content.append('    <priority>0.9</priority>')
+            xml_content.append('  </url>')
+
+        xml_content.append('</urlset>')
+
+        # 写入文件
+        with open("sitemap.xml", "w", encoding="utf-8") as f:
+            f.write('\n'.join(xml_content))
+
+        print(f"✓ Sitemap 已生成: sitemap.xml ({len(issues)} 篇文章)")
+
+    except Exception as e:
+        print(f"❌ 生成 Sitemap 失敗: {e}")
+
+def generate_robots_txt():
+    """生成 robots.txt"""
+    try:
+        robots_content = [
+            "# robots.txt for 134688.xyz",
+            "User-agent: *",
+            "Allow: /",
+            "",
+            "# Sitemap location",
+            "Sitemap: https://134688.xyz/sitemap.xml",
+            "",
+            "# Crawl-delay for polite crawling",
+            "Crawl-delay: 1"
+        ]
+
+        with open("robots.txt", "w", encoding="utf-8") as f:
+            f.write('\n'.join(robots_content))
+
+        print("✓ robots.txt 已生成")
+
+    except Exception as e:
+        print(f"❌ 生成 robots.txt 失敗: {e}")
+
 def generate_article_page(issue, all_issues, giscus_config=None, label_info=None):
     """生成文章页面"""
     try:
@@ -565,6 +641,12 @@ def main():
             print(f"⚠️ 生成關於頁失敗: {e}")
     else:
         print("⏭️ 跳過關於頁生成 (模板不存在)")
+
+    # 4. 生成 SEO 文件
+    print("生成 SEO 文件...")
+    generate_sitemap(issues)
+    generate_robots_txt()
+
 
     # 複製靜態資源
     print("複製靜態資源...")
