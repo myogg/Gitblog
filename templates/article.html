@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{issue.title}} - 北方的博客</title>
-    
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% if issue.summary %}{{issue.summary[:200]}}{% else %}北方的博客 - {{issue.title}}。70后的分享，记录技术、生活和思考。{% endif %}">
+    <meta name="keywords" content="{% for label in labels_data %}{{label.name}}{% if not loop.last %},{% endif %}{% endfor %}{% if content_tags %}{% for tag in content_tags %},{{tag.name}}{% endfor %}{% endif %}">
+    <meta name="author" content="Jiang Sheng">
+
     <!-- ========== Open Graph Meta Tags ========== -->
     <meta property="og:title" content="{{issue.title}}">
     <meta property="og:description" content="{% if issue.summary %}{{issue.summary[:150]}}{% else %}北方的博客 - 70后的分享{% endif %}">
@@ -46,9 +51,63 @@
 
     <!-- GitHub Markdown CSS - 使用jsDelivr国内加速 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <!-- Pygments 代码高亮样式 - github 主题 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pygments-css@1.0.0/github.min.css">
     <!-- Waline 样式 - 使用国内CDN -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.css">
     <link rel="stylesheet" href="../static/style.css">
+
+    <!-- Structured Data - Blog Posting -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "{{issue.title}}",
+        "description": "{% if issue.summary %}{{issue.summary[:200]}}{% else %}{{issue.title}}{% endif %}",
+        "image": "https://134688.xyz/static/og-default.png",
+        "datePublished": "{{issue.created_at.isoformat()}}",
+        "dateModified": "{{issue.created_at.isoformat()}}",
+        "author": {
+            "@type": "Person",
+            "name": "Jiang Sheng",
+            "url": "https://134688.xyz/about.html"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Jiang Sheng"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://134688.xyz/articles/article-{{issue.number}}.html"
+        },
+        "keywords": "{% for label in labels_data %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}{% if content_tags %}{% for tag in content_tags %}, {{tag.name}}{% endfor %}{% endif %}",
+        "articleSection": "{% if labels_data %}{{labels_data[0].name}}{% else %}博客{% endif %}",
+        "inLanguage": "zh-CN"
+    }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首页",
+                "item": "https://134688.xyz/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{issue.title}}",
+                "item": "https://134688.xyz/articles/article-{{issue.number}}.html"
+            }
+        ]
+    }
+    </script>
+
     <style>
         /* GitHub标签样式 */
         .tag {
@@ -301,6 +360,259 @@
             margin: 4rem 0;
             text-align: center;
         }
+
+        /* ========== 代码高亮优化 ========== */
+        /* 代码块容器 */
+        .markdown-body .codehilite,
+        .markdown-body pre {
+            position: relative;
+            background: #f6f8fa !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            padding: 16px !important;
+            margin: 16px 0 !important;
+            overflow-x: auto;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+        }
+
+        /* 行内代码 */
+        .markdown-body code {
+            background: #f6f8fa !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 3px !important;
+            padding: 2px 6px !important;
+            font-size: 0.9em !important;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+        }
+
+        /* 代码块中的代码 */
+        .markdown-body .codehilite code,
+        .markdown-body pre code {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+        }
+
+        /* 代码复制按钮 */
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 12px;
+            font-size: 12px;
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+            color: #586069;
+            font-weight: 500;
+        }
+
+        .codehilite:hover .copy-code-btn,
+        pre:hover .copy-code-btn {
+            opacity: 1;
+        }
+
+        .copy-code-btn:hover {
+            background: #f6f8fa;
+            border-color: #0366d6;
+            color: #0366d6;
+        }
+
+        .copy-code-btn:active {
+            background: #e1e4e8;
+        }
+
+        .copy-code-btn.copied {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        /* 代码块滚动条优化 */
+        .markdown-body .codehilite::-webkit-scrollbar,
+        .markdown-body pre::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .markdown-body .codehilite::-webkit-scrollbar-track,
+        .markdown-body pre::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .markdown-body .codehilite::-webkit-scrollbar-thumb,
+        .markdown-body pre::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .markdown-body .codehilite::-webkit-scrollbar-thumb:hover,
+        .markdown-body pre::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* ========== 图片灯箱样式 ========== */
+        /* 灯箱遮罩层 */
+        .lightbox-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 9999;
+            cursor: zoom-out;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .lightbox-overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* 灯箱图片容器 */
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            animation: zoomIn 0.3s ease;
+        }
+
+        /* 灯箱图片 */
+        .lightbox-image {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        /* 图片标题 */
+        .lightbox-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: #fff;
+            font-size: 14px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+        }
+
+        /* 关闭按钮 */
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid #fff;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            z-index: 10000;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+
+        .lightbox-close::before,
+        .lightbox-close::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+        }
+
+        .lightbox-close::before {
+            transform: rotate(45deg);
+        }
+
+        .lightbox-close::after {
+            transform: rotate(-45deg);
+        }
+
+        /* 加载动画 */
+        .lightbox-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        /* 可点击图片样式提示 */
+        .markdown-body .content-area img {
+            cursor: zoom-in;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .markdown-body .content-area img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* 动画 */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes zoomIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 768px) {
+            .lightbox-close {
+                top: 10px;
+                right: 10px;
+                width: 36px;
+                height: 36px;
+            }
+
+            .lightbox-caption {
+                font-size: 12px;
+                bottom: -35px;
+            }
+
+            .lightbox-content {
+                max-width: 95%;
+                max-height: 95%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -459,7 +771,137 @@
                     });
                 }
             });
+
+            // 代码块复制功能
+            const codeBlocks = document.querySelectorAll('.codehilite, pre');
+
+            codeBlocks.forEach(function(codeBlock) {
+                // 创建复制按钮
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-code-btn';
+                copyBtn.textContent = '复制';
+
+                // 插入按钮
+                codeBlock.style.position = 'relative';
+                codeBlock.insertBefore(copyBtn, codeBlock.firstChild);
+
+                // 点击复制
+                copyBtn.addEventListener('click', function() {
+                    // 获取代码文本
+                    const codeElement = codeBlock.querySelector('code') || codeBlock;
+                    const codeText = codeElement.textContent;
+
+                    // 复制到剪贴板
+                    navigator.clipboard.writeText(codeText).then(function() {
+                        // 成功提示
+                        copyBtn.textContent = '已复制 ✓';
+                        copyBtn.classList.add('copied');
+
+                        // 2秒后恢复
+                        setTimeout(function() {
+                            copyBtn.textContent = '复制';
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    }).catch(function(err) {
+                        console.error('复制失败:', err);
+                        copyBtn.textContent = '复制失败';
+                        setTimeout(function() {
+                            copyBtn.textContent = '复制';
+                        }, 2000);
+                    });
+                });
+            });
+
+            // 图片灯箱功能
+            initImageLightbox();
         });
+
+        // 图片灯箱初始化函数
+        function initImageLightbox() {
+            // 创建灯箱 HTML 结构
+            const lightboxHTML = `
+                <div class="lightbox-overlay" id="lightbox">
+                    <button class="lightbox-close" id="lightbox-close" aria-label="关闭"></button>
+                    <div class="lightbox-content">
+                        <div class="lightbox-loading" id="lightbox-loading"></div>
+                        <img class="lightbox-image" id="lightbox-img" alt="">
+                        <div class="lightbox-caption" id="lightbox-caption"></div>
+                    </div>
+                </div>
+            `;
+
+            // 插入页面
+            document.body.insertAdjacentHTML('beforeend', lightboxHTML);
+
+            // 获取元素
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            const lightboxCaption = document.getElementById('lightbox-caption');
+            const lightboxLoading = document.getElementById('lightbox-loading');
+            const lightboxClose = document.getElementById('lightbox-close');
+
+            // 获取所有文章内图片
+            const contentImages = document.querySelectorAll('.content-area img');
+
+            // 为每张图片添加点击事件
+            contentImages.forEach(function(img) {
+                img.addEventListener('click', function() {
+                    openLightbox(img.src, img.alt);
+                });
+            });
+
+            // 打开灯箱
+            function openLightbox(src, caption) {
+                lightbox.classList.add('active');
+                lightboxLoading.style.display = 'block';
+                lightboxImg.style.display = 'none';
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+
+                // 加载图片
+                const tempImg = new Image();
+                tempImg.onload = function() {
+                    lightboxImg.src = src;
+                    lightboxImg.alt = caption || '';
+                    lightboxCaption.textContent = caption || '';
+                    lightboxCaption.style.display = caption ? 'block' : 'none';
+
+                    lightboxLoading.style.display = 'none';
+                    lightboxImg.style.display = 'block';
+                };
+                tempImg.onerror = function() {
+                    closeLightbox();
+                    alert('图片加载失败');
+                };
+                tempImg.src = src;
+            }
+
+            // 关闭灯箱
+            function closeLightbox() {
+                lightbox.classList.remove('active');
+                document.body.style.overflow = ''; // 恢复滚动
+                lightboxImg.src = '';
+            }
+
+            // 点击关闭按钮
+            lightboxClose.addEventListener('click', function(e) {
+                e.stopPropagation();
+                closeLightbox();
+            });
+
+            // 点击背景关闭
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    closeLightbox();
+                }
+            });
+
+            // ESC 键关闭
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    closeLightbox();
+                }
+            });
+        }
     </script>
 
     <!-- Waline 评论系统 - 使用国内CDN -->

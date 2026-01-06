@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>标签: {{tag_name}} - GitBlog</title>
+    <title>标签: {{tag_name}} - 北方的博客</title>
+    <meta name="description" content="浏览标签为 {{tag_name}} 的所有文章 - 北方的博客。{% if articles %}共 {{articles|length}} 篇相关文章。{% endif %}">
+    <meta name="keywords" content="{{tag_name}},标签,博客文章,北方">
+    <meta name="author" content="Jiang Sheng">
     <link rel="stylesheet" href="../static/style.css">
     <style>
         .tag-header {

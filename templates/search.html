@@ -4,12 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>搜索 - 北方的博客</title>
+    <meta name="description" content="搜索北方的博客文章 - 快速查找感兴趣的技术文章和分享内容。">
+    <meta name="keywords" content="博客搜索,文章搜索,技术文章">
+    <meta name="author" content="Jiang Sheng">
     <!-- Work Sans 字体 - 使用国内CDN加速 -->
     <link rel="preconnect" href="https://fonts.loli.net">
     <link href="https://fonts.loli.net/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- GitHub Markdown CSS - 使用jsDelivr国内加速 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
     <link rel="stylesheet" href="static/style.css">
+
+    <!-- Structured Data - WebSite with SearchAction -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "北方的博客",
+        "url": "https://134688.xyz",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://134688.xyz/search.html?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+
     <style>
         .search-container {
             max-width: 800px;
