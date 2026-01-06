@@ -116,6 +116,31 @@ def extract_summary(body):
     # 没有分隔符则不显示摘要
     return None
 
+def add_lazy_loading_to_images(html_content):
+    """为HTML内容中的图片添加懒加载功能"""
+    if not html_content:
+        return html_content
+
+    # 匹配所有img标签
+    img_pattern = r'<img\s+([^>]*?)src="([^"]+)"([^>]*?)>'
+
+    def replace_img(match):
+        before_src = match.group(1)
+        src_url = match.group(2)
+        after_src = match.group(3)
+
+        # 检查是否已经有loading属性
+        if 'loading=' in before_src or 'loading=' in after_src:
+            return match.group(0)  # 已有loading属性，不修改
+
+        # 添加loading="lazy"属性和lazyload类
+        new_img = f'<img {before_src}src="{src_url}" loading="lazy" class="lazyload"{after_src}>'
+        return new_img
+
+    # 替换所有img标签
+    result = re.sub(img_pattern, replace_img, html_content)
+    return result
+
 def find_prev_next_articles(current_issue, all_issues):
     """查找上一篇和下一篇文章（按时间排序）"""
     # 过滤掉pinned文章，按创建时间排序（最新的在前）
@@ -275,6 +300,9 @@ def generate_article_page(issue, all_issues, giscus_config=None, label_info=None
             cleaned_body or "暫無內容",
             extensions=['extra', 'codehilite', 'tables', 'fenced_code']
         )
+
+        # 添加图片懒加载
+        html_content = add_lazy_loading_to_images(html_content)
 
         # 处理GitHub标签
         existing_safe_names = set()
@@ -542,7 +570,7 @@ def main():
     print("複製靜態資源...")
     os.makedirs("static", exist_ok=True)
 
-    static_files = ["style.css", "script.js"]
+    static_files = ["style.css"]
     for f in static_files:
         src = os.path.join("templates", f)
         if os.path.exists(src):
