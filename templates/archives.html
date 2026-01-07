@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文章歸檔 - 北方的博客</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown-light.min.css">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="markdown-body">
+        <h1 class="page-title">北方的博客</h1>
+        
+        <div class="nav-links">
+    <a href="index.html">首頁</a>
+    <a href="archives.html">歸檔</a>
+    <a href="search.html">搜索</a>
+    <a href="about.html">關於</a>
+     </div>
+
+        <div id="archive-content">
+            {% for year in sorted_years %}
+            <div class="category-section">
+                <h2 class="section-label">{{ year }} 年</h2>
+                <ul class="article-list">
+                    {% for issue in articles_by_year[year] %}
+                    <li class="archive-item" data-tags="{{ issue.labels | map(attribute='name') | join(',') }}">
+                        <span class="article-date">{{ issue.created_at.strftime('%m/%d') }}</span>
+                        <a href="articles/article-{{ issue.number }}.html" class="article-title-link">{{ issue.title }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+        <footer>© 2025 Designed and developed by Jiang Sheng</footer>
+    </div>
+</body>
+</html>
