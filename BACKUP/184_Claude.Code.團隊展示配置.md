@@ -14,7 +14,8 @@ I'm Boris and I created Claude Code. Lots of people have asked how I use Claude 
 [](https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications
 )
 1/ 我在終端機中並行運行 5 個 Claude 進程。我將標籤頁編號為 1-5，並使用系統通知來了解何時某個 Claude 進程需要輸入
-[](https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications)
+
+[链接](https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications)
 
 ![1000023799.jpg](https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTm5pXlpWTR2fS5__3Kywfvl6M7HBZgACFA1rG0IO8VY55Fimvg6DBAEAAwIAA3gAAzgE)
 
@@ -66,9 +67,9 @@ For example, Claude and I use a /commit-push-pr slash command dozens of times ev
 12/ For very long-running tasks, I will either (a) prompt Claude to verify its work with a background agent when it's done, (b) use an agent Stop hook to do that more deterministically, or (c) use the ralph-wiggum plugin (originally dreamt up by 
 @GeoffreyHuntley
 ). I will also use either --permission-mode=dontAsk or --dangerously-skip-permissions in a sandbox to avoid permission prompts for the session, so Claude can cook without being blocked on me.
-[](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-wiggum)
+[链接](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-wiggum)
 
-[](https://code.claude.com/docs/en/hooks-guide)
+[链接](https://code.claude.com/docs/en/hooks-guide)
 
 ![1000023808.jpg](https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTndpXl0mby1AbAkQqdv8JgaBuZ4BewACHQ1rG0IO8VaQPSs0TceROAEAAwIAA3gAAzgE)
 
@@ -77,7 +78,7 @@ For example, Claude and I use a /commit-push-pr slash command dozens of times ev
 Claude tests every single change I land to http://claude.ai/code using the Claude Chrome extension. It opens a browser, tests the UI, and iterates until the code works and the UX feels good.
 
 Verification looks different for each domain. It might be as simple as running a bash command, or running a test suite, or testing the app in a browser or phone simulator. Make sure to invest in making this rock-solid.
-[](https://code.claude.com/docs/en/chrome)
+[链接](https://code.claude.com/docs/en/chrome)
 
 ![1000023809.png](https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnhpXl0tbvsfYoou-z93nc_iHm9VcgACHg1rG0IO8Va-7NFIqj3VtwEAAwIAA3gAAzgE)
 
