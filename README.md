@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [Claude Code 團隊展示配置](https://github.com/myogg/Gitblog/issues/184)--2026-01-07
 - [古老岩石的传奇](https://github.com/myogg/Gitblog/issues/183)--2026-01-07
 - [Telegram更新，进一步优化Liquid Glass效果](https://github.com/myogg/Gitblog/issues/182)--2026-01-05
 - [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
 - [更改了评论系统](https://github.com/myogg/Gitblog/issues/180)--2026-01-04
-- [功能越來越多，代碼越來越長](https://github.com/myogg/Gitblog/issues/178)--2026-01-03
 
 ## 一些记录 (47篇文章)
 - [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
@@ -99,16 +99,17 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
-## 收录 (16篇文章)
+## 收录 (17篇文章)
+- [Claude Code 團隊展示配置](https://github.com/myogg/Gitblog/issues/184)--2026-01-07
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [摩尔线程发布AI算力笔记本MTT AIBOOK](https://github.com/myogg/Gitblog/issues/145)--2025-12-20
 - [ai听书软件](https://github.com/myogg/Gitblog/issues/132)--2025-12-17
 - [天文学家拍摄到类星战塔图因的系外行星](https://github.com/myogg/Gitblog/issues/131)--2025-12-17
-- [苹果"阔折叠"iPhone明年发布](https://github.com/myogg/Gitblog/issues/125)--2025-12-15
 
 <details>
-<summary>显示更多 (11篇)</summary>
+<summary>显示更多 (12篇)</summary>
 
+- [苹果"阔折叠"iPhone明年发布](https://github.com/myogg/Gitblog/issues/125)
 - [小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付](https://github.com/myogg/Gitblog/issues/121)
 - [Telegram 全新安全登录方式](https://github.com/myogg/Gitblog/issues/116)
 - [戴森在华全球首发真 AI 清洁机器人](https://github.com/myogg/Gitblog/issues/111)
