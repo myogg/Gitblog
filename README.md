@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [收集 𝕏（Twitter）上 Veo3 视频生成提示词](https://github.com/myogg/Gitblog/issues/187)--2026-01-07
 - [花样跳伞视频](https://github.com/myogg/Gitblog/issues/186)--2026-01-07
 - [Claude Code 團隊展示配置](https://github.com/myogg/Gitblog/issues/184)--2026-01-07
 - [古老岩石的传奇](https://github.com/myogg/Gitblog/issues/183)--2026-01-07
 - [Telegram更新，进一步优化Liquid Glass效果](https://github.com/myogg/Gitblog/issues/182)--2026-01-05
-- [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
 
 ## 一些记录 (47篇文章)
 - [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
@@ -162,7 +162,8 @@ My personal blog using issues and GitHub Actions
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
-## 天天一句話 (2篇文章)
+## 天天一句話 (3篇文章)
+- [收集 𝕏（Twitter）上 Veo3 视频生成提示词](https://github.com/myogg/Gitblog/issues/187)--2026-01-07
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 
