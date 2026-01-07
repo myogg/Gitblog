@@ -38,7 +38,7 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
-- [花样跳伞 ](https://github.com/myogg/Gitblog/issues/185)--2026-01-07
+- [花样跳伞视频](https://github.com/myogg/Gitblog/issues/186)--2026-01-07
 - [Claude Code 團隊展示配置](https://github.com/myogg/Gitblog/issues/184)--2026-01-07
 - [古老岩石的传奇](https://github.com/myogg/Gitblog/issues/183)--2026-01-07
 - [Telegram更新，进一步优化Liquid Glass效果](https://github.com/myogg/Gitblog/issues/182)--2026-01-05
@@ -153,7 +153,7 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 世界好精彩我想去看看 (4篇文章)
-- [花样跳伞 ](https://github.com/myogg/Gitblog/issues/185)--2026-01-07
+- [花样跳伞视频](https://github.com/myogg/Gitblog/issues/186)--2026-01-07
 - [古老岩石的传奇](https://github.com/myogg/Gitblog/issues/183)--2026-01-07
 - [冬之碎片](https://github.com/myogg/Gitblog/issues/162)--2025-12-27
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
