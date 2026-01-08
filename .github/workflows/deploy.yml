@@ -136,11 +136,13 @@ jobs:
             exit 1
           fi
           
-          # 檢查歸檔頁（如果模板存在則生成）
-          if [ -f "archives.html" ]; then
-            echo "✅ archives.html 已生成"
-          else
-            echo "⚠️ archives.html 未生成（可能是模板不存在）"
+          # 检查其他可能存在的页面
+          if [ -f "search.html" ]; then
+            echo "✅ search.html 已生成"
+          fi
+          
+          if [ -f "about.html" ]; then
+            echo "✅ about.html 已生成"
           fi
           
           # 檢查是否有文章生成
