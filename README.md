@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [修复音频上传错误](https://github.com/myogg/Gitblog/issues/189)--2026-01-08
 - [Samsung 发布神秘超薄 3D 显示屏](https://github.com/myogg/Gitblog/issues/188)--2026-01-08
 - [收集 𝕏（Twitter）上 Veo3 视频生成提示词](https://github.com/myogg/Gitblog/issues/187)--2026-01-07
 - [花样跳伞视频](https://github.com/myogg/Gitblog/issues/186)--2026-01-07
 - [Claude Code 團隊展示配置](https://github.com/myogg/Gitblog/issues/184)--2026-01-07
-- [古老岩石的传奇](https://github.com/myogg/Gitblog/issues/183)--2026-01-07
 
 ## 一些记录 (47篇文章)
 - [CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点](https://github.com/myogg/Gitblog/issues/181)--2026-01-05
@@ -162,7 +162,8 @@ My personal blog using issues and GitHub Actions
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
-## 天天一句話 (4篇文章)
+## 天天一句話 (5篇文章)
+- [修复音频上传错误](https://github.com/myogg/Gitblog/issues/189)--2026-01-08
 - [Samsung 发布神秘超薄 3D 显示屏](https://github.com/myogg/Gitblog/issues/188)--2026-01-08
 - [收集 𝕏（Twitter）上 Veo3 视频生成提示词](https://github.com/myogg/Gitblog/issues/187)--2026-01-07
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
