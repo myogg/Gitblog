@@ -24,6 +24,15 @@ body {
     color: #000 !important;
 }
 
+.page-title a {
+    color: #000 !important;
+    text-decoration: none !important;
+}
+
+.page-title a:hover {
+    opacity: 0.6;
+}
+
 .nav-links { margin-bottom: 2rem; }
 .nav-links a {
     color: #666 !important;
