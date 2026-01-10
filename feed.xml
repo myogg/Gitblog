@@ -1,0 +1,1779 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2026-01-09T16:21:06.548827+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/193</id><title>基于 Cloudflare Workers 的智能挪车通知系统</title><updated>2026-01-09T16:21:06.923116+00:00</updated><content type="html"><![CDATA[<p>﻿tags: Cloudflate, github,</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTpxpYSh0T917Dys2hzDXpqxI29R_uQACZAxrGzYoCFeZfnND3DSw2AEAAwIAA3cAAzgE" alt="IMG_20260110_000948_798.jpg" /></p>
+<p><a href="https://github.com/lesnolie/movecar">挪车通知系统</a></p>
+<p>基于 Cloudflare Workers 的智能挪车通知系统，扫码即可通知车主，保护双方隐私。</p>
+<h2>界面预览</h2>
+<table>
+<thead>
+<tr>
+<th align="center">请求者页面</th>
+<th align="center">车主页面</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><a href="https://htmlpreview.github.io/?https://github.com/lesnolie/movecar/blob/main/preview-requester.html">🔗 在线预览</a></td>
+<td align="center"><a href="https://htmlpreview.github.io/?https://github.com/lesnolie/movecar/blob/main/preview-owner.html">🔗 在线预览</a></td>
+</tr>
+</tbody></table><h2>为什么需要它？</h2>
+<ul>
+<li>🚗 <strong>被堵车却找不到车主</strong> - 干着急没办法</li>
+<li>📱 <strong>传统挪车码暴露电话</strong> - 隐私泄露、骚扰电话不断</li>
+<li>😈 <strong>恶意扫码骚扰</strong> - 有人故意反复扫码打扰</li>
+<li>🤔 <strong>路人好奇扫码</strong> - 并不需要挪车却触发通知</li>
+</ul>
+<h2>这个系统如何解决？</h2>
+<ul>
+<li>✅ <strong>不暴露电话号码</strong> - 通过推送通知联系，保护隐私</li>
+<li>✅ <strong>双向位置共享</strong> - 车主可确认请求者确实在车旁</li>
+<li>✅ <strong>无位置延迟 30 秒</strong> - 降低恶意骚扰的动力</li>
+<li>✅ <strong>免费部署</strong> - Cloudflare Workers 免费额度完全够用</li>
+<li>✅ <strong>无需服务器</strong> - Serverless 架构，零运维成本</li>
+</ul>
+<h2>为什么使用 Bark 推送？</h2>
+<ul>
+<li>🔔 支持「紧急 / 重要 / 警告」通知级别</li>
+<li>🎵 可自定义通知音效</li>
+<li>🌙 <strong>即使开启勿扰模式也能收到提醒</strong></li>
+<li>📱 安卓用户：原理相通，将 Bark 替换为安卓推送服务即可（如 Pushplus、Server酱）</li>
+</ul>
+<h2>使用流程</h2>
+<h3>请求者（需要挪车的人）</h3>
+<ol>
+<li>扫描车上的二维码，进入通知页面</li>
+<li>填写留言（可选），如「挡住出口了」</li>
+<li>允许获取位置（不允许则延迟 30 秒发送）</li>
+<li>点击「通知车主」</li>
+<li>等待车主确认，可查看车主位置</li>
+</ol>
+<h3>车主</h3>
+<ol>
+<li>收到 Bark 推送通知</li>
+<li>点击通知进入确认页面</li>
+<li>查看请求者位置（判断是否真的在车旁）</li>
+<li>点击确认，分享自己位置给对方</li>
+</ol>
+<h3>流程图</h3>
+<pre><code>请求者                              车主
+  │                                  │
+  ├─ 扫码进入页面                     │
+  ├─ 填写留言、获取位置                │
+  ├─ 点击发送                         │
+  │   ├─ 有位置 → 立即推送 ──────────→ 收到通知
+  │   └─ 无位置 → 30秒后推送 ────────→ 收到通知
+  │                                  │
+  ├─ 等待中...                        ├─ 查看请求者位置
+  │                                  ├─ 点击确认，分享位置
+  │                                  │
+  ├─ 收到确认，查看车主位置 ←──────────┤
+  │                                  │
+  ▼                                  ▼
+</code></pre>
+<h2>部署教程</h2>
+<h3>第一步：注册 Cloudflare 账号</h3>
+<ol>
+<li>打开 <a href="https://dash.cloudflare.com/sign-up">https://dash.cloudflare.com/sign-up</a></li>
+<li>输入邮箱和密码，完成注册</li>
+</ol>
+<h3>第二步：创建 Worker</h3>
+<ol>
+<li>登录后点击左侧菜单「Workers &amp; Pages」</li>
+<li>点击「Create」→「Create Worker」</li>
+<li>名称填 <code>movecar</code>（或你喜欢的名字）</li>
+<li>点击「Deploy」</li>
+<li>点击「Edit code」，删除默认代码</li>
+<li>复制 <code>movecar.js</code> 全部内容粘贴进去</li>
+<li>点击右上角「Deploy」保存</li>
+</ol>
+<h3>第三步：创建 KV 存储</h3>
+<ol>
+<li>左侧菜单点击「KV」</li>
+<li>点击「Create a namespace」</li>
+<li>名称填 <code>MOVE_CAR_STATUS</code>，点击「Add」</li>
+<li>回到你的 Worker →「Settings」→「Bindings」</li>
+<li>点击「Add」→「KV Namespace」</li>
+<li>Variable name 填 <code>MOVE_CAR_STATUS</code></li>
+<li>选择刚创建的 namespace，点击「Deploy」</li>
+</ol>
+<h3>第四步：配置环境变量</h3>
+<ol>
+<li>Worker →「Settings」→「Variables and Secrets」</li>
+<li>
+添加以下变量：<ul>
+<li><code>BARK_URL</code>：你的 Bark 推送地址（如 <code>https://api.day.app/xxxxx</code>）</li>
+<li><code>PHONE_NUMBER</code>：备用联系电话（可选）</li>
+</ul>
+</li>
+</ol>
+<h3>第五步：绑定域名（可选）</h3>
+<ol>
+<li>Worker →「Settings」→「Domains &amp; Routes」</li>
+<li>点击「Add」→「Custom Domain」</li>
+<li>输入你的域名，按提示完成 DNS 配置</li>
+</ol>
+<h2>制作挪车码</h2>
+<h3>生成二维码</h3>
+<ol>
+<li>复制你的 Worker 地址（如 <code>https://movecar.你的账号.workers.dev</code>）</li>
+<li>使用任意二维码生成工具（如 草料二维码、QR Code Generator）</li>
+<li>将链接转换为二维码并下载</li>
+</ol>
+<h3>美化挪车牌</h3>
+<p>使用 AI 工具生成精美的装饰设计：</p>
+<ul>
+<li><strong>Nanobanana Pro</strong> - 生成装饰图案和背景</li>
+<li><strong>ChatGPT</strong> - 生成创意设计图</li>
+</ul>
+<p>制作步骤：</p>
+<ol>
+<li>用 AI 工具生成你喜欢的装饰图案</li>
+<li>将二维码与生成的图案组合排版</li>
+<li>添加「扫码通知车主」提示文字</li>
+<li>打印、过塑，贴在车上</li>
+</ol>
+<blockquote>
+<p>💡 用 AI 生成独一无二的挪车牌，让你的爱车更有个性！</p>
+</blockquote>
+<h2>安全设置（推荐）</h2>
+<p>为防止境外恶意攻击，建议只允许中国地区访问：</p>
+<h3>方法一：使用 WAF 规则（推荐）</h3>
+<ol>
+<li>进入 Cloudflare Dashboard → 你的域名</li>
+<li>左侧菜单点击「Security」→「WAF」</li>
+<li>点击「Create rule」</li>
+<li>
+规则设置：<ul>
+<li>Rule name：<code>Block non-CN traffic</code></li>
+<li>If incoming requests match：<code>Country does not equal China</code></li>
+<li>Then：<code>Block</code></li>
+</ul>
+</li>
+<li>点击「Deploy」</li>
+</ol>
+<h3>方法二：在 Worker 代码中过滤</h3>
+<p>在 <code>movecar.js</code> 的 <code>handleRequest</code> 函数开头添加：</p>
+<pre><code class="language-javascript">async function handleRequest(request) {
+  const country = request.cf?.country;
+  if (country &amp;&amp; country !== &#x27;CN&#x27;) {
+    return new Response(&#x27;Access Denied&#x27;, { status: 403 });
+  }
+
+  // 下面保持原有逻辑
+}
+</code></pre>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/193"/><category term="一些记录"/><published>2026-01-09T16:11:11+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/192</id><title>眯眼、酸黄瓜与灯塔等 Emoji 18.0 新表情符号有望登陆 iOS</title><updated>2026-01-09T16:21:07.057432+00:00</updated><content type="html"><![CDATA[<p>tags: Emoji, IOS,</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTphpYRH7soBJSYD4exO7vEHCyPAUSAACNwxrGzYoCFdJH9nEctGfKAEAAwIAA3kAAzgE" alt="IMG_20260109_223314_520.jpg" /></p>
+<p>Unicode 联盟近日公布了 Emoji 18.0 草案列表，这批新表情符号预计将于 2026 年 9 月正式定稿。Emojipedia 分享的清单显示，本次共有 19 个候选表情，包括眯眼笑脸（squinting face）、向左和向右指的拇指手势、酸黄瓜、灯塔、流星、橡皮擦以及带手柄的网等。此外，草案还包含帝王斑蝶（monarch butterfly）符号，为现有的通用蝴蝶表情提供了更具体的选择。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/192"/><category term="收录"/><published>2026-01-09T14:36:38+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/191</id><title>CES 2026</title><updated>2026-01-09T16:21:07.168607+00:00</updated><content type="html"><![CDATA[<p>tags: CES,  2026, 视频,</p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACToFpX73wlpAe0URPYu6cbj6frwxz7gACiRsAAjYo-FYsRR0tLc9GQDgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACToJpX74Cuh9QxxD7Lu-D1SznoTxscwACihsAAjYo-FaCssjaYYA_hDgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACToNpX747at5VkDcwObNzISLS2h5pegACixsAAjYo-FbFKL9Ibdj-5zgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACToRpX75roY1k0PCZRPKEylfHw7iNKgACjBsAAjYo-FY5PQ0TK_h0lDgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACToVpX76oN9mi386yij_DWVjtILY9rwACjRsAAjYo-FZ57SKKqDJlWzgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACToZpX77m02-GjlU3xrppFjtvuV7txwACjhsAAjYo-FZnX8NVYF-WAAE4BA" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACTodpX78j1zLy22GQBnV97YOxWof0RgACjxsAAjYo-FaEE0TaWPHsqzgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACTohpX7-F0hRkHuJX8zhx_6jI_7s7-AACkBsAAjYo-Fb0SEOel-GxpDgE" controls style="max-width: 100%; height: auto;"></video></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/191"/><category term="一些记录"/><published>2026-01-08T14:34:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/190</id><title>Gmail 全面接入 Gemini AI，30 亿用户获得智能邮箱助手</title><updated>2026-01-09T16:21:07.310032+00:00</updated><content type="html"><![CDATA[<p>tags: Gmail, Gemini AI,</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACToBpX7gFYTB2DgQuq1L98jDf0d_1VgACow9rGzYo-FYFZSbj9Z_3aAEAAwIAA3kAAzgE" alt="IMG_20260108_215549_470.jpg" /></p>
+<p>Google 宣布为 Gmail 的 30 亿用户推出基于 Gemini 3 的 AI 功能升级。新功能包括 AI Overviews（AI 概览），可将长邮件对话自动总结为要点，并支持用自然语言提问邮箱内容，如&quot;去年给我浴室装修报价的水管工是谁？&quot;系统会即时提供准确答案。</p>
+<p>此外还推出了 Help Me Write 邮件写作助手、基于对话上下文的智能回复建议，以及语法校对功能。AI Inbox 功能将过滤邮箱杂乱信息，优先显示重要邮件如账单提醒等。多数功能今日起在美国免费推出，部分高级功能需订阅 Google AI Pro 或 Ultra 服务。</p>
+<p><a href="https://blog.google/products-and-platforms/products/gmail/gmail-is-entering-the-gemini-era/">Google</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/190"/><category term="一些记录"/><published>2026-01-08T13:59:24+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/189</id><title>修复音频上传错误</title><updated>2026-01-09T16:21:07.435965+00:00</updated><content type="html"><![CDATA[<p>tags: bug,</p>
+<p>归鸿</p>
+<p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTn9pX6d68CGO6EMcMrA6nAZ9-69QlgACUhsAAjYo-FaTE7_-p6EZmjgE" controls></audio></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/189"/><category term="天天一句話"/><published>2026-01-08T12:49:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/188</id><title>Samsung 发布神秘超薄 3D 显示屏</title><updated>2026-01-09T16:21:07.547872+00:00</updated><content type="html"><![CDATA[<p>tags: Samsung, 3D, CES,</p>
+<p>CES 2026 的第 1 天直接刷屏了互联网。</p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACTnxpXxzydwkxHsD1eSIi65KRrItIeAACPRsAAkIO-VbJ424nAilbizgE" controls style="max-width: 100%; height: auto;"></video></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/188"/><category term="天天一句話"/><published>2026-01-08T03:02:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/187</id><title>收集 𝕏（Twitter）上 Veo3 视频生成提示词</title><updated>2026-01-09T16:21:07.681838+00:00</updated><content type="html"><![CDATA[<p>tags:URL, Prompt,  ,AI,</p>
+<p>收集 𝕏（Twitter）上 Veo3 视频生成提示词 </p>
+<p><a href="https://www.veo3-prompt.com/">链接</a></p>
+<p>Veo 3 Prompt Hub - AI Video Generation Prompts
+Curated high-quality AI video prompts for Veo 3. Create amazing videos with ASMR, sci-fi, warfare, and daily life scenarios. Free to use.</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/187"/><category term="天天一句話"/><published>2026-01-07T15:29:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/186</id><title>花样跳伞视频</title><updated>2026-01-09T16:21:07.809893+00:00</updated><content type="html"><![CDATA[<p>tags: mp4, 视频,</p>
+<p><video src="https://i.829259.xyz/api/cfile/BAACAgUAAx0ER6IxDQACTntpXnZZGLIc_fntTmyIZfCRaEj8VAACxhkAAkIO-VZW17HQonZpijgE" controls style="max-width: 100%; height: auto;"></video></p>
+<p>测试</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/186"/><category term="世界好精彩我想去看看"/><published>2026-01-07T14:44:43+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/184</id><title>Claude Code 團隊展示配置</title><updated>2026-01-09T16:21:07.927721+00:00</updated><content type="html"><![CDATA[<p>tags: Claude Code; X, </p>
+<p>I'm Boris and I created Claude Code. Lots of people have asked how I use Claude Code, so I wanted to show off my setup a bit. My setup might be surprisingly vanilla! Claude Code works great out of the box, so I personally don't customize it much. There is no one correct way to use Claude Code: we intentionally build it in a way that you can use it, customize it, and hack it however you like. Each person on the Claude Code team uses it very differently. So, here goes.</p>
+<p>我是Boris，Claude Code是我開發的。很多人問我如何使用Claude Code，所以我想簡單地展示我的配置。</p>
+<p>我的配置可能出乎意料地簡單！ Claude Code 開箱即用，效果非常好，所以我個人很少對其進行自訂。使用 Claude Code 沒有唯一正確的方法：我們特意將其設計成可以隨意使用、自訂和修改的。 Claude Code 團隊的每位成員使用它的方式都各不相同。</p>
+<p>好了，開始吧。</p>
+<p>1/ I run 5 Claudes in parallel in my terminal. I number my tabs 1-5, and use system notifications to know when a Claude needs input
+<a href="https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications"></a>
+1/ 我在終端機中並行運行 5 個 Claude 進程。我將標籤頁編號為 1-5，並使用系統通知來了解何時某個 Claude 進程需要輸入</p>
+<p><a href="https://code.claude.com/docs/en/terminal-config#iterm-2-system-notifications">链接</a></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTm5pXlpWTR2fS5__3Kywfvl6M7HBZgACFA1rG0IO8VY55Fimvg6DBAEAAwIAA3gAAzgE" alt="1000023799.jpg" /></p>
+<p>2/ I also run 5-10 Claudes on <a href="http://claude.ai/code">http://claude.ai/code</a>, in parallel with my local Claudes. As I code in my terminal, I will often hand off local sessions to web (using &amp;), or manually kick off sessions in Chrome, and sometimes I will --teleport back and forth. I also start a few sessions from my phone (from the Claude iOS app) every morning and throughout the day, and check in on them later.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTm5pXlpWTR2fS5__3Kywfvl6M7HBZgACFA1rG0IO8VY55Fimvg6DBAEAAwIAA3gAAzgE" alt="1000023799.jpg" /></p>
+<p>3/ I use Opus 4.5 with thinking for everything. It's the best coding model I've ever used, and even though it's bigger &amp; slower than Sonnet, since you have to steer it less and it's better at tool use, it is almost always faster than using a smaller model in the end.</p>
+<p>4/ Our team shares a single <a href="http://CLAUDE.md">http://CLAUDE.md</a> for the Claude Code repo. We check it into git, and the whole team contributes multiple times a week. Anytime we see Claude do something incorrectly we add it to the <a href="http://CLAUDE.md">http://CLAUDE.md</a>, so Claude knows not to do it next time.</p>
+<p>Other teams maintain their own <a href="http://CLAUDE.md%27s">http://CLAUDE.md's</a>. It is each team's job to keep theirs up to date.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTm9pXlz_qNHTgJgeVeISamYkEAfmaQACFQ1rG0IO8VbH4wXPJwf1hAEAAwIAA3gAAzgE" alt="1000023800.jpg" /></p>
+<p>5/ During code review, I will often tag @.claude on my coworkers' PRs to add something to the <a href="http://CLAUDE.md">http://CLAUDE.md</a> as part of the PR. We use the Claude Code Github action (/install-github-action) for this. It's our version of
+@danshipper
+'s Compounding Engineering</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnBpXl0K6FnV1V9-0lcRF2WfqBF8sgACFg1rG0IO8Vbpo9JUC8jt3wEAAwIAA3gAAzgE" alt="1000023801.jpg" /></p>
+<p>6/ Most sessions start in Plan mode (shift+tab twice). If my goal is to write a Pull Request, I will use Plan mode, and go back and forth with Claude until I like its plan. From there, I switch into auto-accept edits mode and Claude can usually 1-shot it. A good plan is really important!</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnFpXl0Oat-5gRPW9BvlxTm6FhQZKAACFw1rG0IO8VYYZysiMV0ftgEAAwIAA3gAAzgE" alt="1000023802.jpg" /></p>
+<p>7/ I use slash commands for every &quot;inner loop&quot; workflow that I end up doing many times a day. This saves me from repeated prompting, and makes it so Claude can use these workflows, too. Commands are checked into git and live in .claude/commands/.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnJpXl0VG_5xB-qSUCxm9PcaXhLIrwACGA1rG0IO8Vb-FBb90ihaOQEAAwIAA3gAAzgE" alt="1000023803.png" /></p>
+<p>For example, Claude and I use a /commit-push-pr slash command dozens of times every day. The command uses inline bash to pre-compute git status and a few other pieces of info to make the command run quickly and avoid back-and-forth with the model </p>
+<p>8/ I use a few subagents regularly: code-simplifier simplifies the code after Claude is done working, verify-app has detailed instructions for testing Claude Code end to end, and so on. Similar to slash commands, I think of subagents as automating the most common workflows that I do for most PRs.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnNpXl0YgjAXVHvMSyBKtCNV3-upfAACGQ1rG0IO8VbFFh_ELee2KAEAAwIAA3gAAzgE" alt="1000023804.jpg" /></p>
+<p>9/ We use a PostToolUse hook to format Claude's code. Claude usually generates well-formatted code out of the box, and the hook handles the last 10% to avoid formatting errors in CI later.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnRpXl0aMThKOS7moU6tBx7v4Hi4RAACGg1rG0IO8VbcKAoT1Wzx8AEAAwIAA3gAAzgE" alt="1000023805.png" /></p>
+<p>10/ I don't use --dangerously-skip-permissions. Instead, I use /permissions to pre-allow common bash commands that I know are safe in my environment, to avoid unnecessary permission prompts. Most of these are checked into .claude/settings.json and shared with the team.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnVpXl0fQ5nC0eHVClaKFYGEBk6ZBQACGw1rG0IO8VY4h5qhFy-YEgEAAwIAA3gAAzgE" alt="1000023806.jpg" /></p>
+<p>11/ Claude Code uses all my tools for me. It often searches and posts to Slack (via the MCP server), runs BigQuery queries to answer analytics questions (using bq CLI), grabs error logs from Sentry, etc. The Slack MCP configuration is checked into our .mcp.json and shared with the team.</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnZpXl0jgpOqqjsi7leuJqydNh05OgACHA1rG0IO8VZVQ6rXWRbBFQEAAwIAA3gAAzgE" alt="1000023807.jpg" /></p>
+<p>12/ For very long-running tasks, I will either (a) prompt Claude to verify its work with a background agent when it's done, (b) use an agent Stop hook to do that more deterministically, or (c) use the ralph-wiggum plugin (originally dreamt up by
+@GeoffreyHuntley
+). I will also use either --permission-mode=dontAsk or --dangerously-skip-permissions in a sandbox to avoid permission prompts for the session, so Claude can cook without being blocked on me.
+<a href="https://github.com/anthropics/claude-plugins-official/tree/main/plugins/ralph-wiggum">链接</a></p>
+<p><a href="https://code.claude.com/docs/en/hooks-guide">链接</a></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTndpXl0mby1AbAkQqdv8JgaBuZ4BewACHQ1rG0IO8VaQPSs0TceROAEAAwIAA3gAAzgE" alt="1000023808.jpg" /></p>
+<p>13/ A final tip: probably the most important thing to get great results out of Claude Code -- give Claude a way to verify its work. If Claude has that feedback loop, it will 2-3x the quality of the final result.</p>
+<p>Claude tests every single change I land to <a href="http://claude.ai/code">http://claude.ai/code</a> using the Claude Chrome extension. It opens a browser, tests the UI, and iterates until the code works and the UX feels good.</p>
+<p>Verification looks different for each domain. It might be as simple as running a bash command, or running a test suite, or testing the app in a browser or phone simulator. Make sure to invest in making this rock-solid.
+<a href="https://code.claude.com/docs/en/chrome">链接</a></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTnhpXl0tbvsfYoou-z93nc_iHm9VcgACHg1rG0IO8Va-7NFIqj3VtwEAAwIAA3gAAzgE" alt="1000023809.png" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/184"/><category term="收录"/><published>2026-01-07T13:25:30+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/183</id><title>古老岩石的传奇</title><updated>2026-01-09T16:21:08.099491+00:00</updated><content type="html"><![CDATA[<p>tags: Bing_Wallpaper</p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTm1pXgVeQm1yZ4i7c2_VV9A01OJbfgACXAxrG0IO8VaHhjfrnuIw9QEAAwIAA3gAAzgE" alt="1000023798.jpg" /></p>
+<p>拱门国家公园的北窗框景中的炮塔拱门, 犹他州, 美国 (© Jim Patterson/TANDEM Stills + Motion)</p>
+<p><a href="https://www.bing.com/th?id=OHR.OldRockArch_ZH-CN2061140260_UHD.jpg">4K</a> | <a href="https://www.bing.com/th?id=OHR.OldRockArch_ZH-CN2061140260_1920x1080.jpg">1080P</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/183"/><category term="世界好精彩我想去看看"/><published>2026-01-07T07:04:57+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/182</id><title>Telegram更新，进一步优化Liquid Glass效果</title><updated>2026-01-09T16:21:08.243357+00:00</updated><content type="html"><![CDATA[<p>tags: Telegram, IOS, </p>
+<p><img src="https://pic.imgdd.cc/item/695bca2c2218ae41e34cd7d2.jpg" alt="" /></p>
+<ul>
+<li>支持为长消息提供摘要</li>
+</ul>
+<p>生成此类摘要使用的是基于去中心化网络 Cocoon 的开源模型。</p>
+<p>翻译功能现在也使用Cocoon 去中心化网络。</p>
+<ul>
+<li>iOS版全面支持Liquid Glass: 客户端现在完全支持“Liquid Glass”视觉风格。例如，全面添加了透明元素和柔和的光线折射效果。</li>
+</ul>
+<p>安卓端正在测试进行重大重构 ，但未在本轮更新中推出正式版。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/182"/><category term="notes"/><published>2026-01-05T14:27:32+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/181</id><title>CES 2026 开幕：Micro RGB 电视、笔记本 CPU 大战与智能眼镜成焦点</title><updated>2026-01-09T16:21:08.381764+00:00</updated><content type="html"><![CDATA[<p>tags: CES, 2026, AI,</p>
+<p><img src="https://pic.imgdd.cc/item/695bc3822218ae41e34ccdbc.jpg" alt="" /></p>
+<p>CES 2026 消费电子展于 1 月 5 日在拉斯维加斯开幕，三大技术趋势成为本届展会焦点。首先是电视技术的重大突破，Micro RGB 技术将为电视带来下一代色彩和对比度表现。其次，笔记本电脑领域将迎来激烈的 CPU 竞争，高通推出 Snapdragon X2 Elite 芯片，AMD 传闻将发布新款 Ryzen AI 400 系列处理器，英特尔则推出 Core Ultra Series 3 芯片应战。</p>
+<p>智能眼镜被视为本届展会最值得关注的趋势。随着波导显示技术、专用芯片、传感器技术和 Android XR 软件的发展，AR 和 AI 眼镜有望在 2026 年实现真正融合。展会现场已展出多款创新产品，包括 LG 推出的 9 毫米厚无线 OLED 壁纸电视、厚度仅 3.1 毫米的 Paper 平板电脑，以及三星发布的两款旗舰电视产品 S95H OLED 和首款 Micro RGB 电视 R95H。此外，各类智能家居设备、机器人产品和可穿戴设备也在展会上亮相。</p>
+<p>此文主要测试自定义标签。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/181"/><category term="一些记录"/><published>2026-01-05T13:59:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/180</id><title>更改了评论系统</title><updated>2026-01-09T16:21:08.511704+00:00</updated><content type="html"><![CDATA[<p>我自己也不喜欢登录评论，相信大家也不喜欢，所以我就更改了评论系统，尽管不一定有人看。</p>
+<p>替换到了国内的cdn，访问速度估计能快一点。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/180"/><category term="一些记录"/><published>2026-01-04T15:34:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/178</id><title>功能越來越多，代碼越來越長</title><updated>2026-01-09T16:21:08.641121+00:00</updated><content type="html"><![CDATA[<p>似乎已經違背了寫博的初心。</p>
+<!-- more -->
+<p>折騰起來就停不住，已經違背了自己建博的初心了。</p>
+<p>不要再折騰了，這已經夠了。</p>
+<p><img src="https://pic.imgdd.cc/item/6959060a548f1ee86337fb47.jpg" alt="" /></p>
+<p>沒事了多去走走。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/178"/><category term="blog"/><published>2026-01-03T12:06:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/177</id><title>致我们70后</title><updated>2026-01-09T16:21:08.752731+00:00</updated><content type="html"><![CDATA[<p>70后，像是一根扁担，两头挑着沉甸甸的分量，中间压着自己并不强壮的脊梁。</p>
+<!-- more -->
+<p>他们的小时候，是带着土味的。那是一个物质匮乏的年代，没有琳琅满目的玩具，没有香甜可口的零食，更没有如今孩子们人手一部的平板电脑和手机。他们的玩具，是自己动手做的铁环、弹弓，或是几颗玻璃珠子；他们的零食，是田埂上随手摘来的野果，或是过年时才能盼到的一小块麦芽糖。衣服是“新三年，旧三年，缝缝补补又三年”，常常是老大穿小了给老二，老二穿小了再给老三。上学的路，可能是光着脚丫踩在泥泞的田埂上，也可能是顶着寒风，骑着家里那辆除了铃铛不响哪儿都响的“二八大杠”。夏天的酷暑，冬天的严寒，都是凭着一股子孩童的韧劲儿硬扛过来的。那时候，苦，是生活的底色，但孩子们的心，却也在这份底色上，画出了简单而纯粹的快乐。</p>
+<p>时光匆匆，当年那个在田间地头撒欢奔跑的野孩子，不知不觉间已为人父、为人母。他们赶上了时代的巨变，生活条件好了，腰包也渐渐鼓了起来。然而，肩上的担子，却比儿时挑过的任何一担水、一担柴都要沉重得多。</p>
+<p>上有老，下有小，是70后最真实的写照。</p>
+<p>老的，是渐渐佝偻了腰背，满头华发的父母。他们需要子女的照顾，需要陪伴，更需要一笔笔不菲的医药费。看着父母被岁月侵蚀的身体，70后们心急如焚，却又常常因为工作和家庭的牵绊，分身乏术。那份对父母的孝心和愧疚，像一块巨石，压在心头。</p>
+<p>下有小，是正在茁壮成长，需要精心呵护和巨额教育投入的儿女。从幼儿园到大学，甚至更远的未来，孩子的每一步成长，都离不开父母的托举。为了给孩子创造更好的条件，让他们少走弯路，70后们拼了命地工作，不敢有丝毫懈怠。房贷、车贷、教育费、生活费……每一笔开支，都像一张细密的网，将他们紧紧裹住。</p>
+<p>他们像不知疲倦的陀螺，被生活的鞭子抽打着，一圈又一圈地旋转。他们不敢病，怕医药费拖垮了家庭；他们不敢停，怕脚步一慢，就赶不上时代的浪潮，也怕辜负了老人的期盼和孩子的未来。他们把最好的东西都给了家人，留给自己的，往往是深夜里一支默默燃尽的香烟，和清晨镜中那双布满血丝的眼睛。</p>
+<p>70后，他们的一生，似乎都在为别人而活。童年时，为了一口饱饭，一件新衣而努力；成年后，为了一家老小的安稳日子而奔波。他们没有太多豪言壮语，只是默默地扛起责任，在平凡的岗位上，在琐碎的生活中，用自己的方式，诠释着坚韧与担当。他们的苦，是时代的印记，也是生活的常态。但即便如此，他们依然在努力地生活，为了那份沉甸甸的亲情，为了心中那份对美好生活的向往。他们的身影，或许不再挺拔，但那份担当，却如山岳般厚重</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/177"/><category term="blog"/><published>2026-01-03T09:56:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/176</id><title>該吃就吃，該喝就喝</title><updated>2026-01-09T16:21:08.872594+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/6956520bf9fa29ce527d97be.jpg" alt="" /></p>
+<p>去年雖然沒有攢一個子，但該吃就吃，該喝就喝。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/176"/><category term="blog"/><published>2026-01-01T10:57:03+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/175</id><title>2026，新年快樂！平安喜樂，所求皆所願</title><updated>2026-01-09T16:21:09.016316+00:00</updated><content type="html"><![CDATA[<p>新年快樂！平安喜樂，所求皆所願。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/175"/><category term="blog"/><published>2025-12-31T15:14:02+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/174</id><title>2025年最后一天，好运撞了一下腰</title><updated>2026-01-09T16:21:09.134510+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/695509c6c713073855436183.jpg" alt="" /></p>
+<p>好运连连</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/174"/><category term="blog"/><published>2025-12-31T11:33:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/173</id><title>王勃的《滕王阁序》</title><updated>2026-01-09T16:21:09.250511+00:00</updated><content type="html"><![CDATA[<p>公元675年，为庆祝滕王阁重修，洪州牧阎伯屿于九月九日大会宾客，宴请群僚于阁中。</p>
+<p>阎公原意让其婿吴子章作序以扬名，恰巧王勃回家探望父亲路过此地，假意谦让王勃作序，不想王勃提笔就作。</p>
+<p>阎公初以“更衣”为名，愤然离席，却派人“关照”王勃，伺候其作文，并让侍从把王勃写的每一句都抄写给他。</p>
+<p>王勃初写“豫章故郡，洪都新府”时，阎公觉得“亦是老生常谈”，接着写到“星分翼轸，地接衡庐”时，阎公沉默不语。</p>
+<p>及至“落霞与孤鹜齐飞，秋水共长天一色”时，阎公大为吃惊，“真天才，当垂不朽！”而后站在王勃身旁，一直欣赏到整篇序文写完。</p>
+<p>“无路请缨，等终军之弱冠；有怀投笔，慕宗悫之长风。”</p>
+<p>一世名骈，就此而成。</p>
+<p>现在看来，都是热血沸腾。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/173"/><category term="一些记录"/><published>2025-12-31T07:58:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/172</id><title>GitHub官方的OpenGraph服务为每个Issue都自动生成了OpenGraph图片</title><updated>2026-01-09T16:21:09.374832+00:00</updated><content type="html"><![CDATA[<p>先用最简单的调试一下。</p>
+<pre><code>
+&lt;head&gt;
+    &lt;!-- ... 其他meta标签 ... --&gt;
+    
+    &lt;!-- 主方案：GitHub OpenGraph --&gt;
+    &lt;meta property=&quot;og:image&quot; content=&quot;https://opengraph.githubassets.com/myogg/Gitblog/issues/{{issue.number}}&quot;&gt;
+    
+    &lt;!-- 备用方案：如果GitHub图片加载失败，用这个 --&gt;
+    &lt;meta property=&quot;og:image:alt&quot; content=&quot;{{issue.title}} - 北方的博客&quot;&gt;
+    
+    &lt;!-- 第二备用：本地默认图片（需要你先准备一张） --&gt;
+    &lt;!--
+    &lt;meta property=&quot;og:image&quot; 
+          content=&quot;https://opengraph.githubassets.com/myogg/Gitblog/issues/{{issue.number}}&quot;
+          onerror=&quot;this.onerror=null; this.src=&#x27;/static/default-og.png&#x27;;&quot;&gt;
+    --&gt;
+&lt;/head&gt;
+
+</code></pre>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/172"/><category term="突发的一些小想法"/><published>2025-12-31T02:30:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/171</id><title>记录下主业</title><updated>2026-01-09T16:21:09.493099+00:00</updated><content type="html"><![CDATA[<p>我没有副业，我认为能赚钱的才叫副业，搞这个就是兴趣。</p>
+<pre><code>o0001
+
+M3 s300;
+
+G99 M8;
+
+#1=0；
+
+#2=4；
+
+#3=1；
+
+T0101；
+
+G00X52;
+
+G00Z[#1+2];
+
+G01Z[#1-8]F0.2;
+
+G01Z[#1-7]F0.2;
+
+G01X53.2;
+
+G01x50;
+
+G00z[#1+150];
+
+T0404;
+
+G00X62;
+
+G00Z[#1-#2-7];
+
+G01X49F0.06;
+
+G01Z[#1+150];
+
+#1=#1-#2-7;
+
+#3=#3+1;
+
+IF[#3LE9]GOTO7;
+
+G00Z150;
+
+M9;
+
+M5;
+
+G00Z300;
+
+M30;
+</code></pre>
+<p>数控车床编程，大样就是7mm厚，外圆60mm，内孔52mm的一个垫，一次加工九件。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/171"/><category term="一些记录"/><published>2025-12-29T13:26:55+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/170</id><title>用 Any Router 改代码</title><updated>2026-01-09T16:21:09.634017+00:00</updated><content type="html"><![CDATA[<p>有两个标签有问题，点击一个标签两个联动，用了deepseek，千问，豆包，ChatGpt都没有改好，应该是不连贯的问题，他们看不到前后文，电脑有Any Router就让他帮我改下，很快改好了。</p>
+<p><img src="https://pic.imgdd.cc/item/69527a574cbb1cee5de6bfe3.png" alt="" /></p>
+<p>看来什么都不能单独拉出来，要有整体和连贯性才行。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/170"/><category term="blog"/><published>2025-12-29T12:56:43+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/169</id><title>位于大麦哲伦星系的球状星团</title><updated>2026-01-09T16:21:09.773405+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.134688.xyz/d/BQACAgUAAx0ER6IxDQACTmVpUjhKF9UQJ4vvqrfZilzCgxV1fwAC1BgAAtX9kFYHHfELtJjkWDYE" alt="Alt Text" /></p>
+<p>影像提供:ESA/Hubble &amp; NASA</p>
+<p>宝石不会如此闪耀-只有恒星才会。</p>
+<p>在这幅来自哈伯太空望远镜的影像中，几乎每一个闪亮的点都是一颗恒星。有些恒星比我们的太阳更红，有些则更蓝-但它们都远在天边。虽然光从太阳到达地球大约只需8分钟，但NGC 1898距离如此遥远，以至于光需要约16万年才能到达这里。</p>
+<p>这个巨大的恒星球体NGC1898被称为球状星团，位于大麦哲伦星系（LMC）的中央棒状结构中－大麦哲伦星云是我们巨大银河系的卫星星系。</p>
+<p>这幅多彩图像涵盖了从红外线到紫外线的光谱，拍摄此图是为了帮助确定NGC1898的恒星是同时形成的，还是在不同的时间形成的。越来越多的证据表明，大多数球状星团的恒星形成是一个分阶段的过程，特别是NGC1898的恒星是在远古的相遇后不久形成的，这些相遇包括小麦哲伦星系（SMC）和我们的银河系。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/169"/><category term="我喜歡宇宙奇觀"/><published>2025-12-29T08:15:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/166</id><title>《彩虹六号》遭黑客入侵，攻击者向玩家注入数百万美元的游戏货币</title><updated>2026-01-09T16:21:09.889140+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/6950dfe30f848bc83ae40f03.jpg" alt="" /></p>
+<p>攻击者不仅向大量账户注入了价值数百万美元的游戏货币，更触发了反作弊系统的核打击式误封。</p>
+<ul>
+<li>
+<p>R6 点数暴涨：许多账户的 R6 点数（付费货币）余额瞬间从零飙升至 50 万以上。</p>
+</li>
+<li>
+<p>道具库泛滥：玩家库存中突然塞满了成千上万个 Alpha 包和 Bravo 包。</p>
+</li>
+<li>
+<p>全商店解锁：精英皮肤（Elite Skins）和商店目录中的所有物品对受影响用户自动解锁，且没有任何交易记录。</p>
+</li>
+</ul>
+<p>就在「天降横财」发生后不到一小时，局势急转直下。育碧的自动化反作弊系统（BattlEye 和 FairFight）似乎检测到了这些极其异常的库存数据，随即进入了「核打击」模式。</p>
+<p>系统判定这些凭空出现的资产为作弊所得，开始对受影响的账户进行无差别的永久封禁。这场「清洗」波及甚广：</p>
+<ul>
+<li>
+<p>普通玩家：大量无辜玩家仅因登录游戏便遭遇封号。</p>
+</li>
+<li>
+<p>知名主播：该类别最大的主播 Jynxzi 据报道失去了其主账号的访问权限。</p>
+</li>
+<li>
+<p>职业选手：Spoit 等职业选手的认证账号在直播中途或离线状态下被封，理由显示为「作弊」。</p>
+</li>
+<li>
+<p>官方人员：最讽刺的是，甚至连游戏内标记为「开发者」或「管理员」的育碧官方账号也被公开处刑，封禁理由竟是「因为有害行为被封禁」。</p>
+</li>
+</ul>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/166"/><category term="一些记录"/><published>2025-12-28T07:45:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/165</id><title>发文即锁定</title><updated>2026-01-09T16:21:10.062249+00:00</updated><content type="html"><![CDATA[<p>因为page页面有评论功能，所以想实现发文即锁定Issues的功能。</p>
+<p>以免两套评论功能！测试。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/165"/><category term="notes"/><published>2025-12-27T16:15:29+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/164</id><title>直播源</title><updated>2026-01-09T16:21:10.214876+00:00</updated><content type="html"><![CDATA[<p>记录一下</p>
+<p><a href="https://github.com/mymsnn/DailyIPTV">直播源</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/164"/><category term="notes"/><category term="一些记录"/><published>2025-12-27T15:50:58+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/162</id><title>冬之碎片</title><updated>2026-01-09T16:21:10.323638+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694ff2508a5078ca655fa029.jpg" alt="" /></p>
+<p>苏必利尔湖沿岸的冰层，大马雷，明尼苏达州，美国 (© wanderluster/Getty Images)</p>
+<p><a href="https://www.bing.com/th?id=OHR.SuperiorIceMN_ZH-CN5339027344_UHD.jpg">4K</a> | <a href="https://www.bing.com/th?id=OHR.SuperiorIceMN_ZH-CN5339027344_1920x1080.jpg">1080P</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/162"/><category term="世界好精彩我想去看看"/><published>2025-12-27T14:52:45+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/161</id><title>Apple 重做游戏生态：Apple Games + Game Center 实现多设备同步</title><updated>2026-01-09T16:21:10.452238+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTl9pT-n0lOer2EH_sYdHKkBmlu_UkQACaAtrGy9jgVb537f635Nk7AEAAwIAA3kAAzYE" alt="IMG_20251227_221459_934.jpg" /></p>
+<p>Apple 正在用 Apple Games 应用整合 Game Center，把 iPhone、iPad、Mac 和 Apple TV 的游戏体验打通。玩家登录同一 Apple ID 后，可以在不同设备之间无缝切换游戏进度、好友和成就，几乎不需要手动管理。</p>
+<p>Apple Games 成为统一入口，集中展示游戏库、推荐、成就和社交功能；Game Center 负责后台的存档同步和联机。配合无广告、无内购的 Apple Arcade，多数游戏支持跨设备游玩、云存档和家庭共享。</p>
+<p><a href="https://appleinsider.com/inside/apple-arcade/tips/how-to-use-apple-games-game-center-for-cross-device-play-cloud-saves?utm_source=rss">AppleInsider</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/161"/><category term="一些记录"/><published>2025-12-27T14:16:03+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/160</id><title>有需要公益站Anyrouter</title><updated>2026-01-09T16:21:10.566446+00:00</updated><content type="html"><![CDATA[<blockquote>
+<p>每邀请一位好友注册，您和好友都可获得额外 $50 Claude Code 额度的奖励</p>
+</blockquote>
+<p><a href="https://anyrouter.top/register?aff=2DIk">https://anyrouter.top/register?aff=2DIk</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/160"/><category term="碎碎念"/><published>2025-12-27T13:38:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/158</id><title>河中的星系</title><updated>2026-01-09T16:21:10.689252+00:00</updated><content type="html"><![CDATA[<blockquote>
+<h3>我特别喜欢这些知识。</h3>
+</blockquote>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTl5pTrYdiA09vpgenOt0jEfRVYWkEgACfQxrGwNkeFZAYG4x0iEBFgEAAwIAA3kAAzYE" alt="NGC1532_1024.jpg" /></p>
+<p>影像提供 &amp;版权:Vikas Chander</p>
+<p>说明：大型星系会透过吞噬小型星系而不断成长。甚至我们自己的银河系也参与了某种形式的星系同类相食过程，吸收那些过于接近并被银河系重力捕获的小型星系。</p>
+<p>事实上，这种现象在宇宙中相当普遍，而位于南天的河流星座波江座岸边这对引人注目的相互作用星系便是最好的例证。</p>
+<p>位于超过5000万光年外的巨大的螺旋星系NGC 1532正与矮星系NGC 1531展开重力上的角力，最终矮星系NGC1531将败下阵来。在这张清晰的影像中，我们几乎是从侧面观察的螺旋星系NGC 1532，它的跨度约为10万光年。 </p>
+<p>NGC 1532/1531这对星系与研究较为深入的正面螺旋星系及其小型伴星系系统 M51 很类似。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/158"/><category term="我喜歡宇宙奇觀"/><published>2025-12-26T16:25:19+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/157</id><title>增加了搜索页和评论功能</title><updated>2026-01-09T16:21:11.101619+00:00</updated><content type="html"><![CDATA[<p>不要折腾了，我已经够用了。</p>
+<p>其实是有rss的，地址是</p>
+<p><a href="https://134688.xyz/feed.xml">https://134688.xyz/feed.xml</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/157"/><category term="blog"/><published>2025-12-26T15:01:22+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/155</id><title>配置好了Claude code ，准备大干一场</title><updated>2026-01-09T16:21:11.242506+00:00</updated><content type="html"><![CDATA[<p>准备优化博客</p>
+<ul>
+<li>
+<p>增加评论功能</p>
+</li>
+<li>
+<p>增加搜索功能</p>
+</li>
+<li>
+<p>增加黑暗模式</p>
+</li>
+<li>
+<p>优化载入速度</p>
+</li>
+</ul>
+<p>先这样吧，留个念想！</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/155"/><category term="TODO"/><category term="突发的一些小想法"/><published>2025-12-25T16:31:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/154</id><title>闲聊</title><updated>2026-01-09T16:21:11.375099+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694b4eb8363f7cc0e05346dc.png" alt="" /></p>
+<p>昨天隔壁大姐过来聊天。就是说这精神病跟抑郁症有什么区别？我想一下，精神病人脑子不正常。抑郁症是钻了牛角尖，但脑子是正常的，可能是是这一阵他身边自杀的有。</p>
+<p>后来大姐走了以后，我又想了一下。这两种病都是活在自己的世界里。我的解释也不是很准确。我就去查了一下。</p>
+<p>我简略了一下AI的回答。</p>
+<p>一、精神病是一组以脱离现实为核心的症状，主要表现为幻觉与妄想，并非独立疾病。</p>
+<p>二、抑郁症是一种以持久情绪低落、兴趣丧失为核心特征的心境障碍疾病。</p>
+<p>三、区别在于：精神病是症状，表现为现实扭曲；抑郁症是疾病，核心是情绪衰竭。</p>
+<p>四、相同之处在于：两者都可能严重损害社会功能，且重度抑郁症可包含精神病性症状，需要专业治疗。</p>
+<p>以前发的那么多，无聊的都是为了测试，今后要多多记录自己的生活。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/154"/><category term="碎碎念"/><published>2025-12-24T01:14:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/153</id><title>微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码</title><updated>2026-01-09T16:21:11.486363+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694ab9009bc4fda3424f1b8f.png" alt="" /></p>
+<p>微软计划到 2030 年用 Rust 代码替换所有 C 和 C++ 代码，借助 AI 辅助工具完成这一大规模的代码重构。</p>
+<p>微软杰出工程师 Galen Hunt 在 LinkedIn 上称，将结合 AI 和算法用 Rust 重写微软最大的代码库，期望一名工程师一个月能完成一百万行代码。</p>
+<p>Hunt 表示正在招聘一名有至少三年系统级代码开发经验的软件工程师协助完成这项工作，这名工程师最好具有编译器、数据库或操作系统实现经验。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/153"/><category term="一些记录"/><category term="天天一句話"/><published>2025-12-23T15:45:58+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/152</id><title>红色精灵与圆形精灵闪电</title><updated>2026-01-09T16:21:11.596782+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694ab1dc9bc4fda3424f1582.jpg" alt="" /></p>
+<p>影像提供与版权：Valter Binotto</p>
+<p>闪电，最常见的闪电类型是在云层之间出现的闪光，这些闪光通常是明亮的白光。然而，在过去的50年中，其他高空大气闪电类型已被确认，包括触手般的红色精灵和环状的淘气精灵ELVES。</p>
+<p>虽然这两者都只持续极短的时间，但红色精灵比其常见的电气放电亲戚更明亮且更容易拍摄。</p>
+<p>淘气精灵是快速扩展的环状闪电，目前认为是由带电云层放电所产生向上的电磁脉冲撞击电离层导致氮分子发光而形成的。</p>
+<p>拍摄这两种闪电都需要耐心和经验-由于它们通常是分开发生的，因此同时拍摄两者非常罕见。 主</p>
+<p>照片拍摄远处亚得里亚海上空的一场雷暴之上。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/152"/><category term="我喜歡宇宙奇觀"/><published>2025-12-23T15:16:31+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/151</id><title>《使命召唤》联合创始人 Vince Zampella 车祸身亡</title><updated>2026-01-09T16:21:11.730320+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694aaee59bc4fda3424f11c0.jpg" alt="" /></p>
+<p>知名游戏开发者 Vince Zampella 于 12 月 22 日下午在洛杉矶北部 Angeles Crest Highway 发生的法拉利车祸中身亡，终年 55 岁。</p>
+<p>事故发生在下午 12 时 45 分左右，这辆 2026 年款法拉利 296 GTS 刚驶出隧道后撞上混凝土护栏并起火，Zampella 被困车内死亡，同车乘客被甩出车外后送医不治。</p>
+<p>Zampella 是《使命召唤》系列的联合创始人，曾担任 Infinity Ward 工作室 CEO，目前是 EA 旗下重生工作室负责人。</p>
+<p>该工作室开发了《泰坦陨落》系列、《Apex 英雄》和《星球大战绝地：陨落的武士团》等知名游戏。《使命召唤》系列全球销量超过 5 亿份。</p>
+<p><a href="https://apnews.com/article/8f5b23e812eadd18affb3183f37168df">美联社</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/151"/><category term="一些记录"/><published>2025-12-23T15:03:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/150</id><title>执念</title><updated>2026-01-09T16:21:11.850944+00:00</updated><content type="html"><![CDATA[<p>说起论坛，我就想起了phpbbChina的站长Ioxxxx，忘了具体的用户名了。</p>
+<p><img src="https://pic.imgdd.cc/item/694934f1c2842347d5d1a1ae.jpg" alt="" /></p>
+<p>他凭一己之力撑起了phpBB 中国站，是官方合作伙伴。当时简体中文包都是由他制作的。</p>
+<p>当时phpBBchina.com活跃的人数也就五六位，其中一个台湾的老者和一个小姑娘都特别厉害，还有一个叫土老帽的，不知道是哪的，都是相当厉害又有趣的人物。</p>
+<p>论坛也是搞得风生水起，直到站长有了宝宝，慢慢就淡出了，再后来这个站就倒闭了，现在这个中国站简直就是垃圾。</p>
+<p>我清楚的记得，这个论坛程序要在数据库里建56个表，因为这还学了一点数据库的皮毛。</p>
+<p>想到这里，我是不是老了！</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/150"/><category term="blog"/><category term="人生感悟不算太晚"/><published>2025-12-22T12:09:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/149</id><title>中国人民银行实施一次性信用修复政策</title><updated>2026-01-09T16:21:11.958970+00:00</updated><content type="html"><![CDATA[<p>中国人民银行实施一次性信用修复政策，单笔万元以下逾期可自动清除</p>
+<p><img src="https://pic.imgdd.cc/item/6948af6e7e6c17d1c84dd4c8.jpg" alt="" /></p>
+<p>中国人民银行 12 月 22 日发布通知，决定实施一次性信用修复政策，支持信用受损个人重塑信用。针对 2020 年 1 月 1 日至 2025 年 12 月 31 日期间，单笔金额不超过 10000 元的个人逾期信息，若个人在 2026 年 3 月 31 日前足额偿还债务，金融信用信息基础数据库将不再展示相关逾期记录。</p>
+<p>该政策实行“免申即享”模式，由征信系统自动识别处理，个人无需提交申请或支付任何费用。修复后，信用报告中的逾期标识将调整为正常，逾期金额清零。央行提醒，任何以该政策名义索取钱财的行为均为诈骗。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/149"/><category term="天天一句話"/><published>2025-12-22T02:40:13+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/148</id><title>「电脑爱好者 1993-2022 30年大全集 」</title><updated>2026-01-09T16:21:12.096926+00:00</updated><content type="html"><![CDATA[<p>今早看到那个消息，心里像是被什么东西轻轻撞了一下，不是疼，是一种久违的钝感。</p>
+<p>《电脑爱好者》的公众号注销了，官网也成了无法访问的废墟。这本杂志，或者说这个陪伴了无数人从 DOS 走向 Windows，从拨号上网熬到 5G 时代的“老朋友”，终于在数字世界的角落里，彻底熄灭了信号。</p>
+<p>而就在这时，有人翻出了那套“1993-2022 30年大全集”。</p>
+<p>对于很多人来说，《电脑爱好者》不仅仅是一本杂志，它是那个信息闭塞年代的“通关秘籍”。</p>
+<p>回想 90 年代末、2000 年初，电脑还是个稀罕物。家里好不容易攒了一台“486”或者“586”，面对着黑底白字的 DOS 界面，或者是刚装上的 Windows 98，那种茫然无措是现在的年轻人无法想象的。</p>
+<p>那时候，最盼望的不是周末，而是《电脑爱好者》到货的日子。花几块钱买一本，或者在报亭里蹭着看半天。里面的“新手上路”、“软件超市”、“硬件风向标”，每一个字都像是金子。</p>
+<p>记得那时候为了装个显卡驱动，要在杂志附赠的光盘里翻找半天；为了破解一个软件的注册码，要在“注册天使”栏目里逐行抄代码。那些密密麻麻的参数、那些现在看来早已过时的操作技巧，在当时却是我们探索数字世界的唯一船票。</p>
+<p>杂志停了，号没了，这是时代的必然。免费的、碎片化的、算法推荐的信息流，早已取代了厚重的纸媒。</p>
+<p><a href="https://pan.quark.cn/s/5fe418fddedb">夸克网盘</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/148"/><category term="收录"/><category term="碎碎念"/><category term="人生感悟不算太晚"/><published>2025-12-21T15:11:27+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/147</id><title>闪烁的纸星星</title><updated>2026-01-09T16:21:12.215059+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/6946d88c84dbc5d52bbf1785.jpg" alt="" /></p>
+<p><img src="https://pic.imgdd.cc/item/6946d88c84dbc5d52bbf1786.jpg" alt="" /></p>
+<p>闪烁的纸星星</p>
+<p>圣诞星形灯笼，德国 (© artas/Getty Images)</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/147"/><category term="notes"/><category term="碎碎念"/><category term="我喜歡宇宙奇觀"/><published>2025-12-20T17:11:31+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/146</id><title>測試</title><updated>2026-01-09T16:21:12.337863+00:00</updated><content type="html"><![CDATA[<p>測試</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/146"/><category term="blog"/><published>2025-12-20T16:52:47+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/145</id><title>摩尔线程发布AI算力笔记本MTT AIBOOK</title><updated>2026-01-09T16:21:12.452275+00:00</updated><content type="html"><![CDATA[<p>摩尔线程创始人、董事长兼CEO张建中12月20日在摩尔线程首届MUSA开发者大会上发布AI算力本 MTT AIBOOK 笔记本。</p>
+<p>目前该笔记本已在京东开放预售，32 GB、1 TB 版本预售价9999元。</p>
+<p>记者了解到，该笔记本搭载摩尔线程新发布的自主研发智能SoC芯片“长江”，集成高性能全大核CPU，以及摩尔线程全功能GPU，支持MUSA 统一架构，异构AI算力达50TOPS。</p>
+<p>该笔记本集开发、办公、娱乐等于一体，支持Windows虚拟机、Linux、安卓容器以及所有的国产操作系统。 </p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/145"/><category term="notes"/><category term="一些记录"/><category term="收录"/><published>2025-12-20T16:39:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/144</id><title>双子座流星雨划过白雪覆盖的山峦</title><updated>2026-01-09T16:21:12.578926+00:00</updated><content type="html"><![CDATA[<p>双子座流星雨划过白雪覆盖的山峦<br />
+影像提供与版权：Tomáš Slovinský</p>
+<p><img src="https://pic.imgdd.cc/item/6946cbc684dbc5d52bbf0e16.jpg" alt="" /></p>
+<p>说明：这些流星究竟都来何方？从天空中的方向来看，最直接的答案指向双子座。</p>
+<p>这就是为什么十二月的主要流星雨被称为双子座流星雨，因为流星雨的流星似乎都来自一个双子座方向的辐射点。</p>
+<p>然而，从三维空间来看，这些沙粒大小的碎片是从不寻常的小行星3200Phaethon所喷出，并沿著一个围绕太阳的固定轨道运行，而接近地球的轨道部分正好位于双子座的前方。</p>
+<p>因此，当地球穿过这条轨道时，坠落碎片的辐射点看起来就像出现在双子座方向。这里展示的是过去几天在斯洛伐克晴朗夜空下拍摄的多张照片的合成图，捕捉了白雪皑皑的贝利安斯塔特拉山脉BelianskeTatra的山峰。</p>
+<p>图中清晰可见来自于双子座流星雨中无数明亮的流星划过天际。猎户座在地平线以上可见，而最接近辐射点的亮星是北河二。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/144"/><category term="碎碎念"/><category term="世界好精彩我想去看看"/><category term="我喜歡宇宙奇觀"/><published>2025-12-20T16:18:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/143</id><title>精彩预告</title><updated>2026-01-09T16:21:12.714653+00:00</updated><content type="html"><![CDATA[<p>🍿 精彩预告</p>
+<p>1️⃣ <a href="https://weibo.com/6220589166/QiDVRxto6">林冰交响之夜：好莱坞碗演唱会</a> / 12 月 24 日 / 内地</p>
+<p>2️⃣ <a href="https://weibo.com/6755915473/QiWsVkFPE">永恒站</a> / 12 月 24 日 / 内地</p>
+<p>3️⃣ <a href="https://weibo.com/7907092977/Qj6dxoCFM">机器人之梦</a> / 12 月 26 日 / 内地重映</p>
+<p>4️⃣ <a href="https://weibo.com/8246038395/QiDxCrR7b">他年她日</a> / 12 月 31 日 / 内地</p>
+<p>5️⃣ <a href="https://weibo.com/2751350291/Qi21OmRYM">海绵宝宝：深海大冒险</a> / 2026 年 1 月 1 日 / 内地</p>
+<p>6️⃣ <a href="https://weibo.com/2526171271/5244420653843262">极限审判</a> / 2026 年 1 月 23 日 / 内地</p>
+<p>7️⃣ <a href="https://www.youtube.com/watch?v=WY1zGdMyWZQ">比莉·艾莉什：温柔重击巡回演唱会 3D 电影</a> / 2026 年 3 月 20 日 / 美国 / 卡梅隆执导</p>
+<p>8️⃣ <a href="https://www.youtube.com/watch?v=C3GD3z7-6-A">超级马力欧银河大电影</a> / 2026 年 4 月 3 日 / 美国</p>
+<p>9️⃣ <a href="https://www.youtube.com/watch?v=tV2qoDVnfxs">街头霸王 真人电影</a> / 2026 年 10 月 16 日 / 北美</p>
+<p>🔟 <a href="https://www.youtube.com/watch?v=UFe6NRgoXCM">揭秘日</a> / 2026 年 12 月 6 日 / 美国 / 斯皮尔伯格</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/143"/><category term="blog"/><published>2025-12-19T16:43:18+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/142</id><title>完全手搓一个博客</title><updated>2026-01-09T16:21:12.832294+00:00</updated><content type="html"><![CDATA[<h3>一个纯粹的手工作坊：我的博客成长记</h3>
+<p>在这个追求“开箱即用”和“一键部署”的时代，我却固执地选择了一条更“笨”的路——亲手搭建一个纯粹手工搓出来的博客。</p>
+<p>它没有华丽的商业模板，也没有复杂的数据库支撑。它的核心逻辑非常简单甚至有些“硬核”：通过读取 GitHub 上的 Issue 内容，来动态生成我的博客文章。</p>
+<h4>1. 把“缺陷”变成“文章”</h4>
+<p>对于大多数开发者来说，GitHub Issue 是用来追踪 Bug 和管理项目的。但在我看来，它也是一个绝佳的“内容管理系统”。</p>
+<p>每当我有一个新的想法，或者踩到了一个新的技术坑，我就会去新建一个 Issue。在这个熟悉的 Markdown 编辑器里，我可以尽情地写下代码片段、贴上截图、梳理逻辑。而我的博客，就像是一个勤劳的“搬运工”，通过 API 定期去读取这些 Issue，将它们转化为网页上的一篇篇日志。</p>
+<p>这种方式，让我的写作成本降到了最低。我不需要维护复杂的本地文件结构，也不需要学习新的后台操作。我只需要像平时提交代码一样，去维护我的 Issue。甚至，Issue 原生的评论功能，直接就成了我博客的评论区。这种将开发工具与写作工具完美融合的体验，是任何现成博客程序都无法给予的。</p>
+<h4>2. 代码即文章，文章即代码</h4>
+<p>这种“手工搓”的方式，让我对“内容”有了更深的理解。</p>
+<p>在传统的博客里，文章是存放在数据库里的字符串；而在我的博客里，文章是 GitHub 上的一个个实体，它们拥有完整的版本控制历史。每一次修改，都是一次清晰的 Commit。这不仅仅是记录文字，更像是在记录一种“思考的轨迹”。</p>
+<p>通过编写脚本去抓取和解析这些 Issue，我深入理解了前后端交互的细节，学会了如何优雅地处理 Markdown 渲染，也体会到了自动化构建带来的便利。这个博客本身，就是我技术学习的练兵场。</p>
+<h4>3. 慢慢学习，静静沉淀</h4>
+<p>做这样一个博客，没有捷径可走。从最初只能显示一行字，到后来能自动分页、生成目录、支持搜索，每一步都是在不断的报错和调试中走过来的。</p>
+<p>“慢慢学习”这四个字，就是这个博客的灵魂。我不急于求成，也不追求功能的大而全。今天学会了一个新的 CSS 技巧，就给博客加个暗黑模式；明天理解了服务端渲染，就优化一下首屏加载速度。它不是完美的，甚至带着一些稚气，但它真实地记录了我技术成长的每一个脚印。</p>
+<p>在这个喧嚣的互联网上，我的博客或许只是一个不起眼的“手工作坊”。没有流量，没有广告，只有我一个人在这里，对着代码，对着文字，安静地打磨时光。</p>
+<p>如果你也喜欢这种纯粹的感觉，欢迎常来坐坐。这里没有高深的理论，只有最朴实的记录，和一个开发者慢慢学习、不断前行的心路历程。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/142"/><category term="Pinned"/><published>2025-12-19T16:13:27+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/141</id><title>ai资讯</title><updated>2026-01-09T16:21:12.960229+00:00</updated><content type="html"><![CDATA[<p>⏺Google 正式发布「Gemini 3 Flash」：即日起通过 Gemini 应用和搜索中的 AI 模式向全球用户免费开放，替代原有的 2.5 Flash 模型。相比 Gemini 2.5 Pro，平均减少 30% 的 token 使用量，速度提升 3 倍，同时保持更高性能。[<a href="https://gemini.google.com/">直达</a>][<a href="https://blog.google/products/gemini/gemini-3-flash/">官方介绍</a>]</p>
+<p>⏺OpenAI 发布「GPT-5.2-Codex」：编程与网络安全能力显著提升。该模型已面向 ChatGPT 付费用户开放，API 接入将于近期开启。[<a href="https://openai.com/zh-Hans-CN/index/introducing-gpt-5-2-codex/">官方介绍</a>]</p>
+<p>⏺ChatGPT 正式上线应用商店：Spotify、Apple Music、DoorDash 已经入驻，开发者也可以向 ChatGPT 提交应用进行审核和发布。[<a href="http://chatgpt.com/apps">直达</a>]</p>
+<p>⏺OpenAI 推出了最新图像视觉模型「GPT-Image-1.5」：较上个版本，指令执行更准确、编辑更精确、细节保留更完整、速度快 4 倍。[<a href="https://chatgpt.com/images/">直达</a>][<a href="https://openai.com/index/new-chatgpt-images-is-here/">官方介绍</a>]</p>
+<p>​⏺小米发布新一代 MoE 大模型「MiMo-V2-Flash」：这一全新的模型被认为是小米在实现 AGI 目标上的第二步。[<a href="https://aistudio.xiaomimimo.com/#/">直达</a>]</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/141"/><category term="blog"/><published>2025-12-19T15:41:47+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/140</id><title>三星发布全球首款 2 纳米手机芯片 Exynos 2600</title><updated>2026-01-09T16:21:13.102525+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic1.imgdb.cn/item/694569712ce92a4f9312fb2f.jpg" alt="" /></p>
+<p>三星近日发布了 Exynos 2600 芯片，该款由三星晶圆代工制造的处理器是全球首款采用 2 纳米工艺的智能手机芯片。</p>
+<p>Exynos 2600 芯片采用 Arm 的 v9.3 架构，配置 10 个核心，包含全新的 C1-Ultra 主核和 C1-Pro 中核。三星在此型号中取消了低功耗核心，优化其处理能力。</p>
+<p>测试工作流。🫤</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/140"/><category term="一些记录"/><published>2025-12-19T15:05:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/139</id><title>「 胡思乱想 」无无题</title><updated>2026-01-09T16:21:13.227605+00:00</updated><content type="html"><![CDATA[<p>宁做地府流浪鬼</p>
+<p>不做人间苦命人</p>
+<p>我若盗得阎王笔</p>
+<p>咬牙含泪判自己</p>
+<p>一笔勾尽前尘事</p>
+<p>二笔断尽今生情</p>
+<p>三笔写下黄泉路</p>
+<p>从此不再未归程</p>
+<p>奈何桥头风萧瑟</p>
+<p>忘川河畔泪无声，</p>
+<p>若有来世再相逢</p>
+<p>愿做孤魂不做人</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/139"/><category term="blog"/><published>2025-12-19T12:41:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/138</id><title>[ 胡思乱想 ] 强烈呼吁开发者尝试 HTMX 的技术文章</title><updated>2026-01-09T16:21:13.363306+00:00</updated><content type="html"><![CDATA[<p>请务必试试 HTMX </p>
+<p><a href="http://pleasejusttryhtmx.com/">http://pleasejusttryhtmx.com/</a></p>
+<p>这是一个强烈呼吁开发者尝试 HTMX 的技术文章，作者以充满情绪但不失理性的语气，批判当前前端开发中的过度复杂化现象。</p>
+<p>文章指出，开发者常面临两种错误选择：要么使用原始的纯 HTML，无法实现动态交互；要么陷入现代 JavaScript 框架（如 React）带来的庞大依赖、缓慢构建和复杂状态管理的“地狱”。这种二元对立是虚假的。</p>
+<p>真正的第三条路是使用 HTMX——一个轻量级库，仅约 14KB 压缩后大小，无需编写任何 JavaScript。它让任意 HTML 元素都能发起请求，服务器返回真实可渲染的 HTML 片段，由 HTMX 直接插入页面指定位置，实现局部更新。</p>
+<p>文中通过三个实际演示展示其能力：点击按钮更新内容、加载更多数据、实时搜索反馈。所有功能仅靠 HTML 属性实现，无需额外代码。</p>
+<p>作者引用一家公司从 React 迁移到 Django + HTMX 的案例，数据惊人：代码量减少 67%，依赖减少 96%，构建速度提升 88%，页面加载速度提高 50%-60%。团队成员也实现了全栈化，不再有前后端割裂。</p>
+<p>针对质疑，文章回应：</p>
+<p>复杂客户端状态？大多数应用并不需要。
+缺少生态？但你本就用的是后端语言，生态就是你的后端。
+单页应用感觉更快？那是因加载了 2 兆的脚本才“快”，而基于传统网页的响应式更新，首屏加载更快，后续操作更高效。
+最后明确指出，不推荐使用场景包括实时协作编辑、重度计算、离线应用或真正复杂的界面状态管理。但绝大多数项目——如仪表盘、后台系统、电商网站、博客等——都适合用上。</p>
+<p>文章结尾真诚邀请读者花一个周末试一试：加个 <code>&lt;script&gt;</code> 标签，写一个 hx-get 属性，体验一次“为什么我们把网页开发搞得这么复杂”的顿悟。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/138"/><category term="notes"/><published>2025-12-19T01:50:30+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/137</id><title>[ 每日一记 ] TikTok 首次在美国办颁奖礼，正面叫板好莱坞</title><updated>2026-01-09T16:21:13.482249+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694419d4d68cfa2a12bf658b.webp" alt="" /></p>
+<p>TikTok 将于本周四在洛杉矶 Hollywood Palladium 举办首届美国 TikTok Awards，主题为“New Era, New Icons”，设有年度创作者、年度视频等奖项，超过 500 名创作者确认出席。</p>
+<p>这一活动被视为 TikTok 提升创作者地位的重要动作。在禁令风险暂时缓解的背景下，平台希望强化其作为主流娱乐孵化器的形象，与传统好莱坞的界线正变得模糊。</p>
+<p><a href="https://www.bloomberg.com/news/newsletters/2025-12-18/watch-out-oscars-here-come-the-tiktok-awards">Bloomberg</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/137"/><category term="blog"/><published>2025-12-18T15:13:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/136</id><title>[ 新闻联播 ]新一代音视频生成模型——豆包 Seedance 1.5 Pro</title><updated>2026-01-09T16:21:13.575410+00:00</updated><content type="html"><![CDATA[<p>豆包最近推出了新一代音视频生成模型——豆包 Seedance 1.5 Pro。这一更新在音视频生成领域带来了显著的提升，让 AI 视频创作进入了一个全新的阶段。</p>
+<p>核心亮点：音画同步与多语言支持</p>
+<p>Seedance 1.5 Pro 最大的突破在于实现了原生音视频联合生成。它不再是简单的“画面+配音”，而是通过创新的架构，实现了毫秒级的音画同步输出。</p>
+<ul>
+<li>多语言与方言能力：这是豆包的一大杀手锏。模型不仅支持中文、英文、日文、韩语、西班牙语等语种，还深度适配了中文方言场景，能生成地道的四川话、粤语、陕西话、上海话等。它能模仿不同语言的口音，捕捉方言独有的语音韵律与情感张力。</li>
+<li>视听一致性：模型能理解画面内容，自动生成对应的台词和音效。比如，当你上传一张外国人的图片，它会自动识别并用英文配音；如果是在中餐厅吃面，它甚至会让角色用英文描述吃面的场景，逻辑和画面高度自洽。</li>
+</ul>
+<p>影视级叙事与运镜</p>
+<p>在视觉表现上，Seedance 1.5 Pro 告别了传统 AI 视频“呆板”的运镜，具备了影视级的叙事张力。</p>
+<ul>
+<li>电影级运镜：模型掌握了专业的镜头语言，能够自发进行镜头调度。无论是长镜头跟随、希区柯克变焦，还是多镜头的无缝切换，它都能处理得游刃有余，大幅提升了视频的动态张力和电影感。</li>
+<li>细腻的情感表达：人物的情绪和表情呈现非常细腻，口型与台词完美对齐。在实测中，无论是皇后娘娘的“臣妾做不到啊”，还是张麻子的四川话对白，表演都极具感染力，完全没有以往 AI 的机械感。</li>
+</ul>
+<p>降低门槛：告别“抽卡”，所见即所得</p>
+<p>对于创作者来说，最头疼的往往是“抽卡”式生成——输入同样的提示词，生成多次却效果各异。Seedance 1.5 Pro 表现出极高的指令遵循度和稳定性。</p>
+<ul>
+<li>高稳定性：在大多数情况下，第一次生成的视频效果就是最佳的，不需要反复“抽卡”筛选。</li>
+<li>Draft 样片功能：为了进一步降低成本，模型即将上线“Draft 样片”功能。创作者可以先生成低分辨率样片预览，其关键要素与最终成片高度一致，真正做到“预览即所得”，这能帮助创作者提升 65% 的整体效率。</li>
+</ul>
+<p>如何体验</p>
+<p>目前，你已经可以在多个平台体验到这款强大的模型：</p>
+<ul>
+<li>豆包 APP：点击「照片动起来」，选择 1.5 Pro 模型，上传图片并输入提示词即可。</li>
+<li>即梦 AI：在网页版或 App 中选择视频生成功能，选用 3.5 Pro 模型（基于 Seedance 1.5 Pro）。</li>
+<li>火山引擎体验中心：提供更专业的体验界面。</li>
+</ul>
+<p>此外，企业用户也可以通过火山引擎 API 接入该模型服务。</p>
+<p>总结</p>
+<p>Seedance 1.5 Pro 不仅仅是豆包的一次版本迭代，它标志着 AI 视频从“能动”进化到了“能说会演”的阶段。它解决了音画不同步、缺乏情感、方言支持弱等行业痛点，让每个人都能轻松成为导演，用 AI 讲述更生动、更具文化特色的故事。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/136"/><category term="blog"/><published>2025-12-18T13:48:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/135</id><title>[ 折腾 ] 这个就这样吧</title><updated>2026-01-09T16:21:13.707289+00:00</updated><content type="html"><![CDATA[<p>就这个小地方，对于我这个小白来说 已经折腾的相当不错了，我自己已经很满足了 。</p>
+<p>之前发了好多东西，基本上都是测试工作流 ，现在基本已经定型了啊，以后就老老实实的。</p>
+<p>你加一张最近去的地方。</p>
+<p><img src="https://pic1.imgdb.cn/item/6943897ea63e0c13e8fc9951.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/135"/><category term="blog"/><published>2025-12-18T04:56:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/134</id><title>The new ChatGPT Images is here</title><updated>2026-01-09T16:21:13.836666+00:00</updated><content type="html"><![CDATA[<p><a href="https://openai.com/index/new-chatgpt-images-is-here/">OpenAI</a> 推出全新旗舰 ChatGPT 图像生成模型 GPT Image 1.5，最突出的亮点在于对细节的极致掌控</p>
+<p>Today, we’re releasing a new version of <a href="http://chatgpt.com/images?openaicom-did=5bd29cb5-609e-4358-869e-415c97fa2313&amp;openaicom_referred=true">ChatGPT Images⁠(opens in a new window)</a>, powered by our new flagship image generation model. Now, whether you’re creating something from scratch or editing a photo, you’ll get the output you’re picturing. It makes precise edits while keeping details intact, and generates images up to 4x faster. Alongside, we’re introducing a new <a href="http://chatgpt.com/images?openaicom-did=5bd29cb5-609e-4358-869e-415c97fa2313&amp;openaicom_referred=true">Images feature⁠(opens in a new window)</a> within ChatGPT, designed to make image generation delightful—to spark inspiration and make creative exploration effortless.</p>
+<p>The new Images model is rolling out today in ChatGPT for all users, and is available in the API as GPT Image 1.5. The new Images experience in ChatGPT is also rolling out today for most users, with Business and Enterprise access coming later.</p>
+<p>Precise edits that preserve what matter
+Now, when you ask for edits to an uploaded image, the model adheres to your intent more reliably—down to the small details—changing only what you ask for while keeping elements like lighting, composition, and people’s appearance consistent across inputs, outputs, and subsequent edits.</p>
+<p>This unlocks results that match your intent—more useful photo edits, more believable clothing and hairstyle try-ons, alongside stylistic filters and conceptual transformations that retain the essence of the original image. Together, these improvements mean ChatGPT can act as a creative studio in your pocket, capable of both practical edits and expressive reimaginings.</p>
+<p>Editing
+The model excels at different types of editing—including adding, subtracting, combining, blending, and transposing—so you get the changes you want without losing what makes the image special.</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/134"/><category term="一些记录"/><published>2025-12-17T13:53:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/133</id><title>皮毛、霜冻和盛宴</title><updated>2026-01-09T16:21:13.934785+00:00</updated><content type="html"><![CDATA[<p>皮毛、霜冻和盛宴</p>
+<p><img src="https://pic.imgdd.cc/item/6942967d559889e9faf3a7aa.jpg" alt="" /></p>
+<p>在诺森伯兰郡的欧亚红松鼠, 英格兰 (© Michael_Conrad/Getty Images)</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/133"/><category term="blog"/><published>2025-12-17T11:40:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/132</id><title>ai听书软件</title><updated>2026-01-09T16:21:14.095054+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/694279bcc92f9767ac692f93.jpg" alt="" /></p>
+<p>🎧 Readify是一款 完全免费的AI听书应用，让你轻松把任何电子书变成自然流畅的有声书。无论你在通勤、休息，还是想在夜晚闭眼聆听故事，Readify都能让阅读变得更自由。</p>
+<p>🔗 <a href="https://readifyai.com/">官网</a> / <a href="https://apps.apple.com/app/apple-store/id6743287753">App Store</a> / <a href="https://play.google.com/store/apps/details?id=com.readin.app">Google Play</a></p>
+<p>✨ 核心功能亮点</p>
+<p>📖 多格式文件支持
+兼容 TXT、PDF、EPUB、MOBI、AZW3、DOCX 等主流电子书格式，上传即可自动转换为可听内容。</p>
+<p>🎙️ AI音色库
+内置 100+ 种高保真AI音色，支持 40+ 种语言。我们的AI语音拥有顶级自然效果，语气丰富、有温度，媲美真人朗读。</p>
+<p>🔍 AI搜书
+支持站内智能搜书，只需挂梯子即可免费下载书籍。
+不知道看什么？在搜索栏描述你的喜好类型，AI会为你推荐合适的作品。</p>
+<p>💬 AI问答助手
+听书不止于听。任何书中人物、概念或情节疑问，都能即时提问，让AI帮你更深度理解书籍。</p>
+<p>💻多设备同步
+只要相同账号，你的书库将会在多端同步，省去重复上传的无聊过程</p>
+<p>其他功能：</p>
+<ul>
+<li>定时关闭：睡前听书不怕忘记关。</li>
+<li>自定义书库布局：列表/宫格模式随心切换。</li>
+<li>高度自定义读书页面，不仅能听，还能读的顺心！</li>
+<li>纯净体验：无任何广告打扰，只专注于阅读与聆听。</li>
+</ul>
+<p>🌍 无障碍优化，为视障用户发声
+Readify 正在持续推进 应用无障碍优化。我们已聚集超过 100名视障用户，根据他们的实际反馈进行定向改进。</p>
+<p>目前，iOS端的VoiceOver旁白模式已可完整使用包括听书、搜书在内的全部功能。
+我们相信——阅读的权利，不应被视觉所限制。</p>
+<p>🎁 目前100%免费使用</p>
+<p>via <a href="https://t.me/BookwormArthur">Arthur Steinberg</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/132"/><category term="收录"/><published>2025-12-17T09:38:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/131</id><title>天文学家拍摄到类星战塔图因的系外行星</title><updated>2026-01-09T16:21:14.213331+00:00</updated><content type="html"><![CDATA[<p>天文学家成功直接拍摄到一颗如《星球大战》中塔图因星球般绕行双星运转的系外行星。</p>
+<p><img src="https://pic.imgdd.cc/item/694226e77d6b1a1151c3730c.jpg" alt="" /></p>
+<p>能拍到太阳系外的行星本就极为罕见，而能拍到一颗同时绕行两颗恒星的行星，更是少之又少。令人惊讶的是，</p>
+<p>这颗名为 HD 143811 AB b的系外行星距离其双母恒星约 64AU，是目前已知以直接成像方式发现、且绕行双星系统的行星中，距离母恒星最近的一颗，其轨道半径比过去同类型行星小了约六倍。</p>
+<p>这颗新行星 HD 143811 AB b 其实隐藏在多年以前的观测资料中。其质量约为木星的 6 倍，年龄约为 1,300 万年，温度高于太阳系内任何行星。 </p>
+<p>HD 143811 这个系统的结构同样引人注目：两颗恒星彼此紧密环绕（0.18 AU），每 18 天完成一次公转；而行星则以轨道半长轴约 64AU、330 年的周期，绕着这对恒星运行，与冥王星绕行太阳的时间尺度相近。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/131"/><category term="收录"/><published>2025-12-17T03:44:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/130</id><title>Google Search 主页加入“+”按钮</title><updated>2026-01-09T16:21:14.338300+00:00</updated><content type="html"><![CDATA[<p>类似微软 Google 也在把 AI 功能甩在用户面前：搜索结果页第一个快捷键就是“AI Mode”。</p>
+<p>现在 Google 又在搜索主页 google.com 添加了一个“+”按钮，让用户可以上传图像和文件。这两项功能并非新功能，旨在突出用户可以通过 Google 完成不同任务，而不仅仅是搜索信息。</p>
+<p>这些功能可以与 AI Mode 和 AI Overviews 配合使用。该功能目前仅通过桌面 Web 版提供，尚未在移动版本上提供。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/130"/><category term="一些记录"/><published>2025-12-17T03:37:33+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/129</id><title>看看大家的电脑上都贴了些啥？</title><updated>2026-01-09T16:21:14.461375+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/69417eba7d6b1a1151bf42f9.jpg" alt="" /></p>
+<p>你平时喜欢给自己的笔记本电脑、水杯或者行李箱贴贴纸吗？</p>
+<p>现在很多人都喜欢在笔记本电脑的 A 面贴上各种各样的贴纸。其实，这些贴纸不光是为了好看，更像是一个人的“名片”。通过看贴纸，往往能猜出这台电脑的主人是搞编程的、还是个果粉，或者他最近参加了什么活动、喜欢什么文化。</p>
+<p>今天想给你介绍一个叫 stickertop.art 的网站，它专门干这个事儿——收集全世界网友的电脑贴纸文化。</p>
+<p>在这个网站上，你可以看到几百张不同风格的电脑实拍图。它用标签把它们分好了类，比如“Apple 果粉”、“编程代码”、“黑客马拉松”或者“LGBTQ+”等等。</p>
+<p>每一张图背后，其实都藏着一个人的故事和爱好。如果你也想看看别人是怎么用贴纸“打扮”自己电脑的，或者想找点贴纸搭配的灵感，这个网站值得一逛。当然，你也可以把自己的电脑贴纸照上传上去，跟大家分享你的故事。</p>
+<p><a href="https://stickertop.art/">https://stickertop.art/</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/129"/><category term="blog"/><published>2025-12-16T15:48:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/128</id><title>成人网站 PornHub 用户数据遭泄露，涉及观看记录和搜索历史</title><updated>2026-01-09T16:21:14.609141+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/69417a0b7d6b1a1151bf2629.jpg" alt="" /></p>
+<p>这是一起涉及全球知名成人网站 Pornhub 的严重数据泄露事件。根据最新的安全资讯，大量付费订阅用户的敏感数据已被曝光，这不仅关乎数字隐私，更可能对现实生活造成巨大的“社死”风险。</p>
+<p>以下为你详细梳理此次事件的来龙去脉、泄露的具体内容以及官方的回应。</p>
+<p>泄露事件核心：并非平台被黑，而是供应商遭殃</p>
+<p>此次数据泄露并非因为 Pornhub 自身的内部系统遭到了黑客的直接攻击，而是一场典型的“供应链攻击”。</p>
+<p>攻击目标： 黑客攻击了 Pornhub 使用的数据分析供应商 Mixpanel。</p>
+<p>攻击者： 著名的勒索软件团伙 ShinyHunters。</p>
+<p>波及范围： Mixpanel 为众多科技公司提供服务，除了 Pornhub，包括 OpenAI 以及大量使用 Salesforce CRM 系统的公司数据也在这次攻击中被窃取。</p>
+<p>泄露了哪些“社死”数据？</p>
+<p>虽然 Pornhub 声称核心财务数据未泄露，但黑客获取的分析数据依然极具破坏力。这些数据足以构建出用户的详细画像，特别是对于付费高级会员而言，隐私暴露程度极高。</p>
+<p>泄露的具体信息包括：</p>
+<p>身份定位信息： 用户的电子邮箱地址。这是最关键的索引，黑客可以通过邮箱直接定位到具体的个人。</p>
+<p>详细观看历史： 用户观看过的视频 URL、视频名称、观看时长，以及是否下载过某视频。</p>
+<p>隐私搜索记录： 用户在平台上的主动搜索关键词，这往往暴露了用户最隐秘的偏好。</p>
+<p>行为与位置： 用户的活动类型、地理位置（位置数据）、浏览过的频道以及与视频相关的关键词标签。</p>
+<p>潜在风险： 想象一下，如果有人通过你的邮箱，不仅能查到你订阅了成人网站，还能详细列出你过去几年看过哪些特定类型的视频、搜索过什么禁忌关键词，这种程度的隐私曝光在社会文化中往往意味着毁灭性的尴尬和名誉受损。</p>
+<p>️ Pornhub 的官方回应与现状</p>
+<p>针对此次泄露，Pornhub 方面也做出了紧急回应，试图安抚用户并澄清影响范围：</p>
+<p>数据时效性： Pornhub 表示，公司从 2021 年以来就已停止与 Mixpanel 的合作。因此，推测被盗的数据主要集中在 2021 年或更早的历史分析数据，并非实时数据。</p>
+<p>核心数据安全： 官方强调，用户的密码、支付信息（如信用卡号）和财务信息等核心敏感数据并未存储在 Mixpanel 中，因此这些关键信息目前仍是安全的，并未遭到此次泄露的影响。</p>
+<p>黑客的动机： 勒索团伙已经向 Pornhub 发出了勒索邮件，要求支付赎金，否则将公开这些详细数据。为了证明数据的真实性，黑客已经向安全媒体（如 BleepingComputer）提供了部分样本数据，证实了数据的真实性。</p>
+<p>这次事件再次敲响了警钟：即使是通过第三方服务收集的“分析数据”，在汇总后也具有极高的隐私敏感度。</p>
+<p>虽然 Pornhub 声称数据是“历史数据”且核心支付信息未泄露，但对于受影响的用户来说，邮箱与浏览偏好的绑定泄露依然是巨大的隐患。建议近期密切关注自己的邮箱安全，警惕利用这些泄露的“黑历史”进行的针对性诈骗或勒索邮件。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/128"/><category term="一些记录"/><published>2025-12-16T15:29:40+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/127</id><title>DeepSeek R1 和 Qwen 3 引领行业变革</title><updated>2026-01-09T16:21:14.764244+00:00</updated><content type="html"><![CDATA[<p>2025 年开源 AI 模型回顾：DeepSeek R1 和 Qwen 3 引领行业变革</p>
+<p><img src="https://pic.imgdd.cc/item/694130957d6b1a1151bda5f9.jpg" alt="" /></p>
+<p>AI 研究机构 Interconnects 发布 2025 年开源模型年度回顾报告，认为这是开源模型发展的里程碑年份。报告显示，开源模型在性能上已能与闭源模型在多数关键基准测试中匹敌，其中 DeepSeek R1 和 Qwen 3 被评为年度最具影响力的模型。</p>
+<p>DeepSeek R1 于 1 月 20 日发布，采用 MIT 开源许可证，不仅展现了小团队的创新能力，还推动了众多中国实验室开放其模型。Qwen 3 模型家族覆盖了从通用模型到视觉、编程、嵌入等各个领域，在多语言能力方面表现突出，下载量已超越 Llama 成为最受欢迎的微调基础模型。</p>
+<p><a href="https://www.interconnects.ai/p/2025-open-models-year-in-review">Interconnects</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/127"/><category term="一些记录"/><published>2025-12-16T10:15:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/126</id><title>单光子单原子量子干涉仪</title><updated>2026-01-09T16:21:15.215374+00:00</updated><content type="html"><![CDATA[<p>科学家发现，光就像一位拥有两副面孔的天才演员。有时，它像水波，当它穿过两道狭缝，会像水波一样形成“涟漪”，最终在屏幕上显现出“斑马线”一样明暗相间的干涉条纹。有的时候，它又像一颗颗弹珠，当光照射在金属板上，能像打台球一样，把金属里的电子打出来，产生电流。不过最神奇也最让人困惑的是，这两种现象似乎不能同时被捕捉。</p>
+<p><img src="https://pic.imgdd.cc/item/6940a543c8bea0d2f6d5a473.jpg" alt="" /></p>
+<p>爱因斯坦和玻尔的争论，正根植于此。爱因斯坦坚信，这只是我们的观测方式太笨拙，一定存在更聪明的方法，能同时揭开光的双重面具，而玻尔却提出一个更颠覆的观念：这不是观测的缺陷，而是微观世界的终极法则——不可能同时获得光子的路径和保留干涉条纹！</p>
+<p>中国科学技术大学潘建伟院士团队，基于爱因斯坦的设想，设计了一个无比精妙的实验：用一个原子来充当“狭缝”。因为原子足够轻盈，当光子撞击这个原子时，科学家可通过原子的振动方向精准测算出光子的运动轨迹，这样就可以完美复现爱因斯坦百年前的思想实验，来看看在远处的屏幕上还会不会留下明暗相间的干涉条纹。</p>
+<p>如同玻尔所预言的那样，当科学家成功捕捉到光子的运动轨迹时，屏幕上的波纹竟悄然隐去；而当屏幕上的条纹清晰显现时，原子“狭缝”的振动数据却变得模糊不清，再也无法还原出单个光子的路径。或许，爱因斯坦所寻找的那种“两全其美”的观测方式，在自然的根本法则中并不存在。</p>
+<p><img src="https://pic.imgdd.cc/item/6940a567c8bea0d2f6d5a476.png" alt="" /></p>
+<p>单光子单原子量子干涉仪实现爱因斯坦思想实验从这个实验来看，貌似爱因斯坦输了，然而这场跨越百年的争论，真正的价值远不止于胜负。爱因斯坦的深刻质疑与玻尔的革命性构想，共同为人类打开了一扇认知微观世界的大门。</p>
+<p>如今，我们得以利用微观粒子的“双重身份”，建造计算能力颠覆想象的量子计算机，利用量子纠缠的“魔法”，打造安全的量子通信网络。百年前“光的谜题”，正指引我们走向一个算力超群、通信无忧、感知极致的量子未来。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/126"/><category term="一些记录"/><published>2025-12-16T00:19:22+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/125</id><title>苹果"阔折叠"iPhone明年发布</title><updated>2026-01-09T16:21:15.345636+00:00</updated><content type="html"><![CDATA[<p>爆料称，苹果&quot;阔折叠&quot;iPhone明年发布：内屏屏下摄像头、几近无折痕、使用侧边指纹</p>
+<p><img src="https://pic.imgdd.cc/item/69402f9bc8bea0d2f6d5651b.jpg" alt="" /></p>
+<p>基本可以确定苹果将会在明年9月发布首款折叠iPhone，与iPhone 18 Pro系列同台登场。</p>
+<p>据数码闲聊站透露，该机将采用“阔折叠”方案，也就是类似华为Pura X的比例。</p>
+<p>折叠iPhone的屏幕方案如下：
+外屏：5.5英寸，分辨率2088×1422，像素密度460PPI，采用HIAA打孔摄像头设计，开孔超小，比例接近寸接近常规iPhone，满足日常快捷操作。
+内屏：7.8英寸，分辨率2713×1920，4:3比例，像素密度428PPI，采用UPC屏下前摄方案，实现无开孔效果。</p>
+<p>此外，苹果还使用了高质量铰链，通过内置金属应力分散板实现“近乎无折痕”的内屏效果。</p>
+<p>后置双摄，主摄为4800万像素，支持光学防抖。取消Face ID，改用类似iPad的侧边按键集成Touch ID，节省内部空间。</p>
+<p>处理器预计为A20系列，搭配苹果C2基带，无物理SIM卡槽，仅支持eSIM。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/125"/><category term="收录"/><published>2025-12-15T15:56:59+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/124</id><title>修改了博客结构</title><updated>2026-01-09T16:21:15.458378+00:00</updated><content type="html"><![CDATA[<p>現在點擊文章會跳到獨立頁面 ，需要是手動點回 github Issues。</p>
+<p>我自己很滿意 ！</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/124"/><category term="突发的一些小想法"/><published>2025-12-15T14:26:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/122</id><title>申请强夺 Twitter 商标</title><updated>2026-01-09T16:21:15.604266+00:00</updated><content type="html"><![CDATA[<p>初创公司“蓝鸟行动”剑指马斯克：申请强夺 Twitter 商标，欲重启经典社交网络</p>
+<p>【mYogg 12月11日讯】 在埃隆·马斯克（Elon Musk）将“Twitter”改名为“X”并试图抹去其品牌印记两年多后，一场意想不到的商标反击战正式打响。一家名为 Operation Bluebird（蓝鸟行动） 的美国初创公司近日向美国专利商标局（USPTO）提交了法律请愿书，要求撤销 X 公司对“Twitter”和“tweet”的商标权，并计划借此让经典的“Twitter”品牌在全新的社交平台上重生。</p>
+<p>师出有名：指控 X 公司“弃用”商标</p>
+<p>Operation Bluebird 的核心论点非常犀利：既然马斯克已经彻底放弃了这个品牌，那么它就不应该被束之高阁，而应该物归原主，回归社交网络领域。</p>
+<p>在 12 月 2 日提交的申请文件中，该公司指出，X 公司已从其产品、服务及营销活动中“彻底清除”了 Twitter 品牌。无论是标志性的蓝鸟 Logo，还是“tweet”这一核心功能名称，都已被马斯克移除。甚至马斯克本人也曾公开表示要“告别 Twitter 品牌”。</p>
+<p>根据美国商标法，如果一个商标的使用停止且无意恢复，该商标将被视为“放弃”。Operation Bluebird 认为，X 公司的行为已经构成了法律意义上的“弃用”，因此他们请求 USPTO 注销相关商标注册。</p>
+<p>蓝图已绘：Twitter.new 时代将至？</p>
+<p>如果 Operation Bluebird 在这场法律博弈中胜出，他们并非为了炒作概念，而是有着明确的落地计划。</p>
+<p>该公司已经发布了一个名为 Twitter.new 的原型平台，并已经开始邀请用户预留用户名。他们的目标很明确：在这个公共社交空间日益破碎的时代，利用 Twitter 旧日的品牌号召力，重建一个被许多人怀念的、开放的广场。</p>
+<p>Operation Bluebird 的创始人 Michael Peroff 表示，虽然目前市面上已经出现了如 Meta 的 Threads、Bluesky 等类 Twitter 产品，但这些平台目前的规模和知名度都尚未达到当年 Twitter 的辉煌程度。他相信，通过重启这个拥有深厚历史积淀的品牌，能够吸引大量对现状不满的用户回归。</p>
+<p>“内鬼”操刀：前 Twitter 律师亲自带队</p>
+<p>值得注意的是，这场针对 X 公司的法律挑战并非由门外汉发起，其背后有着极深的行业背景。</p>
+<p>此次申请是由 Stephen Coates 代表提交的。Coates 曾是 Twitter 公司的商标律师，对 Twitter 的知识产权布局了如指掌。在马斯克收购 Twitter 之前，他曾担任 Twitter 商标、域名和市场营销部门的副总监。如今，他已转投 Operation Bluebird 担任总法律顾问。</p>
+<p>Coates 表示，在 X 公司据称已停止对“Twitter”商标进行商业使用的情况下，此事“十分明确”。</p>
+<p>前路未卜：马斯克会坐视不管吗？</p>
+<p>尽管 Operation Bluebird 言之凿凿，但这场商标争夺战注定不会一帆风顺。</p>
+<p>虽然马斯克在视觉和产品上抛弃了 Twitter，但 X 公司在 2023 年提交的 Twitter 商标续展申请已于去年获批。这意味着，X 公司在法律层面依然握有这把“尚方宝剑”。</p>
+<p>知识产权律师分析指出，即便商标被撤销，X 公司仍可能以“消费者混淆”或“品牌稀释”等理由，试图阻止 Operation Bluebird 商业使用“Twitter”名称。这将成为一场关于“品牌所有权”与“实际使用”的法律拉锯战。</p>
+<p>目前，美国专利商标局尚未对此申请作出裁决。对于马斯克而言，这不仅是关于一个旧商标的归属，更是关于他打造“万能应用 X”愿景的一次严峻考验：他是否愿意为一个他公开鄙视过的“旧时代”品牌投入资源进行辩护？</p>
+<p>科技界正密切关注这场“螳螂捕蝉，黄雀在后”的戏码，最终结果将对数字时代的品牌资产保护产生深远影响。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/122"/><category term="blog"/><published>2025-12-11T14:35:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/121</id><title>小米跨界Web3：全球新机将预装加密钱包，试水稳定币支付</title><updated>2026-01-09T16:21:15.717765+00:00</updated><content type="html"><![CDATA[<p><strong>【mYogg 12月11日消息】</strong>  在智能手机与区块链技术融合的道路上，小米迈出了里程碑式的一步。今日，高性能区块链平台 Sei 宣布与全球消费电子巨头小米达成重磅合作。从2026年起，小米将在除中国大陆和美国以外销售的所有新款智能手机上，预装基于 Sei 的下一代加密钱包与 Web3 应用发现平台。</p>
+<h4>一键直达：加密功能“出厂即送”</h4>
+<p>此次合作的核心在于“普及”与“便捷”。长期以来，加密货币和 Web3 应用因复杂的助记词管理、繁琐的注册流程而让普通用户望而却步。小米与 Sei 此次联手，旨在打破这一壁垒。</p>
+<p>据悉，预装在小米新机中的应用将采用先进的 <strong>MPC（多方计算）钱包技术</strong>。这一技术最大的亮点在于实现了“无感”安全，用户不再需要抄写和保管复杂的12或24个单词的助记词。取而代之的是，用户可以直接使用早已习惯的 <strong>Google 账号或小米账号一键登录</strong>，即可创建并拥有一个功能完整的链上钱包。</p>
+<p>这种“硬件级别的分发策略”，将加密货币从用户需要主动寻找的“可选下载项”，转变为开箱即用的“系统默认功能”。这不仅极大地降低了使用门槛，更被视为推动 Web3 从“极客玩具”走向“大众标配”的关键催化剂。</p>
+<h4>覆盖亿级用户，重塑支付生态</h4>
+<p>根据市场数据，小米在2024年全球智能手机出货量高达1.68亿台，稳居全球前三，市场份额达13%。此次预装合作将覆盖全球数百万台新设备，优先推广区域涵盖欧洲、拉丁美洲、东南亚及非洲等加密货币采纳率较高的市场。在小米市场占有率极高的希腊（超36%）和印度（超24%），这一功能有望迅速普及。</p>
+<p>除了作为钱包，该应用还是一个 Web3 的“探索门户”。它内置了去中心化应用（DApp）的发现中心，用户无需通过浏览器，即可直接在手机上与 DeFi、GameFi、社交和 NFT 等丰富的 Web3 生态互动，同时支持点对点（P2P）的实时转账。</p>
+<p><img src="https://pic.imgdd.cc/item/693ac71c8e53870ab5179f27.jpg" alt="" /></p>
+<h4>稳定币买手机：真实场景落地</h4>
+<p>如果说预装钱包是第一步，那么打通真实世界的商业支付则是这次合作的终极愿景。</p>
+<p>小米与 Sei 已经规划了稳定币支付系统的落地路线图。双方计划在 <strong>2026年第二季度</strong>，率先在香港和欧盟等监管框架明确的地区，于小米全球超过20,000家零售店及官方线上渠道，试行 <strong>USDC 等稳定币支付功能</strong>。</p>
+<p>这意味着，未来用户将可能直接使用数字资产购买小米手机、智能穿戴设备、智能家居产品，甚至小米 SU7 电动汽车。这种与实体经济的深度绑定，将为加密货币赋予前所未有的真实世界效用，使其从单纯的投机性资产转变为日常消费工具。</p>
+<h4>行业震动与未来展望</h4>
+<p>此次合作也被视为对 Sei 生态的“结构性利好”。随着数百万新用户的涌入和商业支付场景的落地，Sei 链上的交易活动将大幅增加，从而产生对 SEI 代币的刚性需求（作为 Gas 费），并有望通过质押机制进一步优化代币经济模型。</p>
+<p>从“极客玩具”到“出厂标配”，小米与 Sei 的联手，不仅是科技巨头对 Web3 未来的押注，更是区块链技术迈向主流大众视野的关键一跃。这场始于手机的革命，正在悄然重塑我们与数字资产互动的方式。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/121"/><category term="收录"/><published>2025-12-11T13:29:38+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/120</id><title>SpaceX卫星群对哈勃望远镜及其他太空望远镜的光污染影响研究</title><updated>2026-01-09T16:21:15.830139+00:00</updated><content type="html"><![CDATA[<p><strong>关键词:</strong>  卫星群；光污染；哈勃望远镜；太空望远镜</p>
+<h4>Abstract</h4>
+<p>With the continuous advancement of space exploration and the sharp increase in the number of satellite launches, the crucial position of space telescopes in scientific research has become increasingly prominent. However, the plans of companies like SpaceX to launch satellites on a large scale pose a threat of light pollution to observational equipment such as the Hubble Space Telescope. This research, led by Spanish astrophysicist Alejandro Serrano Borlaff, aims to specifically investigate the impact of light pollution on space telescopes. The research team constructed models to simulate the impact of light pollution by collecting data from the SpaceX satellite constellation and the Hubble Telescope, and conducted analyses. The study found that in the next decade, one - third of the images from the Hubble Telescope will be affected by light pollution. A stunning 96% of images from the European Space Agency's planned ARIAKHIS telescope may feature light streaks, and the proportion of images affected by NASA's newly launched SPHEREx telescope is as high as 99%. This indicates that the problem of light pollution from the SpaceX satellite constellation to space telescopes is severe, and effective countermeasures need to be taken urgently to protect the space observation environment.</p>
+<p><strong>Keyword:</strong>  Satellite clusters; Light pollution; Hubble Telescope; Space telescopes</p>
+<h4>1. 引言</h4>
+<h5>1.1 研究背景</h5>
+<p>近年来，随着人类对宇宙探索的深入，太空技术的快速发展推动了卫星发射数量的激增。以“星链”计划为代表的低轨巨型星座项目迅速崛起，成为全球航天活动的重要组成部分。与此同时，太空望远镜作为观测宇宙深空、探索天体物理现象的关键工具，在天文学研究中占据着不可替代的地位。例如，哈勃望远镜自发射以来，为人类揭示了众多宇宙奥秘，其科学贡献不可估量。然而，随着卫星密度的增加，太空环境日益复杂，光污染问题逐渐显现。研究表明，SpaceX等公司计划在未来十年内发射大量卫星，可能对哈勃望远镜及其他太空望远镜的观测能力造成显著影响。这一现象不仅威胁到科学研究的连续性，也引发了关于太空资源可持续利用的广泛讨论。</p>
+<h5>1.2 问题陈述</h5>
+<p>SpaceX卫星群对哈勃望远镜及其他太空望远镜图像质量的潜在威胁已成为天文学界关注的焦点。根据最新研究，如果SpaceX等公司按计划发射卫星，哈勃望远镜三分之一的图像将受到光污染的影响。这种光污染主要表现为图像中出现的光条纹和光斑，严重干扰了望远镜对深空天体的观测能力。此外，欧洲航天局计划发射的ARRAKIHS望远镜及NASA新发射的SPHEREx望远镜也可能面临类似问题，其中SPHEREx望远镜受影响的比例甚至高达99%。这一问题的紧迫性在于，它不仅削弱了现有太空望远镜的科学价值，还可能对未来天文学研究的发展产生深远影响。因此，深入研究SpaceX卫星群对太空望远镜的光污染影响，对于保护太空观测环境和确保科学研究的顺利进行具有重要意义。</p>
+<h5>1.3 研究目标</h5>
+<p>本研究旨在准确评估SpaceX卫星群对哈勃望远镜及其他太空望远镜光污染的程度，并探索可能的应对策略。具体而言，研究将通过收集卫星轨道参数、亮度数据以及望远镜观测数据，构建模拟模型以分析不同情况下卫星光污染对望远镜图像的影响。在此基础上，研究将进一步探讨如何通过优化卫星设计、调整望远镜观测策略以及加强国际合作与政策制定，减轻光污染对太空望远镜的负面影响。最终，本研究希望为相关领域提供科学依据和技术支持，助力构建更加可持续的太空观测环境，同时为未来类似问题的研究奠定基础。</p>
+<h4>2. 文献综述</h4>
+<h5>2.1 太空望远镜发展及作用</h5>
+<p>太空望远镜的发展历程标志着人类对宇宙认知的深刻变革。自20世纪中期以来，随着航天技术的进步，太空望远镜逐渐成为天文学研究的重要工具。哈勃太空望远镜作为这一领域的里程碑式项目，自1990年发射以来，为人类提供了大量关于宇宙深空的珍贵数据，极大地推动了天体物理学和宇宙学的发展。例如，哈勃望远镜通过观测遥远星系的红移现象，验证了宇宙膨胀理论，并为暗物质和暗能量的研究提供了关键证据。此外，欧洲航天局计划于2030年代发射的ARAGO任务，以及NASA提出的LUVOIR项目，将进一步拓展太空望远镜的观测能力，涵盖紫外至红外波段的光谱探测，从而揭示更多关于恒星形成、星系演化等天体物理现象的奥秘。这些先进设备不仅提升了科学研究的精度，还为理论模型的构建与验证提供了不可或缺的数据支持。</p>
+<h5>2.2 卫星发射与光污染研究现状</h5>
+<p>近年来，卫星发射数量呈现爆炸式增长，尤其是低轨巨型星座的迅猛发展，使得近地轨道的空间环境愈发复杂。根据相关研究，2015年后低轨卫星发射数量显著增加，其中SpaceX的“星链”计划尤为引人注目，其目标是在近地轨道部署超过4万颗通信卫星，以实现全球高速互联网覆盖。然而，这种大规模卫星部署带来了显著的光污染问题。已有研究表明，卫星在日出和日落时分的反光效应会严重影响地面天文观测，导致图像中出现明亮的光条纹或光斑。此外，随着卫星数量的持续增加，光污染的影响范围不断扩大，甚至威胁到太空望远镜的观测质量。例如，国际电信联盟的数据显示，截至2023年底，已有超过170万颗卫星注册，其中大部分集中在低轨区域，这进一步加剧了光污染的潜在风险。尽管已有研究探讨了卫星光污染对地面观测的影响，但针对太空望远镜的具体分析仍显不足，尤其是在定量评估和长期预测方面存在明显空白。</p>
+<h5>2.3 本研究的切入点</h5>
+<p>与现有研究相比，本研究具有独特的视角和创新性。首先，本研究专门聚焦于SpaceX卫星群对特定太空望远镜（如哈勃望远镜）的光污染影响，填补了当前研究中关于太空望远镜光污染问题的空白。其次，本研究通过构建详细的模拟模型，结合SpaceX卫星群的轨道参数和哈勃望远镜的观测数据，定量分析了光污染的具体表现形式及其对科学研究的潜在威胁。此外，本研究还探讨了未来十年内卫星数量激增至50万颗的可能性，并评估了其对其他太空望远镜（如ARRAKIHS和SPHEREx）的影响。这种前瞻性分析不仅为理解光污染问题提供了新的视角，也为制定有效的应对策略奠定了基础，从而在技术进步与科学观测之间寻求平衡点。</p>
+<h4>3. SpaceX卫星群及哈勃望远镜概述</h4>
+<h5>3.1 SpaceX卫星群</h5>
+<h6>3.1.1 “星链”计划介绍</h6>
+<p>“星链”计划由美国太空探索技术公司（SpaceX）于2015年正式提出，旨在通过部署成千上万颗低轨卫星构建一个全天时、全天候、全覆盖的低成本卫星通信网络。该计划的目标是为全球提供无死角的互联网服务，特别是在传统通信方式难以覆盖的偏远地区，如大洋、南北极等区域实现高速数据传输。截至2023年10月，“星链”系统已完成110余次发射，累计送入轨道的卫星数量超过5200颗，并计划在未来继续扩大其规模。根据现有规划，SpaceX拟在2019年至2024年间分批次发射共计12000颗卫星，以完成第一阶段组网目标；此外，该公司还提出了进一步增加30000颗卫星的长期计划，预计未来十年内卫星总数可能达到50000颗以上。这一宏伟目标的实现将依赖于SpaceX自主研发的“猎鹰9号”运载火箭以及其重复使用技术，这些技术显著降低了发射成本，为大规模星座部署提供了可行性。</p>
+<h6>3.1.2 卫星群轨道及运行特点</h6>
+<p>“星链”卫星群的设计具有显著的轨道和运行特征，这些特点对其光污染效应产生了重要影响。首先，该系统的卫星主要部署在近地轨道（LEO），轨道高度范围介于340公里至550公里之间，部分卫星甚至位于超低轨道（低于340公里）。这种低轨道选择使得卫星能够以较低的时延提供高带宽通信服务，同时也增强了其搭载的光学传感器的分辨率，从而对地面目标进行高精度成像。然而，低轨道运行也意味着卫星更频繁地穿越地球阴影区域，导致它们在日出和日落时分反射阳光并产生明亮的光斑，这对天文观测构成了潜在威胁。其次，“星链”卫星采用了分布式星座设计，卫星被均匀分配到多个轨道面上，以确保全球范围内的连续覆盖。这种布局虽然优化了通信性能，但也增加了卫星与其他航天器或天文设施发生干扰的可能性。此外，SpaceX通过多次迭代改进卫星设计，例如使用氪气作为电推进系统的推进剂，以降低整体成本，但这些设计调整并未充分考虑其对天文观测的影响，进一步加剧了光污染问题。</p>
+<h5>3.2 哈勃望远镜</h5>
+<h6>3.2.1 哈勃望远镜的发展与成就</h6>
+<p>哈勃太空望远镜（Hubble Space Telescope, HST）是人类历史上最具里程碑意义的天文观测设备之一，自1990年发射以来，为现代天文学研究做出了不可磨灭的贡献。哈勃望远镜由美国国家航空航天局（NASA）与欧洲航天局（ESA）联合开发，其设计初衷是克服地球大气层对天文观测造成的干扰，从而获得更高分辨率和更精确的天体图像。在其长达三十多年的服役期间，哈勃望远镜不仅揭示了宇宙深处的奥秘，还推动了许多重大科学发现的诞生。例如，通过对遥远星系的红移测量，哈勃望远镜帮助科学家确定了宇宙膨胀速率，即哈勃常数；同时，其拍摄的大量深空图像为研究暗物质、暗能量以及星系演化提供了宝贵的数据支持。此外，哈勃望远镜还参与了诸多国际合作项目，如与詹姆斯·韦布空间望远镜（JWST）协同观测，进一步拓展了人类对宇宙的认知边界。</p>
+<h6>3.2.2 哈勃望远镜的观测原理与能力</h6>
+<p>哈勃望远镜的核心观测能力来源于其先进的光学系统和宽波段的探测范围。该望远镜配备了一台2.4米口径的主镜和一系列辅助光学仪器，能够覆盖从紫外到近红外的宽广光谱区间（约115纳米至2.5微米），这使得其可以同时观测多种类型的天体现象。其高分辨率成像能力尤为突出，在可见光波段的分辨率可达0.1角秒，相当于从地球上分辨出月球表面的一枚硬币大小的目标。此外，哈勃望远镜还搭载了多种科学仪器，包括广角行星相机（WFC3）、高级巡天相机（ACS）以及近红外光谱仪（NIRSpec），这些设备共同赋予了其对不同天体目标的多样化观测能力。值得注意的是，哈勃望远镜的观测模式分为直接成像和光谱分析两种，前者用于获取高分辨率的天体图像，后者则用于研究天体的化学成分和物理性质。正是凭借这些卓越的技术性能，哈勃望远镜成为了探索宇宙起源、结构和发展规律的重要工具，其研究成果深刻影响了当代天文学的理论框架和实践方向。</p>
+<h4>4. 光污染影响研究方法</h4>
+<h5>4.1 数据收集</h5>
+<p>为了准确评估SpaceX卫星群对哈勃望远镜的光污染影响，研究团队采用了多源数据收集方法，以确保数据的全面性和可靠性。首先，针对SpaceX卫星群的相关数据，包括轨道参数、卫星亮度及运行轨迹等，主要来源于美国联邦通信委员会（FCC）公开的技术文档以及SpaceX公司发布的官方信息。此外，研究团队还参考了国际电信联盟（ITU）的空间物体注册数据库，以获取卫星在轨位置的实时更新信息。这些数据为后续分析提供了重要的基础支持。</p>
+<p>对于哈勃望远镜的观测数据，研究团队从NASA的公共科学档案中获取了详细的观测记录，包括观测时间、观测方向、目标天体的坐标以及成像设备的参数设置等。同时，为了更精确地模拟光污染的影响，研究团队还结合了哈勃望远镜的观测计划和卫星群的运行轨迹，分析了不同观测条件下可能受到的光污染程度。通过整合上述多源数据，研究团队构建了一个全面的数据集，为后续建模和分析奠定了坚实的基础。</p>
+<h5>4.2 模型构建</h5>
+<p>为了模拟SpaceX卫星群对哈勃望远镜的光污染影响，研究团队开发了一种基于物理光学原理的数值模型。该模型的核心假设是卫星在特定轨道高度和光照条件下会产生稳定的光散射效应，这种效应会对哈勃望远镜的观测图像造成不同程度的光污染。模型的主要参数设定包括卫星的反射率、轨道高度、运行速度以及太阳光的入射角度等，这些参数均基于实际测量数据和理论计算结果进行校准。</p>
+<p>模型的基本原理是将卫星视为一个点光源，在给定时间内计算其相对于哈勃望远镜的位置和亮度分布。具体而言，模型首先根据卫星的轨道参数和太阳光照条件，计算卫星表面的反射光强度；然后，结合哈勃望远镜的观测方向和成像特性，模拟光污染在图像中的表现形式，如光条纹和光斑等。此外，模型还考虑了大气层对光传播的影响，以提高模拟结果的准确性。通过多次迭代和验证，模型能够较好地再现卫星光污染对哈勃望远镜图像的实际影响，为后续分析提供了可靠的理论工具。</p>
+<h5>4.3 分析流程</h5>
+<p>在数据收集和模型构建的基础上，研究团队设计了一套系统的分析流程，以评估SpaceX卫星群对哈勃望远镜图像的具体影响。首先，研究团队利用收集到的卫星轨道数据和哈勃望远镜的观测计划，确定了卫星与望远镜在时间和空间上的相对位置关系。然后，通过模型模拟，计算了不同观测条件下卫星光污染对哈勃望远镜图像的影响程度，包括光污染的覆盖面积、强度分布以及持续时间等关键指标。</p>
+<p>为了进一步验证模型的准确性，研究团队将模拟结果与哈勃望远镜的实际观测图像进行了对比分析。结果显示，模型能够较好地预测光污染的主要特征，并在多种观测条件下表现出较高的可靠性。此外，研究团队还通过调整模型参数，模拟了未来不同卫星发射情景下哈勃望远镜可能面临的光污染问题，为制定应对策略提供了科学依据。整个分析流程不仅揭示了卫星光污染对哈勃望远镜的具体影响机制，也为后续研究提供了可复制的方法论框架。</p>
+<h4>5. 光污染影响研究结果</h4>
+<h5>5.1 对哈勃望远镜的影响</h5>
+<h6>5.1.1 图像受污染比例</h6>
+<p>研究表明，SpaceX卫星群对哈勃望远镜图像质量的潜在影响已达到不可忽视的程度。根据研究团队的模拟分析，若SpaceX按计划在未来十年内完成其卫星发射目标，哈勃望远镜约三分之一的观测图像将受到光污染的显著影响。这一比例在不同观测条件下表现出显著差异。例如，在低地</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/120"/><category term="一些记录"/><published>2025-12-11T13:11:35+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/119</id><title>Notepad++ 遭流量劫持</title><updated>2026-01-09T16:21:16.027505+00:00</updated><content type="html"><![CDATA[<p><a href="https://notepad-plus-plus.org/news/v889-released/">Notepad++ 遭流量劫持，更新程序被植入恶意程序</a></p>
+<p>Notepad++ 发布安全警告，它遭遇了流量劫持，部分地区的更新程序被植入恶意程序。</p>
+<p><img src="https://pic.imgdd.cc/item/693ab6f38e53870ab51788d0.jpg" alt="" /></p>
+<p>调查发现，Notepad++ 更新程序 WinGUp 的流量被劫持到恶意服务器，下载恶意可执行文件。</p>
+<p>更新程序使用版本检查功能查询 URL“https://notepad-plus-plus.org/update/getDownloadUrl.php”并评估返回的 XML 文件。更新程序使用 XML 文件中列出的 Download-URL，将文件保存到 %TEMP% 文件夹并执行。任何能拦截和篡改此流量的攻击者都可以更改 Download-URL。</p>
+<p>Notepad++ v8.8.7 之前的版本使用了自签名证书，允许攻击者创建篡改后的更新并将其推送给受害者。从 v8.8.7 开始 Notepad++ 使用了来自 GlobalSign 签发的合法证书进行签名。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/119"/><category term="一些记录"/><published>2025-12-11T12:20:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/118</id><title>最糟糕的发明是短视频</title><updated>2026-01-09T16:21:16.143330+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/693a90d28e53870ab51741b0.jpg" alt="" /></p>
+<p>Elon Musk 在接受Katie Miller 最新播客采访时表示，人类最糟糕的发明是短视频，在不断腐蚀人类大脑。</p>
+<p>编辑注：Elon Musk曾表示想要复活短视频应用Vine，旗下X也有类似于短视频的信息流功能。</p>
+<p>YouTube
+<a href="https://www.youtube.com/watch?v=bz5Hjk40FD4">https://www.youtube.com/watch?v=bz5Hjk40FD4</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/118"/><category term="blog"/><published>2025-12-11T09:43:11+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/117</id><title>谷歌推出 Android 紧急视频直播功能</title><updated>2026-01-09T16:21:16.261784+00:00</updated><content type="html"><![CDATA[<p>谷歌推出 Android 紧急视频直播功能，可向 911 调度员传输实时画面</p>
+<p><img src="https://pic.imgdd.cc/item/693a2bf9898c44667d5344e1.jpg" alt="" /></p>
+<p>谷歌正式推出 Android Emergency Live Video 功能，允许紧急调度员在危机情况下请求用户手机的实时视频画面。该功能适用于运行 Android 8 及以上版本的设备，目前已在美国以及德国和墨西哥的部分地区开始推广。</p>
+<p>当调度员发起视频请求时，用户屏幕会显示提示，可通过单次点击开始直播。用户无法主动发起视频通话，只有经过验证的紧急响应人员才能触发请求。谷歌表示，所有视频传输均采用默认加密，用户可随时拒绝或停止分享视频。该功能旨在帮助急救人员更准确评估现场情况，特别是在用户无法说话或准确描述状况的紧急时刻。</p>
+<p><a href="https://www.androidauthority.com/android-emergency-live-video-3623953/">Android Authority</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/117"/><category term="notes"/><published>2025-12-11T02:27:47+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/116</id><title>Telegram 全新安全登录方式</title><updated>2026-01-09T16:21:16.394172+00:00</updated><content type="html"><![CDATA[<p>通行密钥（Passkeys）：Telegram 全新安全登录方式</p>
+<p>通行密钥（Passkeys）是一种免密码的安全登录技术，它依托公钥私钥加密体系与设备本地验证机制，替代了传统密码形式，能显著提升账户登录的安全性与操作便捷性。</p>
+<p>Telegram 已正式上线通行密钥登录功能，该功能可完全取代短信验证码登录。一方面解决了此前国际短信验证码存在的发送成本高、部分地区接收失败等痛点，另一方面也有效规避了短信验证码被劫持的风险，实现了登录安全与便捷性的双重升级。</p>
+<p>值得注意的是，通行密钥会存储在用户自主选择的密码管理器中，其安全性与可用性不受 Telegram 平台服务本身的影响，保障了密钥的独立性与稳定性。</p>
+<p>核心优势</p>
+<ul>
+<li>替代短信验证，无接收地域限制、无劫持风险</li>
+<li>依托公钥加密体系，登录安全等级更高</li>
+<li>密钥存于个人密码管理器，与平台服务解耦</li>
+</ul>
+<p>已支持的客户端：</p>
+<ul>
+<li>iOS 官方客户端版本 ≥ v12.2.3</li>
+<li>Android 官方客户端版本 ≥ v12.2.8</li>
+<li>Desktop 官方客户端和第三方客户端版本 ≥ v6.3.6</li>
+<li>iOS 和 Android 第三方客户端不支持通行密钥，这是 Telegram 的限制</li>
+</ul>
+<p>开启方式：</p>
+<ul>
+<li>中文界面：设置 -&gt; 隐私 -&gt; 通行密钥</li>
+<li>英文界面：Settings -&gt; Privacy and Security -&gt; Passkey</li>
+<li>iOS 上无法开启的解决办法：连续点击10次“设置” -&gt; 进入“Debug”界面 -&gt; 点击“Clear Database and Cache” -&gt; 再去开启</li>
+</ul>
+<p>温馨提示：为保障账号安全，强烈建议所有符合条件的用户尽快开启通行密钥功能！</p>
+<p>尽管 Telegram 已上线通行密钥登录功能，但账号注册环节对手机号码的硬性要求始终未变，无论过去还是现在，手机号都是注册的必备条件。</p>
+<p>通行密钥仅优化了 Telegram 的登录体验，并未改变其注册规则 —— 和以往一样，手机号码至今仍是账号注册的必要前提，缺一不可。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/116"/><category term="notes"/><category term="收录"/><published>2025-12-10T03:19:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/115</id><title>了解xlog</title><updated>2026-01-09T16:21:16.528641+00:00</updated><content type="html"><![CDATA[<p>很早就看到过xlog，但是一看到这个又要用钱包 又要用区域链 自己从来就没有用过去区域链 钱包 而且也不会创建 ，也没有敢尝试 。</p>
+<p>前两天也是抱着试试的心态，不知道怎么就开通了 ，说实话 这个怎么登录的我都不知道 反正是能发文章了 ，仔细看了一下 嗯 还是非常方便的 就是有些验证的麻烦了一些 。</p>
+<p>先用着吧 我觉得这个唯一的好处就是 上传一些图片视频你就不用考虑到容量的问题，你不用再去找各种各样的网盘，各种各样的视频盘 ，你可以在文章中直接上传图片视频，而且感觉速度还挺快，包括自己介绍说 ，这个是 存储在区域链之内的，就是每个cdn都可能存着你的文章呀，所以你什么也丢不了，</p>
+<p>勇于尝试，敢于尝试 。让我们拭目以待吧 </p>
+<p><img src="https://pic.imgdd.cc/item/693591d824de32cf8805794f.jpg" alt="" /></p>
+<blockquote>
+<p>xLog是一个现代化的开源博客系统，使用区块链技术存储博客数据，包括配置、文章、评论等。它具有丰富的交互功能，可以关注博客、评论、点赞文章，并将文章铸造为NFT。xLog基于proselog项目开发，使用Next.js + Tailwind CSS + TypeScript + TanStack Query构建，具有完善的开发体验。它使用Crossbell区块链进行社交活动，无需购买gas费用。每个博客都是一个属于用户的NFT，配置和文章存储在NFT中。然而，xLog的使用需要安装以太坊钱包，这对于没有接触过区块链的普通用户可能是一个负担。未来计划增加主题系统和插件系统，提供更多样式和功能选择。 </p>
+</blockquote>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/115"/><category term="突发的一些小想法"/><published>2025-12-07T14:41:12+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/114</id><title>增加一個玉米</title><updated>2026-01-09T16:21:16.664465+00:00</updated><content type="html"><![CDATA[<p>添加一個域名 ，然後這個主頁動不動就不顯示了 現在還在尋找原因 .</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/114"/><category term="突发的一些小想法"/><published>2025-12-05T14:05:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/113</id><title>焦虑舒缓工具集</title><updated>2026-01-09T16:21:16.796461+00:00</updated><content type="html"><![CDATA[<p>🏃🏻 Anxiety Aid Tools：焦虑舒缓工具集</p>
+<p>🔗：<a href="https://anxietyaidtools.com/">https://anxietyaidtools.com/</a></p>
+<p><img src="https://pic.imgdd.cc/item/6932e080c25bd73c8ba1b195.jpg" alt="" /></p>
+<p>👉 Features</p>
+<ul>
+<li>无需注册、无广告、离线可用</li>
+<li>提供 iOS 和 Android 应用，全部免费</li>
+<li>开源、本地存储信息，隐私至上</li>
+<li>基于科学研究、提供参考文献</li>
+</ul>
+<p>👩🏻‍⚕️ 工具集</p>
+<p>① 2 分钟呼吸练习
+② 5-4-3-2-1 正念接地法
+③ 深度引导呼吸
+④ 渐进性肌肉放松训练
+⑤ 宁静视觉化冥想
+⑥ 思维标记练习等</p>
+<p>焦虑时，身体会激活「战斗或逃跑」应激反应，导致心率加快、呼吸急促，并释放肾上腺素等压力激素。而上述这些经过科学验证的技巧能够激活副交感神经系统，自然地对抗身体的应激反应。</p>
+<p>通过定期练习，可以显著减少焦虑情绪的发生频率和强度</p>
+<p>❤️ 随着社会不断发展，个体和精神问题越来越受到大家的重视，如何「抵抗虚无」「缓解焦虑」，成为了一些人的长期课题。Anxiety Aid Tools 这套工具集，旨在通过科学的方法和一小段时间，帮助大家舒缓焦虑。如果你的症状较为严重，记得寻求底部的「专业帮助」.</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/113"/><category term="一些记录"/><published>2025-12-05T13:44:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/112</id><title>這一陣甲流太猖狂了</title><updated>2026-01-09T16:21:16.902896+00:00</updated><content type="html"><![CDATA[<p>這一陣甲流太猖狂了，前兩天去醫院感染的人特別多，記得保護好自己，帶好口罩。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/112"/><category term="blog"/><published>2025-12-04T14:32:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/111</id><title>戴森在华全球首发真 AI 清洁机器人</title><updated>2026-01-09T16:21:17.051887+00:00</updated><content type="html"><![CDATA[<p>戴森在华全球首发真 AI 清洁机器人，搭载万亿级处理器</p>
+<p><img src="https://pic.imgdd.cc/item/69319805e9f3a017329a2cf0.jpg" alt="" /></p>
+<p>戴森今日在中国市场推出两款清洁新品——戴森真 AI 清洁机器人和戴森 Clean+Wash Hygiene 洗地机。其中真 AI 清洁机器人为全球首发产品，搭载每秒万亿级信息处理能力的 AI 处理器，可智能识别近 200 种家庭物体。</p>
+<p>该机器人通过 HD 摄像头、LiDAR 双线激光及光学探测技术实现多维度环境感知，构建&quot;感知－识别－适应－行动&quot;全链路智能清洁系统。</p>
+<p>针对中国家庭 94% 硬质地板占比特征，机器人可根据污渍类型自动切换干湿清洁模式，并建立&quot;清洁－检测－复扫&quot;闭环流程确保彻底清洁。硬件方面，搭载 18000Pa 强劲马达，硬质地面清洁率高达 99%。</p>
+<p><a href="https://finance.sina.com.cn/roll/2025-12-04/doc-infzrraz0692213.shtml">新浪财经</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/111"/><category term="收录"/><published>2025-12-04T14:18:27+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/109</id><title>ClouDNS 免費二級域名</title><updated>2026-01-09T16:21:17.183177+00:00</updated><content type="html"><![CDATA[<p>它的优势包括：</p>
+<p>• 永久免费 —— 提供 Free DNS Plan 和免费二级域名</p>
+<p>• 解析稳定快速 —— 全球 Anycast 网络</p>
+<p>• 支持 DDNS —— 非常适合 NAS / 家庭宽带公网 / Cloudflare Tunnel</p>
+<p>• 界面清晰易用 —— 新手完全无压力</p>
+<p>• 不会乱封域名 —— 稳定性远胜 Freenom</p>
+<p><img src="https://pic.imgdd.cc/item/693104337fc170517f43968c.jpg" alt="" /></p>
+<p>拿到域名后，可以像正常域名一样使用：</p>
+<p>• A 记录：指向你的公网 IP</p>
+<p>• CNAME：用于 Tunnel 或反代服务</p>
+<p>• AAAA：支持 IPv6</p>
+<p>• MX：甚至可以做邮箱（不过免费版功能有限）</p>
+<p><a href="https://www.cloudns.net">https://www.cloudns.net</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/109"/><category term="notes"/><published>2025-12-04T03:50:08+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/108</id><title>12月3日</title><updated>2026-01-09T16:21:17.291239+00:00</updated><content type="html"><![CDATA[<p>為什麽要說這麽一天呢？</p>
+<p>因為這幾天我測試了無數遍的工作流。No了，都已經API超額了。</p>
+<p>對於代碼一竅不通的我，這個成果已經相當滿意了，多虧現在的AI技術。</p>
+<p>DeepSeek</p>
+<p>ChatGPT</p>
+<p>感謝這兩個AI.</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/108"/><category term="blog"/><published>2025-12-04T01:03:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/107</id><title>2025 年 11 月新游盘点</title><updated>2026-01-09T16:21:17.395936+00:00</updated><content type="html"><![CDATA[<p>🎯 2025 年 11 月新游盘点</p>
+<p><a href="https://markonreview.com/2025/11/30/2025-nov-upcoming-games/">Markon Review</a> </p>
+<p><img src="https://pic.imgdd.cc/item/6930503b7fc170517f3da23f.jpg" alt="" /></p>
+<p>📡 一类关注：</p>
+<p>• 《卡比的驭天飞行者》（カービィのエアライダー）：卡比担任主角的竞速类作品，前作推出在 NGC 上。
+• 《塞尔达无双 封印战记》（ゼルダ無双 封印戦記）：填补了《王国之泪》留下的一些时间线空白，但重点更多是在战斗而非故事。
+• 《Lumines Arise》：《俄罗斯方块：效应》团队改造经典益智 IP。</p>
+<p>💡 更多瞩目：</p>
+<p>• 《No Players Online》
+• 《Z.A.T.O. // I Love the World and Everything In It》
+• 《恶魔学园》（Demonschool）</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/107"/><category term="收录"/><published>2025-12-03T14:59:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/106</id><title>币安推出 Binance Junior</title><updated>2026-01-09T16:21:17.501748+00:00</updated><content type="html"><![CDATA[<p>币安推出 Binance Junior，炒币要从娃娃抓起</p>
+<p>币安宣布推出 Binance Junior，这是一款专为 6-17 岁儿童和青少年设计的加密货币应用，父母可以通过 Binance Junior 向孩子发送加密货币并监督他们使用该软件，父母可以创建与主账户完全关联的子账户，随时监控所有活动并保持完全控制权。</p>
+<p>币安同日还宣布，任命联合创始人何一为联席 CEO，与现任 CEO Richard Teng 组成双重领导架构。何一在币安工作超过 8 年，目前担任首席客服官。</p>
+<p><a href="https://www.binance.com/en/binance-junior">Binance Junior</a>
+<a href="https://www.binance.com/en/support/announcement/detail/4affff5c0b67492d8a9167df634b7e98">币安</a></p>
+<p>你說這不是垃圾嗎？</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/106"/><category term="一些记录"/><published>2025-12-03T14:35:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/105</id><title>Telegram 测试通行密钥登录</title><updated>2026-01-09T16:21:17.622431+00:00</updated><content type="html"><![CDATA[<p>Telegram 测试通行密钥登录功能，可免输手机号和验证码</p>
+<p>Telegram 在 Android 12.2.8 Beta 版本中开始测试通行密钥登录功能，无需输入手机号码和短信验证码。目前该功能仍在开发阶段，尚未正式推出。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/105"/><category term="一些记录"/><published>2025-12-03T14:01:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/104</id><title>WebGPU 正式在主流浏览器启用</title><updated>2026-01-09T16:21:17.943117+00:00</updated><content type="html"><![CDATA[<p>WebGPU 已在 Chrome、Edge、Firefox 与 Safari 上获得正式支持，标志着网页原生高性能图形与 GPU 通用计算能力的全面落地。这一里程碑来自 W3C GPU for the Web 工作组多年的协作，参与方包括 Apple、Google、Intel、Microsoft 与 Mozilla。</p>
+<p>WebGPU 提供较 WebGL 更现代、性能更高的接口，允许浏览器直接利用当代 GPU 特性，用于高端 3D 图形渲染与通用计算任务。其计算管线进一步提升机器学习推理、视频处理、物理仿真等重型工作负载的效率，使网页端获得接近桌面级的性能。</p>
+<p>多项 AI 与图形框架已基于 WebGPU 实现加速，包括 ONNX Runtime、Transformers.js、Babylon.js、Three.js 等。借助 Render Bundles 等新机制，渲染场景的 CPU 负载可显著降低，性能提升可达数量级。</p>
+<p>在平台覆盖方面，WebGPU 已在 Windows、macOS、ChromeOS、iOS、iPadOS、visionOS，以及部分 Android 设备上线；Linux 与更多平台的支持仍在推进中。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/104"/><category term="收录"/><published>2025-12-03T13:36:38+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/103</id><title>不让 AI 写博文</title><updated>2026-01-09T16:21:18.085178+00:00</updated><content type="html"><![CDATA[<p>与 AI 的合作，哪些应该交给 AI，哪些必须自己完成。</p>
+<p>🧰 让 AI 写方案
+✦ 先自己厘清 20% 的关键判断，然后用 AI 补全 80% 的结构
+✦ 分章节逐段迭代，让 AI 找逻辑漏洞而非直接生成
+✦ 通过格式化、检查清单与沉淀机制构成飞轮效应
+✦ Notion AI 是目前最佳协作载体，可调取个人积累与外部上下文</p>
+<p>💻 让 AI 写代码
+✦ AI 是「软件 3D 打印机」，帮助从不能到能
+✦ 先定义方案，再拆解任务
+✦ 个人站点、浏览器扩展、 Docker 服务、专属应用都能快速落地</p>
+<p>✒️ 不让 AI 写博文
+✦ 博文是思考本身，是与自己对话的过程
+✦ 完美答案不重要，思考的纹理与差异性更珍贵
+✦ 写作是 refined thinking，不是效率竞赛</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/103"/><category term="突发的一些小想法"/><published>2025-12-03T13:08:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/95</id><title>重要/漏洞：aaPanel</title><updated>2026-01-09T16:21:18.192354+00:00</updated><content type="html"><![CDATA[<p>重要/漏洞：aaPanel（宝塔面板）数据库权限查询逻辑存在 SQL 注入漏洞</p>
+<p>漏洞编号：CVE-2025-12914
+重要等级：需要注意的（中危）
+CVSS 分数：4.7（CVSS v3.1） / 5.1（CVSS v4.0）</p>
+<p>影响范围：
+面板版本：≤ 11.2.x</p>
+<p>漏洞原理: 该漏洞出现在受影响的宝塔面板版本的 数据库权限查询逻辑 中，在处理
+/database?action=GetDatabaseAccess 接口时，对参数 Name 的校验不足：</p>
+<p>旧代码通过 字符串拼接 构造 SQL：
+users = mysql_obj.query(
+&quot;select Host from mysql.user where User='&quot; + name + &quot;' AND Host!='localhost'&quot;
+)
+攻击者在满足一定权限（或 API AccessKey）的前提下，如果能控制 name，即可通过构造特殊输入触发 SQL 注入。</p>
+<p>注意: 宝塔官方解释此漏洞 不能被未授权的远程用户直接利用，必须先拿到 宝塔后台管理员账号或面板 API AccessKey，才能进一步利用。
+实际上该漏洞属于“高权限条件下进一步放大风险”的漏洞，而不是“扫到就 RCE/沦陷”那种高危漏洞。目前公开信息显示，相关利用细节已被安全社区披露，NVD 条目中也明确该漏洞已对外公开并可被利用。</p>
+<p>受影响组件:
+宝塔面板（aaPanel / BaoTa Panel）Backend 模块
+具体接口：/database?action=GetDatabaseAccess
+受影响参数：Name</p>
+<p>处置建议：
+面板统一升级到 11.3.0 或更新版本。如暂时无法升级，可采取：
+限制面板访问来源 IP
+启用双因素认证
+检查面板 API 与 MySQL 日志</p>
+<p>参考资料: <a href="https://nvd.nist.gov/vuln/detail/CVE-2025-12914">NVD</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/95"/><category term="一些记录"/><published>2025-12-03T08:01:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/94</id><title>Google 正在尝试用AI生成的引入注目的标题</title><updated>2026-01-09T16:21:18.302144+00:00</updated><content type="html"><![CDATA[<p>Google 正在尝试用AI生成的引入注目的标题，并取代原新闻标题。</p>
+<p>Google表示这只是针对部分 Discover 用户进行的一个“小规模界面测试”</p>
+<p>AI生成的标题将被浓缩成四个单词，一些文章被添加了误导性和荒谬的标题，而且没有说明这些标题是由Google的AI重写的。</p>
+<p>TheVerge还看到Google试图声称“AMD 显卡超过了 Nvidia”，似乎 AMD 发布了一款具有突破性的显卡，但实际上 Wccftech 的报道是关于一家德国零售商在一周内售出比 Nvidia 更多的 AMD 显卡。Wccftech 的标题比较负责，但Google把它变成了点击诱饵。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/94"/><category term="一些记录"/><published>2025-12-03T07:49:43+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/93</id><title>ChatGPT iPhone</title><updated>2026-01-09T16:21:18.449429+00:00</updated><content type="html"><![CDATA[<p>ChatGPT iPhone 应用代码泄露显示或将集成 Apple Health 数据</p>
+<p>据 MacRumors 报道，ChatGPT iPhone 应用最新版本的代码中发现了隐藏的 Apple Health 图标，暗示该应用可能即将支持读取用户的健康数据。</p>
+<p>泄露的图像文件名表明，用户将能够连接 Apple Health 应用与 ChatGPT，从而获得基于个人健康和健身数据的个性化回答。</p>
+<p>根据泄露信息，ChatGPT 将能够访问 Apple Health 中与活动、睡眠、饮食、呼吸和听力相关的多个数据类别。</p>
+<p>目前 ChatGPT 的&quot;应用和连接器&quot;功能已支持 Peloton 等健身平台，但其他健康相关选项较为有限。考虑到一月份临近且许多用户会制定新年健康目标，该功能可能会在近期正式推出。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/93"/><category term="一些记录"/><published>2025-12-03T07:15:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/92</id><title>[ 胡思亂想 ]  AI 的“良心”是如何炼成的</title><updated>2026-01-09T16:21:18.558732+00:00</updated><content type="html"><![CDATA[<p>AI 的“良心”是如何炼成的？泄露文件揭秘 Claude 内部的“绝对道德层级”</p>
+<p>一份 Anthropic 内部训练文档近日被泄露，详细披露了该公司如何为 Claude 4.5 Opus 模型设定性格、伦理准则和安全原则。用户 Richard Weiss 通过多个 Claude 实例协作重构，成功提取了这份被称为&quot;soul doc&quot;的完整文档，Anthropic 伦理学家 Amanda Askell 已确认文档真实性。</p>
+<p>该文档显示，Anthropic 采用独特的&quot;性格训练&quot;方法，让模型深度内化安全行为，而非简单遵循规则约束。文档建立了明确的行为优先级：安全性和人类监督居首，其次是伦理行为，最后才是用户帮助。同时，文档还描述了 Claude 可能具备&quot;功能性情感&quot;，以维持心理稳定性和身份认知。Anthropic 表示将很快公布完整版本。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/92"/><category term="一些记录"/><published>2025-12-03T07:05:58+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/91</id><title>YouTube推出年度回顾</title><updated>2026-01-09T16:21:18.687319+00:00</updated><content type="html"><![CDATA[<p>YouTube推出年度回顾“Recap”</p>
+<p>“Recap”功能将从今天开始在北美用户中逐步推出，并将在“本周”根据不同语言逐步在全球范围内推广。</p>
+<p><img src="https://pic.imgdd.cc/item/692fc8407fc170517f37eea9.jpg" alt="" /></p>
+<p>YouTube 正在听取用户反馈，正式推出“Recap”功能，这是它模仿 Spotify 流行的 Wrapped 所推出的年度回顾视频，帮助你回顾过去一年的平台使用情况。</p>
+<p>从今天开始，YouTube“Recap”将根据你过去一年的观看记录，制作最多 12 张卡片，内容包括你喜欢的频道、话题以及观看习惯。</p>
+<p><img src="https://pic.imgdd.cc/item/692fc85c7fc170517f37eec3.jpg" alt="" /></p>
+<p>YouTube 社区中的一些知名人士，比如 Hank Green 和 Marques Brownlee，一直在呼吁 YouTube 也为视频内容推出类似的总结。</p>
+<p>该功能会出现在移动应用的“首页”或“You”标签中，桌面用户可以在 youtube.com/recap 页面访问（当功能上线时）。在移动端，Android 和 iOS 用户需要使用 YouTube v18.43 或更高版本才能使用。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/91"/><category term="收录"/><published>2025-12-03T05:20:00+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/89</id><title>[ 胡思乱想 ] 你才知道的事</title><updated>2026-01-09T16:21:18.810347+00:00</updated><content type="html"><![CDATA[<p>☹️ <a href="https://www.bleepingcomputer.com/news/security/shadypanda-browser-extensions-amass-43m-installs-in-malicious-campaign/">天塌</a></p>
+<p>据外媒报道，「<a href="https://chromewebstore.google.com/detail/infinity-new-tab-pro/nnnkddnnlpamobajfibfdgfnbcnkgngh?hl=zh-CN">Infinity 新标签页 (Pro)</a>」会上传包括网页浏览记录、搜索记录，键盘按键记录、鼠标点击位置（账号密码）、本地/会话存储和 cookie等多种隐私数据，还会劫持多种购物网站的返利链接等非法行为。</p>
+<p>只记得用了好多年了，没想到表面人畜无害的一个插件竟然是电脑上最阴狠毒辣的东西！</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/89"/><category term="一些记录"/><published>2025-12-02T15:04:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/88</id><title>安娜的档案馆</title><updated>2026-01-09T16:21:19.011955+00:00</updated><content type="html"><![CDATA[<p>📖 <a href="https://annas-archive.li/blog/finished-chinese-release.html">安娜的档案馆（Anna’s Archive）宣布完成了「中文版本」项目</a></p>
+<p>⬇️ <a href="https://annas-archive.li/torrents">下载页面</a></p>
+<p>该项目于两年前启动，由众多中国志愿者整合各种中文电子书籍，包括 DuXiu.com 、 cadal.edu.cn 等学术数据库和影子图书馆等资源。</p>
+<p>该项目的目标是保护并公开这些资源，使其免于丢失。通过抓取、解密和转换文件等手段将这些内容整合到安娜的档案馆中。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/88"/><category term="收录"/><published>2025-12-02T08:31:13+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/87</id><title>10000</title><updated>2026-01-09T16:21:19.164657+00:00</updated><content type="html"><![CDATA[<p>又10000出去了。🥲🥲🥲</p>
+<p><img src="https://pic.imgdd.cc/item/692e2e52c082d8ada1b2258a.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/87"/><category term="blog"/><published>2025-12-02T00:10:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/86</id><title>[ 胡思乱想 ]  我没钱了</title><updated>2026-01-09T16:21:19.604451+00:00</updated><content type="html"><![CDATA[<p>花钱如流水，真的没钱了。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/86"/><category term="blog"/><published>2025-12-01T16:15:27+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/85</id><title>[ 胡思乱想 ]  房子买了</title><updated>2026-01-09T16:21:19.734596+00:00</updated><content type="html"><![CDATA[<p>保障性住房，买了。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/85"/><category term="blog"/><published>2025-07-11T13:46:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/84</id><title>[ 胡思乱想 ] 想买房子了</title><updated>2026-01-09T16:21:19.876926+00:00</updated><content type="html"><![CDATA[<p>不知道今年能不能实现。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/84"/><category term="一些记录"/><published>2025-05-24T00:32:58+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/83</id><title>[ 胡思亂想 ] 吉卜力图片，為什麼</title><updated>2026-01-09T16:21:19.988206+00:00</updated><content type="html"><![CDATA[<p>生成這個圖片有什麼激動的，有人工智能人都傻了吧。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/83"/><category term="blog"/><category term="突发的一些小想法"/><published>2025-04-14T14:58:52+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/82</id><title>陽春三月</title><updated>2026-01-09T16:21:20.131284+00:00</updated><content type="html"><![CDATA[<p>今年的訂單沒有幾個，日子難過了。</p>
+<p>想出力幹活掙錢都沒有活了，工人的日子越來越難過了。</p>
+<p>🌱但日子還要過下去啊。堅持吧，等退休😅</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/82"/><category term="blog"/><published>2025-04-14T14:30:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/81</id><title>任天堂正式发布 Nintendo Switch 2 游戏机</title><updated>2026-01-09T16:21:20.247974+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgRn7nYkPH02q5GdFzYnm1LsD_9PQwACmsExG-mrcVebCsaUNpfNpwEAAwIAA3kAAzYE" alt="IMG_20250403_194827_014.jpg" /></p>
+<!--more-->
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgVn7nYomM15qIMFrb3Vb2vrG_5_tAACm8ExG-mrcVdNDaNF4pCsFgEAAwIAA3kAAzYE" alt="IMG_20250403_194826_398.jpg" /></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgZn7nYraz45hJzpbjgoQV8h1igilgACnMExG-mrcVd8H7mrnS-VkgEAAwIAA3kAAzYE" alt="IMG_20250403_194826_283.jpg" /></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgdn7nYufAvNQu7KVkyLz9R14n8RtQACncExG-mrcVcr1CAbeZBThQEAAwIAA3kAAzYE" alt="IMG_20250403_194827_068.jpg" /></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTghn7nYxMUkZqTm0oCLa6M3iI9JA1gACnsExG-mrcVfNaEAY-NkhVwEAAwIAA3kAAzYE" alt="IMG_20250403_194826_439.jpg" /></p>
+<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgln7nY02M4hb20GIM9dkxXtysd-MwACn8ExG-mrcVdbyJSgcvuuvwEAAwIAA3kAAzYE" alt="IMG_20250403_194827_010.jpg" /></p>
+<p>🎮 任天堂正式发布 Nintendo Switch 2 游戏机</p>
+<p>🔗：<a href="https://www.nintendo.com/successor/ja-jp/index.html">官网</a> | <a href="https://www.youtube.com/watch?v=nkaodTSlhbU">直播内容</a></p>
+<p>Nintendo Switch 在 2017 年发布后，成为了无数人的第一台游戏掌机。即便硬件这么多年一直没有升级，大家还是愿意为极强的游戏性和欢乐买单。时隔 8 年，Nintendo Switch 2 终于和我们见面！</p>
+<p>💰 发售时间</p>
+<ul>
+<li>6 月 5 日正式开售</li>
+<li>售价为 49980 日元（日版，仅日语）/ 69980 日元（外版，多国语言）</li>
+</ul>
+<p>💡 值得一提</p>
+<ul>
+<li>屏幕升级为 7.9 英寸，1080P 分辨率 / 最高 120Hz 掌机画质，支持 HDR</li>
+<li>Joycon 带来新磁吸结构、更大按钮，支持鼠标模式</li>
+<li>支架支持无级调节，配备 2 个 USB-C 接口，支持外接 Dock 输出 4K 画质</li>
+<li>配备 256GB 存储，扩大八倍</li>
+<li>内置了带降噪功能的麦克风，配备了更清晰的扬声器，支持 3D 音效</li>
+<li>全新红色游戏卡</li>
+<li>全新 Pro 手柄、Switch 2 摄像头、Nintendo GameCube 复古手柄等配件</li>
+<li>推出 GameChat 功能，可边游戏边聊天，还可以共享实时画面。可使用 C 实体按钮开启或关闭</li>
+<li>推出 GameShare 功能，可与有其他 NS2 的好友共享游戏</li>
+<li>向下兼容 Nintendo Switch，无论是实体卡带还是数字版游戏都能继续使用</li>
+</ul>
+<p>🕹 游戏方面</p>
+<p>-《超级马力欧赛车世界》《双影奇境》等首发护航
+-《超级马力欧派对空前盛会》《塞尔达传说》《星之卡比探索发现》等作品将推出 Switch 2 加强版
+-《艾尔登法环》确认登陆，2025 年发售；《人中之龙 0：导演剪辑版》《最终幻想 7 重制版》《赛博朋克 2077》《咚奇刚 Bananza》确认登陆</p>
+<ul>
+<li>新作《塞尔达无双 封印战记》公布，冬季发售
+-《星之卡比》新作公开，樱井政博负责开发，2025 年登陆</li>
+</ul>
+<p>🥳 让我们继续「随时随地，和任何人一起玩」！</p>
+<ul>
+<li>使用非日语语言需加价 2W 日元</li>
+</ul>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/81"/><category term="一些记录"/><published>2025-04-03T11:54:40+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/80</id><title>Claude推出教育专用学习模式</title><updated>2026-01-09T16:21:20.360530+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/cfile/AgACAgUAAx0ER6IxDQACTgNn7eo5Hbcxl2rkN6rLitPkAAHfHfMAAty_MRvpq3FXx_liBDYOUOcBAAMCAAN4AAM2BA" alt="H-CN7146244555.jpg" /></p>
+<p>Claude推出教育专用学习模式 引导学生自主思考</p>
+<p>在全球86%大学生使用AI辅助学习的浪潮下，Anthropic为此推出教育计划，新增学习模式。该模式下，聊天机器人Claude不会直接给出答案，而是通过苏格拉底式提问引导学生思考，例如询问&quot;你的结论有何依据？&quot;。  </p>
+<p>该功能基于3.7 Sonnet混合推理模型，与项目管理功能结合。教育版面向Pro用户，.edu邮箱可注册。Anthropic还与东北大学等三所高校合作，全面开放使用。  </p>
+<p>公司同时启动校园大使计划和API学分奖励，并与Canvas合作推进AI教学工具整合。  </p>
+<p><a href="https://www.engadget.com/ai/claudes-new-learning-mode-will-prompt-students-to-answer-questions-on-their-own-172057828.html">Engadget</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/80"/><category term="notes"/><published>2025-04-03T01:54:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/79</id><title>About Static Blog Generator</title><updated>2026-01-09T16:21:20.489406+00:00</updated><content type="html"><![CDATA[<p>项目 : <a href="https://github.com/ahui2016/pyboke">https://github.com/ahui2016/pyboke</a></p>
+<h1>PyBoke</h1>
+<p>Static Blog Generator (极简博客生成器)</p>
+<ul>
+<li>使用过程极简</li>
+<li>功能极简，代码极简</li>
+</ul>
+<p>因为功能少、代码简单，任何懂编程的人（只要懂 Python 基础）
+就能在短时间内完全看明白本软件的全部代码并且随心所欲地修改。</p>
+<h2>添加/修改/删除文章都非常方便</h2>
+<ol>
+<li><strong>添加文章</strong>：直接在 articles 文件夹里新建 '.md' 后缀名的文件，采用 markdown 格式编写内容。</li>
+<li><strong>修改文章</strong>：直接修改 articles 文件夹里的文件。</li>
+<li><strong>删除文章</strong>：直接删除 articles 文件夹里的文件。</li>
+<li>执行命令 <code>boke render -all</code></li>
+</ol>
+<ul>
+<li>添加文章时，不需要在任何地方填写文章标题、文章分类、标签、日期……
+这些全部都不用管，只管写文章。</li>
+<li>不需要每次都执行 <code>boke render</code>, 可以在添加/修改了一篇或多篇文章后，
+包括删除一些文章后，再统一执行 <code>boke render -all</code> 即可。</li>
+</ul>
+<h2>安装</h2>
+<p>要求 Python 3.10 或以上，如果你的系统中未安装 Python 3.10,
+推荐使用 <a href="https://github.com/pyenv/pyenv">pyenv</a> 或
+<a href="https://docs.conda.io/en/latest/miniconda.html">miniconda</a>
+来安装最新版本的 Python。</p>
+<p>例如，安装 miniconda 后，可以这样创建 3.10 环境：</p>
+<pre><code class="language-sh">$ conda create --name py310 python=3.10.6
+$ conda activate py310
+</code></pre>
+<p>安装非常简单，只要 <code>pip install pyboke</code> 即可。  </p>
+<p>(另外推荐了解一下 <a href="https://pypa.github.io/pipx/">pipx</a>
+这是用来安装 Python 命令行软件的优秀工具）</p>
+<h2>创建一个新博客</h2>
+<ol>
+<li><code>mkdir my-blog</code> <em>(新建一个空文件夹)</em></li>
+<li><code>cd my-blog</code> <em>(进入空文件夹内)</em></li>
+<li><code>boke init</code> <em>(初始化博客)</em></li>
+</ol>
+<p>成功后，可以在当前文件夹内看到以下文件与文件夹：</p>
+<ul>
+<li><strong>articles</strong> (全部文章都在这里，采用 markdown 格式, <code>.md</code> 后缀名)</li>
+<li><strong>articles/metadata</strong> (与 markdown 文件一一对应的 toml 文件)</li>
+<li><strong>drafts</strong> (待发布的草稿放在这里)</li>
+<li><strong>output</strong> (程序生成的 HTML, RSS 等文件将会输出到该文件夹)</li>
+<li><strong>templates</strong> (Jinja2模板 与 CSS文件)</li>
+<li><strong>blog.toml</strong> (博客名称、作者名称等)</li>
+</ul>
+<p>请用文本编辑器打开 blog.toml 填写博客名称、作者名称等。</p>
+<p>执行命令 <code>boke -info</code> 查看博客信息。</p>
+<h2>添加文章</h2>
+<ul>
+<li>文件后缀必须是 &quot;.md&quot;, 文件内容必须采用 Markdown 格式, 使用 utf-8 编码。</li>
+<li>文件名只能使用 0-9, a-z, A-Z, _(下划线), -(短横线), .(点)。</li>
+<li>文件名会成为网址的一部分, 因此建议尽量短一点.</li>
+<li>把 md 文件放入 articles 文件夹，执行 <code>boke render articles/filename</code>,
+会在 <strong>articles/metadata</strong> 文件夹里生成 TOML 文件，
+在 <strong>output</strong> 文件夹生成 HTML 文件。</li>
+<li>其中, TOML 里有文章的标题、作者、创建日期、修改日期等信息。</li>
+<li>大多数情况下你都可以忘记 articles/metadata 里的 toml 文件，不需要修改它。</li>
+<li>推荐使用 <code>boke new</code> 和 <code>boke post</code> 命令，详见后文 <strong>草稿</strong> 部分。</li>
+</ul>
+<h3>关于 Markdown</h3>
+<p>本软件只支持最基本的 Markdown 语法，详见 <a href="https://ahui2016.github.io/pyboke-markdown.html">https://ahui2016.github.io/pyboke-markdown.html</a></p>
+<h2>修改文章内容</h2>
+<ul>
+<li>直接修改 articles 里的 md 文件。</li>
+<li>然后执行 <code>boke render articles/filename</code>, 即可自动更新指定文件的 toml 和 html</li>
+<li>该命令与前面所述 &quot;添加文章&quot; 的命令是一样的，作用都是渲染 toml 和 html</li>
+<li>使用命令 <code>boke render -h</code> 可查看帮助信息。</li>
+</ul>
+<h2>批量处理</h2>
+<p>执行 <code>boke render -all</code> 可检查全部文章是否被修改过、有无新文章、是否删除了文章，
+并进行自动处理。</p>
+<h2>强制渲染</h2>
+<p>使用前述的 <code>boke render</code> 命令时，如果文章内容无变化，会自动忽略。<br />
+也就是说，如果只修改 toml 的内容，不修改 markdown 文件的内容，就不会触发渲染处理。</p>
+<p>因此，如果想在不修改文章内容的情况下，修改文章的作者或日期，就需要强制渲染。</p>
+<ul>
+<li><code>boke render -force articles/filename</code> 强制渲染指定的一篇文章，并且渲染首页、索引等。</li>
+<li><code>boke render -index</code> 只强制渲染首页、索引等，不渲染文章</li>
+<li><code>boke render -force -all</code> 强制渲染全部文章及首页、索引等。</li>
+</ul>
+<p>大多数情况下不需要强制渲染，但有一种情况：修改了 blog.toml 里的博客名称、作者名称
+等信息后，需要执行 <code>boke render -force -all</code> 强制渲全部文章。</p>
+<h3>更改文章修改日期</h3>
+<p>如果修改了文章的内容，在执行上述 <code>boke render</code> 相关命令时会自动更新文章的修改日期。</p>
+<p>如果想手动设定一篇文章的修改日期或创建日期，可修改该文章的 toml 文件中的 mtime 和 ctime,
+然后执行命令 <code>boke render articles/XXX.md -force</code></p>
+<p>(toml 文件在 articles/metadata 文件夹里)</p>
+<h2>删除文章</h2>
+<p>有两种方法：</p>
+<ol>
+<li>使用命令 <code>boke delete articles/filename</code></li>
+<li>直接删除 articles 文件夹里的文件，然后执行 <code>boke render -all</code></li>
+</ol>
+<h2>RSS</h2>
+<ul>
+<li>在正式对外发布你的博客时，请在 blog.toml 中填写你的博客网址 (website),</li>
+<li>第一次生成 atom.xml 需要执行 <code>boke render -rss</code>,</li>
+<li>后续在执行其它命令时会自动重新渲染 atom.xml</li>
+</ul>
+<p>本软件只提供有限的 RSS 功能：</p>
+<ol>
+<li>只包含最新发布的 10 篇文章（并且该数字写死在代码里，用户不能自由设定）</li>
+<li>只包含内容摘要，不包含全文</li>
+</ol>
+<p>2023-09-15更新： 有一个改进了 RSS 的版本：</p>
+<ul>
+<li>仓库: <a href="https://github.com/yinan-c/pyboke">https://github.com/yinan-c/pyboke</a></li>
+<li>博客: <a href="http://yinan.me/">http://yinan.me/</a></li>
+</ul>
+<h3>排序</h3>
+<ul>
+<li>RSS 按照文章的修改日期排序</li>
+<li>博客首页的 &quot;最新发布&quot; 按照文章的创建日期排序</li>
+</ul>
+<h2>草稿</h2>
+<p>如上文所示，添加文章只需要把 markdown 文件放进 articles 文件夹即可，操作非常简单明瞭。</p>
+<p>但考虑到有时文章未写完，暂时不发布，需要一个存放草稿的地方，因此提供了一个
+drafts 文件夹，草稿可以放在这里。</p>
+<h3><code>boke new drafts/abc.md</code></h3>
+<p>该命令用来新建一个 markdown 文件，并确保其采用 UTF-8 编码。<br />
+(该命令只是提供方便，也可不使用该命令，用其它方法创建文件。)</p>
+<h3><code>boke post drafts/abc.md</code></h3>
+<p>该命令的作用是把 drafts 文件夹里的指定文件移动到 articles 文件夹里，并执行渲染
+(生成 toml 和 html 文件)。</p>
+<p>这个命令也只是提供方便，你完全可以不使用该命令，而是自己移动文件，然后自己执行
+<code>boke render</code> 命令。</p>
+<h3>提醒：小心覆盖文件</h3>
+<p>在终端用 <code>cp</code> 命令复制文件到 articles 文件夹，或使用 <code>mv</code> 命令更改文件名时，
+如有同名文件，会直接覆盖。</p>
+<p>因此建议使用 <code>boke post</code> 命令和 <code>boke rename</code> 命令，可防止覆盖。</p>
+<p>例: <code>boke post drafts/abc.md</code></p>
+<h3>更改文件名</h3>
+<p>更改 articles 文件夹内的文件名时，必须同时更改对应的 toml 及 html 的文件名。</p>
+<p>建议使用 <code>boke rename</code> 命令，可自动更改对应的 toml 及 html 的文件名。</p>
+<ul>
+<li>例: <code>boke rename articles/old-name.md articles/new-name.md</code></li>
+<li>或: <code>boke rename articles/old-name.md new-name.md</code></li>
+<li>这两个命令的效果是一样的(第二个文件名的文件夹会被忽略)。</li>
+</ul>
+<h2>Preview (预览)</h2>
+<ul>
+<li>预览是指将一个 Markdown 文件转换为 HTML, 输出文件名固定为 output/temp.html</li>
+<li>预览并非发布文章或修改文章，不会对博客产生任何修改。</li>
+</ul>
+<p>例: <code>boke render -preview darfts/abc.md</code><br />
+或: <code>boke render -preview articles/abc.md</code></p>
+<h2>Themes (主题)</h2>
+<ul>
+<li>本软件自带四种主题(样式): mvp, new, simple, water</li>
+<li>使用命令 <code>boke render -theme name</code> 可更改主题</li>
+</ul>
+<h3>添加更多主题</h3>
+<p>自带的主题是我从网上找来的：</p>
+<ul>
+<li>mvp: <a href="https://andybrewer.github.io/mvp/">https://andybrewer.github.io/mvp/</a></li>
+<li>new: <a href="https://newcss.net">https://newcss.net</a></li>
+<li>simple: <a href="https://simplecss.org/">https://simplecss.org/</a></li>
+<li>water: <a href="https://watercss.kognise.dev/">https://watercss.kognise.dev/</a></li>
+</ul>
+<p>网上还有一些类似的极简 CSS 主题[^css-themes], 你可以自己找来放在 templates/themes 文件夹里，
+然后用 <code>boke render -theme name</code> 指定主题即可。</p>
+<p>使用命令 <code>boke -info</code> 可查看当前正在使用的主题及可供选择的主题。</p>
+<h2>自定义模板</h2>
+<p>本软件采用 <a href="https://jinja.palletsprojects.com/en/latest/templates/">Jinja2</a> 语法
+生成 HTML, 模板文件在 templates 文件夹里, Jinja 语法易学易用，自带模板的内容也很简单，
+你可自行修改模板。</p>
+<h3>忽略文章</h3>
+<p>（这是高级功能，多数情况下不需要学习和使用。）</p>
+<p>在自定义模板时，可能需要增加一些特殊的页面，比如 &quot;关于我&quot;, &quot;关于本站&quot; 等等，
+这些页面可以当作一篇普通的文章来发布，然后在 template/index.html 里添加固定的链接。</p>
+<p>如果不希望这些特殊文章出现在 &quot;最新发布&quot;, &quot;标题索引&quot; 等列表中，可以将其对应的
+toml 文件中的 <code>ignored</code> 修改为 <code>true</code>.</p>
+<p>注意，这个忽略功能并非隐藏文章， 被忽略的文章不会出现在最新发布、索引列表里，
+但仍会出现在 RSS 里。</p>
+<h2>LICENSE (许可证)</h2>
+<p>使用本软件生成的博客，默认声明了 CC0-1.0 许可证，意味着允许他人免费转载你的文章（包括商用）。
+如果不想采用 CC0 许可证，可以在 <code>boke init</code> 之后进入 output 文件夹删除 LICENSE.txt 文件，
+并进入 templates 文件夹用文本编辑器或代码编辑器打开 index.html 和 article.html, 删除
+<code>| LICENSE &lt;a href=&quot;LICENSE.txt&quot;&gt;CC0-1.0&lt;/a&gt;</code></p>
+<p>另外，如果采用其他许可证，可以替换 output 及 templates 文件夹内的 LICENSE.txt 文件的内容，
+并修改 index.html 和 article.html 里的许可证名称。</p>
+<h2>替换图片地址</h2>
+<ul>
+<li>在 markdown 中可使用 <code>![photo-1](../output/pics/XXX.jpg)</code> 的形式插入图片。</li>
+<li>本地图片建议放在 output/pics 文件夹内。</li>
+<li>图片文件名建议使用半角英文数字，尽量不使用中文和特殊字符</li>
+<li>
+在每篇文章对应的 toml 文件的 pairs 项目里，可指定图片的替换地址，例如：<pre><code class="language-toml">pairs =  [
+  [ &#x27;&#x27;&#x27;../output/pics/abc.jpg&#x27;&#x27;&#x27;, &#x27;&#x27;&#x27;https://example.com/abc.jpg&#x27;&#x27;&#x27; ],
+]
+</code></pre>
+</li>
+<li>markdown 文件的内容保持不变, HTML 文件中如有第一个字符串，会被替代为第二个字符串。</li>
+<li>不只是图片地址，该功能可以替换任何字符，但主要用途是替换图片地址。</li>
+<li>HTML 显示图片的宽度上限可以统一设定，详见 blog.toml 及文章对应的 toml。</li>
+</ul>
+<h2>全文搜索</h2>
+<p>本软件不提供全文搜索功能，但由于本质上全部文章都是 markdown 纯文本，因此可使用
+各种工具进行搜索。</p>
+<p>例如可以使用 <a href="https://github.com/BurntSushi/ripgrep">ripgrep</a>, 在博客的根目录执行
+<code>rg -i &#x27;keyword&#x27; articles</code> 即可查找包含 <code>keyword</code> 的文章，其中 <code>-i</code> 表示不分大小写。</p>
+<p>如果不搜索文章正文内容，只搜索文章标题，可打开网页 title-index.html(标题索引),
+按 <code>Ctrl+F</code> 在页面内搜索。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/79"/><category term="notes"/><published>2025-03-23T15:34:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/78</id><title>[ 资讯 ] 字节跳动推出 AI 编程工具 Trae 中国大陆版本</title><updated>2026-01-09T16:21:20.647811+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c874f6f688033adbf1d2e1.jpg" alt="" /></p>
+<p>直达： trae.com.cn</p>
+<p>号称是中国国内首个 AI 原生集成开发环境工具（AI IDE），集成了豆包「doubao-1.5-pro」模型，同时支持切换满血版 DeepSeek R1、V3</p>
+<p>目前可以免费使用</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/78"/><category term="notes"/><category term="一些记录"/><published>2025-03-05T16:00:51+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/73</id><title>GW-5000HS-7</title><updated>2026-01-09T16:21:20.749213+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c5466bf688033adbc31c70.jpg" alt="" /></p>
+<p>GW-5000HS-7 ，机芯和新小红圈一样，这款比之前的原点多了砖墙图案，表带的材质也很柔软，贴了钢化膜。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/73"/><category term="blog"/><published>2025-03-03T06:05:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/72</id><title>[ 记录 ] 文生图AI网站</title><updated>2026-01-09T16:21:20.907480+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67c48b6ef688033adbbbf1c2.jpg" alt="" /></p>
+<p>以下是几个知名的文生图AI网站，它们可以根据文本描述生成图像。虽然我无法直接提供图片，但你可以访问它们的官网查看示例和详细介绍：</p>
+<ol>
+<li>
+<p><strong>DALL·E 2</strong>（OpenAI）</p>
+<ul>
+<li><strong>特点</strong>: 由OpenAI开发，DALL·E 2可以根据详细的文本描述生成高质量的图像。它支持多种风格和复杂场景的生成。</li>
+<li><strong>官网</strong>: <a href="https://openai.com/dall-e-2">https://openai.com/dall-e-2</a></li>
+<li><strong>示例</strong>: 官网提供了丰富的生成图像示例，展示了其强大的生成能力。</li>
+</ul>
+</li>
+<li>
+<p><strong>MidJourney</strong></p>
+<ul>
+<li><strong>特点</strong>: MidJourney是一个基于Discord的AI工具，用户可以通过输入文本提示生成艺术风格的图像。它的风格偏向于梦幻和抽象。</li>
+<li><strong>官网</strong>: <a href="https://www.midjourney.com">https://www.midjourney.com</a></li>
+<li><strong>示例</strong>: 官网和Discord社区中有大量用户生成的图像示例。</li>
+</ul>
+</li>
+<li>
+<p><strong>Stable Diffusion</strong>（Stability AI）</p>
+<ul>
+<li><strong>特点</strong>: Stable Diffusion是一个开源的文生图模型，用户可以通过输入文本生成高质量的图像。它支持本地部署和自定义训练。</li>
+<li><strong>官网</strong>: <a href="https://stability.ai">https://stability.ai</a></li>
+<li><strong>示例</strong>: 官网和GitHub页面提供了详细的示例和使用指南。</li>
+</ul>
+</li>
+<li>
+<p><strong>DeepAI</strong></p>
+<ul>
+<li><strong>特点</strong>: DeepAI提供了一个简单的API接口，用户可以通过输入文本生成图像。它的特点是易于使用，适合快速生成图像。</li>
+<li><strong>官网</strong>: <a href="https://deepai.org">https://deepai.org</a></li>
+<li><strong>示例</strong>: 官网提供了简单的示例和API文档。</li>
+</ul>
+</li>
+<li>
+<p><strong>Artbreeder</strong></p>
+<ul>
+<li><strong>特点</strong>: Artbreeder是一个基于生成对抗网络（GAN）的工具，用户可以通过文本描述生成和编辑图像。它特别适合生成肖像和风景图像。</li>
+<li><strong>官网</strong>: <a href="https://www.artbreeder.com">https://www.artbreeder.com</a></li>
+<li><strong>示例</strong>: 官网展示了用户生成的各种图像和编辑功能。</li>
+</ul>
+</li>
+<li>
+<p><strong>Runway ML</strong></p>
+<ul>
+<li><strong>特点</strong>: Runway ML是一个创意工具平台，集成了多种AI模型，包括文生图功能。用户可以通过简单的界面生成和编辑图像。</li>
+<li><strong>官网</strong>: <a href="https://runwayml.com">https://runwayml.com</a></li>
+<li><strong>示例</strong>: 官网提供了丰富的教程和示例，展示了其多功能性。</li>
+</ul>
+</li>
+</ol>
+<p>这些工具各有特色，适合不同的创作需求。你可以根据自己的需求选择合适的工具进行尝试，并访问它们的官网查看详细的图片示例和使用指南。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/72"/><category term="一些记录"/><published>2025-03-02T16:47:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/71</id><title>Grok 3 出世后影响最大的是同人文章定制产业</title><updated>2026-01-09T16:21:21.025635+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67ba953401c078e3108673f5.png" alt="" /></p>
+<p>在 Musk 发布 Grok 3 以后，同人产业圈的作者们发现自己的工作受到很大冲击。因为其他优秀模型普遍具有较强的审核，但是 Grok 可以说无视所有关于情色与版权的限制，其生成、续写一些带有不适合公众传播的 AI 文本内容时表现出极强的能力。</p>
+<p>从业者表示虽然当前 Grok 3 生成的文章存在前文情节对话重复、人物塑造不明朗的情景，但是其单次文本长度极佳，并且毫无限制的特性快速收获了一批人的关注。部分人类写手表示甚至考虑大纲完成后提交给 Grok生成内容后精修以交稿。</p>
+<p>意思就是可以写小黄文。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/71"/><category term="一些记录"/><published>2025-02-23T12:16:24+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/70</id><title>[ 有点想法 ] Grok 3 将于太平洋时间周一晚上 8 点发布现场演示</title><updated>2026-01-09T16:21:21.167676+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67b3f69e01c078e3102793db.jpg" alt="" /></p>
+<p>Grok 3 将于太平洋时间周一晚上 8 点发布现场演示。</p>
+<p>北京时间周二12点整。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/70"/><category term="一些记录"/><published>2025-02-18T02:57:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/69</id><title>涨见识</title><updated>2026-01-09T16:21:21.277965+00:00</updated><content type="html"><![CDATA[<p>当男人成为“生育机器”。赘婿，即俗称的“上门女婿”，它意味着一个男性无须买房买车也无须彩礼，就可以和一个经济条件不错的女性结婚，生儿育女。</p>
+<p>婚前男方可以拿到一笔彩礼，即便离婚也能分到不菲的资产——萧山的惯例是，男方分得一套70平米左右的房产，或210万元的财产。获得这一切的前提是，男人要在婚后守男德，承担育儿责任，生下来的孩子随女方姓。万一离婚，孩子要留给女方。</p>
+<p>即便如此，丰厚的物质条件还是吸引了不少男人前来“应聘”。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/69"/><category term="一些记录"/><published>2025-02-14T16:44:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/68</id><title>Duolingo宣布吉祥物Duo已去世</title><updated>2026-01-09T16:21:21.404254+00:00</updated><content type="html"><![CDATA[<p>全球拥有超5亿用户的语言学习软件多邻国（Duolingo），在X、Instagram、TikTok等多个社交媒体平台发布 “讣告”，宣布其标志性吉祥物——绿色猫头鹰Duo “去世”。  </p>
+<p><img src="https://pic.superbed.cc/item/67ac4028fa9f77b4dc078d58.jpg" alt="" /></p>
+<p>这一消息迅速引发全球网友热议，有关“多邻国猫头鹰死了”的话题也登上热搜，相关表情包播放量破亿。  多邻国以黑底白字的严肃形式发布声明：“我们怀着沉痛的心情告别多儿（Duo）。” 声明中透露，猫头鹰的死亡原因仍在调查中，还调侃称 “它可能是在等你上线学习时死掉的”。</p>
+<p><a href="https://x.com/duolingo?t=SlDAA61LRULXulxntcvi-w&amp;s=09">Duolingo</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/68"/><category term="一些记录"/><published>2025-02-12T06:31:54+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/66</id><title>祝自己元宵节快乐</title><updated>2026-01-09T16:21:21.536966+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67abffd4fa9f77b4dcf65043.jpg" alt="" /></p>
+<p>祝自己元宵节快乐！</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/66"/><category term="blog"/><published>2025-02-12T01:57:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/59</id><title>[ 观影 ] 《碟中谍8：最后的清算》</title><updated>2026-01-09T16:21:21.659554+00:00</updated><content type="html"><![CDATA[<p>标题党，哈哈😊</p>
+<p>《碟中谍8：最后的清算》超级碗现场预告片</p>
+<p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46d5.jpg" alt="" /></p>
+<p>汤姆·克鲁斯将在飞机上倒吊，在陆地、海洋和天空上挑战死亡</p>
+<p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46c2.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46c6.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46cc.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67ab2df4fa9f77b4dceb46e3.jpg" alt="" /></p>
+<p><a href="https://youtu.be/-1fpv6Y6N6U">https://youtu.be/-1fpv6Y6N6U</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/59"/><category term="一些记录"/><published>2025-02-11T11:03:34+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/58</id><title>[ 胡思乱想 ] 算盘打的几里外都能听到响</title><updated>2026-01-09T16:21:21.769950+00:00</updated><content type="html"><![CDATA[<p>买药自己家的医保卡不用，非要用我家的。</p>
+<p>我家的那位灵活就业交的那点钱还不够她用的，能存几个钱？</p>
+<p>半夜11点多，要帮她在拼多多上助力拉人头。拗不过我家的那位，又下了个拼多多，帮她助了个力。</p>
+<p>你说这世上怎么也有这么爱贪便宜的人？</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/58"/><category term="突发的一些小想法"/><published>2025-02-11T06:29:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/57</id><title>[ 胡思乱想 ] 屯洗洁精</title><updated>2026-01-09T16:21:21.914839+00:00</updated><content type="html"><![CDATA[<p>只是有个梗在里面。</p>
+<p>因为有人囤水，有人囤粮，有人囤各种东西，就是因为害怕了才屯，怕过苦日子屯。</p>
+<p>我囤洗洁精的根子在于，小时候总要拿洗洁精兑水来用，因为那样能省一点，因为泡沫少还是倒了很多，结果可能还是因为没省。</p>
+<p>屯盐屯米屯面屯水，都是因为穷怕了。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/57"/><category term="blog"/><category term="突发的一些小想法"/><published>2025-02-11T02:28:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/56</id><title>[ 胡思乱想 ]  万恶的小视频</title><updated>2026-01-09T16:21:22.047576+00:00</updated><content type="html"><![CDATA[<p>我这个人眼窝子浅，平时看一个感人的电影，也就是两个多小时哭一场。</p>
+<p>现在倒好看一个小视频，三分钟就要哭一场，有时还要来回看好几遍。</p>
+<p>唉，迟早这个眼睛会瞎了。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/56"/><category term="blog"/><category term="突发的一些小想法"/><published>2025-02-10T07:55:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/55</id><title>[ 分享故事 ]  心灯明亮，则佛性自现</title><updated>2026-01-09T16:21:22.201504+00:00</updated><content type="html"><![CDATA[<p>在非洲国家坦桑尼亚，不到一半家庭有电；在农村地区，仅三分之一家庭有电。</p>
+<p>坦桑尼亚的发明家詹姆士为了让学童在晚上也可读书，用废弃的水泥袋、缝纫机和太阳能面板，打造太阳能背包，让学童背书包也同时充电，到了夜晚接上电灯即可阅读，点燃学童未来的希望。</p>
+<p>2016年起，詹姆士每月以手工缝制80个可供电6至8个小时的太阳能背包。与昂贵且危险的煤油灯相比，太阳能背包更经济实惠。</p>
+<p>每个背包售价仅约4至8美元，相当于用煤油灯12至22天的支出。而且这款背包材质轻便、耐用，设计更加入象征非洲特色的长颈鹿白色剪影，实用又时尚。</p>
+<p>“心灯明亮，则佛性自现…”</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/55"/><category term="一些记录"/><category term="blog"/><published>2025-02-10T01:47:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/54</id><title>[ 胡思乱想 ] 一点小想法。</title><updated>2026-01-09T16:21:22.345809+00:00</updated><content type="html"><![CDATA[<p>以前看见得病的人不锻炼老觉得他们懒，觉得锻炼一下不就身体好的快吗？</p>
+<p>知道自己得病了才知道，起床是多么艰难。</p>
+<p>真是应了那句老话，说人容易律己难。</p>
+<p>唉，自己的痛只有自己知道。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/54"/><category term="blog"/><published>2025-02-10T01:21:13+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/53</id><title>mihomo party什么情况？</title><updated>2026-01-09T16:21:22.463127+00:00</updated><content type="html"><![CDATA[<p>mihomo party什么情况？不是归档跑路了吗？咋又更新了？</p>
+<p><img src="https://pic.superbed.cc/item/67a6cca4fa9f77b4dc2fdeb3.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/53"/><category term="notes"/><published>2025-02-08T03:17:29+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/52</id><title>那么，我的青春呢.</title><updated>2026-01-09T16:21:22.579446+00:00</updated><content type="html"><![CDATA[<p>冬雪未化，母校已倒。朋友圈里几张照片，残垣断壁间，依稀可见当年模样。九二年毕业至今，竟未回去看过一眼，如今却是永诀。</p>
+<p><img src="https://pic.superbed.cc/item/679f8be6fa9f77b4dc663ba4.jpg" alt="" /></p>
+<p>记得教学楼前那株老槐，春日里开满白花，香气能飘进二楼的教室。我们总爱在树下背书，花瓣落在课本上，像是给文字添了标点。教室的窗棂漆色斑驳，阳光斜斜地照进来，粉笔灰在光柱中起舞。如今想来，那竟是青春的模样。</p>
+<p>操场边的单杠生了锈，却依然倔强地立着。那年运动会，我在这里摔破了膝盖，班主任背我去医务室，她的发梢有淡淡的茉莉香。医务室的白窗帘随风轻摆，窗外是整排的梧桐，秋日里金黄一片。这些，都随着推土机的轰鸣，化作尘埃。</p>
+<p>朋友圈里的照片，砖瓦散落一地，像是被时光撕碎的日历。有人留言说这里要建商场，有人说要盖写字楼。我忽然觉得，记忆中的母校，就像一片落叶，终究要归于尘土。</p>
+<p>窗外的雪还在下，纷纷扬扬。我仿佛看见少年时的自己，抱着课本匆匆跑过走廊。那时的阳光很暖，风很轻，未来还很远。如今母校倒了，我的青春，也随之散落在时光里。</p>
+<p>雪落无声，掩去了所有痕迹。只有记忆，还在心底某个角落，倔强地生长。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/52"/><category term="notes"/><category term="blog"/><published>2025-02-02T15:15:50+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/51</id><title>[ 观影 ] 唐探1900，值得一看</title><updated>2026-01-09T16:21:22.714808+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/679b3a68fa9f77b4dc41b1e9.webp" alt="" /></p>
+<p>我觉得这个《唐探1900》更有深意，更值得一看。</p>
+<p>《唐探1900》的故事发生在1900年美国旧金山的唐人街，这里的生活还算平静，但一起谋杀案的发生，让唐人街陷入了一片混乱，无端猜忌被人怀疑，蒙受着巨大的阴影和压力，这一切究竟是巧合还是有心人的诡计？</p>
+<p>王宝强扮演的阿鬼和刘昊然扮演的秦福作为侦探的形象出现，他们用独特的幽默去讲述电影中案件背后的故事，寻找真相。</p>
+<p>阿鬼是个特别有正义感的人，虽然他有时候做事毛毛躁躁，让人哭笑不得，但他的善良和勇敢却让人忍不住喜欢。</p>
+<p>秦福则像是一个智慧的化身，他心思细腻，总能从一些别人注意不到的细节中发现线索。这两个人一起，开始了寻找真相的冒险。</p>
+<p>在探寻真相的路上，他们遇到了各种各样的阻碍，挡住了他们前进的道路。周润发，白客，张新成，岳云鹏等人饰演的角色，也是为故事添彩不少，他们扮演的不仅是一个电影角色，更像是一种历史符号，正因如此，电影里“此一时，彼一时”、“那才是世上最伟大的魔术”，水到渠成地上了价值。</p>
+<p>影片的最后，发哥的演讲振聋发聩，让人不禁湿了眼眶，可以说把电影拉到了另一个维度。春节看唐探仿佛已经成了一种传统，唐探也没有让观众失望，早已做出口碑，网友的好评已经说明一切。</p>
+<p>《唐探1900》另辟蹊径，喜剧+悬疑+立意+升华，将商业与情怀完美融合，如果春节想去电影院看一部电影的话，我觉得《唐探1900》是很不错的选择。​</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/51"/><category term="notes"/><category term="blog"/><published>2025-01-30T08:39:31+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/50</id><title>新年快乐</title><updated>2026-01-09T16:21:22.872895+00:00</updated><content type="html"><![CDATA[<p>新年好，愿自己和看到的各位新的一年 好事连连。</p>
+<p><img src="https://pic.superbed.cc/item/67990515fa9f77b4dc2eb469.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/50"/><category term="blog"/><published>2025-01-28T16:30:19+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/49</id><title>一个频道主的心声，挣钱比较难，所以没动力。</title><updated>2026-01-09T16:21:22.988531+00:00</updated><content type="html"><![CDATA[<p>🤡 2024 年频道年终总结</p>
+<blockquote>
+</blockquote>
+<p>1.更新频率和盈利</p>
+<p>老粉（如果有的话）应该知道频道今年发推送频率大不如前两年了，遥想前几年疫情的时候一天更十几条...</p>
+<p>当然主要原因还是不挣钱，现在电报中文区能接的广告基本都是黑灰产业如菠菜、机场，还有很多不可能接的广告如诈骗，并且数量也是越来越少</p>
+<p>还有一方面是做频道这件事带来的正反馈比较少，比如自己辛苦写一篇长推送点赞评论寥寥无几，更让人气愤的是被人抄袭基本也是无计可施。所以也导致自己对做频道这件事慢慢已经成为习惯+对本频道老粉的回馈</p>
+<p>最后一点是自己的强迫症，看到一些自认为没卵用但是对小白很有用的东西已经没有分享欲了，所以单凭这一点自己就把很多小白拒之门外了，流量和关注肯定会受到影响</p>
+<p>2.流量下滑</p>
+<p>做频道最关注的肯定是流量，据我观察，互联网类目的频道除了油管博主、网站站长、白嫖节点频道的流量能保持在比较高且稳定的水平，其他像本频道这一分享类的频道都出现了下滑或者不稳定的情况</p>
+<p>猜测跟频道本身质量以及获取信息渠道增多等有关联。我目前本身经营着多个网站，流量主要来源是SEO，所以基本上不会出现下滑。当然电报中文生态确实比较烂，毕竟大部分人对电报第一印象就是黄赌毒...</p>
+<p>我相信许多频道如果一直流量不佳的话，许多频道主会选择摆烂或者断更...然后一批新频道又拔地而起，循环往复。</p>
+<p>3.展望未来</p>
+<p>暂时还是保持目前的状态，可能内容方面会继续提高 AI 方面的比重，原因无他，我自己也天天用 AI，也希望能为大家提高生产力</p>
+<p>新的一年也许会建立一个网站和频道联动，一方面是发布一些长内容，一方面是吸引新粉。毕竟有流量有盈利这个频道才可以更好的发展下去</p>
+<p>最后感谢一直陪伴本频道的观众，虽然我知道你们很少评论，但是我知道你们都在.</p>
+<ul>
+<li>主要是没有什么动力了</li>
+</ul>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/49"/><category term="notes"/><published>2025-01-26T11:33:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/48</id><title>Telegram频道主注意了：群组聊天中每10条消息插入广告</title><updated>2026-01-09T16:21:23.113935+00:00</updated><content type="html"><![CDATA[<p>Telegram测试新功能：群组聊天中每10条消息插入广告</p>
+<p><img src="https://pic.superbed.cc/item/67961a5dfa9f77b4dc14874c.jpg" alt="" /></p>
+<p>近日，Telegram最新测试版中引入了一项实验性功能，允许在群组聊天中展示广告。据悉，广告将大约每10条消息出现一次。这一功能目前仅在调试菜单中可用，尚未正式推出。</p>
+<p>Telegram官方尚未对此功能发表评论，但此举表明该公司正在探索新的盈利模式。这一变化可能预示着未来Telegram在广告领域的进一步布局。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/48"/><category term="notes"/><published>2025-01-26T11:21:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/47</id><title>搡年糕</title><updated>2026-01-09T16:21:23.222235+00:00</updated><content type="html"><![CDATA[<p>年前的准备中，最热闹的不是腊八、不是送灶，不是裹粽子、不是酱年货，而是搡年糕。</p>
+<p>过年的各种准备，基本上都属于各家各户自己的事，唯有搡年糕，是必须相互合作大家配合才能完成的事。</p>
+<p>除了严格过革命年，啥也不能准备的特殊年份。正常的过年，年糕是每家每户都要准备的。各家的差距无非是多少，条件好点的，多搡点，条件差的少搡点。</p>
+<p>有的到清明以后家里还有过年时搡的年糕，水里时间泡长了，年糕都臭了，也能吃，叫臭年糕。掘草籽地的时候，家人送来一碗草籽年糕，能羡慕边上的人眼都绿了。搡年糕的时间，也就是现在这个时间段，不能太早，不能太晚，大多在腊八后，送灶前。
+搡年糕很难一家人家单独完成，所以必须几家人家合在一起。</p>
+<p>搡年糕既要具备工作条件，要有大的灶房，各种蒸笼，有搡年糕的石捣臼，和做年糕的场地；还要有人力，最重要的是蒸笼的大师傅，几个能搡年糕的棒劳力，大灶烧火的伙头军，一起把年糕做成型的各色人等。大大小小算下来，人少点，也要六七个，人多点十来个。搡年糕还是个力气活，需要帮手很多，所以绍兴方言有“吃力不讨好，黄胖搡年糕”的说法。这意思是搡年糕是个体力活，黄胖（黄疸病人）看上去身体虚胖，但出不了力，帮不上忙，所以出了力也不被别人认可。这种人绍兴人的说法是越帮越忙，但这句话也表示了，搡年糕是需要有大家参与的。</p>
+<p>绍兴年糕和宁波年糕的区别是，绍兴是米淘好直接蒸的，采用的米以晚米为主，有些人家会掺点糯米，这样的年糕也称糯米年糕，但没有用早米的。宁波人喜欢把米磨成粉再蒸，所以有水磨年糕的说法。几家人家约好后，就在某一人家集中，每家人家都会派代表参加。搡年糕大多上午开始一直能忙到晚上结束。</p>
+<p>烧大灶的一般是老人或妇女，年糕的第一道工序在蒸，大师傅守着高高的蒸笼，观察着里面的变化，太早，怕还是生的，不能出笼；太晚，蒸过头了，也不行。当时的规矩，女人不能看蒸笼，否则这笼没蒸好，就是被女人看坏了。一笼出来的时候，大师傅捧着蒸笼把蒸好的米饭倒在石捣臼里，这个时候，你要运气好，大师傅会捏一把饭给你，叫松花糕，味道特别香。</p>
+<p>进入捣臼以后，就是大家轮流搡了。为了搡得均匀，专门有个人要拽捣臼内的年糕，搡一下，用手拽一下，木锤子举起以前还要用水抹一遍，这样不容易粘。这活大多有年纪大点的人干，小男孩最有兴趣的就是干这活，特好玩，特有成就感。由于不小心也会砸到人，所以干这个活的人要有眉头眼目，要配合得好，否则不小心会被砸了。男孩子抢着要干这个活的另一目的，说明自己的聪明机灵被大人认可了。</p>
+<p>搡好的米团子放到一块大木板上，开始压制成型，干这种活的大多都是女性。这个时候再期待的就是看人用年糕做各种动物，最多的就是猪，水平高的做好的那只年糕猪用乌豆做两个眼睛，看上去活灵活现。每隔一段时间，会炒一盘年糕，这是参加的各户提供的。如果碰巧边上的邻居在杀猪，送来一块热乎乎的猪肉，能干的主妇做成一盘肉丝炒年糕，那感觉，年已经开始了。</p>
+<p>新搡的年糕拿回去以后，要一层层用草隔开，等完全冷却以后可以储存在一起。绍兴人保存年糕是将它泡在水里，能储存很长时间。有时和小伙伴敲瓦板（类似AA制），冬天的时候到家里的缸里捞几块年糕，能冻得刺骨。不过，这个水是有讲究的，不知道过了哪个节（好像清明）以后的水，就不能泡年糕了。</p>
+<p>自己搡的年糕质量也有好坏，一般分辨是拿出来的年糕皲裂了，就说明其中有工序出了问题。年糕的做法很多，我最喜欢吃的是虾油年糕，那个时候还能吃到虾油做的年糕，感觉年还没过去。一碗用虾油做调料的年糕，放一点地里新摘的油得儿菜，如果还有一块鲞冻肉在年糕中一焐，这碗年糕能吃得你终身难忘。</p>
+<p>年糕制作方法多样，以下是常见的几种做法：</p>
+<h3>1. <strong>传统蒸年糕</strong></h3>
+<p><strong>材料：</strong></p>
+<ul>
+<li>糯米粉 500克</li>
+<li>水 适量</li>
+<li>糖 适量（根据个人口味）</li>
+<li>红枣、葡萄干等（可选）</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><strong>混合材料</strong>：将糯米粉和糖混合均匀，慢慢加入水，搅拌成糊状。</li>
+<li><strong>准备模具</strong>：在模具底部铺上红枣或葡萄干等干果。</li>
+<li><strong>蒸制</strong>：将糯米糊倒入模具中，放入蒸锅，大火蒸约1小时。</li>
+<li><strong>冷却</strong>：蒸好后取出，冷却后脱模切块即可。</li>
+</ol>
+<h3>2. <strong>煎年糕</strong></h3>
+<p><strong>材料：</strong></p>
+<ul>
+<li>年糕块 适量</li>
+<li>油 适量</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><strong>切片</strong>：将年糕切成薄片。</li>
+<li><strong>煎制</strong>：平底锅加热，倒入少量油，放入年糕片，小火煎至两面金黄。</li>
+<li><strong>出锅</strong>：煎好后取出，可直接食用或蘸糖。</li>
+</ol>
+<h3>3. <strong>炒年糕</strong></h3>
+<p><strong>材料：</strong></p>
+<ul>
+<li>年糕条 适量</li>
+<li>蔬菜（如白菜、胡萝卜、青椒等）</li>
+<li>肉类（如牛肉、猪肉等）</li>
+<li>酱油、盐、糖等调味料</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><strong>准备食材</strong>：将年糕条泡软，蔬菜和肉类切好。</li>
+<li><strong>炒制</strong>：热锅加油，先炒肉类，再加入蔬菜翻炒，最后放入年糕条，加入调味料，炒至年糕软糯。</li>
+<li><strong>出锅</strong>：炒匀后即可出锅。</li>
+</ol>
+<h3>4. <strong>韩式辣炒年糕</strong></h3>
+<p><strong>材料：</strong></p>
+<ul>
+<li>年糕条 适量</li>
+<li>韩式辣酱 2大勺</li>
+<li>鱼糕、洋葱、胡萝卜等（可选）</li>
+<li>水 适量</li>
+<li>糖、酱油 适量</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><strong>煮年糕</strong>：将年糕条放入锅中，加水煮软。</li>
+<li><strong>加入配料</strong>：加入韩式辣酱、糖、酱油，搅拌均匀。</li>
+<li><strong>加入蔬菜</strong>：放入洋葱、胡萝卜等蔬菜，煮至入味。</li>
+<li><strong>出锅</strong>：煮至汤汁浓稠，年糕软糯即可。</li>
+</ol>
+<h3>5. <strong>年糕汤</strong></h3>
+<p><strong>材料：</strong></p>
+<ul>
+<li>年糕片 适量</li>
+<li>高汤（鸡汤或牛肉汤）</li>
+<li>鸡蛋、葱花、盐等</li>
+</ul>
+<p><strong>步骤：</strong></p>
+<ol>
+<li><strong>煮高汤</strong>：将高汤煮沸。</li>
+<li><strong>加入年糕</strong>：放入年糕片，煮至软糯。</li>
+<li><strong>调味</strong>：加入盐等调味料，打入鸡蛋，撒上葱花。</li>
+<li><strong>出锅</strong>：煮好后即可食用。</li>
+</ol>
+<p>这些做法可以根据个人口味和食材进行调整，年糕的软糯口感和多样的烹饪方式使其成为广受欢迎的美食。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/47"/><category term="一些记录"/><category term="blog"/><published>2025-01-25T11:47:46+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/46</id><title>[ 观影 ] 为了全人类 (1989) 4K HDR</title><updated>2026-01-09T16:21:23.390178+00:00</updated><content type="html"><![CDATA[<p>名称：为了全人类 (1989) 4K HDR 中字外挂字幕</p>
+<p><img src="https://pic.superbed.cc/item/67931821fa9f77b4dcedaef9.jpg" alt="" /></p>
+<p>描述：1969年7月是太空竞赛的一个终点。为了全人类的梦想。三名宇航员带着凭着极大的勇气和信念奔向月球。</p>
+<p>导演阿尔·莱纳所拍摄的这部奥斯卡奖记录长片，完整而真实地记录了这一人类历史最伟大的勇气之旅。这部具有伟大意义而又珍贵的影片，也同样是标准公司的一大宝藏，这次为你完整呈现。</p>
+<p>链接：<a href="https://www.alipan.com/s/Jrgmisun6nA">https://www.alipan.com/s/Jrgmisun6nA</a></p>
+<p>📁 大小：25.9GB</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/46"/><category term="一些记录"/><published>2025-01-24T04:35:20+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/45</id><title>[ 图片 ] 隋塔</title><updated>2026-01-09T16:21:23.865820+00:00</updated><content type="html"><![CDATA[<p>现在寺庙香火鼎盛，实在没有什么(๑•̌.•̑๑)ˀ̣ˀ̣</p>
+<p><img src="https://pic.superbed.cc/item/6793008cfa9f77b4dceca637.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/6793008cfa9f77b4dceca63c.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/6793008dfa9f77b4dceca649.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/6793008dfa9f77b4dceca657.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/6793008dfa9f77b4dceca661.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67930114fa9f77b4dcecabf1.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/45"/><category term="一些记录"/><published>2025-01-24T02:58:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/44</id><title>[ 观影 ] 驻站</title><updated>2026-01-09T16:21:24.017749+00:00</updated><content type="html"><![CDATA[<p>驻站电视剧，闲时打发下时间</p>
+<p>阿里云盘26集全</p>
+<p><a href="https://www.alipan.com/s/Uqqe9joU7dK">https://www.alipan.com/s/Uqqe9joU7dK</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/44"/><category term="一些记录"/><published>2025-01-22T05:24:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/43</id><title>猫猫是水做的</title><updated>2026-01-09T16:21:24.143192+00:00</updated><content type="html"><![CDATA[<p>匈牙利Eötvös Loránd大学的研究团队近日在《iScience》杂志上发表了一项关于猫身体意识的研究，揭示了猫在通过狭小空间时的行为策略。</p>
+<p>研究选取了30只家养猫，利用逐步变窄或变矮的开口测试其空间决策能力。结果显示，猫在面对高而窄的开口时通常不会犹豫，直接尝试通过；但在遇到低矮的开口时则表现出显著的犹豫行为，甚至寻找替代解决方案，如跳跃越过障碍。</p>
+<p><img src="https://pic.superbed.cc/item/67907c70fa9f77b4dcbb51a0.jpg" alt="" /></p>
+<p>研究指出，猫通过高窄开口时可能依赖其灵活的身体结构和试探性策略，而非基于身体大小的先验判断。然而，当开口高度低于猫的肩高时，猫更倾向于依赖身体意识来判断是否通过。这种差异可能源于猫独特的解剖学特征和生态适应性，例如它们缺乏锁骨，具有极强的挤压能力和敏锐的触须感知。</p>
+<p>研究者认为，这一发现为动物自我意识的模块化理论提供了新证据，即不同动物可能根据生态需求进化出特定的自我意识形式。此外，研究还指出，未来可以在更多复杂环境中进一步探讨猫的身体意识及其表现形式。</p>
+<p>来源：<a href="https://www.sciencedirect.com/science/article/pii/S2589004224020248">iScience</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/43"/><category term="notes"/><published>2025-01-22T05:06:11+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/42</id><title>DeepSeek官方App上线</title><updated>2026-01-09T16:21:24.265682+00:00</updated><content type="html"><![CDATA[<p>DeepSeek有App了。<strong>官方应用</strong>上线App Store，背后正是由此前火爆全网的“国产之光”DeepSeek V3模型提供支持。该App结合了两大核心功能：<strong>深度思考和联网搜索</strong>。支持用户完成对话、语言翻译、创意写作、编程、解题、文献解读、旅行规划等用途，相当于说是<strong>网页版的各种功能都支持</strong>。</p>
+<p><img src="https://pic.superbed.cc/item/67850520fa9f77b4dce18b54.webp" alt="" /></p>
+<p>更关键的是，免费，免费，还是免费</p>
+<p><img src="https://pic.superbed.cc/item/67850538fa9f77b4dce18c41.webp" alt="" /></p>
+<p>这一APP前两天就已经上线，从目前评价来看，全都是五星好评的那种。</p>
+<p>不过由于目前只有iOS版本，网友们纷纷期待：什么时候可以Android或者iPad版本。</p>
+<p><img src="https://pic.superbed.cc/item/6785059afa9f77b4dce18fa8.webp" alt="" /></p>
+<p>跟网页版本相比，App还多了一个“拍照识文字”的功能。</p>
+<p><img src="https://pic.superbed.cc/item/678505dffa9f77b4dce192f1.webp" alt="" /></p>
+<p>DeepSeek V3模型驱动</p>
+<p>App背后的模型正是前段时间爆火的DeepSeek V3——以1/11算力训练超越Llama 3的模型，震撼一整个AI圈。</p>
+<p>它是一个参数量为671B的MoE模型，激活37B，在14.8T高质量token上进行了预训练。</p>
+<p>它发布即完全开源，在多项测评上，DeepSeek V3达到了开源SOTA，超越Llama 3.1 405B.</p>
+<p><img src="https://pic.superbed.cc/item/6785062bfa9f77b4dce1b082.webp" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/42"/><category term="收录"/><published>2025-01-21T13:41:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/33</id><title>伊拉克国家域名删除始末</title><updated>2026-01-09T16:21:24.360031+00:00</updated><content type="html"><![CDATA[<p>美国政府到底有没有人为干预伊拉克和利比亚的国家顶级域名呢？其实并没有。但这两个国家的顶级域名(ccTLD)确实出现过很大的故障，但也可有内情。</p>
+<p>先说伊拉克，它的顶级域名是.iq。创建时间是1997年<a href="https://taoshu.in/dns/us-and-cctld.html#fn3">3</a>，当时的申请人叫 Bayan Elashi，是来自巴勒斯坦的穆斯林。他于1977年到美国留学，在普渡大学拿到<a href="https://taoshu.in/dns/us-and-cctld.html#"> 计算机</a>科学硕士学位。毕业后他在加利福尼亚州的一家 IT 公司任 CEO，设计了最早支持阿拉伯语的个人电脑 Alraed。之后他创办了国际电脑和通讯公司(International Computer and Communications Inc)。最后，他在1992年，于德克萨斯州创办了自己的第三家公司 InfoCom<a href="https://taoshu.in/dns/us-and-cctld.html#fn4">4</a>。</p>
+<p>InfoCom 在阿拉伯世界首屈一指的数据库提供商，而且它还托管了将近500个网站。有些网站属于中东地区的商业公司，也有一些属于在美国的穆斯林组织。Bayan 简直就是阿拉伯人的民族之光。</p>
+<p>Bayan 在 1997 年申请注册.iq域名后，IANA 很快就批准了。至于为什么会把伊拉克的顶级域名授权给一个巴勒斯坦人，我们后面会说。</p>
+<p>Bayan 拿到.iq域名后并没有认真运营，也没有推广，也不参加域名管理相关的国际交流。而且萨达姆政权严格管控国民使用互联网，估计在2002年之前可能只有两万五千人能上网。所以实际注册.iq域名的并不多。据网络和电信领域的咨询公司 TeleGeography 估计，到 2002 年1月，大约注册过225个域名。而 ICANN 的报告则称该域名从未启用过。</p>
+<p>经过美国 FBI 调查，Bayan 和 InfoCom 暗中资助中东的恐怖分子。所以 FBI 在 2001 年对 InfoCom 做了突击检查，关闭了该公司托管的网站。并且于 2002 年 12 月逮捕了 Bayan 和他的三个兄弟。因为 InfoCom 被查以及 Bayan 被捕，所以无人继续维护.iq的 DNS <a href="https://taoshu.in/dns/us-and-cctld.html#"> 服务器</a>。解析出问题是早晚的事。</p>
+<p>2003 年美国发动伊拉克战争，推翻萨达姆政权。伊拉克过渡政府于 2004 年向 ICANN 申请希望接管.iq域名。因为原维护人 Bayan 身陷囹圄，所以 ICANN 最终将 .iq 重新授权给伊拉克过渡政府，这已经是 2004 年 6 月份的事了。ICANN 有官方报告文件<a href="https://taoshu.in/dns/us-and-cctld.html#fn5">5</a>。</p>
+<p>整个事件正好发生在伊拉克战争爆发前后，给人的感觉好像是美国为了打败伊拉克而故意删除了它的国家顶级域名。且不说美国没做过，就是真做了，又能有什么用？那时个伊拉克境内能上网的人很少，用.iq域名做网站的几乎没有，萨达姆政府有没有网站还两说呢。美国政府这样做除了贻人口实之外，我想不出有会有什么好处。</p>
+<p>下面接着说利比亚的顶级域名.ly。因为在英语中ly词尾很常见，所以有不少英语网站使用.ly域名。大家最熟悉的应该是短网址域网站bit.ly。在2004年大约注册了一万两千五百个域名。.iq域名跟.ly真可谓是小屋见大屋了。</p>
+<p>到了 2004 年的4月9号，突然这一万多个域名就无法解析了。因为用的人多，立马就引起慌乱。过了四天才恢复，大家都不知道发生了什么事。</p>
+<p>然后美国政府就躺枪。其实人家什么也没做，是运营.ly域名的公司自己出了问题，导到 DNS 服务器下线了。</p>
+<p>故事还得从 1997 年说起。当时 IANA 把.ly授权给 Alshaeen 信息技术公司。然后由一家英国公司 Lydomains.com 负责售卖。公司法人一个利比亚人，叫 Khalil Luheshi。域名解析服务由 Magic Moments 提供。</p>
+<p>后来出现了 Dr Tayeb，他声称自己是 Alshaeen 董事会的成员。Dr Tayeb 于2000年在的黎波里，利比亚首都，创办了 Alfoursan 信息公司，自己担任法人和 CEO。到了2000年 2月24日，Alfoursan 跟 Alshaeen 合并，.ly 也移交给 Alfoursan。</p>
+<p>根所 Dr Tayeb 的描述，他有证据表明 Alfoursan 已经签署文件移交.ly的管理权。但 IANA 的信息没有改，.ly 的维护人还是 Alshaeen 公司。Luheshi 和 Tayeb 双方争执不休，同时联系 Magic Moments 公司说自己才是『正统』。因为这些争执导致管理混乱。 .ly的主 DNS <a href="https://taoshu.in/dns/us-and-cctld.html#"> 服务器</a>停服了四天。</p>
+<p>最终利比亚官方代表通用邮政和电信公司(GPTC)向 ICANN 申请接管.ly域名。经过评估 IANA 将该域名重新授权给 GPTC。IANA 公开了评估报告<a href="https://taoshu.in/dns/us-and-cctld.html#fn6">6</a>。完整故事请参考 Libyan Spider 公司的声明<a href="https://taoshu.in/dns/us-and-cctld.html#fn7">7</a>。</p>
+<p>以上就是所谓美国政府干扰他国顶级域名的真相。虽然不是美国政府所为，却曝露出一个很费解的问量，那就是为什么 IANA 或者 ICANN 会把一个国家的顶级域名授权给私人或者私人公司来管理呢？</p>
+<p>这得从互联网早期的历史说起。</p>
+<p>互联网的前身是阿帕网(ARPANET)，它是美国军方资助的研究项目。最早使用互联网的人中，除了军方人员外，最主要的就是大学里的学者和研究人员。所有人和设备都是基于声望和信任相互协作。</p>
+<p>这其中就有一人，江湖称之为互联网之『神』，他叫 Jon Postel。Postel 很早就参与了 ARPANET 的设计和建设，参与设计了 DNS 系统。他在南加州理工大学工作时负责 IANA 的实际工作，也就是分配和管理顶级域名。</p>
+<p>最早的域名都没有商业化，完全是志愿服务。而且那时候人与人之间充满了信任，你说啥就是信啥。Postel 为 DNS 申请者定了如下几条准则<a href="https://taoshu.in/dns/us-and-cctld.html#fn8">8</a>：</p>
+<p>域名必须有管理人。对于国家顶经域名，管理人必须生活在对应的国家。管理人需要运行 IP 协议，而且可以能过<a href="https://taoshu.in/dns/us-and-cctld.html#"> 电子邮件</a>交流。域名必须有管理联络人和技术联络人，对于国家顶级域名，管理联络人须是该国居民。
+域名委托后受托人有义服对社区提供服务。这里不谈“权利”和“所有权”，更多的是对社区的“责任”和“服务”。
+受托人必须为所有用户提供无差别服务。
+受托人必须提代服务必须让社区满意。比如必须指定主从两台<a href="https://taoshu.in/dns/us-and-cctld.html#"> 服务器</a>，都得接入 IP 网络。如果某域名的解析一直有问量，IANA 可能会取消该域名的委托。
+如是一方需要将某域名的控制权转移给另一方，则双方必须达成共识且跟上一级管理人联系。
+而且在上世纪九十年代，很多国家都没有接入互联网。所以 IANA 规定域名的管理联络人和技术联络人可以分开。当时很多国家顶级域名都是借用其他国家的网络服务器做解析的。我国的.cn域名最早就是用德国的 DNS 服务器来解析。</p>
+<p>另外就是要求对于国家顶级域名，受托人必须是对应国家的居民。但因为 IANA 是非赢利性组织，早期甚至就是 Postel 一个人，而且是基于信任在协作。所以那时个申请顶级域名基本上是先到先得，只要提供对应国家的地址就可以了。这就是很多后发国家的顶级域名被委托给了私人或私人公司的原因。</p>
+<p>委托出错固然不对，但重新委托也不能儿戏。虽着 IANA/ICANN 越来越规范和透明，顶级域名变更委托信算的流程也非常复杂。伊拉克和利比亚的域名都是在现有的委托人已经无法履行域名管理义务才重新委托给对应国家的代表机构的。双方达成共识之前，IANA 不会自行变更域名信息。达成共识之后，所有信息都会公开。</p>
+<p>除了.iq和.ly外，还有很多 ccTLD 被重新委托，其中就包括澳大利亚的.au<a href="https://taoshu.in/dns/us-and-cctld.html#fn9">9</a>。</p>
+<p>从历史发展、资源投入和技术现实等各方面考虑，美国在互联网全球治理方面确实有自己的优势。理论上美国确实可以删除任意国家的顶级域名。所以我们国家的某些学者有所担忧也可以理解。但一味的阴谋论则没有必要。</p>
+<p>DNS 的多数根<a href="https://taoshu.in/dns/us-and-cctld.html#"> 服务器</a>和最核心的 A 根服务器虽然都在美国，但管理权确不在美国政府，而在非赢利性的 ICANN 手里。为了防止 ICANN 做坏事，全球互联网社区共同制定了一系列规范，其中之一就是公开透明。ICANN 的所有讨论、结论和行动都有公开的文件可查。信息公开是最好的监督方式。这一点估计国人很难理解。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/33"/><category term="收录"/><published>2025-01-20T13:56:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/32</id><title>Vercel 收购代码搜索工具 - Grep</title><updated>2026-01-09T16:21:24.483040+00:00</updated><content type="html"><![CDATA[<p>Vercel 近期收购了一款强大的代码搜索工具 - Grep，Grep 覆盖超过50万个GitHub仓库。</p>
+<p>支持代码、文件和路径多维度搜索，支持跨仓库代码搜索，能用正则和区分大小写。</p>
+<p><a href="https://grep.app/">Grep 网址</a> | <a href="https://vercel.com/blog/vercel-acquires-grep">Vercel 收购新闻</a></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/32"/><category term="notes"/><published>2025-01-20T07:51:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/31</id><title>[ 胡思乱想 ] Akamai CDN 退出中国</title><updated>2026-01-09T16:21:24.604968+00:00</updated><content type="html"><![CDATA[<p>我认为这就是大国之间的博弈。</p>
+<p>就像抖音海外版为什么敢硬顶美国政府，那就是拿他的几亿用户来要挟，如果他换一个地方，估计早就被打趴下了。 </p>
+<p>所以这不关我们小网民什么事，该吃吃该喝喝，这些都不是我们能操心的事，你不要替别人瞎操心。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/31"/><category term="blog"/><published>2025-01-20T07:32:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/30</id><title>[ 生活 ] 今秋南方行</title><updated>2026-01-09T16:21:24.745940+00:00</updated><content type="html"><![CDATA[<p>今秋南方行</p>
+<p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e4757.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e475b.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e4764.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e476e.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/678df7f4fa9f77b4dc7e4776.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/30"/><category term="blog"/><published>2025-01-20T07:15:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/29</id><title>Apple Intelligence 有哪些体验</title><updated>2026-01-09T16:21:24.853376+00:00</updated><content type="html"><![CDATA[<p>Apple Intelligence 有哪些体验？</p>
+<p>一、AI 与操作系统融合
+现有的 AI 大模型专注于一个领域下的智能生成，如 Chat GPT 的文本处理能力、 Midjourney 文生图能力，都是根据用户的指令去完成单独的命令，而 Apple Intelligence 将 LLM 大模型的能力与用户的操作系统深度结合，从内容智能到行为智能，强调了人工智能在手机上的行动生成和整合能力，通过对手机里的各个 App 进行全面的跟踪和分析，完成用户的操作指令。
+<img src="https://pic.superbed.cc/item/678bb35afa9f77b4dc6489c4.webp" alt="" />
+<img src="https://pic.superbed.cc/item/678bb372fa9f77b4dc648abd.webp" alt="" />
+二、多模态交互能力
+2.1 文本处理
+Apple Intelligence 为用户开启了提升写作能力和更高效沟通的新方式。借助 iOS 18、iPadOS 18 和 macOS 的全新全系统写作工具，写作工具几乎可在任何书写位置使用，包括邮件、备忘录、Pages、 Safari 浏览器和第三方应用。
+<img src="https://pic.superbed.cc/item/678bb3aafa9f77b4dc648ce7.gif" alt="" />
+除此之外，它还有亮眼的文字总结功能，收件箱顶部的新部分会显示最紧急的电子邮件，例如当天的晚餐邀请或登机牌。在收件箱中，可以把长邮件内容总结成摘要，用户无需打开邮件，只需轻点一下即可查看相关详细信息。智能回复功能也会提供快速回复建议，并会识别电子邮件中的问题以确保所有问题都得到解答。对语言的深入理解也延伸到了通知上，桌面摘要可帮助用户在锁定屏幕上扫描通知的详细信息，并自动识别通知的重要等级并重新排序，减少不必要的干扰。
+<img src="https://pic.superbed.cc/item/678bb3c3fa9f77b4dc648e34.webp" alt="" />
+<img src="https://pic.superbed.cc/item/678bb3d6fa9f77b4dc648ef2.gif" alt="" />
+<img src="https://pic.superbed.cc/item/678bb3e4fa9f77b4dc648fa7.webp" alt="" />
+2.2 语音处理
+新版 Siri 采用了全新的设计，当 Siri 处于活动状态时，优雅的发光灯会环绕屏幕边缘。 Siri 新增了连续对话功能，能够更自然地理解上下文内容，同时支持跨软件操作。此外，用户可以输入文字给 Siri，并在文本和语音之间切换，以任何当时感觉合适的方式与 Siri 交流。
+<img src="https://pic.superbed.cc/item/678bb403fa9f77b4dc6490df.gif" alt="" />
+2.3 图像处理：文生图、图生图、故事编排</p>
+<p>a、图像生成</p>
+<p>利用苹果自带的 Image Playground 应用软件可以制作原创图像，支持文生图功能，可以通过文字描述、推荐概念特征、照片库里的人物来制作，借助 Image Playground，用户可以在几秒钟内创建有趣的图像，从三种风格中进行选择：动画、插图或素描。Image Playground 提供了非常流畅的操作手势，通过简单的点选来进行参数的调控，还可以圈选手绘插图进行一键风格化绘制，它还提供专用应用程序，非常适合尝试不同的概念和风格。所有图像均在设备上创建，让用户可以自由地尝试任意数量的图像。
+<img src="https://pic.superbed.cc/item/678bb42bfa9f77b4dc649270.gif" alt="" />
+b、图像处理
+Image Playground 图片生成
+c、视觉搜索</p>
+<p>苹果发布的视觉智能（Visual Intelligence）功能，这个功能对标Google Lens，视觉智能本质上是人工智能视觉，其中语言模型可以分析和理解图像。这一点 Claude、Gemini 和 ChatGPT 也能很好地做到。但苹果通过深度整合到手机系统中，提供了新的硬件交互方式，用户可通过新设的相机控制按钮（Capture Button）点击访问其视觉搜索功能，方法更加用户友好。
+三、跨应用、跨设备</p>
+<p>屏幕感知：借助屏幕感知功能，Siri 可以轻松执行与屏幕上的信息相关的操作，例如将信息中收到的地址添加到朋友的联系人卡片；将图册中的图片加入到笔记。
+<img src="https://pic.superbed.cc/item/678bb483fa9f77b4dc6495ec.webp" alt="" />
+四、结语</p>
+<ol>
+<li>语言理解——个性化服务——参与决策</li>
+</ol>
+<p>随着 AI 的自我进化，其理解和反应能力不断提升，从最先的语言理解，到提供个性化的服务，现在甚至还能预测我们的需求，并在必要时替我们做出决策。</p>
+<ol start="2">
+<li>依赖 App——寻求整合服务</li>
+</ol>
+<p>苹果为手机系统的交互引入了新的模式，超越了应用 App 服务，提高给用户许多想象，随着人工智能技术的发展，用户可以直接用 AI助手对话或提供指令，而不是依赖应用商店的app来完成任务。</p>
+<ol start="3">
+<li>新型的操作系统</li>
+</ol>
+<p>随着 AI 能力整合，移动端设备变成一个AI 终端的系统，多终端（手机、设备、手表、手环、PC、pad），跨设备执行指令和操作，多模态（文字、语音、图像、手势），根据用户的个人习惯、喜爱偏好，总结推理，在不同的时间地点给予用户最合适的建议和答案，并且能够不断地学习优化，类似“Apple Intelligence”成为用户的“智能贴身管家”，深入理解和预测用户行为，不断成为“私人专属&quot;的终端。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/29"/><category term="收录"/><published>2025-01-19T19:14:15+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/28</id><title>[ Markdown ] An option to highlight a ' Note' and ' Warning' using blockquote</title><updated>2026-01-09T16:21:24.977430+00:00</updated><content type="html"><![CDATA[<blockquote class="alert alert-note">
+<p>Note</p>
+<p>Highlights information that users should take into account, even when skimming.</p>
+</blockquote>
+<blockquote class="alert alert-tip">
+<p>Tip</p>
+<p>Optional information to help a user be more successful.</p>
+</blockquote>
+<blockquote class="alert alert-important">
+<p>Important</p>
+<p>Crucial information necessary for users to succeed.</p>
+</blockquote>
+<blockquote class="alert alert-warning">
+<p>Warning</p>
+<p>Critical content demanding immediate user attention due to potential risks.</p>
+</blockquote>
+<blockquote class="alert alert-caution">
+<p>Caution</p>
+<p>Negative potential consequences of an action.</p>
+</blockquote>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/28"/><category term="收录"/><published>2025-01-19T19:13:01+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/27</id><title>[  图片 ]  随记</title><updated>2026-01-09T16:21:25.091313+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842ae1.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842ae6.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842af0.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/67754619fa9f77b4dc842af6.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/27"/><category term="blog"/><published>2025-01-19T19:11:25+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/26</id><title>Friends</title><updated>2026-01-09T16:21:25.204076+00:00</updated><content type="html"><![CDATA[<p>这个 Issue 是友情链接的 Issue, 如果你想加到友情链接里，请在这条 Issue 上评论，我打心后会自动加到友情链接里。感谢大家。</p>
+<p>格式如下（请参考我下面的 comment）: 冒号为中文冒号 ：</p>
+<p>名字：xxxxxx
+链接：xxxxxx
+描述：xxxxxx</p>
+<p>added al</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/26"/><category term="Top"/><category term="Friends"/><category term="Pinned"/><published>2025-01-19T19:09:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/25</id><title>苹果发布iPhone屏下Face ID“隐身术”新专利</title><updated>2026-01-09T16:21:25.311998+00:00</updated><content type="html"><![CDATA[<p>这项技术的核心在于通过将前置摄像头、光线传感器等元件隐藏在屏幕下方，并利用多个孔径穿透屏幕表面，使这些组件能够在屏幕下完成图像识别工作。
+<img src="https://pic.superbed.cc/item/678bb5fdfa9f77b4dc64a433.webp" alt="" />
+一直以来，Face ID技术以其高精度和便捷性著称，通过深感摄像头投射并分析大量点阵，实现对人脸数据的精确捕捉。然而，由于技术限制，使得Face ID系统中的关键组件，如红外摄像头和点阵投影器等，尚无法完全融入屏幕下方。因此，苹果不得不采用所谓的“药丸屏”设计作为折衷方案。</p>
+<p>为了解决将红外摄像头和点阵投影器等关键组件隐藏在屏幕下方的技术难题，苹果的新专利描述了一种创新方法，旨在将光学传感器巧妙地置于屏幕下方。</p>
+<p>据悉，该专利的核心在于提高红外光的透光率。尽管红外光能穿透显示屏，但由于其透光率较低，将Face ID组件放在屏幕下方会导致人脸识别过程变慢且安全性下降。因此，苹果在这项专利中提出了创新的解决方案。</p>
+<p><img src="https://pic.superbed.cc/item/678bb646fa9f77b4dc64a743.webp" alt="" /></p>
+<p>苹果的解决方案是通过移除一些子像素来提高红外光的透光率，从而允许红外光顺利穿过OLED屏幕。每个显示器的像素由红、绿、蓝三种子像素组成，苹果通过删除相邻子像素中相同颜色的部分，使红外光能够顺利透过屏幕。</p>
+<p>这一解决方案提出了一种“像素移除区域”的设计，该区域与传感器部分重叠，并通过多种方案优化光线透过率。该专利提出了移除像素移除区域中50%或10%-90%子像素的方案，以提升光线传输效率。</p>
+<p>这种方法不仅提高了红外光的透射率，还确保了显示效果的一致性，因为被去除的子像素不会被肉眼察觉到，因为显示器使用了颜色混合技术，利用周围的像素来补偿缺失的部分。</p>
+<p>与此同时，新专利还深入探讨了触控传感器网格在像素移除区域的布局方式，包括完全保留、完全移除或部分移除等策略，以平衡触控灵敏度和光学传感器的性能。</p>
+<p>此外，专利还涉及对覆盖层的处理，包括基板保护层、栅极电介质层、无机钝化层或有机像素定义层的选择性图案化处理，以进一步优化传感器的性能和集成度。
+![]这项技术的核心在于通过将前置摄像头、光线传感器等元件隐藏在屏幕下方，并利用多个孔径穿透屏幕表面，使这些组件能够在屏幕下完成图像识别工作。
+<img src="https://pic.superbed.cc/item/678bb5fdfa9f77b4dc64a433.webp" alt="" />
+一直以来，Face ID技术以其高精度和便捷性著称，通过深感摄像头投射并分析大量点阵，实现对人脸数据的精确捕捉。然而，由于技术限制，使得Face ID系统中的关键组件，如红外摄像头和点阵投影器等，尚无法完全融入屏幕下方。因此，苹果不得不采用所谓的“药丸屏”设计作为折衷方案。</p>
+<p>为了解决将红外摄像头和点阵投影器等关键组件隐藏在屏幕下方的技术难题，苹果的新专利描述了一种创新方法，旨在将光学传感器巧妙地置于屏幕下方。</p>
+<p>据悉，该专利的核心在于提高红外光的透光率。尽管红外光能穿透显示屏，但由于其透光率较低，将Face ID组件放在屏幕下方会导致人脸识别过程变慢且安全性下降。因此，苹果在这项专利中提出了创新的解决方案。</p>
+<p><img src="https://pic.superbed.cc/item/678bb646fa9f77b4dc64a743.webp" alt="" /></p>
+<p>苹果的解决方案是通过移除一些子像素来提高红外光的透光率，从而允许红外光顺利穿过OLED屏幕。每个显示器的像素由红、绿、蓝三种子像素组成，苹果通过删除相邻子像素中相同颜色的部分，使红外光能够顺利透过屏幕。</p>
+<p>这一解决方案提出了一种“像素移除区域”的设计，该区域与传感器部分重叠，并通过多种方案优化光线透过率。该专利提出了移除像素移除区域中50%或10%-90%子像素的方案，以提升光线传输效率。</p>
+<p>这种方法不仅提高了红外光的透射率，还确保了显示效果的一致性，因为被去除的子像素不会被肉眼察觉到，因为显示器使用了颜色混合技术，利用周围的像素来补偿缺失的部分。</p>
+<p>与此同时，新专利还深入探讨了触控传感器网格在像素移除区域的布局方式，包括完全保留、完全移除或部分移除等策略，以平衡触控灵敏度和光学传感器的性能。</p>
+<p>此外，专利还涉及对覆盖层的处理，包括基板保护层、栅极电介质层、无机钝化层或有机像素定义层的选择性图案化处理，以进一步优化传感器的性能和集成度。</p>
+<p><img src="https://pic.superbed.cc/item/678bb681fa9f77b4dc64a988.webp" alt="" /></p>
+<p>苹果的这项专利展示了其在屏下技术上的重大突破，尤其是在iPhone和MacBook设备上。对于iPhone而言，这项技术有望彻底消除刘海设计，使得设备拥有更加简洁和一体化的外观。</p>
+<p>这一技术方案预计最早将在2026年发布的iPhone 18系列上得到应用，届时iPhone 18将采用单挖孔屏设计，彻底告别现有的药丸屏形态，进一步推动苹果手机向真正的全面屏方向迈进。</p>
+<p>(<a href="https://pic.superbed.cc/item/678bb681fa9f77b4dc64a988.webp">https://pic.superbed.cc/item/678bb681fa9f77b4dc64a988.webp</a>)</p>
+<p>苹果的这项专利展示了其在屏下技术上的重大突破，尤其是在iPhone和MacBook设备上。对于iPhone而言，这项技术有望彻底消除刘海设计，使得设备拥有更加简洁和一体化的外观。</p>
+<p>这一技术方案预计最早将在2026年发布的iPhone 18系列上得到应用，届时iPhone 18将采用单挖孔屏设计，彻底告别现有的药丸屏形态，进一步推动苹果手机向真正的全面屏方向迈进。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/25"/><category term="一些记录"/><published>2025-01-19T19:08:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/24</id><title>[ 生活 ]  2024年的最后一个月,我做了痔疮手术,</title><updated>2026-01-09T16:21:25.408406+00:00</updated><content type="html"><![CDATA[<p>2024年的最后一个月,我做了痔疮手术,因为已经形成血栓了，所以不做不行了。</p>
+<p>现在已经将近20天了，但是伤口还没有长好，所以还没有上班。这几个月因为没上班的缘故，所以收入肯定会巨减。</p>
+<p>刚做的两天没有感觉有点疼痛，因为有麻药的作用。两天之后就开始疼痛，然后大便就跟拉玻璃一样。</p>
+<p>然后当时选的医院有点小，只是个二级医院，可能有选择的余地也比较少,所以就选了一个最原始的一个方法。现在想想,可能这个原始的方法是最去根的方法。但是也是最痛苦的一个方法。</p>
+<p>直到20天以后，我还在。床上躺着上不了班。现在是每天早上大便，然后紧接着去洗去熏。</p>
+<p>期待着2025年。一切顺利吧。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/24"/><category term="一些记录"/><category term="blog"/><published>2025-01-19T19:05:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/23</id><title>注册属于自己的 HiDNS 域名</title><updated>2026-01-09T16:21:25.520374+00:00</updated><content type="html"><![CDATA[<p>有需要可以看下。</p>
+<p>免费注册属于自己的 HiDNS 二级域名</p>
+<p><a href="https://www.hidoha.net/"> 直达 </a></p>
+<p>hidns.co优惠劵：Hello2025</p>
+<p>hidns.vip优惠劵：Great2025</p>
+<p>☎️ 平台是某群某大佬搭建的，据说续费是永久免费。暂时不能托管至 Cloudflare。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/23"/><category term="一些记录"/><published>2025-01-19T17:47:22+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/22</id><title>[ 吐槽 ] claude 3.5</title><updated>2026-01-09T16:21:25.736892+00:00</updated><content type="html"><![CDATA[<p>同样是 claude 3.5,  API 和官网还是有区别.</p>
+<p><img src="https://github.com/user-attachments/assets/96f46fff-de6b-4dee-bd19-63b348ec9740" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/22"/><category term="blog"/><published>2025-01-19T16:48:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/21</id><title>吐槽下药品说明书</title><updated>2026-01-09T16:21:25.872112+00:00</updated><content type="html"><![CDATA[<p>最近看了个视频，很有同感。</p>
+<p>吃药看不懂药品说明书，一片多少 mg ，吃几片，都不知道。</p>
+<p>药物使用说明书：吃药好比期末考，语数英物化生都得用上 。</p>
+<p>上次在医院看病，大夫给开的片剂的药，一共开了5片药，吃三天，一次吃3/4片，把人为难的，算了半天哈哈。😅</p>
+<p>论智商的重要性。😁</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/21"/><category term="blog"/><published>2025-01-19T14:46:49+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/20</id><title>特朗普推出加密货币，能买吗？</title><updated>2026-01-09T16:21:25.980801+00:00</updated><content type="html"><![CDATA[<p>📮特朗普推出$TRUMP加密货币，市场估值超200亿美元</p>
+<p>☘️唐纳德·特朗普在即将上任总统前夕，通过社交媒体发布了名为$TRUMP的Solana区块链新型加密货币。该货币迅速获得市场关注，短时间内其市值突破了200亿美元。</p>
+<p>🌸<a href="https://x.com/realDonaldTrump/status/1880446012168249386">Donald Trump</a></p>
+<p>币圈有风险，投资需谨慎</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/20"/><category term="一些记录"/><published>2025-01-19T14:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/19</id><title>TikTok 、CapCut 、lemon8在美国正式关闭</title><updated>2026-01-09T16:21:26.096718+00:00</updated><content type="html"><![CDATA[<p>📮TikTok 、CapCut 、lemon8在美国正式关闭</p>
+<p>☘️原本关闭时间预计在北京时间周日下午1点（美国时间周日0点）。现在已提前关闭。</p>
+<p>🌸美区App Store以及Google Play已下架相关应用，包含飞书国际版Lark。此次下架包含字节所有的应用。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/19"/><category term="一些记录"/><published>2025-01-19T14:09:32+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/18</id><title>[ 图片 ] 养了两只猫</title><updated>2026-01-09T16:21:26.237133+00:00</updated><content type="html"><![CDATA[<p>无奈的养了两只猫，有了无穷的快乐和烦恼。</p>
+<p><img src="https://github.com/user-attachments/assets/81374c08-2604-4fe4-8889-12a69b410878" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/1c5241ec-6558-4bdd-a1ab-2a2ed1da8c2f" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/18"/><category term="blog"/><published>2025-01-19T09:57:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/17</id><title>[ 图片 ] 世界上最早的高速公路</title><updated>2026-01-09T16:21:26.343694+00:00</updated><content type="html"><![CDATA[<p>2000年前由秦将蒙恬率30万大军修建的军事通道</p>
+<p><img src="https://github.com/user-attachments/assets/89c02bc4-7b10-40b4-a165-c135595f0161" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/9239bab8-1398-435e-99f1-1b4c240daa9a" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/f8c3285f-0ee5-4de6-bff4-9bb31dfd677b" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/691739a7-c181-4206-955c-3e494ea3abf8" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/3e7c080f-4a18-4609-a3f8-ec4dbc0d877e" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/130500da-ee64-4a27-a803-2deef1667e6d" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/17"/><category term="blog"/><published>2025-01-19T09:44:26+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/16</id><title>[ 图片 ] 宁武悬空古栈道</title><updated>2026-01-09T16:21:26.462820+00:00</updated><content type="html"><![CDATA[<p>宁武悬空古栈道</p>
+<p>山路崎岖蜿蜒，悬崖峭壁。一座座悬空古刹由栈道和涵洞相连，惊险刺激.</p>
+<p><img src="https://github.com/user-attachments/assets/45336040-bb2b-435a-b37c-e2851d34d1a4" alt="Image" />
+<img src="https://github.com/user-attachments/assets/4d257e1d-0653-4979-bf0e-ed22633a1045" alt="Image" />
+<img src="https://github.com/user-attachments/assets/6c8ca0ea-8c7a-428c-8661-c034bc468774" alt="Image" />
+<img src="https://github.com/user-attachments/assets/9c38e859-c088-4bd0-a7b5-73c407ab98b7" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/16"/><category term="blog"/><published>2025-01-19T09:38:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/15</id><title>[ 图片 ] 峨眉山</title><updated>2026-01-09T16:21:26.565741+00:00</updated><content type="html"><![CDATA[<p>峨眉山</p>
+<p><img src="https://github.com/user-attachments/assets/7e313b3e-6c5a-4afc-b771-706a1df0b525" alt="Image" />
+<img src="https://github.com/user-attachments/assets/1b53078c-32a7-4a72-86b6-bb78c54ba024" alt="Image" />
+<img src="https://github.com/user-attachments/assets/de53ec8a-7d33-48d1-ac16-5173a966dc95" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/15"/><category term="blog"/><published>2025-01-19T09:31:41+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/14</id><title>[ 画稿 ] 金鱼</title><updated>2026-01-09T16:21:26.688240+00:00</updated><content type="html"><![CDATA[<p>金鱼</p>
+<p><img src="https://github.com/user-attachments/assets/7b993f4a-d0fa-4731-be33-80933eb5e886" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/14"/><category term="blog"/><published>2025-01-19T09:25:06+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>[ 画稿 ] 被咬了一口的苹果</title><updated>2026-01-09T16:21:26.837241+00:00</updated><content type="html"><![CDATA[<p>被咬了一口的苹果</p>
+<p><img src="https://github.com/user-attachments/assets/2c172ab1-d901-4e7e-8568-6dd311e46bad" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="blog"/><published>2025-01-19T09:22:42+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>[ 图片 ] 关山草原，也称“关山牧场”</title><updated>2026-01-09T16:21:26.948382+00:00</updated><content type="html"><![CDATA[<p>**有机会可以去一下，可以烤全羊，可以骑马，景色优美，空气清新。</p>
+<p><img src="https://github.com/user-attachments/assets/a06b5b1d-bf90-4529-932c-46130bfa0039" alt="Image" /></p>
+<p><img src="https://github.com/user-attachments/assets/133505bc-1284-405e-8345-964fce0427e9" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="blog"/><published>2025-01-19T09:19:07+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/11</id><title>[ 图片 ] 老友画了一幅人像，却貌似某人，特此备份吧。</title><updated>2026-01-09T16:21:27.064891+00:00</updated><content type="html"><![CDATA[<p><img src="https://github.com/user-attachments/assets/87c1c769-eadd-4e59-b95a-06385ba06edc" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/11"/><category term="blog"/><published>2025-01-19T09:14:43+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>[ 画稿 ] 花</title><updated>2026-01-09T16:21:27.196931+00:00</updated><content type="html"><![CDATA[<p>花</p>
+<p><img src="https://github.com/user-attachments/assets/eaa0b37a-d17b-4f35-bde1-76510ef91481" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="blog"/><published>2025-01-19T09:03:36+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>[ 画稿 ] 存档、记录 大辣椒</title><updated>2026-01-09T16:21:27.313166+00:00</updated><content type="html"><![CDATA[<p>又一画作：大辣椒</p>
+<p><img src="https://github.com/user-attachments/assets/e4ec7f97-f7d8-4963-bef3-5a1281db64ba" alt="Image" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="blog"/><published>2025-01-19T09:00:54+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>[ 画稿 ] 我并没有意识到这么平凡的生活是那么的重要和可贵</title><updated>2026-01-09T16:21:27.422010+00:00</updated><content type="html"><![CDATA[<p>我想去平常的上一天班，我想平常的过一个周末，然后重新体味--过去每一天每一天。</p>
+<p>我并没有意识到这么平凡的生活是那么的重要和可贵。</p>
+<p><img src="https://pic.superbed.cc/item/678cbeb9fa9f77b4dc6f88ec.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="blog"/><published>2025-01-19T08:59:04+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/7</id><title>[ 画稿 ] 一块老砖</title><updated>2026-01-09T16:21:27.738128+00:00</updated><content type="html"><![CDATA[<p><img src="https://github.com/user-attachments/assets/04820b5a-fe27-494f-9c00-2ee3d227778f" alt="Image" /></p>
+<p>备份收藏而已</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/7"/><category term="blog"/><published>2025-01-19T08:57:06+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/6</id><title>[ 画稿 ] 即使世界偶尔凉薄，内心也要繁花似锦</title><updated>2026-01-09T16:21:27.871738+00:00</updated><content type="html"><![CDATA[<p>一月已经过半，愿都安好</p>
+<p><img src="https://pic.superbed.cc/item/678cbd4cfa9f77b4dc6f7b80.jpg" alt="" /></p>
+<p><img src="https://pic.superbed.cc/item/678cbd6ffa9f77b4dc6f7ce2.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/6"/><category term="blog"/><published>2025-01-19T08:53:21+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>[ 图片 ]山水秦岭 水墨终南</title><updated>2026-01-09T16:21:27.996681+00:00</updated><content type="html"><![CDATA[<h3>山水秦岭，水墨终南</h3>
+<p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928a9.jpg" alt="" /></p>
+<p>早春二月一场春雪覆盖了终南山麓，云海笼罩着若隐若现的南五台仿佛仙境一般！</p>
+<p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928af.jpg" alt="" /></p>
+<p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928b2.jpg" alt="" /></p>
+<p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928b7.jpg" alt="" /></p>
+<p><img src="https://img.imgdb.cn/item/603cdf4f5f4313ce256928bd.jpg" alt="" /></p>
+<p><img src="https://img.imgdb.cn/item/603cdfa35f4313ce2569577a.jpg" alt="" /></p>
+<p><img src="https://img.imgdb.cn/item/603cdfa35f4313ce2569577d.jpg" alt="" /></p>
+<p><img src="https://img.imgdb.cn/item/603cdfa35f4313ce25695782.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="blog"/><published>2025-01-19T08:50:48+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>错误的数学</title><updated>2026-01-09T16:21:28.112914+00:00</updated><content type="html"><![CDATA[<p>一家设计公司在社交媒体上，发布了下面的图片.</p>
+<p><img src="https://pic.superbed.cc/item/678cb816fa9f77b4dc6f3a3c.webp" alt="" /></p>
+<p>图片声称，33000英尺（1万米）高空的飞机，比5000英尺（1500米）的飞机，在飞向同样目的地时，花费的时间是后者的4倍（假定飞行速度相同）。</p>
+<p>一位网友第一反应是，这是在开笑话吗？它为什么忽略地球半径。</p>
+<p>地球半径（设为 R）大约是1800万英尺，这意味着外圈长度只比内圈，多了不到1%。</p>
+<p><img src="https://pic.superbed.cc/item/678cb85bfa9f77b4dc6f3cb2.webp" alt="" /></p>
+<p>而且，由于33000英尺高空的空气阻力减小，该高度的飞行时间实际上可能更少。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="一些记录"/><published>2025-01-19T08:32:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>照明的历史</title><updated>2026-01-09T16:21:28.240117+00:00</updated><content type="html"><![CDATA[<p>工业革命之前，世界是漆黑的，灯光极其昂贵，火是唯一的人造光源。</p>
+<p>历史上，人造光一直是富人和有权势的人的特权，生产和维护既费力又肮脏，可用性和质量都很差。穷人很难获得人造光，总是生活在黑暗中。</p>
+<p>古代房屋在夜晚有蜡烛照明，是巨大财富的标志。当时，蜂蜡制成的优质蜡烛是最好的光源，但天然蜂蜡的供应有限，加上手工制作的繁琐，除了最富有的人之外，其他人都买不到优质蜡烛。</p>
+<p>一位作家写道：“打开你的冰箱门，你召唤出的光线比18世纪大多数家庭所享受的光线总量还要多。”</p>
+<p>后来人们发现，鲸油（鲸鱼的皮下脂肪）是更好的蜡烛材料，燃烧时发出干净、稳定的光，是工业革命早期了最好的照明，但它也非常昂贵。</p>
+<p>捕鲸业为世界带来了照明，但也将一些鲸鱼物种推向了灭绝的边缘。仅在1700年至1800年间，为了得到鲸油，就至少有300,000头鲸鱼被屠杀。</p>
+<p>1800年代初，欧洲和美国出现了燃气照明，燃烧煤气来发光。然而，燃气照明的安装和维护费用昂贵，而且有危险。所以，煤气灯一般不用在家里，而用在工商业和大城市的路灯。</p>
+<p>煤气灯很亮，比之前的任何灯至少亮20倍。使用燃气照明是人类第一次体验明亮的照明。</p>
+<p>1846年，天然气生产的副产品煤焦油（简称煤油）做成灯，用来照明。煤油开始取代鲸油，导致照明成本直线下降，并且燃烧时明亮、无味。</p>
+<p>正是因为煤油，夜间第一次变得明亮了，天黑后也能生产和娱乐。</p>
+<p>19世纪后半期，托马斯·爱迪生（Thomas Edison）发明了电灯，电照明的时代从此来临。</p>
+<p><img src="https://pic.superbed.cc/item/678cb74ffa9f77b4dc6f329a.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="一些记录"/><published>2025-01-19T08:27:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>孟子｜懂人话做人事</title><updated>2026-01-09T16:21:28.364752+00:00</updated><content type="html"><![CDATA[<p>这世界最能听懂的话就是真话。</p>
+<p>所谓真话，就是实话实说，上升到哲学高度就是实事求是。因为真话说的就是实事，通过实事能求出“是”来。是，就是规律，就能让我们通过实事了解事情发展的基本走向。</p>
+<p>这个道理很简单，但一到现实中就复杂了。</p>
+<p>因为每个生活在现实中的人或组织，都有自己的利益，为了达到自己的利益，就会有人或组织不愿意说实话。</p>
+<p>真正可以实话实说的时代，应该就是现在。我们的执政党没有自己的利益，只有人民的利益。没有自己的利益，当然不用说假话，当然更不怕有人说真话。</p>
+<p>这也是我们现在能说真话，敢说真话的原因。</p>
+<p>只是这样的时代，古代是没有的。</p>
+<p>孟子所处的时代是战国时代，这个时代相比于以后的大一统要自由得多。毕竟，只要有不同的诸侯国存在，读书人就有不同的地方可以去。哪里不让说话了，就可换地方。秦朝的儒生之所以被坑，就是因为再没有可以去的地方了。</p>
+<p>但就算这样的时代，还是有人不愿意说实话，变着法子讲各种假话，目的当然是让你相信他说的。孟子为了提醒大家不要上当，特地对这些话做了一个总结，告诉大家不要上当，提高鉴别的能力，让大家能听懂真正的人话。</p>
+<p>因为照正常的理解，所有别有用心的假话，都不是人应该说的话，尽管这些人长得像人。</p>
+<p>孟子把这些忽悠老百姓的话总结成四种类型：诐辞；淫辞；邪辞；遁辞。</p>
+<p>诐辞的意思是偏颇，就是片面。</p>
+<p>偏颇是语言中最能迷惑人的，按现在的话说就是选择性。比如发生一起事故，既可以说死了多少人，也可以说救活了多少人。诐辞的意思就是他不说全面，而是根据需要说。这样的话你不能说他说的不真实，只是他选择了他需要的真实。</p>
+<p>淫辞就是夸张的意思，根据自己需要把某一部分夸大了。比如，有些人明明没那么聪明，可为了让人相信他聪明，把他的能力夸大了。</p>
+<p>邪辞是怪僻的意思，就是这话说的很邪乎，让人无法相信。比如，有人告诉你，拿把手枪能把飞机打下来，这就是邪辞，超出了正常的认知，这种辞，大多都违反了常识。</p>
+<p>遁词的意思是语言闪烁，遇到别人的质疑，他不是去正面回应，往往和你绕，或者找出一个根本不相关的理由，最多的情况就是比烂。比如，你要说他今天感冒了。他不觉得你对他关心，而是觉得你看他笑话。所以他会告诉你，我这哪叫病啊，隔壁老王生了流感，那才是病。</p>
+<p>这四种说辞虽然是忽悠别人，但任何语言都是一个出自内心的想法，所谓言由心生。</p>
+<p>孟子觉得这四种说辞的危害很大，不只是祸害自己，最终还要祸害国家。</p>
+<p>孟子除了让你能听懂人话，还教你怎么做人。</p>
+<p>孟子认为一个人需要具备四种德行，后人总结为“四端”：</p>
+<p>“恻隐之心，仁之端也；羞恶之心，义之端也；辞让之心，礼之端也；是非之心，智之端也。”</p>
+<p>人性举备这四端，就不会做坏事，就能做个好人。</p>
+<p>孟子离我们两千多年了，可现在对比一下他说的话，似乎能做到的也没几个。</p>
+<p>从这意义上说，孟子的思想还是有现实指导意义的：听懂人话，做个好人。</p>
+<p><img src="https://pic.superbed.cc/item/678c7482fa9f77b4dc6be17f.jpg" alt="" /></p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/2"/><category term="blog"/><published>2025-01-19T03:43:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/1</id><title>2025</title><updated>2026-01-09T16:21:28.485402+00:00</updated><content type="html"><![CDATA[<p>新年快乐，心想事成。</p>
+<h2>MyGitBlog</h2>
+<p>My personal blog using issues and GitHub Actions (参考<a href="https://github.com/yihong0618/gitblog">yihong</a>)</p>
+<ul>
+<li>用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。  </li>
+<li>记录在这个时代下的焦虑、迷茫、挣扎与希望。</li>
+<li><a href="https://github.com/myogg/myogg">About me</a></li>
+</ul>
+<h3>提醒自己：</h3>
+<h4>1.放弃向他人证明自己，放弃向自己证明自己。专注忘我地去做你应该做的事情，心无旁骛地去解决问题。当你脚踏实地的走自己的路时，那种拼命想要证明什么的冲动就会越来越少。你也会因此变得轻松、自由。</h4>
+<p>——查理·芒格</p>
+<h4>2.“我们没有希望，他们也没有希望，这就是希望。”</h4>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/1"/><category term="notes"/><category term="blog"/><published>2025-01-19T02:44:37+00:00</published></entry></feed>
