@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [快来注册AnyGen](https://github.com/myogg/Gitblog/issues/194)--2026-01-10
 - [基于 Cloudflare Workers 的智能挪车通知系统](https://github.com/myogg/Gitblog/issues/193)--2026-01-09
 - [眯眼、酸黄瓜与灯塔等 Emoji 18.0 新表情符号有望登陆 iOS](https://github.com/myogg/Gitblog/issues/192)--2026-01-09
 - [CES 2026](https://github.com/myogg/Gitblog/issues/191)--2026-01-08
 - [Gmail 全面接入 Gemini AI，30 亿用户获得智能邮箱助手](https://github.com/myogg/Gitblog/issues/190)--2026-01-08
-- [修复音频上传错误](https://github.com/myogg/Gitblog/issues/189)--2026-01-08
 
 ## 一些记录 (50篇文章)
 - [基于 Cloudflare Workers 的智能挪车通知系统](https://github.com/myogg/Gitblog/issues/193)--2026-01-09
@@ -180,12 +180,19 @@ My personal blog using issues and GitHub Actions
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
 - [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
 
-## 碎碎念 (5篇文章)
+## 碎碎念 (6篇文章)
+- [快来注册AnyGen](https://github.com/myogg/Gitblog/issues/194)--2026-01-10
 - [有需要公益站Anyrouter](https://github.com/myogg/Gitblog/issues/160)--2025-12-27
 - [闲聊](https://github.com/myogg/Gitblog/issues/154)--2025-12-24
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
-- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
+
+<details>
+<summary>显示更多 (1篇)</summary>
+
+- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)
+
+</details>
 
 ## Top (1篇文章)
 - [Friends](https://github.com/myogg/Gitblog/issues/26)--2025-01-19
