@@ -1,7 +1,7 @@
 /* 基於 Jiang Sheng 風格的極簡設計 */
 body {
     background: #fefefe !important;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
     color: #34495e;
     line-height: 1.5;
     -webkit-font-smoothing: antialiased;
@@ -20,7 +20,6 @@ body {
 .page-title {
     font-size: 2.5rem !important;
     font-weight: 400 !important;
-    font-family: Athelas, STHeiti, "Microsoft YaHei", serif;
     letter-spacing: normal;
     margin-bottom: 0.5rem !important;
     color: #34495e !important;
@@ -37,7 +36,6 @@ body {
 
 .nav-links {
     margin-bottom: 2rem;
-    font-family: Athelas, STHeiti, "Microsoft YaHei", serif;
 }
 .nav-links a {
     color: #34495e !important;
@@ -91,7 +89,6 @@ body {
     font-size: 1.1rem;
     color: #34495e !important;
     font-weight: 600;
-    font-family: Athelas, STHeiti, "Microsoft YaHei", serif;
     text-decoration: none !important;
 }
 .article-title-link:hover { color: #bb5649 !important; }
@@ -376,7 +373,6 @@ pre > code {
 .markdown-body h4,
 .markdown-body h5,
 .markdown-body h6 {
-    font-family: Athelas, STHeiti, "Microsoft YaHei", serif;
     font-weight: 400;
     color: #34495e;
 }
