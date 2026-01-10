@@ -2,7 +2,7 @@ import { useIssues } from "@/hooks/use-github";
 import { useHashQuery } from "@/hooks/use-hash-query";
 import ArticleList from "@/components/ArticleList";
 import { Button } from "@/components/ui/button";
-import { Loader2, ChevronLeft, ChevronRight } from "lucide-react";
+import { Loader2, ChevronLeft, ChevronRight, AlertTriangle } from "lucide-react";
 import { useLocation } from "wouter";
 import { useEffect } from "react";
 import { config } from "@/config";
@@ -14,11 +14,6 @@ export default function Home() {
   const page = parseInt(searchParams.get("page") || "1");
   const label = searchParams.get("label") || undefined;
 
-  // Debug log to verify label detection
-  useEffect(() => {
-    console.log("Current label filter:", label);
-  }, [label]);
-
   const { issues, loading, error } = useIssues(page, label);
 
   const handlePrev = () => {
@@ -26,7 +21,6 @@ export default function Home() {
       const newParams = new URLSearchParams(searchParams);
       newParams.set("page", (page - 1).toString());
       const base = location.split("?")[0];
-      // We need to manually trigger hash change if wouter doesn't handle query well
       window.location.hash = `${base}?${newParams.toString()}`;
     }
   };
@@ -42,7 +36,6 @@ export default function Home() {
 
   const clearFilter = () => {
     setLocation("/");
-    // Force hash update to clear query params if setLocation doesn't do it for same path
     if (window.location.hash.includes("?")) {
         window.location.hash = "/";
     }
@@ -53,10 +46,40 @@ export default function Home() {
   }, [page, label]);
 
   if (error) {
+    const status = (error as any).response?.status;
+    const errorMsg = (error as any).message;
+    
     return (
-      <div className="flex flex-col items-center justify-center min-h-[50vh]">
-        <p className="text-destructive mb-4">加载失败，请检查网络或 API 配置</p>
-        <Button onClick={() => window.location.reload()}>重试</Button>
+      <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
+        <div className="bg-destructive/10 p-4 rounded-full mb-4">
+          <AlertTriangle className="h-10 w-10 text-destructive" />
+        </div>
+        <h2 className="text-xl font-bold mb-2">加载失败</h2>
+        
+        <div className="bg-muted p-4 rounded-lg text-left text-sm font-mono mb-6 max-w-lg w-full overflow-auto">
+          <p className="mb-1"><span className="font-semibold text-foreground">Error:</span> {errorMsg}</p>
+          {status && <p className="mb-1"><span className="font-semibold text-foreground">Status Code:</span> {status}</p>}
+          <div className="border-t border-border my-2"></div>
+          <p className="mb-1 text-muted-foreground">Current Configuration:</p>
+          <p>Repo: <span className="text-primary">{config.githubUsername}/{config.githubRepo}</span></p>
+        </div>
+
+        <div className="text-sm text-muted-foreground mb-6 max-w-md space-y-2">
+          {status === 404 && (
+            <p className="text-orange-600 font-medium">
+              🔍 <strong>404 错误：</strong> 请检查您的 GitHub 仓库是否为 <strong>Public (公开)</strong>。
+              GitHub Issues API 无法访问 Private (私有) 仓库。
+            </p>
+          )}
+          {status === 403 && (
+            <p className="text-orange-600 font-medium">
+              ⏳ <strong>403 错误：</strong> API 请求频率受限。请稍等几分钟再刷新。
+            </p>
+          )}
+          <p>如果是配置错误，请检查 <code>config.ts</code> 或 GitHub Actions 环境变量。</p>
+        </div>
+
+        <Button onClick={() => window.location.reload()}>刷新重试</Button>
       </div>
     );
   }
