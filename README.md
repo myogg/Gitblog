@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [带有大红斑的木星](https://github.com/myogg/Gitblog/issues/195)--2026-01-10
 - [快来注册AnyGen](https://github.com/myogg/Gitblog/issues/194)--2026-01-10
 - [基于 Cloudflare Workers 的智能挪车通知系统](https://github.com/myogg/Gitblog/issues/193)--2026-01-09
 - [眯眼、酸黄瓜与灯塔等 Emoji 18.0 新表情符号有望登陆 iOS](https://github.com/myogg/Gitblog/issues/192)--2026-01-09
 - [CES 2026](https://github.com/myogg/Gitblog/issues/191)--2026-01-08
-- [Gmail 全面接入 Gemini AI，30 亿用户获得智能邮箱助手](https://github.com/myogg/Gitblog/issues/190)--2026-01-08
 
 ## 一些记录 (50篇文章)
 - [基于 Cloudflare Workers 的智能挪车通知系统](https://github.com/myogg/Gitblog/issues/193)--2026-01-09
@@ -173,12 +173,19 @@ My personal blog using issues and GitHub Actions
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
 - [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
 
-## 我喜歡宇宙奇觀 (5篇文章)
+## 我喜歡宇宙奇觀 (6篇文章)
+- [带有大红斑的木星](https://github.com/myogg/Gitblog/issues/195)--2026-01-10
 - [位于大麦哲伦星系的球状星团](https://github.com/myogg/Gitblog/issues/169)--2025-12-29
 - [河中的星系](https://github.com/myogg/Gitblog/issues/158)--2025-12-26
 - [红色精灵与圆形精灵闪电](https://github.com/myogg/Gitblog/issues/152)--2025-12-23
 - [闪烁的纸星星](https://github.com/myogg/Gitblog/issues/147)--2025-12-20
-- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)--2025-12-20
+
+<details>
+<summary>显示更多 (1篇)</summary>
+
+- [双子座流星雨划过白雪覆盖的山峦](https://github.com/myogg/Gitblog/issues/144)
+
+</details>
 
 ## 碎碎念 (6篇文章)
 - [快来注册AnyGen](https://github.com/myogg/Gitblog/issues/194)--2026-01-10
