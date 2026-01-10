@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{issue.title}} - 北方的博客</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="{% if issue.summary %}{{issue.summary[:200]}}{% else %}北方的博客 - {{issue.title}}。70后的分享，记录技术、生活和思考。{% endif %}">
+    <meta name="keywords" content="{% for label in labels_data %}{{label.name}}{% if not loop.last %},{% endif %}{% endfor %}{% if content_tags %}{% for tag in content_tags %},{{tag.name}}{% endfor %}{% endif %}">
+    <meta name="author" content="Jiang Sheng">
+
+    <!-- ========== Open Graph Meta Tags ========== -->
+    <meta property="og:title" content="{{issue.title}}">
+    <meta property="og:description" content="{% if issue.summary %}{{issue.summary[:150]}}{% else %}北方的博客 - 70后的分享{% endif %}">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://134688.xyz/articles/article-{{issue.number}}.html">
+    
+    <!-- 图片 -->
+    <meta property="og:image" content="https://134688.xyz/static/og-default.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:alt" content="{{issue.title}} - 北方的博客">
+    
+    <meta property="og:site_name" content="北方的博客">
+    <meta property="fb:app_id" content="100006838422002">  <!-- 随便写一个 -->
+    
+    <!-- 文章作者信息 -->
+    <meta property="article:author" content="https://www.facebook.com/lengyu.jiang">
+    <meta property="article:author:username" content="lengyu.jiang">
+    <meta property="fb:profile_id" content="100006838422002">  <!-- 你的Facebook ID -->
+    
+    <!-- 文章元数据 -->
+    <meta property="article:published_time" content="{{issue.created_at.isoformat()}}">
+    <meta property="article:modified_time" content="{{issue.created_at.isoformat()}}">
+    {% for label in labels_data %}
+    <meta property="article:tag" content="{{label.name}}">
+    {% endfor %}
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{issue.title}}">
+    <meta name="twitter:description" content="{% if issue.summary %}{{issue.summary[:150]}}{% else %}北方的博客 - 70后的分享{% endif %}">
+    <meta name="twitter:image" content="https://134688.xyz/static/og-default.png">
+    <!-- ========== Open Graph结束 ========== -->
+
+    <!-- Work Sans 字体 - 使用国内CDN加速 -->
+    <link rel="preconnect" href="https://fonts.loli.net">
+    <link href="https://fonts.loli.net/css2?family=Work+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- GitHub Markdown CSS - 使用jsDelivr国内加速 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
+    <!-- Pygments 代码高亮样式 - github 主题 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pygments-css@1.0.0/github.min.css">
+    <!-- Waline 样式 - 使用国内CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.css">
+    <link rel="stylesheet" href="../static/style.css">
+
+    <!-- Structured Data - Blog Posting -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "{{issue.title}}",
+        "description": "{% if issue.summary %}{{issue.summary[:200]}}{% else %}{{issue.title}}{% endif %}",
+        "image": "https://134688.xyz/static/og-default.png",
+        "datePublished": "{{issue.created_at.isoformat()}}",
+        "dateModified": "{{issue.created_at.isoformat()}}",
+        "author": {
+            "@type": "Person",
+            "name": "Jiang Sheng",
+            "url": "https://134688.xyz/about.html"
+        },
+        "publisher": {
+            "@type": "Person",
+            "name": "Jiang Sheng"
+        },
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://134688.xyz/articles/article-{{issue.number}}.html"
+        },
+        "keywords": "{% for label in labels_data %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}{% if content_tags %}{% for tag in content_tags %}, {{tag.name}}{% endfor %}{% endif %}",
+        "articleSection": "{% if labels_data %}{{labels_data[0].name}}{% else %}博客{% endif %}",
+        "inLanguage": "zh-CN"
+    }
+    </script>
+
+    <!-- Structured Data - BreadcrumbList -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "首页",
+                "item": "https://134688.xyz/"
+            },
+            {
+                "@type": "ListItem",
+                "position": 2,
+                "name": "{{issue.title}}",
+                "item": "https://134688.xyz/articles/article-{{issue.number}}.html"
+            }
+        ]
+    }
+    </script>
+
+    <style>
+        /* GitHub标签样式 */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            color: white;
+        }
+
+        /* 发布日期样式 */
+        .post-date {
+            color: #333;
+            font-size: 0.9rem;
+            margin-bottom: 25px;
+            font-weight: 600;
+        }
+
+        /* Waline评论区样式 */
+        .comment-section {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid #f0f0f0;
+        }
+
+        .comment-section h3 {
+            font-size: 0.9rem;
+            color: #bbb;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin: 0 0 1.5rem 0;
+            padding: 0;
+            border: none;
+        }
+
+        #waline-container {
+            width: 100%;
+        }
+
+        /* Waline 极简风格定制 */
+        .wl-container {
+            font-family: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+        }
+
+        /* 评论框样式 */
+        .wl-editor {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            background: #ffffff !important;
+            box-shadow: none !important;
+        }
+
+        .wl-editor:focus-within {
+            border-color: #0366d6 !important;
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1) !important;
+        }
+
+        /* 输入框 */
+        .wl-editor textarea {
+            font-size: 0.95rem !important;
+            line-height: 1.6 !important;
+            color: #1a1a1a !important;
+        }
+
+        /* 按钮样式 */
+        .wl-btn {
+            background: #ffffff !important;
+            color: #1a1a1a !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            font-weight: 500 !important;
+            transition: all 0.2s !important;
+            box-shadow: none !important;
+        }
+
+        .wl-btn:hover {
+            background: #f6f8fa !important;
+            border-color: #0366d6 !important;
+            transform: translateY(-1px) !important;
+        }
+
+        .wl-btn.primary {
+            background: #000000 !important;
+            color: #ffffff !important;
+            border-color: #000000 !important;
+        }
+
+        .wl-btn.primary:hover {
+            background: #1a1a1a !important;
+            border-color: #1a1a1a !important;
+        }
+
+        /* 信息输入框 */
+        .wl-input {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            padding: 8px 12px !important;
+            font-size: 0.9rem !important;
+            background: #ffffff !important;
+            transition: all 0.2s !important;
+        }
+
+        .wl-input:focus {
+            border-color: #0366d6 !important;
+            box-shadow: 0 0 0 3px rgba(3, 102, 214, 0.1) !important;
+            outline: none !important;
+        }
+
+        /* 评论列表样式 */
+        .wl-card {
+            border: none !important;
+            border-bottom: 1px solid #f0f0f0 !important;
+            border-radius: 0 !important;
+            padding: 20px 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .wl-card:last-child {
+            border-bottom: none !important;
+        }
+
+        /* 评论者信息 */
+        .wl-user {
+            font-weight: 600 !important;
+            color: #1a1a1a !important;
+            font-size: 0.95rem !important;
+        }
+
+        /* 评论时间 */
+        .wl-time {
+            font-size: 0.85rem !important;
+            color: #666 !important;
+        }
+
+        /* 评论内容 */
+        .wl-content {
+            font-size: 0.95rem !important;
+            line-height: 1.7 !important;
+            color: #1a1a1a !important;
+            margin-top: 10px !important;
+        }
+
+        .wl-content p {
+            margin: 0.5em 0 !important;
+        }
+
+        /* 回复按钮 */
+        .wl-reply,
+        .wl-like {
+            color: #666 !important;
+            font-size: 0.85rem !important;
+            transition: color 0.2s !important;
+        }
+
+        .wl-reply:hover,
+        .wl-like:hover {
+            color: #000 !important;
+        }
+
+        /* 浏览量统计 */
+        .wl-pageview {
+            font-size: 0.85rem !important;
+            color: #666 !important;
+        }
+
+        /* 表情选择器 */
+        .wl-panel {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        /* 加载动画 */
+        .wl-loading {
+            color: #666 !important;
+        }
+
+        /* 分页按钮 */
+        .wl-pagination button {
+            background: #ffffff !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            color: #1a1a1a !important;
+            font-weight: 500 !important;
+        }
+
+        .wl-pagination button:hover {
+            background: #f6f8fa !important;
+            border-color: #0366d6 !important;
+        }
+
+        .wl-pagination button.active {
+            background: #000000 !important;
+            border-color: #000000 !important;
+            color: #ffffff !important;
+        }
+
+        /* 头像样式 */
+        .wl-avatar {
+            border-radius: 50% !important;
+            border: 2px solid #f0f0f0 !important;
+        }
+
+        /* 移除版权信息的 margin */
+        .wl-power {
+            display: none !important;
+        }
+
+        /* 表情反应 */
+        .wl-reaction {
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            padding: 8px 12px !important;
+            transition: all 0.2s !important;
+        }
+
+        .wl-reaction:hover {
+            background: #f6f8fa !important;
+            border-color: #0366d6 !important;
+        }
+
+        /* 按钮样式 */
+        .action-btn {
+            text-decoration: none;
+            padding: 10px 24px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+            color: #374151;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .action-btn:hover {
+            background: #f9fafb;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        /* 按钮容器 -->
+        .action-buttons {
+            margin: 4rem 0;
+            text-align: center;
+        }
+
+        /* ========== 代码高亮优化 ========== */
+        /* 代码块容器 */
+        .markdown-body .codehilite,
+        .markdown-body pre {
+            position: relative;
+            background: #f6f8fa !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 6px !important;
+            padding: 16px !important;
+            margin: 16px 0 !important;
+            overflow-x: auto;
+            font-size: 14px !important;
+            line-height: 1.6 !important;
+        }
+
+        /* 行内代码 */
+        .markdown-body code {
+            background: #f6f8fa !important;
+            border: 1px solid #e1e4e8 !important;
+            border-radius: 3px !important;
+            padding: 2px 6px !important;
+            font-size: 0.9em !important;
+            font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace !important;
+        }
+
+        /* 代码块中的代码 */
+        .markdown-body .codehilite code,
+        .markdown-body pre code {
+            background: transparent !important;
+            border: none !important;
+            padding: 0 !important;
+            font-size: 14px !important;
+        }
+
+        /* 代码复制按钮 */
+        .copy-code-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            padding: 4px 12px;
+            font-size: 12px;
+            background: #fff;
+            border: 1px solid #e1e4e8;
+            border-radius: 4px;
+            cursor: pointer;
+            opacity: 0;
+            transition: all 0.2s;
+            color: #586069;
+            font-weight: 500;
+        }
+
+        .codehilite:hover .copy-code-btn,
+        pre:hover .copy-code-btn {
+            opacity: 1;
+        }
+
+        .copy-code-btn:hover {
+            background: #f6f8fa;
+            border-color: #0366d6;
+            color: #0366d6;
+        }
+
+        .copy-code-btn:active {
+            background: #e1e4e8;
+        }
+
+        .copy-code-btn.copied {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+        }
+
+        /* 代码块滚动条优化 */
+        .markdown-body .codehilite::-webkit-scrollbar,
+        .markdown-body pre::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .markdown-body .codehilite::-webkit-scrollbar-track,
+        .markdown-body pre::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .markdown-body .codehilite::-webkit-scrollbar-thumb,
+        .markdown-body pre::-webkit-scrollbar-thumb {
+            background: #c1c1c1;
+            border-radius: 4px;
+        }
+
+        .markdown-body .codehilite::-webkit-scrollbar-thumb:hover,
+        .markdown-body pre::-webkit-scrollbar-thumb:hover {
+            background: #a8a8a8;
+        }
+
+        /* ========== Medium-zoom 图片样式 ========== */
+        /* 图片可点击提示 */
+        .markdown-body .content-area img {
+            cursor: zoom-in;
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        .markdown-body .content-area img:hover {
+            opacity: 0.9;
+            transform: scale(1.01);
+        }
+
+        /* Medium-zoom 放大后的样式 */
+        .medium-zoom-image--opened {
+            cursor: zoom-out;
+        }
+
+        /* Medium-zoom 覆盖层 */
+        .medium-zoom-overlay {
+            z-index: 9998;
+        }
+
+        /* Medium-zoom 图片 */
+        .medium-zoom-image {
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div class="markdown-body">
+        <h1 class="page-title">北方的博客</h1>
+        
+        <div class="nav-links">
+            <a href="../index.html">首頁</a>
+            <a href="../search.html">搜索</a>
+            <a href="../about.html">關於</a>
+        </div>
+
+        <div style="margin-top: 3rem;">
+            <h2 style="border-bottom: none; margin-bottom: 10px; font-size: 1.5rem;">{{issue.title}}</h2>
+
+            <div class="post-date">
+                {{issue.created_at.strftime('%B %d, %Y')}}
+            </div>
+
+            <!-- GitHub标签（彩色，可点击） -->
+            <div style="margin-bottom: 10px;">
+                {% for l in labels_data %}
+                <a href="../tags/{{l.safe_name}}.html" style="text-decoration: none;">
+                    <span class="tag" style="background-color: #{{l.color}}; cursor: pointer;">
+                        {{l.name}}
+                    </span>
+                </a>
+                {% endfor %}
+            </div>
+
+            <!-- 内容标签（简单样式，可点击） -->
+            {% if content_tags %}
+            <div style="margin-bottom: 30px;">
+                {% for tag in content_tags %}
+                {% if tag.safe_name %}
+                <a href="../tags/{{tag.safe_name}}.html" style="text-decoration: none;">
+                    <span class="content-tag" style="cursor: pointer;">
+                        {{tag.name}}
+                    </span>
+                </a>
+                {% else %}
+                <span class="content-tag">
+                    {{tag.name}}
+                </span>
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% else %}
+            <div style="margin-bottom: 20px;"></div>
+            {% endif %}
+
+            <article class="content-area">
+                {{content|safe}}
+            </article>
+        </div>
+
+        <!-- Waline评论区 -->
+        <div class="comment-section">
+            <h3>💬 留言區</h3>
+            <div id="waline-container"></div>
+        </div>
+
+        <!-- 上下文导航 -->
+        {% if prev_article or next_article %}
+        <div class="article-navigation">
+            <div class="nav-section">
+                {% if prev_article %}
+                <div class="nav-item prev">
+                    <span class="nav-label">← 上一篇</span>
+                    <a href="article-{{prev_article.number}}.html" class="nav-title">{{prev_article.title}}</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="nav-section">
+                {% if next_article %}
+                <div class="nav-item next">
+                    <span class="nav-label">下一篇 →</span>
+                    <a href="article-{{next_article.number}}.html" class="nav-title">{{next_article.title}}</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- 相关文章 -->
+        {% if related_articles %}
+        <div class="related-articles">
+            <h3>相關文章</h3>
+            <ul class="related-list">
+                {% for article in related_articles %}
+                <li>
+                    <a href="article-{{article.number}}.html">{{article.title}}</a>
+                    <span class="related-date">{{article.created_at.strftime('%Y-%m-%d')}}</span>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% endif %}
+
+        <!-- 返回首页按钮 -->
+        <div class="action-buttons">
+            <a href="../index.html" class="action-btn">
+                ← 返回首頁
+            </a>
+        </div>
+
+        <footer>© {{YEAR}} Designed and developed by Jiang Sheng</footer>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="back-to-top" class="back-to-top" title="返回顶部">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <script>
+        // 返回顶部按钮功能
+        document.addEventListener('DOMContentLoaded', function() {
+            const backToTopBtn = document.getElementById('back-to-top');
+
+            // 监听滚动事件
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('show');
+                } else {
+                    backToTopBtn.classList.remove('show');
+                }
+            });
+
+            // 点击返回顶部
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // 图片懒加载优化：监听图片加载完成
+            const lazyImages = document.querySelectorAll('img.lazyload');
+
+            // 为每个图片添加load事件监听
+            lazyImages.forEach(function(img) {
+                if (img.complete) {
+                    // 图片已经缓存，直接添加loaded类
+                    img.classList.add('loaded');
+                } else {
+                    // 监听图片加载完成
+                    img.addEventListener('load', function() {
+                        img.classList.add('loaded');
+                    });
+                    // 监听图片加载失败
+                    img.addEventListener('error', function() {
+                        img.classList.add('loaded'); // 失败也显示，避免一直透明
+                        console.warn('图片加载失败:', img.src);
+                    });
+                }
+            });
+
+            // 代码块复制功能
+            const codeBlocks = document.querySelectorAll('.codehilite, pre');
+
+            codeBlocks.forEach(function(codeBlock) {
+                // 创建复制按钮
+                const copyBtn = document.createElement('button');
+                copyBtn.className = 'copy-code-btn';
+                copyBtn.textContent = '复制';
+
+                // 插入按钮
+                codeBlock.style.position = 'relative';
+                codeBlock.insertBefore(copyBtn, codeBlock.firstChild);
+
+                // 点击复制
+                copyBtn.addEventListener('click', function() {
+                    // 获取代码文本
+                    const codeElement = codeBlock.querySelector('code') || codeBlock;
+                    const codeText = codeElement.textContent;
+
+                    // 复制到剪贴板
+                    navigator.clipboard.writeText(codeText).then(function() {
+                        // 成功提示
+                        copyBtn.textContent = '已复制 ✓';
+                        copyBtn.classList.add('copied');
+
+                        // 2秒后恢复
+                        setTimeout(function() {
+                            copyBtn.textContent = '复制';
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    }).catch(function(err) {
+                        console.error('复制失败:', err);
+                        copyBtn.textContent = '复制失败';
+                        setTimeout(function() {
+                            copyBtn.textContent = '复制';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+
+    <!-- Waline 评论系统 - 使用国内CDN -->
+    <script type="module">
+        import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.js';
+
+        init({
+            el: '#waline-container',
+            serverURL: 'https://waline.134688.xyz',
+            lang: 'zh-TW',
+            locale: {
+                placeholder: '留下你的足跡吧～ (支持 Markdown 語法)',
+            },
+            login: 'disable',
+            dark: false,
+            meta: ['nick'],
+            requiredMeta: ['nick'],
+            pageSize: 10,
+            wordLimit: 0,
+            pageview: true,
+            comment: true,
+            copyright: false,
+            reaction: true,
+        });
+    </script>
+
+    <!-- Medium-zoom 图片缩放 - 使用国内CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
+    <script>
+        // Medium-zoom 初始化
+        mediumZoom('.content-area img', {
+            margin: 24,
+            background: 'rgba(255, 255, 255, 0.95)',
+            scrollOffset: 0,
+            container: null,
+            template: null
+        });
+    </script>
+</body>
+</html>
