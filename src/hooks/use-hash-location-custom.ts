@@ -1,5 +1,9 @@
 import { useState, useEffect, useCallback } from "react";
-import { BaseLocationHook } from "wouter/use-location";
+
+// Manually define the type to avoid import issues with wouter internals
+type BaseLocationHook = (
+  options?: { base?: string }
+) => [string, (to: string, ...args: any[]) => void];
 
 // Helper to get current location from hash, stripping query params
 const currentLoc = () => {

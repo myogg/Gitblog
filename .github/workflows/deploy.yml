@@ -17,7 +17,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 新增：安装 pnpm
       - name: Install pnpm
         uses: pnpm/action-setup@v4
         with:
@@ -27,13 +26,13 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'pnpm' # 修改：缓存改为 pnpm
+          cache: 'pnpm'
 
       - name: Install dependencies
-        run: pnpm install # 修改：使用 pnpm 安装
+        run: pnpm install
 
       - name: Build
-        run: pnpm run build # 修改：使用 pnpm 构建
+        run: pnpm run build
         env:
           VITE_GITHUB_USERNAME: ${{ github.repository_owner }}
           VITE_GITHUB_REPO: ${{ github.event.repository.name }}
