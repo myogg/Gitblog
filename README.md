@@ -38,11 +38,11 @@ My personal blog using issues and GitHub Actions
 </details>
 
 ## 最近文章
+- [近期市场](https://github.com/myogg/Gitblog/issues/196)--2026-01-10
 - [带有大红斑的木星](https://github.com/myogg/Gitblog/issues/195)--2026-01-10
 - [快来注册AnyGen](https://github.com/myogg/Gitblog/issues/194)--2026-01-10
 - [基于 Cloudflare Workers 的智能挪车通知系统](https://github.com/myogg/Gitblog/issues/193)--2026-01-09
 - [眯眼、酸黄瓜与灯塔等 Emoji 18.0 新表情符号有望登陆 iOS](https://github.com/myogg/Gitblog/issues/192)--2026-01-09
-- [CES 2026](https://github.com/myogg/Gitblog/issues/191)--2026-01-08
 
 ## 一些记录 (50篇文章)
 - [基于 Cloudflare Workers 的智能挪车通知系统](https://github.com/myogg/Gitblog/issues/193)--2026-01-09
@@ -166,12 +166,19 @@ My personal blog using issues and GitHub Actions
 - [执念](https://github.com/myogg/Gitblog/issues/150)--2025-12-22
 - [「电脑爱好者 1993-2022 30年大全集 」](https://github.com/myogg/Gitblog/issues/148)--2025-12-21
 
-## 天天一句話 (5篇文章)
+## 天天一句話 (6篇文章)
+- [近期市场](https://github.com/myogg/Gitblog/issues/196)--2026-01-10
 - [修复音频上传错误](https://github.com/myogg/Gitblog/issues/189)--2026-01-08
 - [Samsung 发布神秘超薄 3D 显示屏](https://github.com/myogg/Gitblog/issues/188)--2026-01-08
 - [收集 𝕏（Twitter）上 Veo3 视频生成提示词](https://github.com/myogg/Gitblog/issues/187)--2026-01-07
 - [微软计划到 2030 年用 Rust 代码替代所有 C 和 C++ 代码](https://github.com/myogg/Gitblog/issues/153)--2025-12-23
-- [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)--2025-12-22
+
+<details>
+<summary>显示更多 (1篇)</summary>
+
+- [中国人民银行实施一次性信用修复政策](https://github.com/myogg/Gitblog/issues/149)
+
+</details>
 
 ## 我喜歡宇宙奇觀 (6篇文章)
 - [带有大红斑的木星](https://github.com/myogg/Gitblog/issues/195)--2026-01-10
