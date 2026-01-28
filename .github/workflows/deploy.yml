@@ -109,7 +109,7 @@ jobs:
 
       - name: Generate HTML page
         env:
-          G_TT: ${{ secrets.G_T }}
+          G_TT: ${{ secrets.G_TT }}
           # ▼▼▼ 已添加 Giscus 环境变量配置 ▼▼▼
           GISCUS_REPO_ID: ${{ secrets.GISCUS_REPO_ID }}
           GISCUS_CATEGORY_ID: ${{ secrets.GISCUS_CATEGORY_ID }}
