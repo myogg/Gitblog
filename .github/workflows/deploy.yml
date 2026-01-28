@@ -1,0 +1,181 @@
+name: Deploy GitHub Pages
+
+on:
+  workflow_dispatch:   # 手動觸發
+  issues:
+    # 只監聽標籤事件，避免重複觸發
+    types: [labeled]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  issues: write  # 保留权限，便于未来扩展
+
+# 使用唯一的併發組，確保同一issue不會同時部署
+concurrency:
+  group: "pages-deploy-${{ github.event.issue.number || 'manual' }}"
+  cancel-in-progress: true
+
+jobs:
+  # 首先記錄觸發信息
+  log-trigger:
+    runs-on: ubuntu-latest
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+      trigger_type: ${{ steps.check.outputs.trigger_type }}
+    steps:
+      - name: Check trigger conditions
+        id: check
+        run: |
+          echo "事件名稱: ${{ github.event_name }}"
+          echo "事件動作: ${{ github.event.action }}"
+          
+          # 對於issue事件，檢查標籤
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            echo "Issue 號碼: ${{ github.event.issue.number }}"
+            echo "Issue 標題: ${{ github.event.issue.title }}"
+            echo "發起者: ${{ github.event.issue.user.login }}"
+            
+            # 獲取標籤信息
+            if [[ "${{ github.event.action }}" == "labeled" ]]; then
+              echo "添加的標籤: ${{ github.event.label.name }}"
+              
+              # 只有特定標籤才觸發部署（可選）
+              # AUTO_DEPLOY_LABELS="deploy,auto-deploy,publish"
+              # if [[ " $AUTO_DEPLOY_LABELS " =~ " ${{ github.event.label.name }} " ]]; then
+              #   echo "✅ 標籤符合，觸發部署"
+              #   echo "should_deploy=true" >> $GITHUB_OUTPUT
+              #   echo "trigger_type=label_approved" >> $GITHUB_OUTPUT
+              # else
+              #   echo "⏭️ 標籤不符合，跳過部署"
+              #   echo "should_deploy=false" >> $GITHUB_OUTPUT
+              #   echo "trigger_type=label_skipped" >> $GITHUB_OUTPUT
+              # fi
+              
+              # 暫時所有labeled事件都觸發
+              echo "✅ 標籤事件，觸發部署"
+              echo "should_deploy=true" >> $GITHUB_OUTPUT
+              echo "trigger_type=label_event" >> $GITHUB_OUTPUT
+            else
+              echo "⏭️ 非標籤事件，跳過部署"
+              echo "should_deploy=false" >> $GITHUB_OUTPUT
+              echo "trigger_type=non_label_event" >> $GITHUB_OUTPUT
+            fi
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "✅ 手動觸發部署"
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+            echo "trigger_type=manual" >> $GITHUB_OUTPUT
+          else
+            echo "❓ 未知事件類型"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+            echo "trigger_type=unknown" >> $GITHUB_OUTPUT
+          fi
+
+  deploy:
+    needs: log-trigger
+    # 只有在log-trigger確認需要部署時才運行
+    if: needs.log-trigger.outputs.should_deploy == 'true'
+    
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+
+    steps:
+      - name: Show deployment info
+        run: |
+          echo "🎯 部署觸發類型: ${{ needs.log-trigger.outputs.trigger_type }}"
+          echo "📦 開始生成靜態頁面..."
+          
+          # 如果是issue事件，顯示更多信息
+          if [[ "${{ github.event_name }}" == "issues" ]]; then
+            echo "📝 Issue: #${{ github.event.issue.number }} - ${{ github.event.issue.title }}"
+            echo "👤 由 ${{ github.event.issue.user.login }} 創建"
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install markdown PyGithub marko jinja2 feedgen
+
+      - name: Generate HTML page
+        env:
+          G_TT: ${{ secrets.G_TT }}
+          # ▼▼▼ 已添加 Giscus 环境变量配置 ▼▼▼
+          GISCUS_REPO_ID: ${{ secrets.GISCUS_REPO_ID }}
+          GISCUS_CATEGORY_ID: ${{ secrets.GISCUS_CATEGORY_ID }}
+          # ▲▲▲ ▲▲▲ ▲▲▲
+        run: |
+          echo "開始生成HTML頁面..."
+          python generate_page.py
+          
+          echo "=== 文件生成檢查 ==="
+          echo "當前目錄文件:"
+          ls -la
+          
+          echo "文章目錄內容:"
+          ls -la articles/ 2>/dev/null || echo "articles/ 目錄不存在"
+          
+          echo "靜態文件目錄內容:"
+          ls -la static/ 2>/dev/null || echo "static/ 目錄不存在"
+          
+          # 檢查必要文件
+          if [ -f "index.html" ]; then
+            echo "✅ index.html 已生成"
+          else
+            echo "❌ index.html 未生成"
+            exit 1
+          fi
+          
+          # 检查其他可能存在的页面
+          if [ -f "search.html" ]; then
+            echo "✅ search.html 已生成"
+          fi
+          
+          if [ -f "about.html" ]; then
+            echo "✅ about.html 已生成"
+          fi
+          
+          # 檢查是否有文章生成
+          article_count=$(find articles -name "*.html" 2>/dev/null | wc -l)
+          if [ $article_count -gt 0 ]; then
+            echo "✅ 已生成 $article_count 篇文章"
+          else
+            echo "⚠️ 未生成任何文章"
+          fi
+
+      - name: Setup GitHub Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+
+  # 部署後通知（可選）
+  notify:
+    needs: deploy
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deployment result
+        run: |
+          if [[ "${{ job.status }}" == "success" ]]; then
+            echo "🎉 部署成功！"
+            echo "🌐 訪問地址: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/"
+          else
+            echo "❌ 部署失敗"
+            echo "請查看工作流日誌排查問題"
+          fi
