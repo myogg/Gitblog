@@ -3,103 +3,46 @@ name: Generate GitBlog README
 on:
   workflow_dispatch:
   issues:
-    types: [opened, edited, reopened]
+    types: [opened, edited]
   issue_comment:
     types: [created, edited]
   push:
     branches:
-      - master
+      - main
     paths:
-      - 'main.py'
-      - '.github/workflows/*'
-      - 'requirements.txt'
+      - main.py
 
 jobs:
   sync:
     name: Generate README
     runs-on: ubuntu-latest
-    permissions:
-      contents: write  # 添加写权限
-    
-    if: |
-      github.event_name == 'workflow_dispatch' ||
-      github.event_name == 'push' ||
-      (github.event.issue && github.repository_owner_id == github.event.issue.user.id)
-    
+    if: github.repository_owner_id == github.event.issue.user.id || github.event_name == 'push'
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}  # 使用标准token
-          fetch-depth: 0
-          
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10'  # 使用更稳定的版本
-          
+          python-version: 3.8
+          cache: pip
+          cache-dependency-path: "requirements.txt"
+
       - name: Install dependencies
         run: |
-          pip install --upgrade pip
+          python -m pip install --upgrade pip
+          python -m venv venv
+          source venv/bin/activate
           pip install -r requirements.txt
-          
-      - name: Create required directories
+
+      - name: Generate new md
         run: |
-          mkdir -p BACKUP
-          
-      - name: Generate README with debug
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_NAME: ${{ github.repository_owner }}
-          GITHUB_EMAIL: "${{ github.repository_owner }}@users.noreply.github.com"
+          source venv/bin/activate
+          python main.py ${{ secrets.G_T }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+
+      - name: Push README
         run: |
-          echo "=== Configuration ==="
-          echo "Event: ${{ github.event_name }}"
-          echo "Full repo: ${{ github.repository }}"
-          
-          # 提取仓库名
-          REPO_ONLY=$(echo "${{ github.repository }}" | cut -d'/' -f2)
-          echo "Repo name only: $REPO_ONLY"
-          
-          # 运行脚本
-          if [[ "${{ github.event_name }}" == "issues" || "${{ github.event_name }}" == "issue_comment" ]]; then
-            ISSUE_NUM="${{ github.event.issue.number }}"
-            echo "Processing issue #$ISSUE_NUM"
-            python main.py "$GITHUB_TOKEN" "$REPO_ONLY" --issue_number "$ISSUE_NUM"
-          else
-            echo "Processing all issues"
-            python main.py "$GITHUB_TOKEN" "$REPO_ONLY"
-          fi
-          
-          echo "=== Checking generated files ==="
-          ls -la README.md feed.xml BACKUP/ 2>/dev/null || echo "No files found"
-          
-      - name: Commit and push changes
-        run: |
-          # 配置Git
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # 检查是否有更改
-          echo "=== Checking for changes ==="
-          git status
-          git diff --name-only
-          
-          if git diff --quiet HEAD --; then
-            echo "No changes to commit"
-            exit 0
-          fi
-          
-          # 添加所有可能的文件
-          echo "=== Adding files ==="
-          git add README.md feed.xml BACKUP/*.md 2>/dev/null || echo "No files to add"
-          
-          # 提交
-          echo "=== Committing ==="
-          git commit -m "📚 Auto-update: $(date +'%Y-%m-%d %H:%M:%S')" || echo "Nothing to commit"
-          
-          # 推送
-          echo "=== Pushing ==="
-          git push origin master || echo "Push failed or nothing to push"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add BACKUP/*.md
+          git commit -a -m 'update new blog' || echo "nothing to commit"
+          git push || echo "nothing to push"
