@@ -15,15 +15,14 @@ My personal blog using issues and GitHub Actions
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml)
 
-## blog (3篇文章)
-- [1](https://github.com/myogg/Gitblog/issues/7)--2026-01-28
+## blog (2篇文章)
 - [Google 正式推出「Google AI Plus」计划](https://github.com/myogg/Gitblog/issues/5)--2026-01-28
 - [Chorus: 多模型 AI 对话的轻量级桌面应用](https://github.com/myogg/Gitblog/issues/4)--2026-01-28
+
+## 碎碎念 (1篇文章)
+- [城市地图海报生成器](https://github.com/myogg/Gitblog/issues/8)--2026-01-28
 
 ## 天文 (2篇文章)
 - [韦伯太空望远镜观测到的木星](https://github.com/myogg/Gitblog/issues/3)--2026-01-28
 - [延髓星云](https://github.com/myogg/Gitblog/issues/2)--2026-01-28
-
-## Python (1篇文章)
-- [去](https://github.com/myogg/Gitblog/issues/6)--2026-01-28
 
