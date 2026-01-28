@@ -606,6 +606,7 @@ body[data-theme="dark"] .moon-icon {
 
     .container {
         padding: 5rem 1rem 3rem;
+        max-width: 100%;
     }
 
     /* 移动端改为单栏布局 */
@@ -615,6 +616,8 @@ body[data-theme="dark"] .moon-icon {
 
     .main-content {
         flex: 1;
+        width: 100%;
+        max-width: 100%;
     }
 
     .sidebar {
@@ -624,12 +627,24 @@ body[data-theme="dark"] .moon-icon {
         margin-top: 2rem;
     }
 
-    .article-card {
-        padding: 1.25rem;
+    /* 修复文章卡片宽度问题 */
+    .articles-container {
+        width: 100%;
     }
-
+    
+    .article-cards {
+        width: 100%;
+    }
+    
+    .article-card {
+        padding: 1.5rem;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
     .article-card-title {
-        font-size: 1rem;
+        font-size: 1.125rem;
+        line-height: 1.4;
     }
 
     .article-card-summary {
@@ -675,6 +690,15 @@ body[data-theme="dark"] .moon-icon {
     .theme-toggle svg {
         width: 18px;
         height: 18px;
+    }
+    
+    /* 在更小的手机上进一步优化 */
+    .article-card {
+        padding: 1.25rem;
+    }
+    
+    .article-card-title {
+        font-size: 1.1rem;
     }
 }
 
