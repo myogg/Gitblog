@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from jinja2 import Environment, FileSystemLoader
 
 # --- 配置區 ---
-GITHUB_TOKEN = os.getenv("G_TT")
+GITHUB_TOKEN = os.getenv("G_T")
 REPO_NAME = "myogg/Gitblog"
 MAX_PER_CATEGORY = 5
 CACHE_FILE = "github_cache.json"
