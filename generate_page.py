@@ -12,56 +12,11 @@ GITHUB_TOKEN = os.getenv("G_TT")
 REPO_NAME = "myogg/Gitblog"
 MAX_PER_CATEGORY = 5
 CACHE_FILE = "github_cache.json"
-CACHE_DURATION = 86400  # 6小时
+CACHE_DURATION = 21600  # 6小时
 ARTICLES_DIR = "articles"
-STATE_FILE = "generation_state.json"  # 记录生成状态
 
 # 初始化 Jinja2 模板引擎
 env = Environment(loader=FileSystemLoader('templates'))
-
-def load_generation_state():
-    """加载生成状态"""
-    if os.path.exists(STATE_FILE):
-        try:
-            with open(STATE_FILE, 'r', encoding='utf-8') as f:
-                return json.load(f)
-        except Exception as e:
-            print(f"⚠️ 读取状态文件失败: {e}")
-    return {}
-
-def save_generation_state(state):
-    """保存生成状态"""
-    try:
-        with open(STATE_FILE, 'w', encoding='utf-8') as f:
-            json.dump(state, f, ensure_ascii=False, indent=2)
-    except Exception as e:
-        print(f"⚠️ 保存状态文件失败: {e}")
-
-def needs_regeneration(issue, state):
-    """判断文章是否需要重新生成"""
-    article_file = os.path.join(ARTICLES_DIR, f"article-{issue.number}.html")
-
-    # 1. 文件不存在，需要生成
-    if not os.path.exists(article_file):
-        return True
-
-    # 2. 检查状态记录
-    issue_key = str(issue.number)
-    if issue_key not in state:
-        return True
-
-    # 3. 比较更新时间（如果有 updated_at 属性）
-    if hasattr(issue, 'updated_at'):
-        last_generated = state[issue_key].get('generated_at')
-        if last_generated:
-            try:
-                last_gen_time = datetime.fromisoformat(last_generated)
-                if issue.updated_at > last_gen_time:
-                    return True
-            except Exception:
-                return True
-
-    return False
 
 def get_text_color(hex_color):
     """根據背景色亮度決定文字顏色"""
@@ -162,7 +117,7 @@ def extract_summary(body):
     return None
 
 def add_lazy_loading_to_images(html_content):
-    """为外部图床图片添加懒加载和优化功能"""
+    """为HTML内容中的图片添加懒加载功能"""
     if not html_content:
         return html_content
 
@@ -178,17 +133,8 @@ def add_lazy_loading_to_images(html_content):
         if 'loading=' in before_src or 'loading=' in after_src:
             return match.group(0)  # 已有loading属性，不修改
 
-        # 添加懒加载、占位符和错误处理
-        # 使用data-src存储真实URL，先显示占位符
-        new_img = (
-            f'<img {before_src}'
-            f'data-src="{src_url}" '
-            f'src="data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 1 1\'%3E%3C/svg%3E" '
-            f'loading="lazy" '
-            f'class="lazyload img-loading" '
-            f'alt="" '
-            f'{after_src}>'
-        )
+        # 添加loading="lazy"属性和lazyload类
+        new_img = f'<img {before_src}src="{src_url}" loading="lazy" class="lazyload"{after_src}>'
         return new_img
 
     # 替换所有img标签
@@ -260,13 +206,12 @@ def fetch_issues(repo):
                     # 創建模擬Issue對象
                     issues = []
                     for item in cache_data['issues']:
-                        # 創建動態對象（添加 updated_at 属性）
+                        # 創建動態對象
                         issue = type('Issue', (), {
                             'number': item['number'],
                             'title': item['title'],
                             'body': item['body'],
                             'created_at': datetime.fromisoformat(item['created_at']),
-                            'updated_at': datetime.fromisoformat(item.get('updated_at', item['created_at'])),
                             'labels': [type('Label', (), {
                                 'name': l['name'],
                                 'color': l['color']
@@ -280,7 +225,7 @@ def fetch_issues(repo):
     print("從GitHub獲取最新數據...")
     all_issues = [i for i in repo.get_issues(state="open") if not i.pull_request]
 
-    # 保存緩存（添加 updated_at）
+    # 保存緩存
     cache_data = {
         'timestamp': datetime.now().isoformat(),
         'issues': [{
@@ -288,7 +233,6 @@ def fetch_issues(repo):
             'title': i.title,
             'body': i.body,
             'created_at': i.created_at.isoformat(),
-            'updated_at': i.updated_at.isoformat() if hasattr(i, 'updated_at') else i.created_at.isoformat(),
             'labels': [{'name': l.name, 'color': l.color} for l in i.labels]
         } for i in all_issues]
     }
@@ -419,7 +363,7 @@ def generate_robots_txt():
         print(f"❌ 生成 robots.txt 失敗: {e}")
 
 def generate_article_page(issue, all_issues, giscus_config=None, label_info=None):
-    """生成文章页面，返回生成状态信息"""
+    """生成文章页面"""
     try:
         os.makedirs(ARTICLES_DIR, exist_ok=True)
         template = env.get_template('article.html')
@@ -503,16 +447,8 @@ def generate_article_page(issue, all_issues, giscus_config=None, label_info=None
 
         print(f"✓ 生成文章: {issue.title} (#{issue.number})")
 
-        # 返回状态信息
-        return {
-            'generated_at': datetime.now().isoformat(),
-            'updated_at': issue.updated_at.isoformat() if hasattr(issue, 'updated_at') else None,
-            'title': issue.title
-        }
-
     except Exception as e:
         print(f"❌ 生成文章 #{issue.number} 失败: {e}")
-        return None
 
 def main():
     print("開始生成GitBlog頁面...")
@@ -625,31 +561,10 @@ def main():
 
     print(f"找到 {len(content_tags_dict)} 個內容標籤")
 
-    # --- 生成文章頁面（增量生成） ---
+    # --- 生成文章頁面（传入 label_info） ---
     print("開始生成文章頁面...")
-    state = load_generation_state()
-    generated_count = 0
-    skipped_count = 0
-    updated_state = {}
-
     for issue in issues:
-        issue_key = str(issue.number)
-
-        # 检查是否需要重新生成
-        if needs_regeneration(issue, state):
-            result = generate_article_page(issue, issues, giscus_config, label_info)
-            if result:
-                updated_state[issue_key] = result
-                generated_count += 1
-        else:
-            # 跳过，保留旧状态
-            updated_state[issue_key] = state[issue_key]
-            skipped_count += 1
-            print(f"⏭️ 跳过文章: {issue.title} (#{issue.number}) - 无更新")
-
-    # 保存状态
-    save_generation_state(updated_state)
-    print(f"\n📊 文章生成统计: 生成 {generated_count} 篇, 跳过 {skipped_count} 篇\n")
+        generate_article_page(issue, issues, giscus_config, label_info)
 
     # --- 生成标签页面 ---
     print("開始生成標籤頁面...")
