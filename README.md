@@ -26,3 +26,6 @@ My personal blog using issues and GitHub Actions
 - [韦伯太空望远镜观测到的木星](https://github.com/myogg/Gitblog/issues/3)--2026-01-28
 - [延髓星云](https://github.com/myogg/Gitblog/issues/2)--2026-01-28
 
+## Python (1篇文章)
+- [统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置](https://github.com/myogg/Gitblog/issues/9)--2026-02-02
+
