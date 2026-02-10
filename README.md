@@ -23,6 +23,9 @@ My personal blog using issues and GitHub Actions
 - [高通将在今年9月发布骁龙8系新平台](https://github.com/myogg/Gitblog/issues/10)--2026-02-03
 - [城市地图海报生成器](https://github.com/myogg/Gitblog/issues/8)--2026-01-28
 
+## 世界好精彩我想去看看 (1篇文章)
+- [好好的就对你](https://github.com/myogg/Gitblog/issues/11)--2026-02-10
+
 ## 天文 (2篇文章)
 - [韦伯太空望远镜观测到的木星](https://github.com/myogg/Gitblog/issues/3)--2026-01-28
 - [延髓星云](https://github.com/myogg/Gitblog/issues/2)--2026-01-28
