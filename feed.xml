@@ -1,16 +1,21 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2026-02-10T13:41:39.005162+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>字节跳动上线 Seedream 5.0 图像生成模型</title><updated>2026-02-10T13:41:39.504623+00:00</updated><content type="html"><![CDATA[<p>字节跳动上线 Seedream 5.0 图像生成模型，对标Nano Banana Pro</p>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2026-02-17T13:40:42.521621+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>极客湾曝光手机厂商媒体送测机乱象</title><updated>2026-02-17T13:40:42.874339+00:00</updated><content type="html"><![CDATA[<p>极客湾曝光手机厂商媒体送测机乱象：芯片特挑+性能特调</p>
+<p><img src="https://i.829259.xyz/api/rfile/IMG_20260217_213245_212.jpg" alt="IMG_20260217_213245_212.jpg" /></p>
+<p>「极客湾」发布手机性能横评深度评测视频，揭露了多家手机厂商对媒体送测机进行“特调”优化的行业现象。相关厂商通过芯片体质筛选、定向性能调度策略等方式提高测试数据，使得媒体送测机的综合表现，明显优于普通消费者的零售机型。</p>
+<p>极客湾也明确指出，在搭载同代旗舰芯片平台的机型中，后续发布产品的媒体送测机，特调程度普遍较先发机型更为严重。该现象的核心原因，是手机厂商之间的性能对标内卷，最终形成了“滚雪球”效应，使得行业特调乱象持续升级。</p>
+<p>极客湾表示，希望通过此次曝光，引发消费者与行业对“特调”现象的重视；同时也呼吁各大手机厂商回归产品本身，将精力聚焦于零售机型的调校优化当中，避免因此类“特调”行为损害自身品牌的口碑。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="碎碎念"/><published>2026-02-17T13:40:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>字节跳动上线 Seedream 5.0 图像生成模型</title><updated>2026-02-17T13:40:42.993679+00:00</updated><content type="html"><![CDATA[<p>字节跳动上线 Seedream 5.0 图像生成模型，对标Nano Banana Pro</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260210_213841_436.jpg" alt="IMG_20260210_213841_436.jpg" /></p>
 <p>2 月 10 日，字节跳动图像生成模型 Seedream 5.0 正式上线。该模型目前已接入视频编辑应用剪映、海外版 CapCut 及 AI 创作平台小云雀，并在即梦 AI 平台开启灰度测试。</p>
 <p>用户现可在上述平台限时免费体验图片生成功能。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="碎碎念"/><published>2026-02-10T13:41:05+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>高通将在今年9月发布骁龙8系新平台</title><updated>2026-02-10T13:41:39.746573+00:00</updated><content type="html"><![CDATA[<p>高通将在今年9月发布骁龙8系新平台——骁龙8 Elite Gen6和骁龙8 Elite Gen6 Pro，这两颗芯片都采用台积电2nm制程N2P，是高通首款2nm芯片。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="碎碎念"/><published>2026-02-10T13:41:05+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>高通将在今年9月发布骁龙8系新平台</title><updated>2026-02-17T13:40:43.127924+00:00</updated><content type="html"><![CDATA[<p>高通将在今年9月发布骁龙8系新平台——骁龙8 Elite Gen6和骁龙8 Elite Gen6 Pro，这两颗芯片都采用台积电2nm制程N2P，是高通首款2nm芯片。</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260203_223949_080.jpg" alt="IMG_20260203_223949_080.jpg" /></p>
 <p>得益于台积电更先进的工艺制程，骁龙8 Elite Gen6系列芯片组将会实现更高的频率，爆料称骁龙8 Elite Gen6 Pro的超大核主频将突破5GHz，这将是行业内CPU主频最高的手机芯片。作为对比，骁龙8 Elite Gen5的CPU主频是4.61GHz。</p>
 <p>据悉，为了让性能释放更激进，高通骁龙8 Elite Gen6 Pro采用三星Exynos 2600已经使用的Heat Pass Block散热技术，并且它还支持全新的LPDDR6内存以及UFS 5.0闪存。
 另外，骁龙8 Elite Gen6系列采用全新的2+3+3架构设计，相比上代的“2+6”架构有所调整。</p>
 <p>按照惯例，小米18系列将首发高通骁龙8 Elite Gen6系列旗舰平台，该机将在今年9月正式亮相</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="碎碎念"/><published>2026-02-03T14:45:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置</title><updated>2026-02-10T13:41:39.962336+00:00</updated><content type="html"><![CDATA[<p>大概看了一下，意思就是所有的额度都能用到claude</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="碎碎念"/><published>2026-02-03T14:45:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置</title><updated>2026-02-17T13:40:43.267694+00:00</updated><content type="html"><![CDATA[<p>大概看了一下，意思就是所有的额度都能用到claude</p>
 <!-- more -->
 <p><strong>Claude Code、Codex 与 Gemini CLI 的命令行管理工具</strong></p>
 <p>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置、MCP 服务器、Skills 扩展和系统提示词。</p>
@@ -19,11 +24,11 @@
 <p><strong>致谢：</strong> 原始架构和核心功能来自 <a href="https://github.com/farion1231/cc-switch">farion1231/cc-switch</a></p>
 <p>地址：
 <a href="https://github.com/SaladDay/cc-switch-cli">github</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Python"/><published>2026-02-02T01:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>城市地图海报生成器</title><updated>2026-02-10T13:41:40.169870+00:00</updated><content type="html"><![CDATA[<p>这是一个 Python 工具，会自动从 OpenStreetMap 中获取街道网络、水体特征和公园等信息，然后转换为世界上任何城市的精美极简地图海报。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Python"/><published>2026-02-02T01:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>城市地图海报生成器</title><updated>2026-02-17T13:40:43.403045+00:00</updated><content type="html"><![CDATA[<p>这是一个 Python 工具，会自动从 OpenStreetMap 中获取街道网络、水体特征和公园等信息，然后转换为世界上任何城市的精美极简地图海报。</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_222659_074.jpg" alt="IMG_20260128_222659_074.jpg" /></p>
 <p><a href="https://github.com/anvaka/city-roads">仓库地址</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="碎碎念"/><published>2026-01-28T14:30:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>Google 正式推出「Google AI Plus」计划</title><updated>2026-02-10T13:41:40.367174+00:00</updated><content type="html"><![CDATA[<p>仅需 ＄7.99 ！Google 正式推出「Google AI Plus」计划</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="碎碎念"/><published>2026-01-28T14:30:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>Google 正式推出「Google AI Plus」计划</title><updated>2026-02-17T13:40:43.555591+00:00</updated><content type="html"><![CDATA[<p>仅需 ＄7.99 ！Google 正式推出「Google AI Plus」计划</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_172129_726.jpg" alt="IMG_20260128_172129_726.jpg" /></p>
 <p>🔗 <a href="https://one.google.com/about/google-ai-plans/">https://one.google.com/about/google-ai-plans/</a></p>
@@ -32,7 +37,7 @@
 <p>▫️Flow AI 电影制作工具使用权限，以及 NotebookLM 的深度研究与写作辅助。</p>
 <p>▫️提供 200GB 云存储空间，并支持最多5位家庭成员共享。</p>
 <p>▫️现有的 Google One Premium 2TB 用户将在未来几天内自动升级，免费获得所有 AI Plus 权益！</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="blog"/><published>2026-01-28T10:09:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>Chorus: 多模型 AI 对话的轻量级桌面应用</title><updated>2026-02-10T13:41:40.580358+00:00</updated><content type="html"><![CDATA[<p>在一个界面同时对话多个 AI 模型，获取不同视角的答案</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="blog"/><published>2026-01-28T10:09:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>Chorus: 多模型 AI 对话的轻量级桌面应用</title><updated>2026-02-17T13:40:43.683646+00:00</updated><content type="html"><![CDATA[<p>在一个界面同时对话多个 AI 模型，获取不同视角的答案</p>
 <!-- more -->
 <p><a href="https://chorus.sh/">官网</a> ｜ <a href="https://github.com/meltylabs/chorus">Github</a></p>
 <hr />
@@ -121,7 +126,7 @@
 <li>可选代理服务：使用 Chorus 的代理</li>
 <li>无订阅费用</li>
 </ul>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="blog"/><published>2026-01-28T04:54:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>韦伯太空望远镜观测到的木星</title><updated>2026-02-10T13:41:40.814199+00:00</updated><content type="html"><![CDATA[<p>影像提供:NASA, ESA, CSA,Jupiter ERS Team;Processing:Ricardo Hueso (UPV/EHU)
+]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="blog"/><published>2026-01-28T04:54:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>韦伯太空望远镜观测到的木星</title><updated>2026-02-17T13:40:43.827555+00:00</updated><content type="html"><![CDATA[<p>影像提供:NASA, ESA, CSA,Jupiter ERS Team;Processing:Ricardo Hueso (UPV/EHU)
 &amp; Judy Schmidt</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/Jupiter2_WebbSchmidt_1080_annotated.jpg" alt="Jupiter2_WebbSchmidt_1080_annotated.jpg" /></p>
@@ -130,7 +135,7 @@
 <p>这张韦伯望远镜的影像中，木星的尘埃环、两极的明亮极光以及木星的卫星木卫五(Amalthea)和木卫十五(Adrastea)也清晰可见。大型火山卫星木卫一(Io埃欧)的磁力将带电粒子汇集到木星表面，这现象在南极光中也清晰可见。</p>
 <p>有些天体亮度极高，以至于光线在韦伯望远镜的光学系统中发生明显的绕射，形成条纹状的影像。</p>
 <p>韦伯望远镜在地球附近环绕太阳运行，其主镜直径超过六米，是有史以来发射的最大天文望远镜，是哈伯望远镜集光面积的六倍多。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="天文"/><published>2026-01-28T04:39:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>延髓星云</title><updated>2026-02-10T13:41:41.018249+00:00</updated><content type="html"><![CDATA[<p>说明： 是什么力量驱动著这片奇特的星云？CTB 1是大约一万年前，位于仙后座附近一颗大质量恒星爆炸后留下的不断膨胀之气体壳层。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="天文"/><published>2026-01-28T04:39:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>延髓星云</title><updated>2026-02-17T13:40:43.965763+00:00</updated><content type="html"><![CDATA[<p>说明： 是什么力量驱动著这片奇特的星云？CTB 1是大约一万年前，位于仙后座附近一颗大质量恒星爆炸后留下的不断膨胀之气体壳层。</p>
 <!-- more -->
 <p>延髓星云<br />
 影像提供:Pierre Konzelmann</p>
