@@ -19,11 +19,19 @@ My personal blog using issues and GitHub Actions
 - [Google 正式推出「Google AI Plus」计划](https://github.com/myogg/Gitblog/issues/5)--2026-01-28
 - [Chorus: 多模型 AI 对话的轻量级桌面应用](https://github.com/myogg/Gitblog/issues/4)--2026-01-28
 
-## 碎碎念 (4篇文章)
+## 碎碎念 (6篇文章)
+- [Netflix放弃对华纳公司的竞标](https://github.com/myogg/Gitblog/issues/15)--2026-02-27
+- [OpenAI 推出 ChatGPT 锁定模式和风险标签功能](https://github.com/myogg/Gitblog/issues/14)--2026-02-17
 - [极客湾曝光手机厂商媒体送测机乱象](https://github.com/myogg/Gitblog/issues/13)--2026-02-17
 - [字节跳动上线 Seedream 5.0 图像生成模型](https://github.com/myogg/Gitblog/issues/12)--2026-02-10
 - [高通将在今年9月发布骁龙8系新平台](https://github.com/myogg/Gitblog/issues/10)--2026-02-03
-- [城市地图海报生成器](https://github.com/myogg/Gitblog/issues/8)--2026-01-28
+
+<details>
+<summary>显示更多 (1篇)</summary>
+
+- [城市地图海报生成器](https://github.com/myogg/Gitblog/issues/8)
+
+</details>
 
 ## 天文 (2篇文章)
 - [韦伯太空望远镜观测到的木星](https://github.com/myogg/Gitblog/issues/3)--2026-01-28
