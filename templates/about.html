@@ -76,6 +76,7 @@
         border-radius: 0.75rem;
         border: 1px solid var(--border-color);
         transition: all 0.2s ease;
+        animation: fadeInUp 0.3s ease;
     }
 
     .link-card:hover {
@@ -96,6 +97,121 @@
         color: var(--text-tertiary);
         font-size: 0.8125rem;
     }
+
+    /* 访客地图 */
+    .visitor-map-section {
+        margin-top: 4rem;
+        padding: 2rem;
+        background: var(--bg-secondary);
+        border-radius: 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .visitor-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+        text-align: center;
+    }
+
+    .stat-card {
+        padding: 1.5rem;
+        background: var(--bg-primary);
+        border-radius: 0.75rem;
+        border: 1px solid var(--border-color);
+    }
+
+    .stat-number {
+        font-size: 2rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.875rem;
+        color: var(--text-tertiary);
+    }
+
+    .recent-visitors {
+        margin-top: 2rem;
+        padding: 1rem;
+        background: var(--bg-primary);
+        border-radius: 0.75rem;
+    }
+
+    .visitor-item {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+        animation: slideIn 0.3s ease;
+    }
+
+    .visitor-item:last-child {
+        border-bottom: none;
+    }
+
+    .visitor-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--bg-hover);
+    }
+
+    .visitor-info {
+        flex: 1;
+    }
+
+    .visitor-name {
+        font-weight: 500;
+        color: var(--text-primary);
+        font-size: 0.875rem;
+    }
+
+    .visitor-time {
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+    }
+
+    .visitor-location {
+        font-size: 0.75rem;
+        color: var(--text-secondary);
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+    }
+
+    .pulse {
+        animation: pulse 0.3s ease;
+    }
 </style>
 {% endblock %}
 
@@ -104,30 +220,186 @@
 
 <div class="about-container">
     <div class="avatar-wrapper">
-        <img src="https://pic.imgdd.cc/item/68975648abb08ec37a9cd5e8.png" alt="头像">
+        <img src="https://pic.imgdd.cc/item/68975648abb08ec37a9cd5e8.png" alt="头像" id="avatar-img">
     </div>
-    <div class="about-text">
+    <div class="about-text" id="about-text">
         <p>用文字记录我的胡思乱想与生活的瞬间，我疯狂的想法与可能为之的行动。</p>
         <p>记录在这个时代下的焦虑、迷茫、挣扎与希望。</p>
     </div>
 </div>
 
-<div class="links-section">
-    <h2 class="section-label">友情链接</h2>
-    <div class="links-grid">
-        {% set links = [
-            {'url': 'https://829259.xyz', 'name': '829259.xyz', 'desc': 'mymsnn\'blog'},
-            {'url': 'https://jianghaiyina.com', 'name': 'jianghaiyina.com', 'desc': 'Jaaleng\'blog'},
-            {'url': 'https://jreely.dpdns.org', 'name': 'jreely.dpdns.org', 'desc': '北方'},
-            {'url': 'https://tel.qzz.io', 'name': 'tel.qzz.io', 'desc': '书签'},
-            {'url': 'https://myogg.hidns.co', 'name': 'myogg.hidns.co', 'desc': 'meektion\'blog'}
-        ] %}
-        {% for link in links %}
-        <a href="{{ link.url }}" target="_blank" class="link-card">
-            <div class="link-name">{{ link.name }}</div>
-            <div class="link-desc">{{ link.desc }}</div>
-        </a>
-        {% endfor %}
+<!-- 访客实时统计 -->
+<div class="visitor-map-section">
+    <h2 class="section-label">🌍 实时访客</h2>
+    
+    <div class="visitor-stats">
+        <div class="stat-card">
+            <div class="stat-number" id="total-visitors">0</div>
+            <div class="stat-label">总访问量</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="online-now">0</div>
+            <div class="stat-label">当前在线</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" id="today-visitors">0</div>
+            <div class="stat-label">今日访客</div>
+        </div>
+    </div>
+
+    <div class="recent-visitors">
+        <h3 style="margin-bottom: 1rem; font-size: 0.9375rem;">最近访客</h3>
+        <div id="recent-visitors-list">
+            <div class="visitor-item loading">加载中...</div>
+        </div>
     </div>
 </div>
+
+<div class="links-section">
+    <h2 class="section-label">友情链接</h2>
+    <div class="links-grid" id="links-grid">
+        <!-- 链接会通过流式加载 -->
+        <div class="loading-spinner">加载友情链接中...</div>
+    </div>
+</div>
+
+<!-- 流式解析脚本 -->
+<script type="module">
+    import { parse } from 'https://unpkg.com/jsonriver?module';
+
+    const API_BASE = 'https://api.134688.xyz'; // 替换为你的API地址
+
+    // ========== 访客实时统计 ==========
+    async function streamVisitorStats() {
+        const totalEl = document.getElementById('total-visitors');
+        const onlineEl = document.getElementById('online-now');
+        const todayEl = document.getElementById('today-visitors');
+        const recentList = document.getElementById('recent-visitors-list');
+
+        try {
+            const response = await fetch(`${API_BASE}/visitors/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            for await (const data of stream) {
+                if (data.type === 'stats') {
+                    // 更新统计数字
+                    if (totalEl) {
+                        totalEl.textContent = data.total.toLocaleString();
+                        totalEl.classList.add('pulse');
+                        setTimeout(() => totalEl.classList.remove('pulse'), 300);
+                    }
+                    if (onlineEl) onlineEl.textContent = data.online;
+                    if (todayEl) todayEl.textContent = data.today;
+                } else if (data.type === 'visitor' && recentList) {
+                    // 添加新访客
+                    if (recentList.querySelector('.loading')) {
+                        recentList.innerHTML = '';
+                    }
+
+                    const visitorEl = document.createElement('div');
+                    visitorEl.className = 'visitor-item';
+                    visitorEl.innerHTML = `
+                        <div class="visitor-avatar" style="background: ${getAvatarColor(data.name)}"></div>
+                        <div class="visitor-info">
+                            <div class="visitor-name">${escapeHtml(data.name)}</div>
+                            <div class="visitor-location">${escapeHtml(data.location || '未知地点')}</div>
+                        </div>
+                        <div class="visitor-time">${data.time}</div>
+                    `;
+
+                    recentList.insertBefore(visitorEl, recentList.firstChild);
+                    
+                    // 限制显示数量
+                    while (recentList.children.length > 10) {
+                        recentList.removeChild(recentList.lastChild);
+                    }
+                }
+            }
+        } catch (error) {
+            console.log('访客流断开:', error);
+            setTimeout(streamVisitorStats, 5000);
+        }
+    }
+
+    // ========== 友情链接流式加载 ==========
+    async function loadFriendLinks() {
+        const grid = document.getElementById('links-grid');
+        
+        try {
+            const response = await fetch(`${API_BASE}/friend-links/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            grid.innerHTML = ''; // 清空加载提示
+            
+            for await (const link of stream) {
+                const linkEl = document.createElement('a');
+                linkEl.href = link.url;
+                linkEl.target = '_blank';
+                linkEl.className = 'link-card';
+                linkEl.innerHTML = `
+                    <div class="link-name">${escapeHtml(link.name)}</div>
+                    <div class="link-desc">${escapeHtml(link.desc)}</div>
+                `;
+                
+                // 添加延迟动画
+                linkEl.style.animationDelay = `${Array.from(grid.children).length * 0.05}s`;
+                grid.appendChild(linkEl);
+            }
+        } catch (error) {
+            console.error('加载友情链接失败:', error);
+            grid.innerHTML = '<div class="error-message">加载失败，请刷新重试</div>';
+        }
+    }
+
+    // ========== 实时更新自我介绍 ==========
+    async function streamBio() {
+        const bioContainer = document.getElementById('about-text');
+        
+        try {
+            const response = await fetch(`${API_BASE}/about/bio/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            for await (const bio of stream) {
+                if (bio.type === 'update') {
+                    bioContainer.innerHTML = bio.content;
+                }
+            }
+        } catch (error) {
+            console.log('自我介绍流断开:', error);
+        }
+    }
+
+    // ========== 工具函数 ==========
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function getAvatarColor(name) {
+        // 根据名字生成固定颜色
+        const colors = ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6'];
+        let hash = 0;
+        for (let i = 0; i < name.length; i++) {
+            hash = ((hash << 5) - hash) + name.charCodeAt(i);
+            hash |= 0;
+        }
+        return colors[Math.abs(hash) % colors.length];
+    }
+
+    // ========== 初始化 ==========
+    document.addEventListener('DOMContentLoaded', () => {
+        streamVisitorStats();
+        loadFriendLinks();
+        streamBio();
+
+        // 头像加载动画
+        const avatar = document.getElementById('avatar-img');
+        if (avatar) {
+            avatar.addEventListener('load', () => {
+                avatar.classList.add('img-loaded');
+            });
+        }
+    });
+</script>
 {% endblock %}
