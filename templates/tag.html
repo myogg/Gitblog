@@ -64,6 +64,8 @@
         margin: 0 -0.5rem;
         border-radius: 0.5rem;
         transition: all 0.2s ease;
+        animation: slideIn 0.3s ease;
+        animation-fill-mode: both;
     }
 
     .tag-articles-list .article-item:hover {
@@ -92,6 +94,71 @@
         color: var(--text-secondary);
     }
 
+    .load-more {
+        text-align: center;
+        margin-top: 2rem;
+        padding: 1rem;
+    }
+
+    .load-more-btn {
+        padding: 0.5rem 1.5rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 2rem;
+        color: var(--text-primary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+    }
+
+    .load-more-btn:hover {
+        background: var(--bg-hover);
+        border-color: var(--border-hover);
+    }
+
+    .load-more-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    .tag-stats {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-top: 1rem;
+        padding: 1rem;
+        background: var(--bg-secondary);
+        border-radius: 0.75rem;
+    }
+
+    .tag-stat-item {
+        text-align: center;
+    }
+
+    .tag-stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        line-height: 1;
+        margin-bottom: 0.25rem;
+    }
+
+    .tag-stat-label {
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
     @media (max-width: 768px) {
         .tag-articles-list .article-item {
             flex-direction: column;
@@ -107,6 +174,11 @@
         .tag-articles-list .article-title {
             font-size: 0.875rem;
         }
+
+        .tag-stats {
+            flex-direction: column;
+            gap: 1rem;
+        }
     }
 </style>
 {% endblock %}
@@ -120,16 +192,186 @@
 </a>
 
 <div class="tag-header">
-    <div class="tag-badge">{{tag_name}}</div>
-    <div class="tag-count">共 {{articles|length}} 篇文章</div>
+    <div class="tag-badge" id="tag-badge">{{tag_name}}</div>
+    <div class="tag-count" id="tag-count">共 <span id="total-count">{{articles|length}}</span> 篇文章</div>
 </div>
 
-<ul class="tag-articles-list">
+<!-- 标签统计 -->
+<div class="tag-stats">
+    <div class="tag-stat-item">
+        <div class="tag-stat-value" id="total-views">-</div>
+        <div class="tag-stat-label">总阅读</div>
+    </div>
+    <div class="tag-stat-item">
+        <div class="tag-stat-value" id="avg-words">-</div>
+        <div class="tag-stat-label">平均字数</div>
+    </div>
+    <div class="tag-stat-item">
+        <div class="tag-stat-value" id="latest-update">-</div>
+        <div class="tag-stat-label">最近更新</div>
+    </div>
+</div>
+
+<!-- 文章列表容器 -->
+<ul class="tag-articles-list" id="articles-list">
     {% for article in articles %}
-    <li class="article-item">
+    <li class="article-item" style="animation-delay: {{loop.index0 * 0.05}}s">
         <time class="article-date">{{article.created_at.strftime('%Y-%m-%d')}}</time>
         <a href="../articles/article-{{article.number}}.html" class="article-title">{{article.title}}</a>
     </li>
     {% endfor %}
 </ul>
+
+<!-- 加载更多 -->
+<div class="load-more">
+    <button class="load-more-btn" id="loadMoreBtn" onclick="loadMoreArticles()">加载更多</button>
+</div>
+
+<!-- 流式解析脚本 -->
+<script type="module">
+    import { parse } from 'https://unpkg.com/jsonriver?module';
+
+    const API_BASE = 'https://api.134688.xyz'; // 替换为你的API地址
+    const tagName = {{tag_name|tojson}};
+    let page = 1;
+    let loading = false;
+    let hasMore = true;
+
+    // ========== 加载更多文章 ==========
+    window.loadMoreArticles = async function() {
+        if (loading || !hasMore) return;
+
+        const btn = document.getElementById('loadMoreBtn');
+        const list = document.getElementById('articles-list');
+        
+        loading = true;
+        btn.disabled = true;
+        btn.textContent = '加载中...';
+
+        try {
+            const response = await fetch(`${API_BASE}/tags/${encodeURIComponent(tagName)}/articles/stream?page=${page + 1}`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            let count = 0;
+            for await (const article of stream) {
+                count++;
+                const li = document.createElement('li');
+                li.className = 'article-item';
+                li.style.animationDelay = `${count * 0.05}s`;
+                li.innerHTML = `
+                    <time class="article-date">${article.date}</time>
+                    <a href="../articles/article-${article.number}.html" class="article-title">${escapeHtml(article.title)}</a>
+                `;
+                list.appendChild(li);
+            }
+
+            if (count > 0) {
+                page++;
+                // 更新总数
+                const totalSpan = document.getElementById('total-count');
+                if (totalSpan) {
+                    totalSpan.textContent = parseInt(totalSpan.textContent) + count;
+                }
+            } else {
+                hasMore = false;
+                btn.textContent = '没有更多了';
+                btn.disabled = true;
+            }
+        } catch (error) {
+            console.error('加载更多失败:', error);
+            btn.textContent = '加载失败，点击重试';
+        } finally {
+            if (hasMore) {
+                loading = false;
+                btn.disabled = false;
+                btn.textContent = '加载更多';
+            }
+        }
+    };
+
+    // ========== 流式获取标签统计 ==========
+    async function streamTagStats() {
+        try {
+            const response = await fetch(`${API_BASE}/tags/${encodeURIComponent(tagName)}/stats/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            for await (const stat of stream) {
+                if (stat.type === 'views') {
+                    document.getElementById('total-views').textContent = 
+                        stat.total.toLocaleString();
+                } else if (stat.type === 'words') {
+                    document.getElementById('avg-words').textContent = 
+                        Math.round(stat.average).toLocaleString();
+                } else if (stat.type === 'latest') {
+                    document.getElementById('latest-update').textContent = 
+                        stat.date;
+                }
+            }
+        } catch (error) {
+            console.log('标签统计流断开:', error);
+            setTimeout(streamTagStats, 5000);
+        }
+    }
+
+    // ========== 实时文章更新 ==========
+    async function streamNewArticles() {
+        try {
+            const response = await fetch(`${API_BASE}/tags/${encodeURIComponent(tagName)}/new/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            const list = document.getElementById('articles-list');
+            
+            for await (const article of stream) {
+                // 检查是否已存在
+                const exists = Array.from(list.children).some(
+                    li => li.querySelector('a')?.href.includes(`article-${article.number}`)
+                );
+                
+                if (!exists) {
+                    const li = document.createElement('li');
+                    li.className = 'article-item new-article';
+                    li.style.animation = 'slideIn 0.3s ease';
+                    li.innerHTML = `
+                        <time class="article-date">${article.date}</time>
+                        <a href="../articles/article-${article.number}.html" class="article-title">✨ ${escapeHtml(article.title)}</a>
+                    `;
+                    list.insertBefore(li, list.firstChild);
+                    
+                    // 更新总数
+                    const totalSpan = document.getElementById('total-count');
+                    if (totalSpan) {
+                        totalSpan.textContent = parseInt(totalSpan.textContent) + 1;
+                    }
+                    
+                    // 高亮新文章
+                    setTimeout(() => {
+                        li.classList.remove('new-article');
+                    }, 3000);
+                }
+            }
+        } catch (error) {
+            console.log('新文章流断开:', error);
+        }
+    }
+
+    // ========== 工具函数 ==========
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ========== 初始化 ==========
+    document.addEventListener('DOMContentLoaded', () => {
+        streamTagStats();
+        streamNewArticles();
+
+        // 无限滚动
+        window.addEventListener('scroll', () => {
+            if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {
+                loadMoreArticles();
+            }
+        });
+    });
+</script>
 {% endblock %}
