@@ -81,22 +81,51 @@
         </div>
     </header>
 
-    <!-- 实时通知栏 -->
-    <div id="live-notification" class="notification-bar" style="display: none;"></div>
-
     <main class="container">
         {% block content %}
         <h1 class="page-heading">博客</h1>
 
         <div class="main-layout">
             <div class="main-content">
-                <div class="articles-container" id="articles-container">
-                    <!-- 文章会通过流式加载 -->
-                    <div class="loading-spinner">加载文章中...</div>
+                <div class="articles-container">
+                    {% if articles %}
+                    <div class="article-cards">
+                        {% for article in articles %}
+                        <article class="article-card">
+                            <h2 class="article-card-title">
+                                <a href="articles/article-{{article.number}}.html">{{article.title}}</a>
+                            </h2>
+                            {% if article.summary %}
+                            <p class="article-card-summary">{{article.summary}}</p>
+                            {% endif %}
+                            <time class="article-card-date">{{article.created_at.strftime('%Y年%m月%d日')}}</time>
+                        </article>
+                        {% endfor %}
+                    </div>
+                    {% else %}
+                    {% for year, issues in articles_by_year.items() %}
+                    <div class="year-section">
+                        <h2 class="year-label">{{year}}</h2>
+                        <div class="article-cards">
+                            {% for article in issues %}
+                            <article class="article-card">
+                                <h2 class="article-card-title">
+                                    <a href="articles/article-{{article.number}}.html">{{article.title}}</a>
+                                </h2>
+                                {% if article.summary %}
+                                <p class="article-card-summary">{{article.summary}}</p>
+                                {% endif %}
+                                <time class="article-card-date">{{article.created_at.strftime('%Y年%m月%d日')}}</time>
+                            </article>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                 </div>
 
                 {% if pagination %}
-                <nav class="pagination" id="pagination">
+                <nav class="pagination">
                     <div>
                         {% if pagination.prev_page %}
                         <a href="{{pagination.prev_page}}" class="page-link">&larr; 上一页</a>
@@ -128,19 +157,6 @@
                     </div>
                     <button class="subscribe-button" onclick="copyRssUrl()">订阅</button>
                 </div>
-
-                <!-- 实时统计卡片 -->
-                <div class="stats-card" id="live-stats">
-                    <h4>实时统计</h4>
-                    <div class="stat-item">
-                        <span>在线访客:</span>
-                        <span class="stat-value" id="online-count">加载中...</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>今日阅读:</span>
-                        <span class="stat-value" id="today-views">加载中...</span>
-                    </div>
-                </div>
             </aside>
         </div>
         {% endblock %}
@@ -157,245 +173,56 @@
         </svg>
     </button>
 
-    <!-- 添加 jsonriver 和全局流式功能 -->
-    <script type="module">
-        import { parse } from 'https://unpkg.com/jsonriver?module';
+    <script>
+        // 主题切换
+        const themeToggle = document.getElementById('themeToggle');
+        const htmlEl = document.documentElement;
+        const bodyEl = document.body;
 
-        // ========== 全局配置 ==========
-        const API_BASE = 'https://api.134688.xyz'; // 替换为你的API地址
-        const STREAM_ENDPOINTS = {
-            notifications: `${API_BASE}/notifications/stream`,
-            stats: `${API_BASE}/stats/live`,
-            articles: `${API_BASE}/articles/stream`,
-            search: `${API_BASE}/search/stream`
-        };
+        // 从 localStorage 读取主题
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        bodyEl.setAttribute('data-theme', savedTheme);
 
-        // ========== 实时通知 ==========
-        class NotificationManager {
-            constructor() {
-                this.notificationBar = document.getElementById('live-notification');
-                this.activeNotifications = new Set();
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = bodyEl.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            bodyEl.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // 下拉菜单
+        const menuToggle = document.getElementById('menuToggle');
+        const dropdownMenu = document.getElementById('dropdownMenu');
+
+        menuToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdownMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', () => {
+            dropdownMenu.classList.remove('show');
+        });
+
+        // 返回顶部
+        const backToTopButton = document.getElementById('backToTop');
+
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.classList.add('show');
+            } else {
+                backToTopButton.classList.remove('show');
             }
+        });
 
-            async start() {
-                try {
-                    const response = await fetch(STREAM_ENDPOINTS.notifications);
-                    const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
-                    
-                    for await (const notif of stream) {
-                        this.showNotification(notif);
-                    }
-                } catch (error) {
-                    console.log('通知流断开，5秒后重连:', error);
-                    setTimeout(() => this.start(), 5000);
-                }
-            }
-
-            showNotification(notif) {
-                if (this.activeNotifications.has(notif.id)) return;
-                
-                this.activeNotifications.add(notif.id);
-                this.notificationBar.style.display = 'block';
-                this.notificationBar.textContent = notif.message;
-                this.notificationBar.className = `notification-bar ${notif.type || 'info'}`;
-
-                // 5秒后自动关闭
-                setTimeout(() => {
-                    this.notificationBar.style.display = 'none';
-                    this.activeNotifications.delete(notif.id);
-                }, 5000);
-            }
-        }
-
-        // ========== 实时统计 ==========
-        class StatsManager {
-            constructor() {
-                this.onlineCount = document.getElementById('online-count');
-                this.todayViews = document.getElementById('today-views');
-            }
-
-            async start() {
-                try {
-                    const response = await fetch(STREAM_ENDPOINTS.stats);
-                    const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
-                    
-                    for await (const stat of stream) {
-                        this.updateStats(stat);
-                    }
-                } catch (error) {
-                    console.log('统计流断开，5秒后重连:', error);
-                    setTimeout(() => this.start(), 5000);
-                }
-            }
-
-            updateStats(stat) {
-                if (stat.type === 'online' && this.onlineCount) {
-                    this.onlineCount.textContent = stat.count;
-                    this.onlineCount.classList.add('pulse');
-                    setTimeout(() => this.onlineCount.classList.remove('pulse'), 300);
-                } else if (stat.type === 'views' && this.todayViews) {
-                    this.todayViews.textContent = stat.count;
-                }
-            }
-        }
-
-        // ========== 文章流式加载 ==========
-        class ArticleStreamManager {
-            constructor(containerId) {
-                this.container = document.getElementById(containerId);
-                this.page = 1;
-                this.loading = false;
-                this.hasMore = true;
-            }
-
-            async loadMore() {
-                if (this.loading || !this.hasMore) return;
-                
-                this.loading = true;
-                this.showLoader();
-
-                try {
-                    const response = await fetch(`${STREAM_ENDPOINTS.articles}?page=${this.page}`);
-                    const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
-                    
-                    let count = 0;
-                    for await (const article of stream) {
-                        count++;
-                        this.appendArticle(article);
-                    }
-
-                    if (count === 0) {
-                        this.hasMore = false;
-                        this.hideLoader();
-                    } else {
-                        this.page++;
-                        this.loading = false;
-                        this.hideLoader();
-                    }
-                } catch (error) {
-                    console.error('加载文章失败:', error);
-                    this.loading = false;
-                    this.hideLoader();
-                }
-            }
-
-            appendArticle(article) {
-                if (!this.container) return;
-
-                const articleEl = document.createElement('article');
-                articleEl.className = 'article-card fade-in';
-                articleEl.innerHTML = `
-                    <h2 class="article-card-title">
-                        <a href="articles/article-${article.number}.html">${this.escapeHtml(article.title)}</a>
-                    </h2>
-                    ${article.summary ? `<p class="article-card-summary">${this.escapeHtml(article.summary)}</p>` : ''}
-                    <time class="article-card-date">${article.date}</time>
-                `;
-                
-                this.container.appendChild(articleEl);
-            }
-
-            showLoader() {
-                if (!document.getElementById('stream-loader')) {
-                    const loader = document.createElement('div');
-                    loader.id = 'stream-loader';
-                    loader.className = 'stream-loader';
-                    loader.innerHTML = '<span class="spinner"></span> 加载更多...';
-                    this.container.appendChild(loader);
-                }
-            }
-
-            hideLoader() {
-                const loader = document.getElementById('stream-loader');
-                if (loader) loader.remove();
-            }
-
-            escapeHtml(text) {
-                const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
-        }
-
-        // ========== 初始化 ==========
-        document.addEventListener('DOMContentLoaded', () => {
-            // 启动通知
-            const notifManager = new NotificationManager();
-            notifManager.start();
-
-            // 启动统计
-            const statsManager = new StatsManager();
-            statsManager.start();
-
-            // 文章流式加载（如果在首页）
-            if (document.getElementById('articles-container')) {
-                const articleStream = new ArticleStreamManager('articles-container');
-                
-                // 初始加载
-                articleStream.loadMore();
-
-                // 滚动加载
-                window.addEventListener('scroll', () => {
-                    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 1000) {
-                        articleStream.loadMore();
-                    }
-                });
-            }
-
-            // 主题切换
-            const themeToggle = document.getElementById('themeToggle');
-            const bodyEl = document.body;
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            bodyEl.setAttribute('data-theme', savedTheme);
-
-            themeToggle.addEventListener('click', () => {
-                const currentTheme = bodyEl.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-                bodyEl.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                
-                // 通知 Waline 主题变化
-                if (window.walineInstance) {
-                    window.walineInstance.update({
-                        dark: newTheme === 'dark'
-                    });
-                }
-            });
-
-            // 下拉菜单
-            const menuToggle = document.getElementById('menuToggle');
-            const dropdownMenu = document.getElementById('dropdownMenu');
-
-            menuToggle.addEventListener('click', (e) => {
-                e.stopPropagation();
-                dropdownMenu.classList.toggle('show');
-            });
-
-            document.addEventListener('click', () => {
-                dropdownMenu.classList.remove('show');
-            });
-
-            // 返回顶部
-            const backToTopButton = document.getElementById('backToTop');
-
-            window.addEventListener('scroll', () => {
-                if (window.pageYOffset > 300) {
-                    backToTopButton.classList.add('show');
-                } else {
-                    backToTopButton.classList.remove('show');
-                }
-            });
-
-            backToTopButton.addEventListener('click', () => {
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-            });
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
         // 复制RSS地址
-        window.copyRssUrl = function() {
+        function copyRssUrl() {
             const urlInput = document.getElementById('rssUrl');
             urlInput.select();
-            urlInput.setSelectionRange(0, 99999);
+            urlInput.setSelectionRange(0, 99999); // 移动端兼容
 
             navigator.clipboard.writeText(urlInput.value).then(() => {
                 const btn = event.target;
@@ -405,6 +232,7 @@
                     btn.textContent = originalText;
                 }, 2000);
             }).catch(() => {
+                // 兼容旧浏览器
                 document.execCommand('copy');
                 const btn = event.target;
                 const originalText = btn.textContent;
@@ -413,124 +241,7 @@
                     btn.textContent = originalText;
                 }, 2000);
             });
-        };
+        }
     </script>
-
-    <style>
-        /* 添加流式加载相关样式 */
-        .notification-bar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 0.75rem;
-            text-align: center;
-            z-index: 1000;
-            animation: slideDown 0.3s ease;
-        }
-
-        .notification-bar.info {
-            background: #3b82f6;
-            color: white;
-        }
-
-        .notification-bar.success {
-            background: #10b981;
-            color: white;
-        }
-
-        .notification-bar.warning {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .notification-bar.error {
-            background: #ef4444;
-            color: white;
-        }
-
-        .stats-card {
-            margin-top: 2rem;
-            padding: 1.25rem;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border-color);
-            border-radius: 0.75rem;
-        }
-
-        .stats-card h4 {
-            margin-bottom: 1rem;
-            font-size: 0.9375rem;
-            color: var(--text-primary);
-        }
-
-        .stat-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-size: 0.875rem;
-            color: var(--text-secondary);
-        }
-
-        .stat-value {
-            font-weight: 500;
-            color: var(--text-primary);
-        }
-
-        .stat-value.pulse {
-            animation: pulse 0.3s ease;
-        }
-
-        .stream-loader {
-            text-align: center;
-            padding: 2rem;
-            color: var(--text-tertiary);
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid var(--border-color);
-            border-top-color: var(--text-primary);
-            border-radius: 50%;
-            animation: spin 0.6s linear infinite;
-            margin-right: 0.5rem;
-        }
-
-        .fade-in {
-            animation: fadeIn 0.5s ease;
-        }
-
-        @keyframes slideDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
 </body>
 </html>
