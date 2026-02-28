@@ -136,11 +136,32 @@
         color: var(--text-tertiary);
     }
 
+    /* 阅读统计 */
+    .article-stats {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        font-size: 0.8125rem;
+        color: var(--text-tertiary);
+    }
+
+    .stat-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.25rem;
+    }
+
+    .stat-badge svg {
+        width: 14px;
+        height: 14px;
+    }
+
     /* GitHub标签样式 */
     .article-tags {
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
+        margin-top: 1rem;
     }
 
     .tag {
@@ -189,89 +210,6 @@
         color-scheme: dark;
         background-color: transparent !important;
         color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .content-area {
-        color: var(--text-primary);
-    }
-
-    /* 暗黑模式下的 Markdown 元素样式 */
-    body[data-theme="dark"] .markdown-body h1,
-    body[data-theme="dark"] .markdown-body h2,
-    body[data-theme="dark"] .markdown-body h3,
-    body[data-theme="dark"] .markdown-body h4,
-    body[data-theme="dark"] .markdown-body h5,
-    body[data-theme="dark"] .markdown-body h6 {
-        color: var(--text-primary) !important;
-        border-bottom-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body a {
-        color: #58a6ff !important;
-    }
-
-    body[data-theme="dark"] .markdown-body a:hover {
-        color: #79c0ff !important;
-    }
-
-    body[data-theme="dark"] .markdown-body blockquote {
-        color: var(--text-secondary) !important;
-        border-left-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body hr {
-        background-color: var(--border-color) !important;
-        border: none !important;
-    }
-
-    body[data-theme="dark"] .markdown-body table tr {
-        background-color: transparent !important;
-        border-top-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body table tr:nth-child(2n) {
-        background-color: var(--bg-secondary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body table th,
-    body[data-theme="dark"] .markdown-body table td {
-        border-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body img {
-        background-color: transparent !important;
-    }
-
-    body[data-theme="dark"] .markdown-body ul,
-    body[data-theme="dark"] .markdown-body ol {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body li {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body strong {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body em {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body p {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body pre {
-        background-color: var(--bg-secondary) !important;
-        border-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body code {
-        background-color: var(--bg-secondary) !important;
-        color: var(--text-primary) !important;
-        border-color: var(--border-color) !important;
     }
 
     /* 文章导航 */
@@ -351,6 +289,7 @@
         align-items: baseline;
         padding: 0.75rem 0;
         border-bottom: 1px solid var(--border-color);
+        animation: slideIn 0.3s ease;
     }
 
     .related-list li:last-child {
@@ -390,6 +329,44 @@
         margin-bottom: 1.5rem;
     }
 
+    /* 实时评论流 */
+    .live-comments {
+        margin-top: 1rem;
+        max-height: 400px;
+        overflow-y: auto;
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        padding: 1rem;
+    }
+
+    .live-comment {
+        padding: 0.75rem;
+        border-bottom: 1px solid var(--border-color);
+        animation: fadeIn 0.3s ease;
+    }
+
+    .live-comment:last-child {
+        border-bottom: none;
+    }
+
+    .live-comment .comment-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 0.25rem;
+        font-size: 0.8125rem;
+        color: var(--text-tertiary);
+    }
+
+    .live-comment .comment-author {
+        font-weight: 500;
+        color: var(--text-primary);
+    }
+
+    .live-comment .comment-content {
+        font-size: 0.875rem;
+        color: var(--text-secondary);
+    }
+
     /* 返回按钮 */
     .back-link {
         display: inline-flex;
@@ -421,22 +398,6 @@
         overflow-x: auto;
         font-size: 0.875rem !important;
         line-height: 1.6 !important;
-    }
-
-    .markdown-body code {
-        background: var(--bg-secondary) !important;
-        border: 1px solid var(--border-color) !important;
-        border-radius: 0.25rem !important;
-        padding: 0.125rem 0.375rem !important;
-        font-size: 0.875em !important;
-        font-family: var(--font-mono) !important;
-    }
-
-    .markdown-body .codehilite code,
-    .markdown-body pre code {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
     }
 
     /* 代码复制按钮 */
@@ -481,89 +442,21 @@
         height: auto;
     }
 
-    .markdown-body .content-area img:hover {
-        opacity: 0.9;
-        transform: scale(1.01);
+    /* 动画 */
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
     }
 
-    /* 图片懒加载状态 */
-    .markdown-body .content-area img.img-loading {
-        background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-hover) 50%, var(--bg-secondary) 75%);
-        background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-        min-height: 200px;
-    }
-
-    .markdown-body .content-area img.img-loaded {
-        animation: fadeIn 0.5s ease-in;
-    }
-
-    .markdown-body .content-area img.img-error {
-        border: 2px dashed var(--border-color);
-        background: var(--bg-secondary);
-        padding: 2rem;
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    .markdown-body .content-area img.img-error::after {
-        content: '图片加载失败';
-        position: absolute;
-        color: var(--text-tertiary);
-        font-size: 0.875rem;
-        font-family: var(--font-sans);
-    }
-
-    /* 骨架屏动画 */
-    @keyframes shimmer {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
-    }
-
-    /* 淡入动画 */
     @keyframes fadeIn {
         from { opacity: 0; }
         to { opacity: 1; }
-    }
-
-    .medium-zoom-image--opened {
-        cursor: zoom-out;
-    }
-
-    .medium-zoom-overlay {
-        z-index: 9998;
-        background: rgba(0, 0, 0, 0.9) !important;
-    }
-
-    .medium-zoom-image {
-        z-index: 9999;
-    }
-
-    /* Waline 样式适配 */
-    .wl-container {
-        font-family: var(--font-sans) !important;
-    }
-
-    body[data-theme="dark"] .wl-editor {
-        background: var(--bg-secondary) !important;
-        border-color: var(--border-color) !important;
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .wl-editor textarea {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .wl-card {
-        background: transparent !important;
-        border-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .wl-content {
-        color: var(--text-primary) !important;
     }
 
     /* 响应式 */
@@ -606,6 +499,24 @@
 
         <div class="article-meta">
             <time class="post-date">{{issue.created_at.strftime('%B %d, %Y')}}</time>
+        </div>
+
+        <!-- 实时阅读统计 -->
+        <div class="article-stats">
+            <span class="stat-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="2"></circle>
+                    <path d="M22 12c-2.667 4.667-6 7-10 7s-7.333-2.333-10-7c2.667-4.667 6-7 10-7s7.333 2.333 10 7z"></path>
+                </svg>
+                <span id="view-count">加载中...</span>
+            </span>
+            <span class="stat-badge">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <span id="visitor-count">加载中...</span>
+            </span>
         </div>
 
         <div class="article-tags">
@@ -655,124 +566,178 @@
 </nav>
 {% endif %}
 
-<!-- 相关文章 -->
-{% if related_articles %}
+<!-- 相关文章流式加载容器 -->
 <aside class="related-articles">
     <h3>相关文章</h3>
-    <ul class="related-list">
-        {% for article in related_articles %}
-        <li>
-            <a href="article-{{article.number}}.html">{{article.title}}</a>
-            <span class="related-date">{{article.created_at.strftime('%Y-%m-%d')}}</span>
-        </li>
-        {% endfor %}
+    <ul class="related-list" id="related-articles-list">
+        <li class="loading-item">加载相关文章中...</li>
     </ul>
 </aside>
-{% endif %}
 
-<!-- Waline评论区 -->
+<!-- 实时评论流 -->
 <section class="comment-section">
-    <h3>💬 留言区</h3>
+    <h3>💬 实时评论</h3>
+    <div class="live-comments" id="live-comments">
+        <div class="live-comment loading">连接中...</div>
+    </div>
+    
+    <!-- Waline评论区 -->
     <div id="waline-container"></div>
 </section>
 
-<script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 图片懒加载功能
-        const lazyImages = document.querySelectorAll('img.lazyload');
+<!-- 流式解析脚本 -->
+<script type="module">
+    import { parse } from 'https://unpkg.com/jsonriver?module';
 
+    const API_BASE = 'https://api.134688.xyz'; // 替换为你的API地址
+    const articleNumber = {{issue.number}};
+
+    // ========== 实时阅读统计 ==========
+    async function streamArticleStats() {
+        try {
+            const response = await fetch(`${API_BASE}/articles/${articleNumber}/stats/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            for await (const stat of stream) {
+                if (stat.type === 'views') {
+                    document.getElementById('view-count').textContent = stat.count + '次阅读';
+                } else if (stat.type === 'visitors') {
+                    document.getElementById('visitor-count').textContent = stat.count + '人在线';
+                }
+            }
+        } catch (error) {
+            console.log('统计流断开:', error);
+            setTimeout(streamArticleStats, 5000);
+        }
+    }
+
+    // ========== 相关文章流式加载 ==========
+    async function loadRelatedArticles() {
+        const container = document.getElementById('related-articles-list');
+        container.innerHTML = ''; // 清空加载提示
+        
+        try {
+            const response = await fetch(`${API_BASE}/articles/${articleNumber}/related/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            for await (const article of stream) {
+                const li = document.createElement('li');
+                li.style.animation = 'slideIn 0.3s ease';
+                li.innerHTML = `
+                    <a href="article-${article.number}.html">${escapeHtml(article.title)}</a>
+                    <span class="related-date">${article.date}</span>
+                `;
+                container.appendChild(li);
+            }
+        } catch (error) {
+            console.error('加载相关文章失败:', error);
+            container.innerHTML = '<li class="error-item">加载失败，请刷新重试</li>';
+        }
+    }
+
+    // ========== 实时评论流 ==========
+    async function streamLiveComments() {
+        const container = document.getElementById('live-comments');
+        
+        try {
+            const response = await fetch(`${API_BASE}/articles/${articleNumber}/comments/stream`);
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            container.innerHTML = ''; // 清空连接提示
+            
+            for await (const comment of stream) {
+                const commentEl = document.createElement('div');
+                commentEl.className = 'live-comment';
+                commentEl.innerHTML = `
+                    <div class="comment-meta">
+                        <span class="comment-author">${escapeHtml(comment.author)}</span>
+                        <span class="comment-time">${comment.time}</span>
+                    </div>
+                    <div class="comment-content">${escapeHtml(comment.content)}</div>
+                `;
+                
+                container.insertBefore(commentEl, container.firstChild);
+                
+                // 限制显示数量
+                while (container.children.length > 20) {
+                    container.removeChild(container.lastChild);
+                }
+            }
+        } catch (error) {
+            console.log('评论流断开:', error);
+            setTimeout(streamLiveComments, 5000);
+        }
+    }
+
+    // ========== 工具函数 ==========
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // ========== 初始化 ==========
+    document.addEventListener('DOMContentLoaded', () => {
+        streamArticleStats();
+        loadRelatedArticles();
+        streamLiveComments();
+
+        // 图片懒加载
+        const lazyImages = document.querySelectorAll('img[data-src]');
         if ('IntersectionObserver' in window) {
-            // 使用 Intersection Observer API 实现懒加载
-            const imageObserver = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(function(entry) {
+            const imageObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         const img = entry.target;
-                        const src = img.getAttribute('data-src');
-
-                        if (src) {
-                            // 创建新的Image对象预加载
-                            const tempImg = new Image();
-
-                            tempImg.onload = function() {
-                                img.src = src;
-                                img.classList.remove('img-loading');
-                                img.classList.add('img-loaded');
-                                img.removeAttribute('data-src');
-                            };
-
-                            tempImg.onerror = function() {
-                                img.classList.remove('img-loading');
-                                img.classList.add('img-error');
-                                img.alt = '图片加载失败';
-                                console.error('图片加载失败:', src);
-                            };
-
-                            tempImg.src = src;
-                        }
-
-                        observer.unobserve(img);
+                        img.src = img.dataset.src;
+                        img.classList.add('img-loaded');
+                        imageObserver.unobserve(img);
                     }
                 });
-            }, {
-                rootMargin: '50px 0px', // 提前50px开始加载
-                threshold: 0.01
             });
 
-            lazyImages.forEach(function(img) {
-                imageObserver.observe(img);
-            });
+            lazyImages.forEach(img => imageObserver.observe(img));
         } else {
-            // 降级方案：直接加载所有图片
-            lazyImages.forEach(function(img) {
-                const src = img.getAttribute('data-src');
-                if (src) {
-                    img.src = src;
-                    img.classList.remove('img-loading');
-                    img.classList.add('img-loaded');
-                }
+            lazyImages.forEach(img => {
+                img.src = img.dataset.src;
             });
         }
 
         // 代码块复制功能
-        const codeBlocks = document.querySelectorAll('.codehilite, pre');
-
-        codeBlocks.forEach(function(codeBlock) {
+        document.querySelectorAll('.codehilite, pre').forEach(codeBlock => {
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-code-btn';
             copyBtn.textContent = '复制';
-
+            
             codeBlock.style.position = 'relative';
-            codeBlock.insertBefore(copyBtn, codeBlock.firstChild);
-
-            copyBtn.addEventListener('click', function() {
-                const codeElement = codeBlock.querySelector('code') || codeBlock;
-                const codeText = codeElement.textContent;
-
-                navigator.clipboard.writeText(codeText).then(function() {
+            codeBlock.appendChild(copyBtn);
+            
+            copyBtn.addEventListener('click', async () => {
+                const code = codeBlock.querySelector('code')?.textContent || codeBlock.textContent;
+                try {
+                    await navigator.clipboard.writeText(code);
                     copyBtn.textContent = '已复制 ✓';
                     copyBtn.classList.add('copied');
-
-                    setTimeout(function() {
+                    setTimeout(() => {
                         copyBtn.textContent = '复制';
                         copyBtn.classList.remove('copied');
                     }, 2000);
-                }).catch(function(err) {
-                    console.error('复制失败:', err);
+                } catch {
                     copyBtn.textContent = '复制失败';
-                    setTimeout(function() {
+                    setTimeout(() => {
                         copyBtn.textContent = '复制';
                     }, 2000);
-                });
+                }
             });
         });
     });
 </script>
 
-<!-- Waline 评论系统 - 使用国内CDN -->
+<!-- Waline 评论系统 -->
 <script type="module">
     import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.js';
 
-    init({
+    const waline = init({
         el: '#waline-container',
         serverURL: 'https://waline.134688.xyz',
         lang: 'zh-CN',
@@ -789,10 +754,16 @@
         comment: true,
         copyright: false,
         reaction: true,
+        emoji: [
+            'https://cdn.jsdelivr.net/gh/walinejs/emojis@1.0.0/weibo',
+        ],
     });
+
+    // 保存实例供主题切换使用
+    window.walineInstance = waline;
 </script>
 
-<!-- Medium-zoom 图片缩放 - 使用国内CDN -->
+<!-- Medium-zoom 图片缩放 -->
 <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
 <script>
     mediumZoom('.content-area img', {
