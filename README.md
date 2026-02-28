@@ -33,6 +33,9 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
+## 世界好精彩我想去看看 (1篇文章)
+- [程序在调动人力，完成自动化流程](https://github.com/myogg/Gitblog/issues/16)--2026-02-28
+
 ## 天文 (2篇文章)
 - [韦伯太空望远镜观测到的木星](https://github.com/myogg/Gitblog/issues/3)--2026-01-28
 - [延髓星云](https://github.com/myogg/Gitblog/issues/2)--2026-01-28
