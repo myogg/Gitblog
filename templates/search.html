@@ -12,6 +12,12 @@
         max-width: 800px;
         margin: 0 auto;
     }
+
+    .search-box-wrapper {
+        position: relative;
+        margin-bottom: 2rem;
+    }
+
     #searchBox {
         width: 100%;
         padding: 0.75rem 1.25rem;
@@ -24,14 +30,38 @@
         color: var(--text-primary);
         transition: all 0.2s ease;
     }
+
     #searchBox:focus {
         border-color: var(--border-hover);
         background: var(--bg-primary);
         box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
     }
+
+    .search-loading {
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: none;
+    }
+
+    .search-loading.show {
+        display: block;
+    }
+
+    .spinner {
+        width: 1.25rem;
+        height: 1.25rem;
+        border: 2px solid var(--border-color);
+        border-top-color: var(--text-primary);
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+    }
+
     #searchResults {
         margin-top: 2rem;
     }
+
     .search-result {
         margin-bottom: 1.5rem;
         padding: 1.25rem;
@@ -39,35 +69,43 @@
         border: 1px solid var(--border-color);
         border-radius: 0.75rem;
         transition: all 0.2s ease;
+        animation: fadeIn 0.3s ease;
     }
+
     .search-result:hover {
         background: var(--bg-hover);
         border-color: var(--border-hover);
     }
+
     .search-result-title {
         font-size: 1.125rem;
         margin-bottom: 0.5rem;
         font-weight: 500;
     }
+
     .search-result-title a {
         color: var(--text-primary);
         text-decoration: none;
         transition: color 0.2s ease;
     }
+
     .search-result-title a:hover {
         color: var(--text-secondary);
     }
+
     .search-result-snippet {
         color: var(--text-secondary);
         font-size: 0.9375rem;
         line-height: 1.6;
         margin-bottom: 0.75rem;
     }
+
     .search-result-meta {
         color: var(--text-tertiary);
         font-size: 0.8125rem;
         font-family: var(--font-mono);
     }
+
     .search-result-meta .tag {
         display: inline-block;
         padding: 0.125rem 0.5rem;
@@ -75,20 +113,116 @@
         border-radius: 0.25rem;
         margin-left: 0.5rem;
     }
+
     .highlight {
         background-color: #fff8c5;
         padding: 0 0.25rem;
         border-radius: 0.125rem;
+        font-weight: 500;
     }
+
     body[data-theme="dark"] .highlight {
         background-color: #3f3f00;
         color: #ffff80;
     }
+
     .search-info {
         text-align: center;
         color: var(--text-tertiary);
         font-size: 0.875rem;
         padding: 2rem 0;
+    }
+
+    .search-suggestions {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: var(--bg-primary);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        margin-top: 0.5rem;
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 100;
+        display: none;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .search-suggestions.show {
+        display: block;
+    }
+
+    .suggestion-item {
+        padding: 0.75rem 1rem;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    .suggestion-item:last-child {
+        border-bottom: none;
+    }
+
+    .suggestion-item:hover,
+    .suggestion-item.selected {
+        background: var(--bg-hover);
+    }
+
+    .suggestion-item .suggestion-title {
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
+
+    .suggestion-item .suggestion-type {
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 3rem;
+        color: var(--text-tertiary);
+    }
+
+    .search-stats {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+        padding: 0.5rem 0;
+        border-bottom: 1px solid var(--border-color);
+        font-size: 0.875rem;
+        color: var(--text-tertiary);
+    }
+
+    .search-time {
+        font-family: var(--font-mono);
+    }
+
+    @keyframes spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.5; }
+    }
+
+    .typing-indicator {
+        animation: pulse 1s infinite;
     }
 </style>
 {% endblock %}
@@ -97,96 +231,36 @@
 <h1 class="page-heading">搜索</h1>
 
 <div class="search-container">
-    <input type="text" id="searchBox" placeholder="输入关键词搜索文章...">
+    <div class="search-box-wrapper">
+        <input type="text" 
+               id="searchBox" 
+               placeholder="输入关键词搜索文章..." 
+               autocomplete="off"
+               aria-label="搜索文章">
+        <div class="search-loading" id="searchLoading">
+            <div class="spinner"></div>
+        </div>
+        <div class="search-suggestions" id="searchSuggestions"></div>
+    </div>
+
     <div id="searchResults"></div>
 </div>
 
-<script>
-    let searchData = [];
+<!-- 流式搜索脚本 -->
+<script type="module">
+    import { parse } from 'https://unpkg.com/jsonriver?module';
 
-    // 加载搜索索引
-    fetch('static/search-index.json')
-        .then(response => response.json())
-        .then(data => {
-            searchData = data;
-        })
-        .catch(error => console.error('加载搜索索引失败:', error));
+    const API_BASE = 'https://api.134688.xyz'; // 替换为你的API地址
+    let currentQuery = '';
+    let abortController = null;
 
+    // DOM 元素
     const searchBox = document.getElementById('searchBox');
     const searchResults = document.getElementById('searchResults');
+    const searchLoading = document.getElementById('searchLoading');
+    const suggestionsContainer = document.getElementById('searchSuggestions');
 
-    searchBox.addEventListener('input', debounce(performSearch, 300));
-
-    function performSearch() {
-        const query = searchBox.value.trim().toLowerCase();
-
-        if (!query) {
-            searchResults.innerHTML = '';
-            return;
-        }
-
-        const results = searchData.filter(item => {
-            return item.title.toLowerCase().includes(query) ||
-                   item.content.toLowerCase().includes(query) ||
-                   item.tags.some(tag => tag.toLowerCase().includes(query));
-        });
-
-        displayResults(results, query);
-    }
-
-    function displayResults(results, query) {
-        if (results.length === 0) {
-            searchResults.innerHTML = '<div class="search-info">未找到相关结果</div>';
-            return;
-        }
-
-        let html = `<div class="search-info">找到 ${results.length} 个结果</div>`;
-
-        results.forEach(result => {
-            const snippet = getSnippet(result.content, query);
-            const highlightedTitle = highlightText(result.title, query);
-            const highlightedSnippet = highlightText(snippet, query);
-
-            html += `
-                <div class="search-result">
-                    <div class="search-result-title">
-                        <a href="${result.url}">${highlightedTitle}</a>
-                    </div>
-                    <div class="search-result-snippet">${highlightedSnippet}</div>
-                    <div class="search-result-meta">
-                        ${result.date}${result.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
-                </div>
-            `;
-        });
-
-        searchResults.innerHTML = html;
-    }
-
-    function getSnippet(content, query, length = 200) {
-        const index = content.toLowerCase().indexOf(query);
-        if (index === -1) {
-            return content.substring(0, length) + '...';
-        }
-
-        const start = Math.max(0, index - 50);
-        const end = Math.min(content.length, index + 150);
-        const snippet = (start > 0 ? '...' : '') +
-                       content.substring(start, end) +
-                       (end < content.length ? '...' : '');
-        return snippet;
-    }
-
-    function highlightText(text, query) {
-        if (!query) return text;
-        const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
-        return text.replace(regex, '<span class="highlight">$1</span>');
-    }
-
-    function escapeRegex(str) {
-        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    }
-
+    // ========== 防抖函数 ==========
     function debounce(func, wait) {
         let timeout;
         return function executedFunction(...args) {
@@ -198,5 +272,260 @@
             timeout = setTimeout(later, wait);
         };
     }
+
+    // ========== 流式搜索 ==========
+    async function performStreamSearch(query) {
+        // 取消之前的请求
+        if (abortController) {
+            abortController.abort();
+        }
+
+        // 创建新的中止控制器
+        abortController = new AbortController();
+
+        // 清空并显示加载状态
+        searchResults.innerHTML = '';
+        searchLoading.classList.add('show');
+        suggestionsContainer.classList.remove('show');
+
+        try {
+            const response = await fetch(`${API_BASE}/search/stream?q=${encodeURIComponent(query)}`, {
+                signal: abortController.signal
+            });
+
+            const stream = parse(response.body.pipeThrough(new TextDecoderStream()));
+            
+            let resultCount = 0;
+            const startTime = Date.now();
+
+            // 创建结果容器
+            const statsDiv = document.createElement('div');
+            statsDiv.className = 'search-stats';
+            statsDiv.innerHTML = `
+                <span>搜索中...</span>
+                <span class="search-time">0ms</span>
+            `;
+            searchResults.appendChild(statsDiv);
+
+            const resultsContainer = document.createElement('div');
+            resultsContainer.id = 'stream-results';
+            searchResults.appendChild(resultsContainer);
+
+            for await (const result of stream) {
+                resultCount++;
+                
+                // 更新统计
+                const elapsed = Date.now() - startTime;
+                statsDiv.innerHTML = `
+                    <span>找到 ${resultCount} 个结果</span>
+                    <span class="search-time">${elapsed}ms</span>
+                `;
+
+                // 添加搜索结果
+                const resultEl = createResultElement(result, query);
+                resultsContainer.appendChild(resultEl);
+
+                // 滚动到新结果
+                resultEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            // 搜索完成
+            if (resultCount === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="no-results">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                        <p>没有找到与 "${escapeHtml(query)}" 相关的结果</p>
+                        <p style="font-size: 0.875rem; margin-top: 0.5rem;">试试其他关键词</p>
+                    </div>
+                `;
+            }
+
+        } catch (error) {
+            if (error.name === 'AbortError') {
+                console.log('搜索请求被取消');
+            } else {
+                console.error('搜索失败:', error);
+                searchResults.innerHTML = `
+                    <div class="no-results">
+                        <p>搜索失败，请重试</p>
+                    </div>
+                `;
+            }
+        } finally {
+            searchLoading.classList.remove('show');
+            abortController = null;
+        }
+    }
+
+    // ========== 实时搜索建议 ==========
+    async function getSuggestions(query) {
+        if (query.length < 2) {
+            suggestionsContainer.classList.remove('show');
+            return;
+        }
+
+        try {
+            const response = await fetch(`${API_BASE}/search/suggestions?q=${encodeURIComponent(query)}`);
+            const suggestions = await response.json();
+
+            if (suggestions.length > 0) {
+                suggestionsContainer.innerHTML = suggestions.map((s, index) => `
+                    <div class="suggestion-item" data-index="${index}">
+                        <div class="suggestion-title">${highlightText(s.title, query)}</div>
+                        <div class="suggestion-type">${s.type || '文章'}</div>
+                    </div>
+                `).join('');
+
+                suggestionsContainer.classList.add('show');
+
+                // 添加点击事件
+                suggestionsContainer.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const index = item.dataset.index;
+                        searchBox.value = suggestions[index].title;
+                        suggestionsContainer.classList.remove('show');
+                        performStreamSearch(suggestions[index].title);
+                    });
+                });
+            } else {
+                suggestionsContainer.classList.remove('show');
+            }
+        } catch (error) {
+            console.error('获取建议失败:', error);
+        }
+    }
+
+    // ========== 创建结果元素 ==========
+    function createResultElement(result, query) {
+        const div = document.createElement('div');
+        div.className = 'search-result';
+        
+        const snippet = getSnippet(result.content, query);
+        const highlightedTitle = highlightText(result.title, query);
+        const highlightedSnippet = highlightText(snippet, query);
+
+        div.innerHTML = `
+            <div class="search-result-title">
+                <a href="${result.url}">${highlightedTitle}</a>
+            </div>
+            <div class="search-result-snippet">${highlightedSnippet}</div>
+            <div class="search-result-meta">
+                ${result.date}
+                ${result.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+        `;
+
+        return div;
+    }
+
+    // ========== 工具函数 ==========
+    function getSnippet(content, query, length = 200) {
+        const index = content.toLowerCase().indexOf(query.toLowerCase());
+        if (index === -1) {
+            return content.substring(0, length) + '...';
+        }
+
+        const start = Math.max(0, index - 50);
+        const end = Math.min(content.length, index + 150);
+        return (start > 0 ? '...' : '') +
+               content.substring(start, end) +
+               (end < content.length ? '...' : '');
+    }
+
+    function highlightText(text, query) {
+        if (!query) return escapeHtml(text);
+        const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+        return escapeHtml(text).replace(regex, '<span class="highlight">$1</span>');
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function escapeRegex(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    // ========== 事件监听 ==========
+    const debouncedSearch = debounce(() => {
+        const query = searchBox.value.trim();
+        if (query.length >= 2) {
+            currentQuery = query;
+            performStreamSearch(query);
+        } else {
+            searchResults.innerHTML = '';
+            suggestionsContainer.classList.remove('show');
+        }
+    }, 300);
+
+    const debouncedSuggestions = debounce(() => {
+        const query = searchBox.value.trim();
+        getSuggestions(query);
+    }, 200);
+
+    searchBox.addEventListener('input', () => {
+        debouncedSearch();
+        debouncedSuggestions();
+    });
+
+    searchBox.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            suggestionsContainer.classList.remove('show');
+        }
+    });
+
+    // 点击外部关闭建议
+    document.addEventListener('click', (e) => {
+        if (!searchBox.contains(e.target) && !suggestionsContainer.contains(e.target)) {
+            suggestionsContainer.classList.remove('show');
+        }
+    });
+
+    // 键盘导航
+    searchBox.addEventListener('keydown', (e) => {
+        const suggestions = suggestionsContainer.querySelectorAll('.suggestion-item');
+        if (!suggestions.length) return;
+
+        const selected = suggestionsContainer.querySelector('.suggestion-item.selected');
+        let index = -1;
+
+        if (selected) {
+            index = Array.from(suggestions).indexOf(selected);
+        }
+
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            if (selected) {
+                selected.classList.remove('selected');
+                index = (index + 1) % suggestions.length;
+            } else {
+                index = 0;
+            }
+            suggestions[index].classList.add('selected');
+            suggestions[index].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            if (selected) {
+                selected.classList.remove('selected');
+                index = (index - 1 + suggestions.length) % suggestions.length;
+            } else {
+                index = suggestions.length - 1;
+            }
+            suggestions[index].classList.add('selected');
+            suggestions[index].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'Enter' && selected) {
+            e.preventDefault();
+            const title = selected.querySelector('.suggestion-title').textContent;
+            searchBox.value = title;
+            suggestionsContainer.classList.remove('show');
+            performStreamSearch(title);
+        }
+    });
 </script>
 {% endblock %}
