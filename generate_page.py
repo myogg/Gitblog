@@ -3,7 +3,6 @@ import re
 import json
 import markdown
 import shutil
-import random
 from github import Github
 from datetime import datetime, timedelta
 from jinja2 import Environment, FileSystemLoader
@@ -363,114 +362,6 @@ def generate_robots_txt():
     except Exception as e:
         print(f"❌ 生成 robots.txt 失敗: {e}")
 
-def generate_streaming_data(issues, label_dict, articles_by_year, label_info):
-    """生成流式解析所需的JSON数据文件"""
-    print("\n生成流式数据文件...")
-    
-    # 1. 生成文章流数据（用于首页流式加载）
-    articles_stream = []
-    for issue in issues:
-        # 获取摘要
-        summary = getattr(issue, 'summary', None)
-        if not summary and issue.body:
-            # 如果没有手动摘要，取前100个字符
-            clean_body = re.sub(r'<[^>]+>', '', issue.body or "")
-            clean_body = re.sub(r'\s+', ' ', clean_body).strip()
-            summary = clean_body[:100] + '...' if len(clean_body) > 100 else clean_body
-        
-        articles_stream.append({
-            'number': issue.number,
-            'title': issue.title,
-            'summary': summary,
-            'date': issue.created_at.strftime('%Y-%m-%d'),
-            'url': f'articles/article-{issue.number}.html',
-            'tags': [l.name for l in issue.labels if l.name.lower() != "pinned"]
-        })
-    
-    # 按时间倒序
-    articles_stream.sort(key=lambda x: x['date'], reverse=True)
-    
-    # 保存到 static 目录
-    os.makedirs("static", exist_ok=True)
-    with open('static/articles-stream.json', 'w', encoding='utf-8') as f:
-        json.dump(articles_stream, f, ensure_ascii=False, indent=2)
-    print(f"✓ 已生成文章流数据: {len(articles_stream)} 条")
-    
-    # 2. 生成统计数据（模拟实时数据）
-    total_articles = len([i for i in issues if not any(l.name.lower() == "pinned" for l in i.labels)])
-    
-    stats_data = {
-        'online': random.randint(15, 45),  # 15-45人在线
-        'total_views': total_articles * 150 + random.randint(-100, 300),
-        'today_views': total_articles * random.randint(2, 6),
-        'total_articles': total_articles,
-        'last_updated': datetime.now().isoformat(),
-        'update_count': random.randint(1, 10)
-    }
-    
-    with open('static/stats.json', 'w', encoding='utf-8') as f:
-        json.dump(stats_data, f, ensure_ascii=False, indent=2)
-    print(f"✓ 已生成统计数据")
-    
-    # 3. 生成年份归档数据
-    years_data = []
-    for year, year_articles in articles_by_year.items():
-        years_data.append({
-            'year': year,
-            'count': len(year_articles),
-            'url': f'archive/{year}.html'
-        })
-    
-    with open('static/years.json', 'w', encoding='utf-8') as f:
-        json.dump(years_data, f, ensure_ascii=False, indent=2)
-    print(f"✓ 已生成年份归档数据: {len(years_data)} 年")
-    
-    # 4. 生成标签云数据
-    tags_cloud = []
-    for tag_name, tag_articles in label_dict.items():
-        if tag_name in label_info:
-            tags_cloud.append({
-                'name': tag_name,
-                'count': len(tag_articles),
-                'size': min(30, 12 + len(tag_articles)),
-                'url': f'tags/{label_info[tag_name]["safe_name"]}.html'
-            })
-    
-    # 按文章数量排序
-    tags_cloud.sort(key=lambda x: x['count'], reverse=True)
-    
-    with open('static/tags-cloud.json', 'w', encoding='utf-8') as f:
-        json.dump(tags_cloud, f, ensure_ascii=False, indent=2)
-    print(f"✓ 已生成标签云数据: {len(tags_cloud)} 个标签")
-    
-    # 5. 生成最新评论模拟数据
-    recent_comments = []
-    comment_authors = ['访客', '小明', '张三', '李四', '王五', 'Anonymous', '博客迷', '技术控']
-    comment_contents = [
-        '好文章！', '学习了', '感谢分享', '很有帮助', '期待更多内容',
-        '写得不错', '受益匪浅', '赞一个', '收藏了', '支持博主',
-        '深入浅出', '讲得很清楚', '解决了我的问题', '期待更新'
-    ]
-    
-    for i in range(min(10, total_articles)):
-        if articles_stream:
-            random_article = random.choice(articles_stream)
-            recent_comments.append({
-                'id': i + 1,
-                'author': random.choice(comment_authors),
-                'content': random.choice(comment_contents),
-                'article_title': random_article['title'],
-                'article_url': random_article['url'],
-                'time': (datetime.now() - timedelta(hours=random.randint(1, 72))).isoformat()
-            })
-    
-    # 按时间倒序
-    recent_comments.sort(key=lambda x: x['time'], reverse=True)
-    
-    with open('static/recent-comments.json', 'w', encoding='utf-8') as f:
-        json.dump(recent_comments, f, ensure_ascii=False, indent=2)
-    print(f"✓ 已生成最新评论数据: {len(recent_comments)} 条")
-
 def generate_article_page(issue, all_issues, giscus_config=None, label_info=None):
     """生成文章页面"""
     try:
@@ -702,6 +593,14 @@ def main():
         except Exception as e:
             print(f"❌ 生成標籤頁 '{tag_name}' 失敗: {e}")
 
+    # --- 生成标签总览页面 --- (已禁用，用户不需要导航栏标签入口)
+    # print("生成標籤總覽頁...")
+    # try:
+    #     tags_template = env.get_template('tags.html')
+    #     ...
+    # except Exception as e:
+    #     print(f"❌ 生成標籤總覽頁失敗: {e}")
+
     # 1. 生成主頁（带分页）
     print("生成主頁...")
     try:
@@ -791,8 +690,6 @@ def main():
     generate_sitemap(issues)
     generate_robots_txt()
 
-    # 5. 生成流式数据文件
-    generate_streaming_data(issues, label_dict, articles_by_year, label_info)
 
     # 複製靜態資源
     print("複製靜態資源...")
@@ -814,12 +711,6 @@ def main():
     print(f"已生成 {len(issues)} 篇文章")
     print(f"靜態資源位置: static/")
     print(f"文章目錄: {ARTICLES_DIR}/")
-    print("\n生成的流式数据文件:")
-    print("  - static/articles-stream.json (文章流)")
-    print("  - static/stats.json (实时统计)")
-    print("  - static/years.json (年份归档)")
-    print("  - static/tags-cloud.json (标签云)")
-    print("  - static/recent-comments.json (最新评论)")
 
 if __name__ == "__main__":
     main()
