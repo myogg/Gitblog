@@ -44,3 +44,6 @@ My personal blog using issues and GitHub Actions
 ## Python (1篇文章)
 - [统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置](https://github.com/myogg/Gitblog/issues/9)--2026-02-02
 
+## wontfix (1篇文章)
+- [SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”](https://github.com/myogg/Gitblog/issues/18)--2026-03-03
+
