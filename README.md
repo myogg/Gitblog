@@ -15,7 +15,8 @@ My personal blog using issues and GitHub Actions
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml)
 
-## blog (3篇文章)
+## blog (4篇文章)
+- [什么事情改变了你?](https://github.com/myogg/Gitblog/issues/20)--2026-03-11
 - [OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放](https://github.com/myogg/Gitblog/issues/19)--2026-03-04
 - [Google 正式推出「Google AI Plus」计划](https://github.com/myogg/Gitblog/issues/5)--2026-01-28
 - [Chorus: 多模型 AI 对话的轻量级桌面应用](https://github.com/myogg/Gitblog/issues/4)--2026-01-28
