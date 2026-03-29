@@ -2,7 +2,11 @@
 
 多个机器人高并发在 GitHub 热门仓库 Issues 中大量发布黑产引流信息。
 
+![f2b11338460fa079a8b5ab189cf441cc.jpg](https://i.829259.xyz/api/rfile/f2b11338460fa079a8b5ab189cf441cc.jpg)
+
 项目仓库反复出现中文赌博等垃圾讨论。一般表现为前段贴广告图片，后段为模仿开发相关解释和 AI 模型论述。
+
+![fa121c32cb4c176c9138d8e3709bb57a.jpg](https://i.829259.xyz/api/rfile/fa121c32cb4c176c9138d8e3709bb57a.jpg)
 
 举报和拉黑流程似乎无法生效。现在此前一些受影响仓库已关闭 issue 以恢复正常。
 
@@ -15,7 +19,3 @@ https://github.com/anomalyco/opencode/issues
 https://github.com/msgpack/msgpack-node
 
 https://github.com/home-assistant/frontend/issues
-
-
-
-
