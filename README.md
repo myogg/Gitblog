@@ -44,6 +44,9 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
+## 我要想和你在一起 (1篇文章)
+- [忘天忘地忘不了你](https://github.com/myogg/Gitblog/issues/24)--2026-04-08
+
 ## 世界好精彩我想去看看 (1篇文章)
 - [程序在调动人力，完成自动化流程](https://github.com/myogg/Gitblog/issues/16)--2026-02-28
 
