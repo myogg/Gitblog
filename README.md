@@ -61,3 +61,6 @@ My personal blog using issues and GitHub Actions
 ## wontfix (1篇文章)
 - [SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”](https://github.com/myogg/Gitblog/issues/18)--2026-03-03
 
+## 天天一句話 (1篇文章)
+- [新来的领导认为安全到有点宽](https://github.com/myogg/Gitblog/issues/25)--2026-04-09
+

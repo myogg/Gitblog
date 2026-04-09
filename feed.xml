@@ -1,6 +1,8 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2026-04-08T22:39:13.778381+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/24</id><title>忘天忘地忘不了你</title><updated>2026-04-08T22:39:14.194839+00:00</updated><content type="html"><![CDATA[<p>个个都说见过花开就好，管它花落谁家，可我见过花开，未看见花结果，又怎么会甘心花落别家…曾经的最美，现在就是放心底，忘天忘地忘不了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/24"/><category term="我要想和你在一起"/><published>2026-04-08T22:38:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/23</id><title>GitHub 大量仓库 issues 疑似被爆破，遭遇巨量黑产广告攻击</title><updated>2026-04-08T22:39:14.328035+00:00</updated><content type="html"><![CDATA[<p>多个机器人高并发在 GitHub 热门仓库 Issues 中大量发布黑产引流信息。</p>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2026-04-09T00:27:06.921467+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/25</id><title>新来的领导认为安全到有点宽</title><updated>2026-04-09T00:27:07.306549+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/rfile/IMG_20260409_081630.jpg" alt="IMG_20260409_081630.jpg" /></p>
+<p>于是把安全带调整到原来的三分之二，真是人才啊!</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/25"/><category term="天天一句話"/><published>2026-04-09T00:26:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/24</id><title>忘天忘地忘不了你</title><updated>2026-04-09T00:27:07.442089+00:00</updated><content type="html"><![CDATA[<p>个个都说见过花开就好，管它花落谁家，可我见过花开，未看见花结果，又怎么会甘心花落别家…曾经的最美，现在就是放心底，忘天忘地忘不了。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/24"/><category term="我要想和你在一起"/><published>2026-04-08T22:38:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/23</id><title>GitHub 大量仓库 issues 疑似被爆破，遭遇巨量黑产广告攻击</title><updated>2026-04-09T00:27:07.584962+00:00</updated><content type="html"><![CDATA[<p>多个机器人高并发在 GitHub 热门仓库 Issues 中大量发布黑产引流信息。</p>
 <p><img src="https://i.829259.xyz/api/rfile/f2b11338460fa079a8b5ab189cf441cc.jpg" alt="f2b11338460fa079a8b5ab189cf441cc.jpg" /></p>
 <p>项目仓库反复出现中文赌博等垃圾讨论。一般表现为前段贴广告图片，后段为模仿开发相关解释和 AI 模型论述。</p>
 <p><img src="https://i.829259.xyz/api/rfile/fa121c32cb4c176c9138d8e3709bb57a.jpg" alt="fa121c32cb4c176c9138d8e3709bb57a.jpg" /></p>
@@ -10,15 +12,15 @@
 <p><a href="https://github.com/anomalyco/opencode/issues">https://github.com/anomalyco/opencode/issues</a></p>
 <p><a href="https://github.com/msgpack/msgpack-node">https://github.com/msgpack/msgpack-node</a></p>
 <p><a href="https://github.com/home-assistant/frontend/issues">https://github.com/home-assistant/frontend/issues</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/23"/><category term="blog"/><published>2026-03-29T14:35:59+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/22</id><title>侠影</title><updated>2026-04-08T22:39:14.463475+00:00</updated><content type="html"><![CDATA[<p>歌曲</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/23"/><category term="blog"/><published>2026-03-29T14:35:59+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/22</id><title>侠影</title><updated>2026-04-09T00:27:07.745151+00:00</updated><content type="html"><![CDATA[<p>歌曲</p>
 <p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTrZpwnV-2rPTPt65C3FtLjwoa0Z9xwACVx0AAu3cGFaLRoeeDyjcDjoE" controls></audio></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/22"/><category term="碎碎念"/><published>2026-03-24T11:32:57+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/21</id><title>通义实验室开源影视级配音大模型 Fun-CineForge</title><updated>2026-04-08T22:39:14.592933+00:00</updated><content type="html"><![CDATA[<p>通义实验室开源影视级配音大模型 Fun-CineForge，首次引入时间模态​​通义实验室发布并开源首个支持影视级多场景配音的多模态大模型 Fun-CineForge。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/22"/><category term="碎碎念"/><published>2026-03-24T11:32:57+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/21</id><title>通义实验室开源影视级配音大模型 Fun-CineForge</title><updated>2026-04-09T00:27:07.885515+00:00</updated><content type="html"><![CDATA[<p>通义实验室开源影视级配音大模型 Fun-CineForge，首次引入时间模态​​通义实验室发布并开源首个支持影视级多场景配音的多模态大模型 Fun-CineForge。</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260316_211641_458.jpg" alt="IMG_20260316_211641_458.jpg" /></p>
 <p>模型基于 CosyVoice3 语音合成底层能力构建，核心技术创新在于首次将&quot;时间模态&quot;引入配音模型，使其在说话人面部缺失等复杂场景下仍可实现音画同步，支持独白、旁白、对话及多说话人等多种影视配音场景，当前支持 30 秒以内视频片段推理。</p>
 <p>在独白场景对比测试中，Fun-CineForge 在词错率、唇部同步、时间对齐、音色相似度等指标上均优于 DeepDubber-V1 和 InstructDubber。模型已在 GitHub、HuggingFace 及 ModelScope 三平台同步开源。</p>
 <p>通义实验室 </p>
 <p><a href="https://mp.weixin.qq.com/s/MylZJGEYgYiBS6fq53v2XQ">https://mp.weixin.qq.com/s/MylZJGEYgYiBS6fq53v2XQ</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/21"/><category term="blog"/><published>2026-03-16T13:23:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/20</id><title>什么事情改变了你?</title><updated>2026-04-08T22:39:14.735866+00:00</updated><content type="html"><![CDATA[<p>草莓：小学五年级那年，我生了一场大病。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/21"/><category term="blog"/><published>2026-03-16T13:23:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/20</id><title>什么事情改变了你?</title><updated>2026-04-09T00:27:08.006227+00:00</updated><content type="html"><![CDATA[<p>草莓：小学五年级那年，我生了一场大病。</p>
 <p><img src="https://i.829259.xyz/api/rfile/CasA_nircam_1024.jpg" alt="CasA_nircam_1024.jpg" /></p>
 <p>父母带着我四处求医。挂不上号，就彻夜排队，在医院大厅打地铺。好不容易在某个军队医院看上，医生冷着脸，对我妈说：“不用确诊了，一看就是自身免疫缺陷病，治不好的。你们还年轻，政策允许，可以再要一个。”</p>
 <p>走廊里，我和我妈抱头痛哭。
@@ -42,7 +44,7 @@
 <p>看完病，我把手机号留给她：“有问题随时找我。孩子还在上学吧？以后每次七点半来，先给她看，不影响上课。”</p>
 <p>我想，是该报恩的时候了。</p>
 <p>爷爷，您看到了吗？那粒种子，发芽了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/20"/><category term="blog"/><published>2026-03-11T13:40:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/19</id><title>OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放</title><updated>2026-04-08T22:39:14.881358+00:00</updated><content type="html"><![CDATA[<p>OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/20"/><category term="blog"/><published>2026-03-11T13:40:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/19</id><title>OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放</title><updated>2026-04-09T00:27:08.139388+00:00</updated><content type="html"><![CDATA[<p>OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260304_193621_010.jpg" alt="IMG_20260304_193621_010.jpg" /></p>
 <p>让日常对话更流畅、更实用 </p>
 <p>GPT‑5.3 Instant 能给出更准确的答案，在网页搜索时提供更丰富、更有上下文的结果，并减少不必要的盲点、冗长的警示语和过于绝对的表述，从而避免打断对话的节奏。</p>
@@ -51,19 +53,19 @@
 <p>• GPT‑5.3 Instant 自今日起在 ChatGPT 中面向所有用户开放，开发者可通过 API 使用名为 “gpt-5.3-chat-latest” 的模型。
 • Thinking 和 Pro 版本的更新将很快推出。
 • 未来三个月，付费用户仍可在模型选择器的“旧版模型”中使用 GPT‑5.2 Instant ，之后该模型将于 2026 年 6 月 3 日停止提供。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/19"/><category term="blog"/><published>2026-03-04T11:41:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/18</id><title>SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”</title><updated>2026-04-08T22:39:15.037568+00:00</updated><content type="html"><![CDATA[<p>SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/19"/><category term="blog"/><published>2026-03-04T11:41:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/18</id><title>SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”</title><updated>2026-04-09T00:27:08.260629+00:00</updated><content type="html"><![CDATA[<p>SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260303_112354_021.jpg" alt="IMG_20260303_112354_021.jpg" /></p>
 <p>SpaceX 旗下 Starlink 宣布，其下一代 V2 卫星将为移动用户提供 100 倍于 V1 代的数据密度，旨在从太空直接提供 5G 速度。该服务此前名为 Direct to Cell，现更名为 Starlink Mobile。单颗 V2 卫星的吞吐能力约提升 20 倍，峰值速率预计可达 150 Mbps，且兼容现有 LTE 手机。</p>
 <p>SpaceX 计划部署 1.5 万颗新卫星以支撑该目标。目前 V2 Mini 卫星已在轨运行，预计 2027 年初进入初步测试阶段。</p>
 <p><a href="https://www.tomshardware.com/service-providers/network-providers/starlink-mobile-teases-5g-speeds-from-space-with-100x-the-data-density-v2-satellites-are-being-sent-into-orbit-to-power-the-upgrade">Tom's Hardware</a> | <a href="https://pic.twitter.com/ObPjtv0eEC">Starlink</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/18"/><category term="wontfix"/><published>2026-03-03T03:34:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/17</id><title>哈勃望远镜高度降至300英里或于2030年前坠毁</title><updated>2026-04-08T22:39:15.180152+00:00</updated><content type="html"><![CDATA[<p>哈勃望远镜高度降至300英里或于2030年前坠毁</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/18"/><category term="wontfix"/><published>2026-03-03T03:34:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/17</id><title>哈勃望远镜高度降至300英里或于2030年前坠毁</title><updated>2026-04-09T00:27:08.394488+00:00</updated><content type="html"><![CDATA[<p>哈勃望远镜高度降至300英里或于2030年前坠毁</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260228_231909_192.jpg" alt="IMG_20260228_231909_192.jpg" /></p>
 <p>哈勃空间望远镜在轨运行36年后轨道持续衰减，高度已从2020年的330英里降至目前的300英里。</p>
 <p>天文学家Jonathan McDowell的数据显示该设备可能在2030年前脱轨坠毁。NASA官方此前预计其再入大气层的时间不早于2030年代中期。</p>
 <p>相关研究预测哈勃最快可能在2029年进入大气层，且自航天飞机退役后该设备已无法进行常规维修。</p>
 <p>现任NASA局长Jared Isaacman曾提议利用SpaceX飞船执行维修任务以延长其寿命。尽管NASA此前因技术风险拒绝该方案，但目前不排除重启相关计划的可能性。</p>
 <p><a href="https://futurism.com/space/hubble-telescope-entering-death-spiral">Futurism</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/17"/><category term="天文"/><published>2026-02-28T15:23:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/16</id><title>程序在调动人力，完成自动化流程</title><updated>2026-04-08T22:39:15.340334+00:00</updated><content type="html"><![CDATA[<p>转自袁一峰周刊</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/17"/><category term="天文"/><published>2026-02-28T15:23:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/16</id><title>程序在调动人力，完成自动化流程</title><updated>2026-04-09T00:27:08.507994+00:00</updated><content type="html"><![CDATA[<p>转自袁一峰周刊</p>
 <p>一直以来，程序只能调动计算机，突然之间，它可以调动人力了，某个环节计算机完成不了，它就自动找人来完成。这才是新闻。</p>
 <p>这样做之所以能够成功，完全因为外卖员是一个自带 API 的人群，已经接入了软件系统，成为了自动化人力，程序可以通过接口去调用他们。</p>
 <p>你仔细思考这件事，就会意识到，在人工智能和机器人的时代，外卖员有特殊的价值，将是一个很有想象空间的职业。他们的作用绝不仅是送外卖，而是可以升级为远程操控、程序调用的人力，是“机器 + 人”自动化流程的一环。</p>
@@ -72,7 +74,7 @@
 <p>到了那时，你在网上输入提示词“我要装修房子”，真的可能一套房子就被 AI 装修好了。</p>
 <p>AI 平台因此会变成一个劳务平台，你可以通过 AI 找工作，上面有各种劳务需求，你接单去做，完成后收到报酬。</p>
 <p>总之，一旦人力接入 AI，被它调配，AI 就不止是计算机革命，而是整个社会经济都将围绕它重构了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/16"/><category term="世界好精彩我想去看看"/><published>2026-02-28T14:50:34+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/15</id><title>Netflix放弃对华纳公司的竞标</title><updated>2026-04-08T22:39:15.472260+00:00</updated><content type="html"><![CDATA[<p>Netflix放弃对华纳公司的竞标，为派拉蒙接手铺平了道路</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/16"/><category term="世界好精彩我想去看看"/><published>2026-02-28T14:50:34+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/15</id><title>Netflix放弃对华纳公司的竞标</title><updated>2026-04-09T00:27:08.611410+00:00</updated><content type="html"><![CDATA[<p>Netflix放弃对华纳公司的竞标，为派拉蒙接手铺平了道路</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260227_214443_885.jpg" alt="IMG_20260227_214443_885.jpg" /></p>
 <p>华纳兄弟去年将自己挂牌出售，周四派拉蒙表示最新的出价“优于”Netflix 的报价，并要求 Netflix 提高出价，但 Netflix 拒绝了。</p>
 <p>Netflix 的高管在公告中表示，若要匹配派拉蒙 Skydance 的最新报价，所需的价格让这笔交易在财务上不再具有吸引力，因此我们决定不予匹配。</p>
@@ -96,29 +98,29 @@
 <p>许多好莱坞人认为，Netflix 和派拉蒙之间的竞标大战没有真正的赢家。</p>
 <p>批评者担心，如果与 Netflix 达成交易，这家历史悠久的电影公司会被硅谷的流媒体巨头吞并，进而导致影院文化受损。同时，尽管派拉蒙宣传自己是好莱坞为数不多仍在坚持的电影公司之一，但与其合并也让人担忧，因为有人认为该公司与特朗普政府有政治关联。</p>
 <p>总的来说，华纳兄弟被出售将对好莱坞产生重大影响，几乎可以确定会裁减员工——这个长期受到持续制作停滞和削减影响的影视圈将再次受到冲击。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/15"/><category term="碎碎念"/><published>2026-02-27T13:50:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/14</id><title>OpenAI 推出 ChatGPT 锁定模式和风险标签功能</title><updated>2026-04-08T22:39:15.609392+00:00</updated><content type="html"><![CDATA[<p>OpenAI 宣布为 ChatGPT 引入两项新的安全保护功能，以应对日益严重的提示注入攻击风险。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/15"/><category term="碎碎念"/><published>2026-02-27T13:50:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/14</id><title>OpenAI 推出 ChatGPT 锁定模式和风险标签功能</title><updated>2026-04-09T00:27:08.753575+00:00</updated><content type="html"><![CDATA[<p>OpenAI 宣布为 ChatGPT 引入两项新的安全保护功能，以应对日益严重的提示注入攻击风险。</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260217_213245_212.jpg" alt="IMG_20260217_213245_212.jpg" /></p>
 <p>新功能包括面向高风险用户的锁定模式（Lockdown Mode）和针对特定功能的&quot;高风险&quot;标签。</p>
 <p>锁定模式专为企业高管和安全团队等高度安全敏感用户设计，通过严格限制 ChatGPT 与外部系统的交互来降低数据泄露风险。</p>
 <p>该模式下，网页浏览功能仅限于缓存内容，部分功能将被完全禁用。目前该功能已向 ChatGPT Enterprise、ChatGPT Edu 等企业版用户开放，消费者版本将在未来几个月内推出。</p>
 <p>同时，OpenAI 将对可能引入额外风险的功能统一标注&quot;高风险&quot;标签，为用户提供更清晰的风险提示。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/14"/><category term="碎碎念"/><published>2026-02-17T13:48:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>极客湾曝光手机厂商媒体送测机乱象</title><updated>2026-04-08T22:39:15.759957+00:00</updated><content type="html"><![CDATA[<p>极客湾曝光手机厂商媒体送测机乱象：芯片特挑+性能特调</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/14"/><category term="碎碎念"/><published>2026-02-17T13:48:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>极客湾曝光手机厂商媒体送测机乱象</title><updated>2026-04-09T00:27:08.876088+00:00</updated><content type="html"><![CDATA[<p>极客湾曝光手机厂商媒体送测机乱象：芯片特挑+性能特调</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260217_213245_212.jpg" alt="IMG_20260217_213245_212.jpg" /></p>
 <p>「极客湾」发布手机性能横评深度评测视频，揭露了多家手机厂商对媒体送测机进行“特调”优化的行业现象。相关厂商通过芯片体质筛选、定向性能调度策略等方式提高测试数据，使得媒体送测机的综合表现，明显优于普通消费者的零售机型。</p>
 <p>极客湾也明确指出，在搭载同代旗舰芯片平台的机型中，后续发布产品的媒体送测机，特调程度普遍较先发机型更为严重。该现象的核心原因，是手机厂商之间的性能对标内卷，最终形成了“滚雪球”效应，使得行业特调乱象持续升级。</p>
 <p>极客湾表示，希望通过此次曝光，引发消费者与行业对“特调”现象的重视；同时也呼吁各大手机厂商回归产品本身，将精力聚焦于零售机型的调校优化当中，避免因此类“特调”行为损害自身品牌的口碑。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="碎碎念"/><published>2026-02-17T13:40:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>字节跳动上线 Seedream 5.0 图像生成模型</title><updated>2026-04-08T22:39:15.881355+00:00</updated><content type="html"><![CDATA[<p>字节跳动上线 Seedream 5.0 图像生成模型，对标Nano Banana Pro</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="碎碎念"/><published>2026-02-17T13:40:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>字节跳动上线 Seedream 5.0 图像生成模型</title><updated>2026-04-09T00:27:08.993065+00:00</updated><content type="html"><![CDATA[<p>字节跳动上线 Seedream 5.0 图像生成模型，对标Nano Banana Pro</p>
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260210_213841_436.jpg" alt="IMG_20260210_213841_436.jpg" /></p>
 <p>2 月 10 日，字节跳动图像生成模型 Seedream 5.0 正式上线。该模型目前已接入视频编辑应用剪映、海外版 CapCut 及 AI 创作平台小云雀，并在即梦 AI 平台开启灰度测试。</p>
 <p>用户现可在上述平台限时免费体验图片生成功能。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="碎碎念"/><published>2026-02-10T13:41:05+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>高通将在今年9月发布骁龙8系新平台</title><updated>2026-04-08T22:39:16.002615+00:00</updated><content type="html"><![CDATA[<p>高通将在今年9月发布骁龙8系新平台——骁龙8 Elite Gen6和骁龙8 Elite Gen6 Pro，这两颗芯片都采用台积电2nm制程N2P，是高通首款2nm芯片。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="碎碎念"/><published>2026-02-10T13:41:05+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>高通将在今年9月发布骁龙8系新平台</title><updated>2026-04-09T00:27:09.151963+00:00</updated><content type="html"><![CDATA[<p>高通将在今年9月发布骁龙8系新平台——骁龙8 Elite Gen6和骁龙8 Elite Gen6 Pro，这两颗芯片都采用台积电2nm制程N2P，是高通首款2nm芯片。</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260203_223949_080.jpg" alt="IMG_20260203_223949_080.jpg" /></p>
 <p>得益于台积电更先进的工艺制程，骁龙8 Elite Gen6系列芯片组将会实现更高的频率，爆料称骁龙8 Elite Gen6 Pro的超大核主频将突破5GHz，这将是行业内CPU主频最高的手机芯片。作为对比，骁龙8 Elite Gen5的CPU主频是4.61GHz。</p>
 <p>据悉，为了让性能释放更激进，高通骁龙8 Elite Gen6 Pro采用三星Exynos 2600已经使用的Heat Pass Block散热技术，并且它还支持全新的LPDDR6内存以及UFS 5.0闪存。
 另外，骁龙8 Elite Gen6系列采用全新的2+3+3架构设计，相比上代的“2+6”架构有所调整。</p>
 <p>按照惯例，小米18系列将首发高通骁龙8 Elite Gen6系列旗舰平台，该机将在今年9月正式亮相</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="碎碎念"/><published>2026-02-03T14:45:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置</title><updated>2026-04-08T22:39:16.137555+00:00</updated><content type="html"><![CDATA[<p>大概看了一下，意思就是所有的额度都能用到claude</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="碎碎念"/><published>2026-02-03T14:45:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置</title><updated>2026-04-09T00:27:09.281621+00:00</updated><content type="html"><![CDATA[<p>大概看了一下，意思就是所有的额度都能用到claude</p>
 <!-- more -->
 <p><strong>Claude Code、Codex 与 Gemini CLI 的命令行管理工具</strong></p>
 <p>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置、MCP 服务器、Skills 扩展和系统提示词。</p>
@@ -127,11 +129,11 @@
 <p><strong>致谢：</strong> 原始架构和核心功能来自 <a href="https://github.com/farion1231/cc-switch">farion1231/cc-switch</a></p>
 <p>地址：
 <a href="https://github.com/SaladDay/cc-switch-cli">github</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Python"/><published>2026-02-02T01:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>城市地图海报生成器</title><updated>2026-04-08T22:39:16.268907+00:00</updated><content type="html"><![CDATA[<p>这是一个 Python 工具，会自动从 OpenStreetMap 中获取街道网络、水体特征和公园等信息，然后转换为世界上任何城市的精美极简地图海报。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Python"/><published>2026-02-02T01:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>城市地图海报生成器</title><updated>2026-04-09T00:27:09.393114+00:00</updated><content type="html"><![CDATA[<p>这是一个 Python 工具，会自动从 OpenStreetMap 中获取街道网络、水体特征和公园等信息，然后转换为世界上任何城市的精美极简地图海报。</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_222659_074.jpg" alt="IMG_20260128_222659_074.jpg" /></p>
 <p><a href="https://github.com/anvaka/city-roads">仓库地址</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="碎碎念"/><published>2026-01-28T14:30:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>Google 正式推出「Google AI Plus」计划</title><updated>2026-04-08T22:39:16.390273+00:00</updated><content type="html"><![CDATA[<p>仅需 ＄7.99 ！Google 正式推出「Google AI Plus」计划</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="碎碎念"/><published>2026-01-28T14:30:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>Google 正式推出「Google AI Plus」计划</title><updated>2026-04-09T00:27:09.513631+00:00</updated><content type="html"><![CDATA[<p>仅需 ＄7.99 ！Google 正式推出「Google AI Plus」计划</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_172129_726.jpg" alt="IMG_20260128_172129_726.jpg" /></p>
 <p>🔗 <a href="https://one.google.com/about/google-ai-plans/">https://one.google.com/about/google-ai-plans/</a></p>
@@ -140,7 +142,7 @@
 <p>▫️Flow AI 电影制作工具使用权限，以及 NotebookLM 的深度研究与写作辅助。</p>
 <p>▫️提供 200GB 云存储空间，并支持最多5位家庭成员共享。</p>
 <p>▫️现有的 Google One Premium 2TB 用户将在未来几天内自动升级，免费获得所有 AI Plus 权益！</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="blog"/><published>2026-01-28T10:09:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>Chorus: 多模型 AI 对话的轻量级桌面应用</title><updated>2026-04-08T22:39:16.518819+00:00</updated><content type="html"><![CDATA[<p>在一个界面同时对话多个 AI 模型，获取不同视角的答案</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="blog"/><published>2026-01-28T10:09:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>Chorus: 多模型 AI 对话的轻量级桌面应用</title><updated>2026-04-09T00:27:09.637934+00:00</updated><content type="html"><![CDATA[<p>在一个界面同时对话多个 AI 模型，获取不同视角的答案</p>
 <!-- more -->
 <p><a href="https://chorus.sh/">官网</a> ｜ <a href="https://github.com/meltylabs/chorus">Github</a></p>
 <hr />
@@ -229,7 +231,7 @@
 <li>可选代理服务：使用 Chorus 的代理</li>
 <li>无订阅费用</li>
 </ul>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="blog"/><published>2026-01-28T04:54:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>韦伯太空望远镜观测到的木星</title><updated>2026-04-08T22:39:16.669715+00:00</updated><content type="html"><![CDATA[<p>影像提供:NASA, ESA, CSA,Jupiter ERS Team;Processing:Ricardo Hueso (UPV/EHU)
+]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="blog"/><published>2026-01-28T04:54:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>韦伯太空望远镜观测到的木星</title><updated>2026-04-09T00:27:09.775836+00:00</updated><content type="html"><![CDATA[<p>影像提供:NASA, ESA, CSA,Jupiter ERS Team;Processing:Ricardo Hueso (UPV/EHU)
 &amp; Judy Schmidt</p>
 <!-- more -->
 <p><img src="https://i.829259.xyz/api/rfile/Jupiter2_WebbSchmidt_1080_annotated.jpg" alt="Jupiter2_WebbSchmidt_1080_annotated.jpg" /></p>
@@ -238,7 +240,7 @@
 <p>这张韦伯望远镜的影像中，木星的尘埃环、两极的明亮极光以及木星的卫星木卫五(Amalthea)和木卫十五(Adrastea)也清晰可见。大型火山卫星木卫一(Io埃欧)的磁力将带电粒子汇集到木星表面，这现象在南极光中也清晰可见。</p>
 <p>有些天体亮度极高，以至于光线在韦伯望远镜的光学系统中发生明显的绕射，形成条纹状的影像。</p>
 <p>韦伯望远镜在地球附近环绕太阳运行，其主镜直径超过六米，是有史以来发射的最大天文望远镜，是哈伯望远镜集光面积的六倍多。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="天文"/><published>2026-01-28T04:39:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>延髓星云</title><updated>2026-04-08T22:39:16.806875+00:00</updated><content type="html"><![CDATA[<p>说明： 是什么力量驱动著这片奇特的星云？CTB 1是大约一万年前，位于仙后座附近一颗大质量恒星爆炸后留下的不断膨胀之气体壳层。</p>
+]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="天文"/><published>2026-01-28T04:39:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>延髓星云</title><updated>2026-04-09T00:27:09.905083+00:00</updated><content type="html"><![CDATA[<p>说明： 是什么力量驱动著这片奇特的星云？CTB 1是大约一万年前，位于仙后座附近一颗大质量恒星爆炸后留下的不断膨胀之气体壳层。</p>
 <!-- more -->
 <p>延髓星云<br />
 影像提供:Pierre Konzelmann</p>
