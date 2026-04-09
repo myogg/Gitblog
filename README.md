@@ -63,5 +63,5 @@ My personal blog using issues and GitHub Actions
 
 ## 天天一句話 (2篇文章)
 - [丁香花](https://github.com/myogg/Gitblog/issues/26)--2026-04-09
-- [新来的领导认为安全到有点宽](https://github.com/myogg/Gitblog/issues/25)--2026-04-09
+- [新来的领导认为安全道有点宽](https://github.com/myogg/Gitblog/issues/25)--2026-04-09
 
