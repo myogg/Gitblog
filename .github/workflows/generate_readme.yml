@@ -10,13 +10,19 @@ on:
     branches:
       - main
     paths:
-      - main.py
+      - 'main.py'
+      - 'templates/**'
+      - 'static/**'
+      - '.github/workflows/**'
+
+permissions:
+  contents: write
 
 jobs:
   sync:
     name: Generate README
     runs-on: ubuntu-latest
-    if: github.repository_owner_id == github.event.issue.user.id || github.event_name == 'push'
+    if: github.event_name == 'push' || (github.event_name == 'issues' && github.event.issue.user.id == github.repository_owner_id) || (github.event_name == 'issue_comment' && github.event.issue.user.id == github.repository_owner_id)
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -35,14 +41,34 @@ jobs:
           pip install -r requirements.txt
 
       - name: Generate new md
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          GITHUB_TOKEN: ${{ secrets.G_TT }}
         run: |
           source venv/bin/activate
-          python main.py ${{ secrets.G_T }} ${{ github.repository }} --issue_number '${{ github.event.issue.number }}'
+          if [ -n "$ISSUE_NUMBER" ] && [ "$ISSUE_NUMBER" != "null" ]; then
+            python main.py "$GITHUB_TOKEN" "${{ github.repository }}" --issue_number "$ISSUE_NUMBER"
+          else
+            python main.py "$GITHUB_TOKEN" "${{ github.repository }}"
+          fi
 
       - name: Push README
+        env:
+          GITHUB_TOKEN: ${{ secrets.G_TT }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add BACKUP/*.md
-          git commit -a -m 'update new blog' || echo "nothing to commit"
-          git push || echo "nothing to push"
+          git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/${{ github.repository }}.git
+          # 只添加有变化的备份文件
+          find BACKUP -name "*.md" -type f | while read f; do
+            if ! git diff --quiet -- "$f" 2>/dev/null; then
+              git add "$f"
+            fi
+          done
+          # 如果有暂存的变化则提交
+          if ! git diff --cached --quiet; then
+            git commit -m 'update new blog'
+            git push
+          else
+            echo "No changes to commit"
+          fi
