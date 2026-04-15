@@ -593,6 +593,50 @@ body[data-theme="dark"] .moon-icon {
     }
 }
 
+/* 桌面端平铺导航 */
+@media (min-width: 769px) {
+    .dropdown {
+        display: flex;
+        align-items: center;
+    }
+
+    .dropdown-toggle {
+        display: none;
+    }
+
+    .dropdown-menu {
+        position: static;
+        display: flex;
+        flex-direction: row;
+        gap: 1.5rem;
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+        box-shadow: none;
+        background: transparent;
+        min-width: auto;
+        border-radius: 0;
+    }
+
+    .dropdown-menu a {
+        padding: 0.5rem 0;
+        font-size: 0.9375rem;
+        color: var(--text-secondary);
+        border-bottom: 2px solid transparent;
+    }
+
+    .dropdown-menu a:hover {
+        background: transparent;
+        color: var(--text-primary);
+        padding-left: 0;
+        border-bottom-color: var(--accent-color);
+    }
+
+    .header-right {
+        gap: 1.5rem;
+    }
+}
+
 @media (max-width: 768px) {
     .header-content {
         padding: 0.875rem 1rem;
