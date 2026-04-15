@@ -654,7 +654,65 @@ def main():
     except Exception as e:
         print(f"❌ 生成主頁失敗: {e}")
 
-    # 2. 生成搜索頁
+    # 2. 生成博客頁（带分页）
+    print("生成博客頁...")
+    try:
+        # 检查模板是否存在
+        if not os.path.exists('templates/blog.html'):
+            print("⏭️ 跳過博客頁生成 (模板不存在)")
+        else:
+            # 获取所有非置顶文章，按时间倒序（与主页相同）
+            all_articles = sorted(
+                [i for i in issues if not any(l.name.lower() == "pinned" for l in i.labels)],
+                key=lambda x: x.created_at,
+                reverse=True
+            )
+
+            # 分页设置
+            articles_per_page = 20
+            total_articles = len(all_articles)
+            total_pages = (total_articles + articles_per_page - 1) // articles_per_page
+
+            blog_template = env.get_template('blog.html')
+
+            # 生成所有分页
+            for page_num in range(1, total_pages + 1):
+                start_idx = (page_num - 1) * articles_per_page
+                end_idx = min(start_idx + articles_per_page, total_articles)
+                page_articles = all_articles[start_idx:end_idx]
+
+                # 分页信息
+                pagination = {
+                    'current_page': page_num,
+                    'total_pages': total_pages,
+                    'prev_page': f"blog-page-{page_num - 1}.html" if page_num > 2 else ("blog.html" if page_num == 2 else None),
+                    'next_page': f"blog-page-{page_num + 1}.html" if page_num < total_pages else None
+                }
+
+                # 渲染页面
+                page_html = blog_template.render(
+                    articles=page_articles,
+                    pagination=pagination,
+                    YEAR=datetime.now().year,
+                    articles_by_year=articles_by_year
+                )
+
+                # 写入文件
+                if page_num == 1:
+                    filename = "blog.html"
+                else:
+                    filename = f"blog-page-{page_num}.html"
+
+                with open(filename, "w", encoding="utf-8") as f:
+                    f.write(page_html)
+
+                print(f"✓ 生成博客页面: {filename} ({len(page_articles)} 篇文章)")
+
+            print(f"✓ 博客頁已生成 (共 {total_pages} 页)")
+    except Exception as e:
+        print(f"❌ 生成博客頁失敗: {e}")
+
+    # 4. 生成搜索頁
     if os.path.exists('templates/search.html'):
         print("生成搜索頁...")
         try:
@@ -671,7 +729,7 @@ def main():
     else:
         print("⏭️ 跳過搜索頁生成 (模板不存在)")
 
-    # 3. 生成關於頁
+    # 5. 生成關於頁
     if os.path.exists('templates/about.html'):
         print("生成關於頁...")
         try:
@@ -685,7 +743,7 @@ def main():
     else:
         print("⏭️ 跳過關於頁生成 (模板不存在)")
 
-    # 4. 生成 SEO 文件
+    # 6. 生成 SEO 文件
     print("生成 SEO 文件...")
     generate_sitemap(issues)
     generate_robots_txt()

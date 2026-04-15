@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}博客 | &lt;/&gt;北方的博客{% endblock %}
+{% block description %}xxjss - 所有博客文章列表。探索编程、人工智能、个人成长等话题。{% endblock %}
+{% block keywords %}博客,技术博客,编程,AI,个人成长,文章列表{% endblock %}
+
+{% block content %}
+<h1 class="page-heading">所有文章</h1>
+<div class="main-layout">
+    <div class="main-content">
+        <div class="articles-container">
+            {% if articles %}
+            <div class="article-cards">
+                {% for article in articles %}
+                <article class="article-card">
+                    <h2 class="article-card-title">
+                        <a href="articles/article-{{article.number}}.html">{{article.title}}</a>
+                    </h2>
+                    {% if article.summary %}
+                    <p class="article-card-summary">{{article.summary}}</p>
+                    {% endif %}
+                    <time class="article-card-date">{{article.created_at.strftime('%Y年%m月%d日')}}</time>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            {% for year, issues in articles_by_year.items() %}
+            <div class="year-section">
+                <h2 class="year-label">{{year}}</h2>
+                <div class="article-cards">
+                    {% for article in issues %}
+                    <article class="article-card">
+                        <h2 class="article-card-title">
+                            <a href="articles/article-{{article.number}}.html">{{article.title}}</a>
+                        </h2>
+                        {% if article.summary %}
+                        <p class="article-card-summary">{{article.summary}}</p>
+                        {% endif %}
+                        <time class="article-card-date">{{article.created_at.strftime('%Y年%m月%d日')}}</time>
+                    </article>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+
+        {% if pagination %}
+        <nav class="pagination">
+            <div>
+                {% if pagination.prev_page %}
+                <a href="{{pagination.prev_page}}" class="page-link">&larr; 上一页</a>
+                {% endif %}
+            </div>
+            <span class="page-info">第 {{pagination.current_page}} / {{pagination.total_pages}} 页</span>
+            <div>
+                {% if pagination.next_page %}
+                <a href="{{pagination.next_page}}" class="page-link">下一页 &rarr;</a>
+                {% endif %}
+            </div>
+        </nav>
+        {% endif %}
+    </div>
+
+    <aside class="sidebar">
+        <div class="subscribe-card">
+            <div class="subscribe-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 11a9 9 0 0 1 9 9"></path>
+                    <path d="M4 4a16 16 0 0 1 16 16"></path>
+                    <circle cx="5" cy="19" r="1"></circle>
+                </svg>
+            </div>
+            <h3 class="subscribe-title">订阅我的博客</h3>
+            <p class="subscribe-description">可以通过 <strong>Feedly</strong>, <strong>Inoreader</strong> 或 <strong>RSS</strong> 订阅。RSS 地址：</p>
+            <div class="subscribe-url-box">
+                <input type="text" readonly value="https://134688.xyz/feed.xml" class="subscribe-url-input" id="rssUrl">
+            </div>
+            <button class="subscribe-button" onclick="copyRssUrl()">订阅</button>
+        </div>
+    </aside>
+</div>
+{% endblock %}
