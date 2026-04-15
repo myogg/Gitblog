@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}搜索 - &lt;/&gt;北方的博客{% endblock %}
+
+{% block description %}搜索博客文章 - 快速查找感兴趣的技术文章和分享内容。{% endblock %}
+
+{% block keywords %}博客搜索,文章搜索,技术文章{% endblock %}
+
+{% block head_extra %}
+<style>
+    .search-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    #searchBox {
+        width: 100%;
+        padding: 0.75rem 1.25rem;
+        font-size: 1rem;
+        font-family: var(--font-sans);
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        outline: none;
+        color: var(--text-primary);
+        transition: all 0.2s ease;
+    }
+    #searchBox:focus {
+        border-color: var(--border-hover);
+        background: var(--bg-primary);
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.05);
+    }
+    #searchResults {
+        margin-top: 2rem;
+    }
+    .search-result {
+        margin-bottom: 1.5rem;
+        padding: 1.25rem;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border-color);
+        border-radius: 0.75rem;
+        transition: all 0.2s ease;
+    }
+    .search-result:hover {
+        background: var(--bg-hover);
+        border-color: var(--border-hover);
+    }
+    .search-result-title {
+        font-size: 1.125rem;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+    }
+    .search-result-title a {
+        color: var(--text-primary);
+        text-decoration: none;
+        transition: color 0.2s ease;
+    }
+    .search-result-title a:hover {
+        color: var(--text-secondary);
+    }
+    .search-result-snippet {
+        color: var(--text-secondary);
+        font-size: 0.9375rem;
+        line-height: 1.6;
+        margin-bottom: 0.75rem;
+    }
+    .search-result-meta {
+        color: var(--text-tertiary);
+        font-size: 0.8125rem;
+        font-family: var(--font-mono);
+    }
+    .search-result-meta .tag {
+        display: inline-block;
+        padding: 0.125rem 0.5rem;
+        background: var(--bg-hover);
+        border-radius: 0.25rem;
+        margin-left: 0.5rem;
+    }
+    .highlight {
+        background-color: #fff8c5;
+        padding: 0 0.25rem;
+        border-radius: 0.125rem;
+    }
+    body[data-theme="dark"] .highlight {
+        background-color: #3f3f00;
+        color: #ffff80;
+    }
+    .search-info {
+        text-align: center;
+        color: var(--text-tertiary);
+        font-size: 0.875rem;
+        padding: 2rem 0;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1 class="page-heading">搜索</h1>
+
+<div class="search-container">
+    <input type="text" id="searchBox" placeholder="输入关键词搜索文章...">
+    <div id="searchResults"></div>
+</div>
+
+<script>
+    let searchData = [];
+
+    // 加载搜索索引
+    fetch('static/search-index.json')
+        .then(response => response.json())
+        .then(data => {
+            searchData = data;
+        })
+        .catch(error => console.error('加载搜索索引失败:', error));
+
+    const searchBox = document.getElementById('searchBox');
+    const searchResults = document.getElementById('searchResults');
+
+    searchBox.addEventListener('input', debounce(performSearch, 300));
+
+    function performSearch() {
+        const query = searchBox.value.trim().toLowerCase();
+
+        if (!query) {
+            searchResults.innerHTML = '';
+            return;
+        }
+
+        const results = searchData.filter(item => {
+            return item.title.toLowerCase().includes(query) ||
+                   item.content.toLowerCase().includes(query) ||
+                   item.tags.some(tag => tag.toLowerCase().includes(query));
+        });
+
+        displayResults(results, query);
+    }
+
+    function displayResults(results, query) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="search-info">未找到相关结果</div>';
+            return;
+        }
+
+        let html = `<div class="search-info">找到 ${results.length} 个结果</div>`;
+
+        results.forEach(result => {
+            const snippet = getSnippet(result.content, query);
+            const highlightedTitle = highlightText(result.title, query);
+            const highlightedSnippet = highlightText(snippet, query);
+
+            html += `
+                <div class="search-result">
+                    <div class="search-result-title">
+                        <a href="${result.url}">${highlightedTitle}</a>
+                    </div>
+                    <div class="search-result-snippet">${highlightedSnippet}</div>
+                    <div class="search-result-meta">
+                        ${result.date}${result.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            `;
+        });
+
+        searchResults.innerHTML = html;
+    }
+
+    function getSnippet(content, query, length = 200) {
+        const index = content.toLowerCase().indexOf(query);
+        if (index === -1) {
+            return content.substring(0, length) + '...';
+        }
+
+        const start = Math.max(0, index - 50);
+        const end = Math.min(content.length, index + 150);
+        const snippet = (start > 0 ? '...' : '') +
+                       content.substring(start, end) +
+                       (end < content.length ? '...' : '');
+        return snippet;
+    }
+
+    function highlightText(text, query) {
+        if (!query) return text;
+        const regex = new RegExp(`(${escapeRegex(query)})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+
+    function escapeRegex(str) {
+        return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    function debounce(func, wait) {
+        let timeout;
+        return function executedFunction(...args) {
+            const later = () => {
+                clearTimeout(timeout);
+                func(...args);
+            };
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+        };
+    }
+</script>
+{% endblock %}

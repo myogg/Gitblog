@@ -4,10 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-This repository contains two distinct projects:
+This repository contains the Gitblog project:
 
-1. **Gitblog** - A GitHub Issues-based blog system that generates static pages from GitHub Issues
-2. **aria** - A Static.dev blog/portfolio template (likely imported or in development)
+- **Gitblog** - A GitHub Issues-based blog system that generates static pages from GitHub Issues
 
 ## Gitblog Project
 
@@ -130,48 +129,6 @@ ls -la static/         # CSS, JS, search index
 - Search functionality uses client-side JavaScript with `static/search-index.json`
 - Giscus commenting system requires repository ID and category ID environment variables
 
-## aria Project
-
-aria is a complete Static.dev blog/portfolio template using Tailwind CSS. It's a static site generator with content organized in collections, pages, and includes.
-
-### Key Files
-- `package.json` - Node.js dependencies (@tailwindcss/typography)
-- `tailwind.config.js` - Tailwind CSS configuration
-- `.github/workflows/static.yml` - GitHub Pages deployment workflow
-- `collections/` - JSON data files for posts, projects, experiences, menu
-- `content/` - Markdown content for blog posts
-- `includes/` - Reusable HTML components
-- `layouts/` - Main layout template
-- `pages/` - Page templates (index, about, posts, projects)
-- `assets/` - Images, CSS, JS static files
-
-### Architecture
-1. **Content Organization**:
-   - `collections/*.json` - Structured data for site sections
-   - `content/post/*.md` - Markdown blog posts with frontmatter
-2. **Templating**: HTML templates with Tailwind CSS classes
-3. **Build Process**: Uses Static.dev CLI (`@devdojo/static`) to generate static site
-4. **Deployment**: GitHub Actions builds and deploys to GitHub Pages
-
-### Development
-
-```bash
-# Navigate to aria directory
-cd aria
-
-# Install dependencies
-npm install
-
-# Build the static site (requires Static.dev CLI)
-npx @devdojo/static build
-# Outputs to _site/ directory
-
-# For local development with live reload (if configured):
-npx @devdojo/static serve
-```
-
-### Deployment
-The `.github/workflows/static.yml` workflow automatically builds and deploys on push to main branch using Static.dev CLI.
 
 ## Repository Structure
 
@@ -186,9 +143,6 @@ The `.github/workflows/static.yml` workflow automatically builds and deploys on 
 │   ├── generate_page.py        # Full static site generator
 │   ├── generate_preview.py     # Local preview generator
 │   └── requirements.txt        # Python dependencies
-└── aria/                       # Static.dev blog template
-    ├── package.json            # Node.js dependencies
-    └── tailwind.config.js      # Tailwind CSS config
 ```
 
 ## Workflow Summary
@@ -213,6 +167,3 @@ The `.github/workflows/static.yml` workflow automatically builds and deploys on 
 - Verify `GISCUS_REPO_ID` and `GISCUS_CATEGORY_ID` environment variables are set
 - Check giscus.app configuration matches repository
 
-### aria Build Failures
-- Ensure Static.dev CLI is installed: `npm install -g @devdojo/static`
-- Check Tailwind CSS configuration
