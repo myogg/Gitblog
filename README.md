@@ -34,6 +34,9 @@ My personal blog using issues and GitHub Actions
 
 </details>
 
+## 世界好精彩我想去转转 (1篇文章)
+- [竹筍的超級潛力：它為何是營養界的黑馬？](https://github.com/myogg/gitblog/issues/15)--2026-04-16
+
 ## 2026 (1篇文章)
 - [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
 
