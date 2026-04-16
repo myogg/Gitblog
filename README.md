@@ -15,16 +15,17 @@ My personal blog using issues and GitHub Actions
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/gitblog/master/feed.xml)
 
-## 正文 (11篇文章)
+## 正文 (12篇文章)
+- [cloudflare 提供安全的私有网络——隆重推出 Cloudflare Mesh](https://github.com/myogg/gitblog/issues/17)--2026-04-16
 - [多家境内银行发行的万事达卡支持绑定到 Apple Pay](https://github.com/myogg/gitblog/issues/14)--2026-04-16
 - [Claude 引入身份验证机制](https://github.com/myogg/gitblog/issues/13)--2026-04-15
 - [Google 推出 官方桌面端应用](https://github.com/myogg/gitblog/issues/12)--2026-04-15
 - [Anthropic 宣布在 Claude 平台推行身份验证机制](https://github.com/myogg/gitblog/issues/11)--2026-04-15
-- [加州审计报告指控科技巨头无视 Cookie 拒绝信号，宁愿支付数十亿罚金也要继续追踪](https://github.com/myogg/gitblog/issues/10)--2026-04-15
 
 <details>
-<summary>显示更多 (6篇)</summary>
+<summary>显示更多 (7篇)</summary>
 
+- [加州审计报告指控科技巨头无视 Cookie 拒绝信号，宁愿支付数十亿罚金也要继续追踪](https://github.com/myogg/gitblog/issues/10)
 - [哆啦A梦结束近半个世纪的连载](https://github.com/myogg/gitblog/issues/9)
 - [Anna's Archive 被判赔偿 Spotify 及唱片公司 3.22 亿美元](https://github.com/myogg/gitblog/issues/8)
 - [最新研究警告称，人工智能的使用似乎会对人类认知产生“温水煮青蛙”效应](https://github.com/myogg/gitblog/issues/7)
@@ -40,7 +41,8 @@ My personal blog using issues and GitHub Actions
 ## 碎碎念 (1篇文章)
 - [这小视频是不能看，看一场哭一场！](https://github.com/myogg/gitblog/issues/16)--2026-04-16
 
-## 2026 (1篇文章)
+## 2026 (2篇文章)
+- [cloudflare 提供安全的私有网络——隆重推出 Cloudflare Mesh](https://github.com/myogg/gitblog/issues/17)--2026-04-16
 - [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
 
 ## blog (4篇文章)
