@@ -15,16 +15,17 @@ My personal blog using issues and GitHub Actions
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/gitblog/master/feed.xml)
 
-## 正文 (13篇文章)
+## 正文 (14篇文章)
+- [DeepSeek 发布 DeepGEMM 重大更新：推出 Mega MoE 融合算子并支持 FP4 精度](https://github.com/myogg/gitblog/issues/19)--2026-04-16
 - [IETF 发布 IPv8 草案：实现 100% 向后兼容并解决地址枯竭](https://github.com/myogg/gitblog/issues/18)--2026-04-16
 - [cloudflare 提供安全的私有网络——隆重推出 Cloudflare Mesh](https://github.com/myogg/gitblog/issues/17)--2026-04-16
 - [多家境内银行发行的万事达卡支持绑定到 Apple Pay](https://github.com/myogg/gitblog/issues/14)--2026-04-16
 - [Claude 引入身份验证机制](https://github.com/myogg/gitblog/issues/13)--2026-04-15
-- [Google 推出 官方桌面端应用](https://github.com/myogg/gitblog/issues/12)--2026-04-15
 
 <details>
-<summary>显示更多 (8篇)</summary>
+<summary>显示更多 (9篇)</summary>
 
+- [Google 推出 官方桌面端应用](https://github.com/myogg/gitblog/issues/12)
 - [Anthropic 宣布在 Claude 平台推行身份验证机制](https://github.com/myogg/gitblog/issues/11)
 - [加州审计报告指控科技巨头无视 Cookie 拒绝信号，宁愿支付数十亿罚金也要继续追踪](https://github.com/myogg/gitblog/issues/10)
 - [哆啦A梦结束近半个世纪的连载](https://github.com/myogg/gitblog/issues/9)
