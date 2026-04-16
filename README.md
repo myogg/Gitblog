@@ -37,10 +37,14 @@ My personal blog using issues and GitHub Actions
 ## 世界好精彩我想去转转 (1篇文章)
 - [竹筍的超級潛力：它為何是營養界的黑馬？](https://github.com/myogg/gitblog/issues/15)--2026-04-16
 
+## 碎碎念 (1篇文章)
+- [这小视频是不能看，看一场哭一场！](https://github.com/myogg/gitblog/issues/16)--2026-04-16
+
 ## 2026 (1篇文章)
 - [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
 
-## blog (3篇文章)
+## blog (4篇文章)
+- [这小视频是不能看，看一场哭一场！](https://github.com/myogg/gitblog/issues/16)--2026-04-16
 - [忘天忘地忘不了你](https://github.com/myogg/gitblog/issues/3)--2026-04-15
 - [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
 - [丁香花](https://github.com/myogg/gitblog/issues/1)--2026-04-15
