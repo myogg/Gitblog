@@ -13,4 +13,32 @@ My personal blog using issues and GitHub Actions
 
 **2."我们没有希望，他们也没有希望，这就是希望。"**
 
+[RSS Feed](https://raw.githubusercontent.com/myogg/gitblog/master/feed.xml)
+
+## 正文 (11篇文章)
+- [多家境内银行发行的万事达卡支持绑定到 Apple Pay](https://github.com/myogg/gitblog/issues/14)--2026-04-16
+- [Claude 引入身份验证机制](https://github.com/myogg/gitblog/issues/13)--2026-04-15
+- [Google 推出 官方桌面端应用](https://github.com/myogg/gitblog/issues/12)--2026-04-15
+- [Anthropic 宣布在 Claude 平台推行身份验证机制](https://github.com/myogg/gitblog/issues/11)--2026-04-15
+- [加州审计报告指控科技巨头无视 Cookie 拒绝信号，宁愿支付数十亿罚金也要继续追踪](https://github.com/myogg/gitblog/issues/10)--2026-04-15
+
+<details>
+<summary>显示更多 (6篇)</summary>
+
+- [哆啦A梦结束近半个世纪的连载](https://github.com/myogg/gitblog/issues/9)
+- [Anna's Archive 被判赔偿 Spotify 及唱片公司 3.22 亿美元](https://github.com/myogg/gitblog/issues/8)
+- [最新研究警告称，人工智能的使用似乎会对人类认知产生“温水煮青蛙”效应](https://github.com/myogg/gitblog/issues/7)
+- [因色情深伪内容泛滥，苹果曾威胁将 Grok 移出 App Store](https://github.com/myogg/gitblog/issues/6)
+- [法国国民议会全票通过法案，简化殖民时期掠夺文物归还程序](https://github.com/myogg/gitblog/issues/5)
+- [百度文心开源 8B 文生图模型 ERNIE-Image：文字渲染达 SOTA，支持消费级显卡运行](https://github.com/myogg/gitblog/issues/4)
+
+</details>
+
+## 2026 (1篇文章)
+- [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
+
+## blog (3篇文章)
+- [忘天忘地忘不了你](https://github.com/myogg/gitblog/issues/3)--2026-04-15
+- [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
+- [丁香花](https://github.com/myogg/gitblog/issues/1)--2026-04-15
 

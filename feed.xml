@@ -1,254 +1,95 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/Gitblog</id><title>RSS feed of myogg's Gitblog</title><updated>2026-04-09T03:03:51.780169+00:00</updated><link href="https://github.com/myogg/Gitblog"/><link href="https://raw.githubusercontent.com/myogg/Gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/Gitblog/issues/26</id><title>丁香花</title><updated>2026-04-09T03:03:52.218574+00:00</updated><content type="html"><![CDATA[<p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTr9p1v9epFK8mYd0AVZlabzypfifiQACch4AAvMFuVZAzL1e5dsU3DsE" controls></audio></p>
-<p>一曲丁香花送给自己。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/26"/><category term="天天一句話"/><published>2026-04-09T01:25:18+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/25</id><title>新来的领导认为安全道有点宽</title><updated>2026-04-09T03:03:52.350399+00:00</updated><content type="html"><![CDATA[<p><img src="https://pic.imgdd.cc/item/69d6f4dc59fd9b4a67b1b170.jpg" alt="" /></p>
-<p>于是把安全带调整到原来的三分之二，真是人才啊!</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/25"/><category term="天天一句話"/><published>2026-04-09T00:26:37+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/24</id><title>忘天忘地忘不了你</title><updated>2026-04-09T03:03:52.477869+00:00</updated><content type="html"><![CDATA[<p>个个都说见过花开就好，管它花落谁家，可我见过花开，未看见花结果，又怎么会甘心花落别家…曾经的最美，现在就是放心底，忘天忘地忘不了。</p>
+<feed xmlns="http://www.w3.org/2005/Atom"><id>https://github.com/myogg/gitblog</id><title>RSS feed of myogg's gitblog</title><updated>2026-04-16T01:17:00.528647+00:00</updated><link href="https://github.com/myogg/gitblog"/><link href="https://raw.githubusercontent.com/myogg/gitblog/master/feed.xml" rel="self"/><generator uri="https://lkiesow.github.io/python-feedgen" version="1.0.0">python-feedgen</generator><entry><id>https://github.com/myogg/gitblog/issues/14</id><title>多家境内银行发行的万事达卡支持绑定到 Apple Pay</title><updated>2026-04-16T01:17:00.872335+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/rfile/IMG_20260416_091502_801.jpg" alt="IMG_20260416_091502_801.jpg" /></p>
+<p>持有中国银行、中国农业银行、中信银行、上海浦东发展银行发行的万事达信用卡，及中信银行发行的万事达借记卡的顾客，将卡片添加到 Apple 钱包 app 后您可以在支持 Apple Pay 的海外国家和地区使用，该功能在卡片发行的国家和地区暂不适用。</p>
+<p>设备要求：需使用安装 iOS 17.0 或更新系统的 iPhone、安装 watchOS 10 或更新系统的 Apple Watch 或安装 iPad OS 17 或更新系统的 iPad，并升级至最新版本的发卡银行 App。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/14"/><category term="正文"/><published>2026-04-16T01:16:33+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/13</id><title>Claude 引入身份验证机制</title><updated>2026-04-16T01:17:01.038759+00:00</updated><content type="html"><![CDATA[<p>Claude 引入身份验证机制，一些用户已被要求提供信息</p>
+<p><img src="https://i.829259.xyz/api/rfile/IMG_20260416_000400_373.jpg" alt="IMG_20260416_000400_373.jpg" /></p>
+<p>被要求验证的用户必须提交政府颁发的带照片的ID，可能还需要实时自拍验证。</p>
+<p>上周， Claude 在帮助中心发布了名为 &quot;Claude 上的身份验证&quot; / &quot;Identity verification on Claude&quot; 的文档。</p>
+<p>在 Reddit （1 / 2）上已有用户发帖表示：收到 Claude 要求「进行身份验证」的邮件（通过分析聊天记录，用户被系统判定为“疑似未成年”）。</p>
+<p>公告提到了即使提交验证仍面临封禁的几种情况：
+•  重复违反我们的使用政策
+• 从不支持的位置创建账户
+• 违反服务条款/
+• 18 岁以下使用</p>
+<p>—————</p>
+<p>公告原文如下（原文档可能随时更新，注意时效性）：</p>
+<p>负责任地使用强大的技术始于了解谁在使用它。身份验证帮助我们防止滥用、执行使用政策并遵守法律义务。</p>
+<p>我们如何验证？
+我们选择 Persona Identities 作为验证合作伙伴，基于他们的技术强度、隐私控制和安全保障。请按照以下步骤完成您的身份验证过程。</p>
+<p>您需要准备什么(开始前，请准备好以下物品)：
+• 有效的政府颁发的带照片的身份证件：实体文件，在手边</p>
+<p>• 带摄像头的手机或电脑：您可能需要用手机拍摄实时自拍照，或使用网络摄像头 </p>
+<p>• 几分钟时间：验证通常需要不到五分钟</p>
+<p>接受的证件类型（我们接受来自大多数国家的原始、实体政府颁发的带照片的身份证件,常见例子包括：）
+• 护照（Passport）</p>
+<p>• 驾照、州（state）/省（provincial）颁发的身份证件</p>
+<p>• 国民身份证（National identity card  ）</p>
+<p>您的身份证件必须为政府签发、清晰可辨、完好无损，并附有您的照片。</p>
+<p>我们不接受：
+• 复印件、截图、扫描件或照片的照片</p>
+<p>• 数字或移动身份证件（如移动驾驶执照）</p>
+<p>• 非政府身份证件：学生证、员工证、图书卡、银行卡</p>
+<p>• 临时纸质身份证件</p>
+<p>如果我的验证失败怎么办？
+验证可能因多种原因失败：照片模糊、文件不清晰、身份证件过期或技术问题。</p>
+<p>如果您的身份验证未通过：</p>
+<ol>
+<li>
+<p>重试。您在验证流程中将有多次尝试机会——大多数失败可以通过在更好的光线下重新拍照或使用不同的政府颁发的带照片的身份证件来解决。</p>
+</li>
+<li>
+<p>检查您的文件。确保您的身份证件完好无损且清晰易读。</p>
+</li>
+<li>
+<p>联系我们。如果您已用完尝试次数仍无法验证，请通过此表单与我们联系，我们会查看。</p>
+</li>
+</ol>
+<p>为什么我的账户在验证后被禁用了？
+作为我们安全流程的一部分，我们可能因多种原因禁用账户：</p>
+<p>• 重复违反我们的使用政策</p>
+<p>• 从不支持的位置创建账户</p>
+<p>• 违反服务条款</p>
+<p>• 18 岁以下使用</p>
+<p>如果您认为您的账户被错误禁用，请填写申诉表并提供您的账户信息，以便我们的安全团队进一步调查您的账户被禁用的原因。</p>
+<p>您的数据如何受到保护
+我们知道提交身份证件是一个重要的请求，我们设计了这个过程来在每一步保护您的信息。</p>
+<p>• Anthropic 是您验证数据的数据控制者。这意味着我们制定了如何使用和保留数据的规则。Persona 代表我们处理数据，按照我们的指示。</p>
+<p>• 您的身份证件和自拍照由 Persona 收集和保存，不在 Anthropic 的系统上。Anthropic 可以在需要时通过 Persona 的平台访问验证记录——例如，审查申诉——但我们不会自己复制或存储这些图像。</p>
+<p>• Persona 在如何使用您的数据方面受到合同限制：仅用于提供和支持验证，以及改进他们防止欺诈的能力。他们必须使用行业标准安全控制来保护数据，并按照我们设定的保留期限和适用法律删除数据。</p>
+<p>• 所有传输到 Persona 的数据都在传输中和静止时进行加密。</p>
+<p>有关我们如何处理个人数据的完整详情，请参阅我们的隐私政策。</p>
+<p>我们不会这样做
+• 我们不使用您的身份数据来训练我们的模型。验证数据仅用于确认您的身份以及满足我们的法律和安全义务。</p>
+<p>• 我们不收集超过我们需要的信息。我们仅要求验证您身份所需的最少信息。</p>
+<p>• 我们不与任何人分享您的身份数据。验证数据仅在您、Persona 和 Anthropic 之间保留，除非我们在法律上被要求响应有效的法律程序。您的验证数据永远不会与第三方共享用于营销、广告或任何与验证和合规无关的目的。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/13"/><category term="正文"/><published>2026-04-15T16:06:21+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/12</id><title>Google 推出 官方桌面端应用</title><updated>2026-04-16T01:17:01.169807+00:00</updated><content type="html"><![CDATA[<p>🥰 Google 推出 官方桌面端应用「Google app for desktop」</p>
+<p><img src="https://i.829259.xyz/api/rfile/IMG_20260416_000010_927.jpg" alt="IMG_20260416_000010_927.jpg" /></p>
+<p>安装之后，按下「Alt + Space」即可瞬间唤出搜索框，内置 AI Mode、屏幕理解与 Google Lens、跨域搜索等功能。</p>
+<p>实际体验就是把 Gemini 搬到了桌面，可以更便捷的问 AI，目前仅 Windows 可用，仅支持英文。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/12"/><category term="正文"/><published>2026-04-15T16:02:14+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/11</id><title>Anthropic 宣布在 Claude 平台推行身份验证机制</title><updated>2026-04-16T01:17:01.305816+00:00</updated><content type="html"><![CDATA[<p>Anthropic 正在其 Claude 平台逐步推行身份验证机制，当用户访问特定功能或触发常规平台完整性检查时，系统会要求通过第三方合作伙伴 Persona Identities 完成验证以防止滥用、执行使用政策并履行法律义务，用户需提供有效的政府签发证件（如护照、驾照或国民身份证）并拍摄实时自拍。身份验证数据仅用于确认用户身份及合规用途，不会用于模型训练，也不会共享给第三方用于营销。</p>
+<p>若验证后发现用户多次违反政策、来自不支持的地区或未满 18 岁，其账号仍可能被封禁。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/11"/><category term="正文"/><published>2026-04-15T15:20:52+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/10</id><title>加州审计报告指控科技巨头无视 Cookie 拒绝信号，宁愿支付数十亿罚金也要继续追踪</title><updated>2026-04-16T01:17:01.426494+00:00</updated><content type="html"><![CDATA[<p>加州审计机构 webXray 发布的 2026 年 3 月审计报告显示，Google、微软和 Meta 等广告技术巨头在用户明确选择拒绝追踪后，依然通过 Cookie 持续监测用户行为。审计发现，样本中 55% 的网站在用户拒绝后仍会植入 Cookie，78% 的同意横幅未能执行用户选择。webXray 指出，这些公司倾向于将潜在的巨额罚金视为经营成本，而非合规红线，预计相关公司可能面临总计约 58 亿美元的罚款。</p>
+<p>具体数据显示，Google 忽略了 86% 的退出请求，并在 77% 的站点上保持追踪；微软忽略了约半数信号，在 35% 的站点上继续追踪；Meta 的代码甚至被指根本不检查退出信号。尽管三家公司均对报告结果表示异议，称其误解了技术实现方式或部分 Cookie 为功能必需，但审计通过公开网络流量直接追踪到了违规行为。webXray 创始人 Timothy Libert 表示，科技巨头高层往往将合规罚款等同于税收，缺乏真正的合规动力。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/10"/><category term="正文"/><published>2026-04-15T15:20:03+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/9</id><title>哆啦A梦结束近半个世纪的连载</title><updated>2026-04-16T01:17:01.527648+00:00</updated><content type="html"><![CDATA[<p>日本小学馆旗下少年漫画杂志《月刊 CoroCoro Comic》在 2026 年 4 月 15 日发售的 5 月号上宣布，正在连载的《藤子·F·不二雄名作剧场 哆啦 A 梦》正式完结。该系列作为《哆啦 A 梦》单行本内容的再版连载，在当期杂志末尾刊登了感谢读者长期支持的致意公告。</p>
+<p>《哆啦 A 梦》与该杂志渊源深厚，自 1977 年创刊起便开始连载，直至作者藤子·F·不二雄于 1996 年逝世。随后，该作于 2002 年 4 月以再版形式回归，并从 2008 年 8 月起更名为现名持续刊载。小学馆宣传部门表示，此次连载结束是基于编辑部的方针调整。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/9"/><category term="正文"/><published>2026-04-15T15:19:19+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/8</id><title>Anna's Archive 被判赔偿 Spotify 及唱片公司 3.22 亿美元</title><updated>2026-04-16T01:17:01.648974+00:00</updated><content type="html"><![CDATA[<p>美国纽约南区联邦地区法院近日针对影子图书馆 Anna’s Archive 作出缺席判决，要求其向 Spotify 及索尼、环球、华纳三大唱片公司支付总计 3.222 亿美元的损害赔偿。由于该网站运营商未出庭辩护，法官 Jed Rakoff 批准了原告方的全部诉讼请求。</p>
+<p>除巨额赔偿外，法院还签发了全球永久禁令，强制要求域名注册局及 Cloudflare 等服务商永久停用 annas-archive.org 等 10 个相关域名，并停止提供托管服务。判决书还命令该网站在 10 个工作日内销毁所有从 Spotify 抓取的数据，并提交包含运营者真实联系方式的合规报告。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/8"/><category term="正文"/><published>2026-04-15T15:17:49+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/7</id><title>最新研究警告称，人工智能的使用似乎会对人类认知产生“温水煮青蛙”效应</title><updated>2026-04-16T01:17:01.790136+00:00</updated><content type="html"><![CDATA[<p>一项由英美多所顶尖高校联合开展的最新研究表明，在写作、编程和数学等推理密集型任务中过度依赖 AI，会迅速损害使用者的智力水平及面对困难时的坚持意愿。实验显示，参与者仅使用 AI 辅助解决问题 10 分钟后，一旦失去支持，其表现便会显著变差，且直接放弃任务的频率远高于从未接触过 AI 的对照组。</p>
+<p>研究人员将此现象比作“温水煮青蛙”。尽管 AI 提升了短期效率，却是以沉重的认知成本为代价，悄无声息地削弱了长期学习所需的动力与韧性。此外，交互方式决定了负面影响的程度：直接索要答案的用户受损最重，而仅将其用于获取提示或澄清问题的用户表现相对较好。团队警告，若大规模将认知劳动外包，恐将导致新一代学习者丧失独立思考的信心，进而稀释整个人类的创新力。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/7"/><category term="正文"/><published>2026-04-15T15:16:33+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/6</id><title>因色情深伪内容泛滥，苹果曾威胁将 Grok 移出 App Store</title><updated>2026-04-16T01:17:01.901383+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/rfile/IMG_20260415_231442_100.jpg" alt="IMG_20260415_231442_100.jpg" /></p>
+<p>苹果公司在致美国参议员的一封信中透露，因 xAI 旗下的聊天机器人 Grok 涉及生成色情深伪（Deepfakes）图像，苹果曾私下威胁要将其从 App Store 下架。苹果指出，Grok 违反了应用商店指南，并要求开发团队制定内容审核改进计划。在多次拒绝不合规的更新后，苹果最终在确认 Grok 做出实质性改进后批准了其最新提交的版本。</p>
+<p>尽管 Grok 已实施相关限制，但最新调查显示，该工具仍能被部分用户绕过限制，生成未经授权的女性色情化图像。此前，xAI 为应对舆论压力，已对 Grok 的图像工具使用权限及涉及真实人物的照片编辑功能进行了限制。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/6"/><category term="正文"/><published>2026-04-15T15:15:42+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/5</id><title>法国国民议会全票通过法案，简化殖民时期掠夺文物归还程序</title><updated>2026-04-16T01:17:02.012947+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/rfile/IMG_20260415_231214_025.jpg" alt="IMG_20260415_231214_025.jpg" /></p>
+<p>法国国民议会于 4 月 13 日以 170 票赞成、0 票反对的结果，表决通过了一项简化殖民时期掠夺文物归还程序的法案。该法案适用范围涵盖 1815 年至 1972 年间法国获取的文物。议员热雷米·帕特里耶-莱图斯在发言中引用文豪维克多·雨果的愿景，称法兰西将不义之财归还被抢掠中国的“这一天终于到来”。</p>
+<p>除简化归还流程外，议员们还投票通过条款，要求政府每年公布涉嫌非法获取的文物清单。此前，法国总统马克龙曾多次表达推动归还文物的意愿，并于 2018 年决定向贝宁归还 26 件文物。尽管该举措一度引发关于法国“公共遗产不可让与”原则的争议，但此次法案的通过标志着相关法律程序进入了最终落实阶段。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/5"/><category term="正文"/><published>2026-04-15T15:13:54+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/4</id><title>百度文心开源 8B 文生图模型 ERNIE-Image：文字渲染达 SOTA，支持消费级显卡运行</title><updated>2026-04-16T01:17:02.140022+00:00</updated><content type="html"><![CDATA[<p><img src="https://i.829259.xyz/api/rfile/IMG_20260415_224400_570.jpg" alt="IMG_20260415_224400_570.jpg" /></p>
+<p>百度开源文生图模型 ERNIE-Image。该模型基于单流 Diffusion Transformer（DiT）架构，参数规模为 8B，仅需 24 GB 显存的消费级显卡即可实现高精度图像生成。</p>
+<p>在 GenEval、LongText-Bench 等国际基准测试中，其指令遵循与文字渲染能力均达到开源模型领先水平（SOTA），尤其在处理中英日韩多语言排版、复杂多主体关系和结构化布局方面表现突出。</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/4"/><category term="正文"/><published>2026-04-15T14:46:15+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/3</id><title>忘天忘地忘不了你</title><updated>2026-04-16T01:17:02.253129+00:00</updated><content type="html"><![CDATA[<p>个个都说见过花开就好，管它花落谁家，可我见过花开，未看见花结果，又怎么会甘心花落别家…曾经的最美，现在就是放心底，忘天忘地忘不了。</p>
 <p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTsBp1wABYaTJ_Y7xQTakpU_IMe4bw2MAAnUeAALzBblWhAABqJGiNiQWOwQ" controls></audio></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/24"/><category term="我要想和你在一起"/><published>2026-04-08T22:38:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/23</id><title>GitHub 大量仓库 issues 疑似被爆破，遭遇巨量黑产广告攻击</title><updated>2026-04-09T03:03:52.611197+00:00</updated><content type="html"><![CDATA[<p>多个机器人高并发在 GitHub 热门仓库 Issues 中大量发布黑产引流信息。</p>
-<p><img src="https://i.829259.xyz/api/rfile/f2b11338460fa079a8b5ab189cf441cc.jpg" alt="f2b11338460fa079a8b5ab189cf441cc.jpg" /></p>
-<p>项目仓库反复出现中文赌博等垃圾讨论。一般表现为前段贴广告图片，后段为模仿开发相关解释和 AI 模型论述。</p>
-<p><img src="https://i.829259.xyz/api/rfile/fa121c32cb4c176c9138d8e3709bb57a.jpg" alt="fa121c32cb4c176c9138d8e3709bb57a.jpg" /></p>
-<p>举报和拉黑流程似乎无法生效。现在此前一些受影响仓库已关闭 issue 以恢复正常。</p>
-<p><a href="https://github.com/microsoft/WSL/issues">https://github.com/microsoft/WSL/issues</a></p>
-<p><a href="https://github.com/microsoft/WSL/issues">https://github.com/microsoft/WSL/issues</a></p>
-<p><a href="https://github.com/anomalyco/opencode/issues">https://github.com/anomalyco/opencode/issues</a></p>
-<p><a href="https://github.com/msgpack/msgpack-node">https://github.com/msgpack/msgpack-node</a></p>
-<p><a href="https://github.com/home-assistant/frontend/issues">https://github.com/home-assistant/frontend/issues</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/23"/><category term="blog"/><published>2026-03-29T14:35:59+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/22</id><title>侠影</title><updated>2026-04-09T03:03:52.748379+00:00</updated><content type="html"><![CDATA[<p>歌曲</p>
-<p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTrZpwnV-2rPTPt65C3FtLjwoa0Z9xwACVx0AAu3cGFaLRoeeDyjcDjoE" controls></audio></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/22"/><category term="碎碎念"/><published>2026-03-24T11:32:57+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/21</id><title>通义实验室开源影视级配音大模型 Fun-CineForge</title><updated>2026-04-09T03:03:52.918298+00:00</updated><content type="html"><![CDATA[<p>通义实验室开源影视级配音大模型 Fun-CineForge，首次引入时间模态​​通义实验室发布并开源首个支持影视级多场景配音的多模态大模型 Fun-CineForge。</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260316_211641_458.jpg" alt="IMG_20260316_211641_458.jpg" /></p>
-<p>模型基于 CosyVoice3 语音合成底层能力构建，核心技术创新在于首次将&quot;时间模态&quot;引入配音模型，使其在说话人面部缺失等复杂场景下仍可实现音画同步，支持独白、旁白、对话及多说话人等多种影视配音场景，当前支持 30 秒以内视频片段推理。</p>
-<p>在独白场景对比测试中，Fun-CineForge 在词错率、唇部同步、时间对齐、音色相似度等指标上均优于 DeepDubber-V1 和 InstructDubber。模型已在 GitHub、HuggingFace 及 ModelScope 三平台同步开源。</p>
-<p>通义实验室 </p>
-<p><a href="https://mp.weixin.qq.com/s/MylZJGEYgYiBS6fq53v2XQ">https://mp.weixin.qq.com/s/MylZJGEYgYiBS6fq53v2XQ</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/21"/><category term="blog"/><published>2026-03-16T13:23:56+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/20</id><title>什么事情改变了你?</title><updated>2026-04-09T03:03:53.049627+00:00</updated><content type="html"><![CDATA[<p>草莓：小学五年级那年，我生了一场大病。</p>
-<p><img src="https://i.829259.xyz/api/rfile/CasA_nircam_1024.jpg" alt="CasA_nircam_1024.jpg" /></p>
-<p>父母带着我四处求医。挂不上号，就彻夜排队，在医院大厅打地铺。好不容易在某个军队医院看上，医生冷着脸，对我妈说：“不用确诊了，一看就是自身免疫缺陷病，治不好的。你们还年轻，政策允许，可以再要一个。”</p>
-<p>走廊里，我和我妈抱头痛哭。
-十岁的我满脑子都是恐惧——我怕死，更怕妈妈不要我。</p>
-<p>我妈不死心，又带我去了另一家三甲医院。还是挂不上号，她直接拉着我找到主任诊室，一边抹泪一边求他救救我。</p>
-<p>那天阳光特别好，从窗外斜斜照进来。主任个子很高，轮廓被阳光勾上一圈金边。他蹲下来，拍拍我：“别怕，先别哭，我给你加号。”</p>
-<p>主任知道我还在上学，对我说：“以后每次来，七点半就到，我先给你看，看完就走，不耽误上课。”从那以后，我永远排第一个。每次看完病，他还会塞给我小礼物——出国带回来的钥匙链、小本子、小玩具，让我好好学习。
-后来确诊了，不是那个可怕的病。</p>
-<p>从那时起，我想做医生。</p>
-<p>后来我真的学了医，考上了主任毕业的那所学校。当我告诉他时，他开心得像个孩子。我说：“是您在我心里埋下了种子。”</p>
-<p>毕业实习那年，我回到这家医院实习，兴高采烈地去找他，想给他一个惊喜，那时他已年过六旬，退休返聘，我们早已熟络，我叫他爷爷。</p>
-<p>可出诊名单上没有他的名字。</p>
-<p>服务台的护士告诉我：爷爷几天前突发心梗，走了。</p>
-<p>那几天我不知道怎么过的。整个人像被掏空了一样。我闭上眼，全是第一次见面时，阳光洒在他身上的样子。</p>
-<p>十几年后，我又回到这家医院。我从当年的患者，成了这里的医生。</p>
-<p>有两个医生影响了我一生。一个教会我：绝对不能成为第二个他。另一个教会我：医者父母心，健康所系，性命相托。</p>
-<p>每天走进医院，心情还是不一样。往事如梦，沧海桑田。</p>
-<p>前两天在门诊，一位中年妇女领着小女孩进来。小姑娘怯怯地跟在后面。妈妈抹着眼泪说：“求您救救孩子，别的医院说治不好……我们没挂上号……”</p>
-<p>那一刻，所有记忆涌了上来。</p>
-<p>我笑了：“别着急，别哭了，我给您加号。”</p>
-<p>看完病，我把手机号留给她：“有问题随时找我。孩子还在上学吧？以后每次七点半来，先给她看，不影响上课。”</p>
-<p>我想，是该报恩的时候了。</p>
-<p>爷爷，您看到了吗？那粒种子，发芽了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/20"/><category term="blog"/><published>2026-03-11T13:40:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/19</id><title>OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放</title><updated>2026-04-09T03:03:53.184004+00:00</updated><content type="html"><![CDATA[<p>OpenAI推出GPT-5.3 Instant模型，今日起在 ChatGPT 中面向所有用户开放</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260304_193621_010.jpg" alt="IMG_20260304_193621_010.jpg" /></p>
-<p>让日常对话更流畅、更实用 </p>
-<p>GPT‑5.3 Instant 能给出更准确的答案，在网页搜索时提供更丰富、更有上下文的结果，并减少不必要的盲点、冗长的警示语和过于绝对的表述，从而避免打断对话的节奏。</p>
-<p>这次更新聚焦用户每天在 ChatGPT 使用中实际感受到的方面：语气、相关性和对话流畅性。这些细微问题可能不会在基准测试中表现出来，但却决定了 ChatGPT 是更有用还是更令人沮丧。GPT‑5.3 Instant 在这些方面直接采纳了用户的反馈。</p>
-<p>GPT‑5.3 Instant 将在拒绝请求时做出更恰当的判断，并减少不必要的免责声明.</p>
-<p>• GPT‑5.3 Instant 自今日起在 ChatGPT 中面向所有用户开放，开发者可通过 API 使用名为 “gpt-5.3-chat-latest” 的模型。
-• Thinking 和 Pro 版本的更新将很快推出。
-• 未来三个月，付费用户仍可在模型选择器的“旧版模型”中使用 GPT‑5.2 Instant ，之后该模型将于 2026 年 6 月 3 日停止提供。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/19"/><category term="blog"/><published>2026-03-04T11:41:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/18</id><title>SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”</title><updated>2026-04-09T03:03:53.321785+00:00</updated><content type="html"><![CDATA[<p>SpaceX 披露 Starlink V2 卫星性能：数据密度提升 100 倍，拟实现“太空 5G”</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260303_112354_021.jpg" alt="IMG_20260303_112354_021.jpg" /></p>
-<p>SpaceX 旗下 Starlink 宣布，其下一代 V2 卫星将为移动用户提供 100 倍于 V1 代的数据密度，旨在从太空直接提供 5G 速度。该服务此前名为 Direct to Cell，现更名为 Starlink Mobile。单颗 V2 卫星的吞吐能力约提升 20 倍，峰值速率预计可达 150 Mbps，且兼容现有 LTE 手机。</p>
-<p>SpaceX 计划部署 1.5 万颗新卫星以支撑该目标。目前 V2 Mini 卫星已在轨运行，预计 2027 年初进入初步测试阶段。</p>
-<p><a href="https://www.tomshardware.com/service-providers/network-providers/starlink-mobile-teases-5g-speeds-from-space-with-100x-the-data-density-v2-satellites-are-being-sent-into-orbit-to-power-the-upgrade">Tom's Hardware</a> | <a href="https://pic.twitter.com/ObPjtv0eEC">Starlink</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/18"/><category term="wontfix"/><published>2026-03-03T03:34:39+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/17</id><title>哈勃望远镜高度降至300英里或于2030年前坠毁</title><updated>2026-04-09T03:03:53.470543+00:00</updated><content type="html"><![CDATA[<p>哈勃望远镜高度降至300英里或于2030年前坠毁</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260228_231909_192.jpg" alt="IMG_20260228_231909_192.jpg" /></p>
-<p>哈勃空间望远镜在轨运行36年后轨道持续衰减，高度已从2020年的330英里降至目前的300英里。</p>
-<p>天文学家Jonathan McDowell的数据显示该设备可能在2030年前脱轨坠毁。NASA官方此前预计其再入大气层的时间不早于2030年代中期。</p>
-<p>相关研究预测哈勃最快可能在2029年进入大气层，且自航天飞机退役后该设备已无法进行常规维修。</p>
-<p>现任NASA局长Jared Isaacman曾提议利用SpaceX飞船执行维修任务以延长其寿命。尽管NASA此前因技术风险拒绝该方案，但目前不排除重启相关计划的可能性。</p>
-<p><a href="https://futurism.com/space/hubble-telescope-entering-death-spiral">Futurism</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/17"/><category term="天文"/><published>2026-02-28T15:23:09+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/16</id><title>程序在调动人力，完成自动化流程</title><updated>2026-04-09T03:03:53.604395+00:00</updated><content type="html"><![CDATA[<p>转自袁一峰周刊</p>
-<p>一直以来，程序只能调动计算机，突然之间，它可以调动人力了，某个环节计算机完成不了，它就自动找人来完成。这才是新闻。</p>
-<p>这样做之所以能够成功，完全因为外卖员是一个自带 API 的人群，已经接入了软件系统，成为了自动化人力，程序可以通过接口去调用他们。</p>
-<p>你仔细思考这件事，就会意识到，在人工智能和机器人的时代，外卖员有特殊的价值，将是一个很有想象空间的职业。他们的作用绝不仅是送外卖，而是可以升级为远程操控、程序调用的人力，是“机器 + 人”自动化流程的一环。</p>
-<p>一旦 AI 模型跟人力结合在一起，模型的作用将大大扩展，现在的 OpenClaw 只能操作计算机，将来的 AI 助手还将是劳动力的调配引擎。</p>
-<p>比如，我要装修一套房子，AI 做好了设计方案，然后就在网上分布细分任务，水电工接单做好水电，监理员接单上门确认后，AI 就自动结算费用，进入下一个环节，泥工、木工……直至装修完成。</p>
-<p>到了那时，你在网上输入提示词“我要装修房子”，真的可能一套房子就被 AI 装修好了。</p>
-<p>AI 平台因此会变成一个劳务平台，你可以通过 AI 找工作，上面有各种劳务需求，你接单去做，完成后收到报酬。</p>
-<p>总之，一旦人力接入 AI，被它调配，AI 就不止是计算机革命，而是整个社会经济都将围绕它重构了。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/16"/><category term="世界好精彩我想去看看"/><published>2026-02-28T14:50:34+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/15</id><title>Netflix放弃对华纳公司的竞标</title><updated>2026-04-09T03:03:53.744132+00:00</updated><content type="html"><![CDATA[<p>Netflix放弃对华纳公司的竞标，为派拉蒙接手铺平了道路</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260227_214443_885.jpg" alt="IMG_20260227_214443_885.jpg" /></p>
-<p>华纳兄弟去年将自己挂牌出售，周四派拉蒙表示最新的出价“优于”Netflix 的报价，并要求 Netflix 提高出价，但 Netflix 拒绝了。</p>
-<p>Netflix 的高管在公告中表示，若要匹配派拉蒙 Skydance 的最新报价，所需的价格让这笔交易在财务上不再具有吸引力，因此我们决定不予匹配。</p>
-<p>Netflix 表示。“这笔交易始终是在合适价格下的“可有可无”，而非不惜一切代价的“非买不可”。....今年我们将投入约 200 亿美元于优质电影和剧集。“</p>
-<p>去年 12 月，华纳兄弟同意了 Netflix 对其部分资产的收购要约。不过，由科技亿万富翁拉里·埃里森支持、其子大卫掌舵的派拉蒙提出了竞争性报价，意在将公司打造成好莱坞的新一流巨头。</p>
-<p>派拉蒙CEO大卫·埃里森对华纳兄弟董事会接受派拉蒙提高报价的决定表示欢迎。他在声明中称，该方案能为华纳兄弟股东带来“更大的价值、更高的确定性以及更快的成交速度”。</p>
-<p>如果派拉蒙的交易获监管机构批准，该公司会把华纳兄弟的 HBO Max 流媒体用户并入自家阵营，并接管 CNN、美食频道以及多项体育内容。</p>
-<p>派拉蒙旗下的传统频道包括尼克儿童频道（Nickelodeon）、哥伦比亚广播公司（CBS）和喜剧中心（Comedy Central）等品牌。</p>
-<p>许多好莱坞人认为，Netflix 和派拉蒙之间的竞标大战没有真正的赢家。</p>
-<p>批评者担心，如果与 Netflix 达成交易，这家历史悠久的电影公司会被硅谷的流媒体巨头吞并，进而导致影院文化受损。同时，尽管派拉蒙宣传自己是好莱坞为数不多仍在坚持的电影公司之一，但与其合并也让人担忧，因为有人认为该公司与特朗普政府有政治关联。</p>
-<p>总的来说，华纳兄弟被出售将对好莱坞产生重大影响，几乎可以确定会裁减员工——这个长期受到持续制作停滞和削减影响的影视圈将再次受到冲击。
-，为派拉蒙接手铺平了道路</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260227_214443_885.jpg" alt="IMG_20260227_214443_885.jpg" /></p>
-<p>华纳兄弟去年将自己挂牌出售，周四派拉蒙表示最新的出价“优于”Netflix 的报价，并要求 Netflix 提高出价，但 Netflix 拒绝了。</p>
-<p>Netflix 的高管在公告中表示，若要匹配派拉蒙 Skydance 的最新报价，所需的价格让这笔交易在财务上不再具有吸引力，因此我们决定不予匹配。</p>
-<p>Netflix 表示。“这笔交易始终是在合适价格下的“可有可无”，而非不惜一切代价的“非买不可”。....今年我们将投入约 200 亿美元于优质电影和剧集。“</p>
-<p>去年 12 月，华纳兄弟同意了 Netflix 对其部分资产的收购要约。不过，由科技亿万富翁拉里·埃里森支持、其子大卫掌舵的派拉蒙提出了竞争性报价，意在将公司打造成好莱坞的新一流巨头。</p>
-<p>派拉蒙CEO大卫·埃里森对华纳兄弟董事会接受派拉蒙提高报价的决定表示欢迎。他在声明中称，该方案能为华纳兄弟股东带来“更大的价值、更高的确定性以及更快的成交速度”。</p>
-<p>如果派拉蒙的交易获监管机构批准，该公司会把华纳兄弟的 HBO Max 流媒体用户并入自家阵营，并接管 CNN、美食频道以及多项体育内容。</p>
-<p>派拉蒙旗下的传统频道包括尼克儿童频道（Nickelodeon）、哥伦比亚广播公司（CBS）和喜剧中心（Comedy Central）等品牌。</p>
-<p>许多好莱坞人认为，Netflix 和派拉蒙之间的竞标大战没有真正的赢家。</p>
-<p>批评者担心，如果与 Netflix 达成交易，这家历史悠久的电影公司会被硅谷的流媒体巨头吞并，进而导致影院文化受损。同时，尽管派拉蒙宣传自己是好莱坞为数不多仍在坚持的电影公司之一，但与其合并也让人担忧，因为有人认为该公司与特朗普政府有政治关联。</p>
-<p>总的来说，华纳兄弟被出售将对好莱坞产生重大影响，几乎可以确定会裁减员工——这个长期受到持续制作停滞和削减影响的影视圈将再次受到冲击。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/15"/><category term="碎碎念"/><published>2026-02-27T13:50:28+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/14</id><title>OpenAI 推出 ChatGPT 锁定模式和风险标签功能</title><updated>2026-04-09T03:03:53.888092+00:00</updated><content type="html"><![CDATA[<p>OpenAI 宣布为 ChatGPT 引入两项新的安全保护功能，以应对日益严重的提示注入攻击风险。</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260217_213245_212.jpg" alt="IMG_20260217_213245_212.jpg" /></p>
-<p>新功能包括面向高风险用户的锁定模式（Lockdown Mode）和针对特定功能的&quot;高风险&quot;标签。</p>
-<p>锁定模式专为企业高管和安全团队等高度安全敏感用户设计，通过严格限制 ChatGPT 与外部系统的交互来降低数据泄露风险。</p>
-<p>该模式下，网页浏览功能仅限于缓存内容，部分功能将被完全禁用。目前该功能已向 ChatGPT Enterprise、ChatGPT Edu 等企业版用户开放，消费者版本将在未来几个月内推出。</p>
-<p>同时，OpenAI 将对可能引入额外风险的功能统一标注&quot;高风险&quot;标签，为用户提供更清晰的风险提示。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/14"/><category term="碎碎念"/><published>2026-02-17T13:48:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/13</id><title>极客湾曝光手机厂商媒体送测机乱象</title><updated>2026-04-09T03:03:54.022762+00:00</updated><content type="html"><![CDATA[<p>极客湾曝光手机厂商媒体送测机乱象：芯片特挑+性能特调</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260217_213245_212.jpg" alt="IMG_20260217_213245_212.jpg" /></p>
-<p>「极客湾」发布手机性能横评深度评测视频，揭露了多家手机厂商对媒体送测机进行“特调”优化的行业现象。相关厂商通过芯片体质筛选、定向性能调度策略等方式提高测试数据，使得媒体送测机的综合表现，明显优于普通消费者的零售机型。</p>
-<p>极客湾也明确指出，在搭载同代旗舰芯片平台的机型中，后续发布产品的媒体送测机，特调程度普遍较先发机型更为严重。该现象的核心原因，是手机厂商之间的性能对标内卷，最终形成了“滚雪球”效应，使得行业特调乱象持续升级。</p>
-<p>极客湾表示，希望通过此次曝光，引发消费者与行业对“特调”现象的重视；同时也呼吁各大手机厂商回归产品本身，将精力聚焦于零售机型的调校优化当中，避免因此类“特调”行为损害自身品牌的口碑。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/13"/><category term="碎碎念"/><published>2026-02-17T13:40:14+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/12</id><title>字节跳动上线 Seedream 5.0 图像生成模型</title><updated>2026-04-09T03:03:54.171328+00:00</updated><content type="html"><![CDATA[<p>字节跳动上线 Seedream 5.0 图像生成模型，对标Nano Banana Pro</p>
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260210_213841_436.jpg" alt="IMG_20260210_213841_436.jpg" /></p>
-<p>2 月 10 日，字节跳动图像生成模型 Seedream 5.0 正式上线。该模型目前已接入视频编辑应用剪映、海外版 CapCut 及 AI 创作平台小云雀，并在即梦 AI 平台开启灰度测试。</p>
-<p>用户现可在上述平台限时免费体验图片生成功能。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/12"/><category term="碎碎念"/><published>2026-02-10T13:41:05+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/10</id><title>高通将在今年9月发布骁龙8系新平台</title><updated>2026-04-09T03:03:54.329163+00:00</updated><content type="html"><![CDATA[<p>高通将在今年9月发布骁龙8系新平台——骁龙8 Elite Gen6和骁龙8 Elite Gen6 Pro，这两颗芯片都采用台积电2nm制程N2P，是高通首款2nm芯片。</p>
-<!-- more -->
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260203_223949_080.jpg" alt="IMG_20260203_223949_080.jpg" /></p>
-<p>得益于台积电更先进的工艺制程，骁龙8 Elite Gen6系列芯片组将会实现更高的频率，爆料称骁龙8 Elite Gen6 Pro的超大核主频将突破5GHz，这将是行业内CPU主频最高的手机芯片。作为对比，骁龙8 Elite Gen5的CPU主频是4.61GHz。</p>
-<p>据悉，为了让性能释放更激进，高通骁龙8 Elite Gen6 Pro采用三星Exynos 2600已经使用的Heat Pass Block散热技术，并且它还支持全新的LPDDR6内存以及UFS 5.0闪存。
-另外，骁龙8 Elite Gen6系列采用全新的2+3+3架构设计，相比上代的“2+6”架构有所调整。</p>
-<p>按照惯例，小米18系列将首发高通骁龙8 Elite Gen6系列旗舰平台，该机将在今年9月正式亮相</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/10"/><category term="碎碎念"/><published>2026-02-03T14:45:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/9</id><title>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置</title><updated>2026-04-09T03:03:54.463880+00:00</updated><content type="html"><![CDATA[<p>大概看了一下，意思就是所有的额度都能用到claude</p>
-<!-- more -->
-<p><strong>Claude Code、Codex 与 Gemini CLI 的命令行管理工具</strong></p>
-<p>统一管理 Claude Code、Codex 与 Gemini CLI 的供应商配置、MCP 服务器、Skills 扩展和系统提示词。</p>
-<h3>📖 关于本项目</h3>
-<p>本项目是原版 <a href="https://github.com/farion1231/cc-switch">CC-Switch</a> 的 <strong>CLI 分支</strong>。</p>
-<p><strong>致谢：</strong> 原始架构和核心功能来自 <a href="https://github.com/farion1231/cc-switch">farion1231/cc-switch</a></p>
-<p>地址：
-<a href="https://github.com/SaladDay/cc-switch-cli">github</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/9"/><category term="Python"/><published>2026-02-02T01:23:44+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/8</id><title>城市地图海报生成器</title><updated>2026-04-09T03:03:54.605614+00:00</updated><content type="html"><![CDATA[<p>这是一个 Python 工具，会自动从 OpenStreetMap 中获取街道网络、水体特征和公园等信息，然后转换为世界上任何城市的精美极简地图海报。</p>
-<!-- more -->
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_222659_074.jpg" alt="IMG_20260128_222659_074.jpg" /></p>
-<p><a href="https://github.com/anvaka/city-roads">仓库地址</a></p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/8"/><category term="碎碎念"/><published>2026-01-28T14:30:17+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/5</id><title>Google 正式推出「Google AI Plus」计划</title><updated>2026-04-09T03:03:54.739880+00:00</updated><content type="html"><![CDATA[<p>仅需 ＄7.99 ！Google 正式推出「Google AI Plus」计划</p>
-<!-- more -->
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_172129_726.jpg" alt="IMG_20260128_172129_726.jpg" /></p>
-<p>🔗 <a href="https://one.google.com/about/google-ai-plans/">https://one.google.com/about/google-ai-plans/</a></p>
-<p>订阅用户将获得如下权益：</p>
-<p>▫️使用 Gemini3 Pro 及 Nano Banana Pro 模型。</p>
-<p>▫️Flow AI 电影制作工具使用权限，以及 NotebookLM 的深度研究与写作辅助。</p>
-<p>▫️提供 200GB 云存储空间，并支持最多5位家庭成员共享。</p>
-<p>▫️现有的 Google One Premium 2TB 用户将在未来几天内自动升级，免费获得所有 AI Plus 权益！</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/5"/><category term="blog"/><published>2026-01-28T10:09:23+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/4</id><title>Chorus: 多模型 AI 对话的轻量级桌面应用</title><updated>2026-04-09T03:03:54.870696+00:00</updated><content type="html"><![CDATA[<p>在一个界面同时对话多个 AI 模型，获取不同视角的答案</p>
-<!-- more -->
-<p><a href="https://chorus.sh/">官网</a> ｜ <a href="https://github.com/meltylabs/chorus">Github</a></p>
-<hr />
-<p><img src="https://i.829259.xyz/api/rfile/IMG_20260128_125104_024.jpg" alt="IMG_20260128_125104_024.jpg" /></p>
-<p>✨ 特点</p>
-<p>• 多模型并行对话：同时向 Claude Sonnet 4、o3-mini、Gemini 2.5 Pro、DeepSeek R1 等多个模型提问，实时对比不同模型的回答
-• Ambient Chat：可以从任何地方启动对话，Chorus 能看到你的屏幕，了解你正在做什么，无需额外解释
-• MCP 支持：运行任何 MCP 服务器，支持网页搜索、终端命令执行、GitHub 集成等
-• 本地和云端模型兼容：支持 OpenAI、Anthropic、Google、OpenRouter 以及通过 Ollama 运行的本地开源模型
-• 文档处理：URL 自动提取、PDF/图片/文档上传、全文搜索
-• Magic Projects：对话之间自动共享上下文
-• BYOK：自带 API 密钥或使用代理服务
-• 极速体验：毫秒级全文搜索、完整键盘快捷键支持、代码和 LaTeX 语法高亮</p>
-<p>⚙️ 机制</p>
-<p>• 前端：React 18.3 + Vite 5.4 + TypeScript 5.8
-• 后端：Rust (Tauri 2.5) + SQLite
-• UI 组件：Radix UI + Tailwind CSS 3.4
-• 状态管理：Zustand + TanStack Query
-• 桌面框架：Tauri 2（使用系统 WebView，不打包 Chromium）</p>
-<p>主要依赖</p>
-<ul>
-<li>AI SDK：@anthropic-ai/sdk、@google/genai、openai、@modelcontextprotocol/sdk</li>
-<li>实用工具：pdfjs-dist（PDF 处理）、cheerio（HTML 解析）、highlight.js（代码高亮）、katex（LaTeX 渲染）</li>
-<li>开发工具：ESLint、Prettier、Vitest、Husky</li>
-</ul>
-<p>数据存储</p>
-<ul>
-<li>本地 SQLite 数据库存储所有数据</li>
-<li>隐私优先：数据不离开设备</li>
-<li>支持文件系统监控</li>
-</ul>
-<p>👨🏻‍💻 使用场景</p>
-<p>• 技术问题调试：同时询问多个模型，一个模型可能遗漏的错误，其他模型能发现
-• 学术写作：避免单一模型的幻觉或道歉循环，通过多模型对比获得更可靠的答案
-• 研究和学习：对比不同 AI 的观点和解释方式，获得更全面的理解
-• 内容创作：利用不同模型的优势，Claude 擅长写作，GPT 擅长结构化，Gemini 擅长多语言
-• 大文档分析：通过 URL 提取和 PDF 上传处理文档，配合全文搜索快速定位信息</p>
-<p>🛣️ 路线图</p>
-<p>根据 GitHub issues 和社区反馈，团队正在关注：</p>
-<p>• RAG 模式：社区提出详细的大文档处理方案（40k+ tokens），可能采用云端 RAG 或本地向量数据库
-• Ollama 优化：增强本地模型支持，自定义 API 地址配置
-• 语音集成：类似 qspeak.app 的语音交互功能
-• 本地爬虫：替代 Firecrawl 的本地网页抓取方案
-• 成本追踪增强：已实现 OpenRouter 成本跟踪，未来可能支持更多提供商</p>
-<p>💬 社区评价</p>
-<p>Chorus 在 GitHub 上获得了 575+ 星标和 73 个 fork，开源仅两个月就积累了活跃的开发者社区。项目有 25+ 个 issues 讨论。</p>
-<p>Garry Tan（Y Combinator 总裁兼 CEO）评价道：「这是关于 AI 如何改变个人计算的一个很酷的尝试。」</p>
-<p>Hamel Husain（Answer.AI）称赞说：「Chorus 真的很酷。这是一个非常精致的应用，让你并排使用所有模型，'环境聊天'功能允许模型看到你电脑上正在做的一切。它就是好用。」</p>
-<p>Alex Volkov（Thursd/AI）表示：「Chorus 对我来说已经成为不可或缺的 AI 工具！出色的键盘快捷键支持、对比模式、MCP、环境聊天、自带密钥支持、本地模型支持。它真的应有尽有！」</p>
-<p>从社区反馈来看，用户最喜欢的是多模型并行对比功能和 Ambient Chat 的便利性，键盘快捷键和 MCP 集成也备受好评。不过也有改进空间：Windows 版本尚未发布（仅支持 Mac），MCP 服务器配置对新手有一定门槛，部分用户期待的 RAG 模式功能还在社区讨论阶段。总体而言，社区对产品持积极态度，维护者响应迅速，用户提出的成本追踪等功能已快速实现。</p>
-<p>🖊️ 作者背景</p>
-<p>Charlie Holtz - 联合创始人兼 CEO</p>
-<p>• 教育：Brown University 计算认知神经科学学士（荣誉学位）
-• 职业经历：</p>
-<ul>
-<li>Replicate 工程师（领导增长，构建数百万用户应用）</li>
-<li>Point72 量化研究员（最年轻的量化开发者，管理数十亿美元投资组合）</li>
-<li>Brown University Serre Lab 计算视觉研究助理
-• 背景：结合技术专长和认知神经科学洞察，前飞盘运动员</li>
-</ul>
-<p>Jackson de Campos - 联合创始人</p>
-<p>• 教育：Brown University 计算机科学学士
-• 职业经历：</p>
-<ul>
-<li>Netflix 机器学习软件工程师（扩展 Netflix 整个目录的视频理解模型推理）</li>
-<li>Amazon SDE 实习生</li>
-<li>Brown University 教学助理（逻辑系统课程）
-• 背景：机器学习和大规模基础设施专家</li>
-</ul>
-<p>公司：Melty Labs</p>
-<ul>
-<li>Y Combinator S24 批次</li>
-<li>种子轮融资：50 万美元（2024）</li>
-<li>团队规模：1-10 人</li>
-<li>总部：旧金山，加州</li>
-<li>产品线：Melty（AI 代码编辑器）→ Chorus（多模型 AI 对话应用）</li>
-<li>哲学：开源优先、本地优先、隐私优先</li>
-</ul>
-<p>团队特色</p>
-<p>两位创始人在 Brown University 打飞盘时相识，共同的技术热情和互补的专业背景（认知神经科学 + 机器学习）为产品注入了独特视角。他们使用 Claude Code 构建产品，在博客中甚至把 Claude 称为「本月最佳员工」。</p>
-<p>💰 定价</p>
-<p>完全免费 + 开源</p>
-<ul>
-<li>MIT 许可证</li>
-<li>自带 API 密钥（BYOK）：用户直接向 AI 提供商付费</li>
-<li>可选代理服务：使用 Chorus 的代理</li>
-<li>无订阅费用</li>
-</ul>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/4"/><category term="blog"/><published>2026-01-28T04:54:16+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/3</id><title>韦伯太空望远镜观测到的木星</title><updated>2026-04-09T03:03:55.012791+00:00</updated><content type="html"><![CDATA[<p>影像提供:NASA, ESA, CSA,Jupiter ERS Team;Processing:Ricardo Hueso (UPV/EHU)
-&amp; Judy Schmidt</p>
-<!-- more -->
-<p><img src="https://i.829259.xyz/api/rfile/Jupiter2_WebbSchmidt_1080_annotated.jpg" alt="Jupiter2_WebbSchmidt_1080_annotated.jpg" /></p>
-<p>韦伯望远镜拍摄的这张木星红外线影像令人叹为观止。</p>
-<p>詹姆斯·韦伯太空望远镜(韦伯)拍摄的高解析度木星红外线影像清晰地展现了木星高空明亮的云层(包括大红斑)和低空暗云之间的差异。</p>
-<p>这张韦伯望远镜的影像中，木星的尘埃环、两极的明亮极光以及木星的卫星木卫五(Amalthea)和木卫十五(Adrastea)也清晰可见。大型火山卫星木卫一(Io埃欧)的磁力将带电粒子汇集到木星表面，这现象在南极光中也清晰可见。</p>
-<p>有些天体亮度极高，以至于光线在韦伯望远镜的光学系统中发生明显的绕射，形成条纹状的影像。</p>
-<p>韦伯望远镜在地球附近环绕太阳运行，其主镜直径超过六米，是有史以来发射的最大天文望远镜，是哈伯望远镜集光面积的六倍多。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/3"/><category term="天文"/><published>2026-01-28T04:39:10+00:00</published></entry><entry><id>https://github.com/myogg/Gitblog/issues/2</id><title>延髓星云</title><updated>2026-04-09T03:03:55.150736+00:00</updated><content type="html"><![CDATA[<p>说明： 是什么力量驱动著这片奇特的星云？CTB 1是大约一万年前，位于仙后座附近一颗大质量恒星爆炸后留下的不断膨胀之气体壳层。</p>
-<!-- more -->
-<p>延髓星云<br />
-影像提供:Pierre Konzelmann</p>
-<p><img src="https://i.829259.xyz/api/rfile/Ctb1_Konzelmann_960.jpg" alt="Ctb1_Konzelmann_960.jpg" /></p>
-<p>这颗恒星可能是因为核心附近的元素耗尽，无法透过核融合产生稳定的压力而爆炸。这个被暱称为延髓星云的超新星残骸，因其形似大脑而得名，至今仍因与周围星际气体碰撞产生的热量而在可见光波段下发光。</p>
-<p>然而，这个星云为何也会在X射线波段发光，目前仍是研究的课题。一种假说认为，一颗高能量脉冲星在爆炸过程中同时形成，并以高速向外移动的星风为星云提供能量。循著这条线索，研究人员在电波波段中发现了一颗脉冲星，这颗脉冲星似乎是由超新星爆炸以每秒超过1000公里的速度所抛出的。</p>
-<p>虽然延髓星云看起来和满月一样大，但它非常暗淡，需要在美国德州使用两台小望远镜进行了130小时的曝光，才能创建出这张特色影像。</p>
-]]></content><link href="https://github.com/myogg/Gitblog/issues/2"/><category term="天文"/><published>2026-01-28T01:34:59+00:00</published></entry></feed>
+]]></content><link href="https://github.com/myogg/gitblog/issues/3"/><category term="blog"/><published>2026-04-15T14:27:20+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/2</id><title>侠影</title><updated>2026-04-16T01:17:02.347142+00:00</updated><content type="html"><![CDATA[<p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTrZpwnV-2rPTPt65C3FtLjwoa0Z9xwACVx0AAu3cGFaLRoeeDyjcDjoE" controls></audio></p>
+<p>一首歌送给自己！</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/2"/><category term="blog"/><category term="2026"/><published>2026-04-15T14:13:46+00:00</published></entry><entry><id>https://github.com/myogg/gitblog/issues/1</id><title>丁香花</title><updated>2026-04-16T01:17:02.472502+00:00</updated><content type="html"><![CDATA[<p><audio src="https://i.829259.xyz/api/cfile/CQACAgUAAx0ER6IxDQACTr9p1v9epFK8mYd0AVZlabzypfifiQACch4AAvMFuVZAzL1e5dsU3DsE" controls></audio></p>
+<p>一曲丁香花送给自己.</p>
+]]></content><link href="https://github.com/myogg/gitblog/issues/1"/><category term="blog"/><published>2026-04-15T12:27:45+00:00</published></entry></feed>
