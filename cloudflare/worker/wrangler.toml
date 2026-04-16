@@ -1,0 +1,11 @@
+name = "gitblog-tts"
+main = "src/index.js"
+compatibility_date = "2024-12-01"
+
+[vars]
+GITHUB_REPO = "myogg/gitblog"
+TTS_VOICE = "zh-CN-XiaoxiaoNeural"
+
+[[r2_buckets]]
+binding = "TTS_BUCKET"
+bucket_name = "gitblog-tts"

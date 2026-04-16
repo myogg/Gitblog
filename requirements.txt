@@ -3,3 +3,5 @@ feedgen
 marko
 markdown
 jinja2
+edge-tts
+boto3

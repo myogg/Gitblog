@@ -362,7 +362,7 @@ def generate_robots_txt():
     except Exception as e:
         print(f"❌ 生成 robots.txt 失敗: {e}")
 
-def generate_article_page(issue, all_issues, giscus_config=None, label_info=None):
+def generate_article_page(issue, all_issues, giscus_config=None, label_info=None, audio_map=None):
     """生成文章页面"""
     try:
         os.makedirs(ARTICLES_DIR, exist_ok=True)
@@ -426,6 +426,11 @@ def generate_article_page(issue, all_issues, giscus_config=None, label_info=None
         prev_article, next_article = find_prev_next_articles(issue, all_issues)
         related_articles = find_related_articles(issue, all_issues)
 
+        # 获取音频 URL
+        audio_url = None
+        if audio_map:
+            audio_url = audio_map.get(str(issue.number))
+
         # 渲染模板
         output = template.render(
             issue=issue,
@@ -437,7 +442,8 @@ def generate_article_page(issue, all_issues, giscus_config=None, label_info=None
             related_articles=related_articles,
             YEAR=datetime.now().year,
             giscus_config=giscus_config,
-            base_path="../"
+            base_path="../",
+            audio_url=audio_url
         )
 
         # 写入文件
@@ -474,6 +480,16 @@ def main():
         exit(1)
 
     print(f"找到 {len(issues)} 個issues")
+
+    # 加载 TTS 音频缓存
+    audio_map = {}
+    if os.path.exists('tts_cache.json'):
+        try:
+            with open('tts_cache.json', 'r', encoding='utf-8') as f:
+                audio_map = json.load(f)
+            print(f"✓ 加载 TTS 缓存: {len(audio_map)} 条音频")
+        except Exception as e:
+            print(f"⚠️ 加载 TTS 缓存失败: {e}")
 
     # 为所有文章添加摘要字段（必须在使用前添加）
     # 先提取 tags 并清理，再从清理后的 body 提取摘要
@@ -561,10 +577,10 @@ def main():
 
     print(f"找到 {len(content_tags_dict)} 個內容標籤")
 
-    # --- 生成文章頁面（传入 label_info） ---
+    # --- 生成文章頁面（传入 label_info 和 audio_map） ---
     print("開始生成文章頁面...")
     for issue in issues:
-        generate_article_page(issue, issues, giscus_config, label_info)
+        generate_article_page(issue, issues, giscus_config, label_info, audio_map)
 
     # --- 生成标签页面 ---
     print("開始生成標籤頁面...")

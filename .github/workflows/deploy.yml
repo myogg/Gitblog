@@ -105,7 +105,19 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install markdown PyGithub marko jinja2 feedgen
+          pip install markdown PyGithub marko jinja2 feedgen edge-tts boto3
+
+      - name: Generate TTS audio
+        env:
+          G_TT: ${{ secrets.G_TT }}
+          R2_ACCOUNT_ID: ${{ secrets.R2_ACCOUNT_ID }}
+          R2_ACCESS_KEY_ID: ${{ secrets.R2_ACCESS_KEY_ID }}
+          R2_SECRET_ACCESS_KEY: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          R2_BUCKET: ${{ secrets.R2_BUCKET }}
+          R2_PUBLIC_URL: ${{ secrets.R2_PUBLIC_URL }}
+        run: |
+          echo "🎙️ 开始生成 TTS 音频..."
+          python tts_generate.py || echo "⚠️ TTS 生成失败，继续构建站点"
 
       - name: Generate HTML page
         env:
