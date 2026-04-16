@@ -7,35 +7,21 @@
 {% block keywords %}{% for label in labels_data %}{{label.name}}{% if not loop.last %},{% endif %}{% endfor %}{% if content_tags %}{% for tag in content_tags %},{{tag.name}}{% endfor %}{% endif %}{% endblock %}
 
 {% block head_extra %}
-<!-- DNS 预连接 - 加速 CDN 资源加载 -->
+<!-- DNS 预连接 -->
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <link rel="dns-prefetch" href="https://waline.134688.xyz">
 
-<!-- ========== Open Graph Meta Tags ========== -->
+<!-- Open Graph Meta Tags -->
 <meta property="og:title" content="{{issue.title}}">
 <meta property="og:description" content="{% if issue.summary %}{{issue.summary[:150]}}{% else %}xxjss - 记录技术、生活和思考{% endif %}">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://134688.xyz/articles/article-{{issue.number}}.html">
-
-<!-- 图片 -->
 <meta property="og:image" content="https://134688.xyz/static/og-default.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:type" content="image/png">
-<meta property="og:image:alt" content="{{issue.title}} - xxjss">
-
 <meta property="og:site_name" content="xxjss">
-<meta property="fb:app_id" content="100006838422002">
-
-<!-- 文章作者信息 -->
-<meta property="article:author" content="https://www.facebook.com/lengyu.jiang">
-<meta property="article:author:username" content="lengyu.jiang">
-<meta property="fb:profile_id" content="100006838422002">
-
-<!-- 文章元数据 -->
 <meta property="article:published_time" content="{{issue.created_at.isoformat()}}">
-<meta property="article:modified_time" content="{{issue.created_at.isoformat()}}">
 {% for label in labels_data %}
 <meta property="article:tag" content="{{label.name}}">
 {% endfor %}
@@ -45,68 +31,48 @@
 <meta name="twitter:title" content="{{issue.title}}">
 <meta name="twitter:description" content="{% if issue.summary %}{{issue.summary[:150]}}{% else %}xxjss - 记录技术、生活和思考{% endif %}">
 <meta name="twitter:image" content="https://134688.xyz/static/og-default.png">
-<!-- ========== Open Graph结束 ========== -->
 
-<!-- GitHub Markdown CSS - 使用jsDelivr国内加速 -->
+<!-- CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@5.2.0/github-markdown-light.min.css">
-<!-- Pygments 代码高亮样式 - github 主题 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pygments-css@1.0.0/github.min.css">
-<!-- Waline 样式 - 使用国内CDN -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.css">
 
-<!-- Structured Data - Blog Posting -->
+<!-- Structured Data -->
 <script type="application/ld+json">
 {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     "headline": "{{issue.title}}",
     "description": "{% if issue.summary %}{{issue.summary[:200]}}{% else %}{{issue.title}}{% endif %}",
-    "image": "https://134688.xyz/static/og-default.png",
     "datePublished": "{{issue.created_at.isoformat()}}",
-    "dateModified": "{{issue.created_at.isoformat()}}",
-    "author": {
-        "@type": "Person",
-        "name": "xxjss",
-        "url": "https://134688.xyz/about.html"
-    },
-    "publisher": {
-        "@type": "Person",
-        "name": "xxjss"
-    },
-    "mainEntityOfPage": {
-        "@type": "WebPage",
-        "@id": "https://134688.xyz/articles/article-{{issue.number}}.html"
-    },
-    "keywords": "{% for label in labels_data %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}{% if content_tags %}{% for tag in content_tags %}, {{tag.name}}{% endfor %}{% endif %}",
-    "articleSection": "{% if labels_data %}{{labels_data[0].name}}{% else %}博客{% endif %}",
-    "inLanguage": "zh-CN"
-}
-</script>
-
-<!-- Structured Data - BreadcrumbList -->
-<script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "BreadcrumbList",
-    "itemListElement": [
-        {
-            "@type": "ListItem",
-            "position": 1,
-            "name": "首页",
-            "item": "https://134688.xyz/"
-        },
-        {
-            "@type": "ListItem",
-            "position": 2,
-            "name": "{{issue.title}}",
-            "item": "https://134688.xyz/articles/article-{{issue.number}}.html"
-        }
-    ]
+    "author": {"@type": "Person", "name": "xxjss", "url": "https://134688.xyz/about.html"},
+    "keywords": "{% for label in labels_data %}{{label.name}}{% if not loop.last %}, {% endif %}{% endfor %}"
 }
 </script>
 
 <style>
-    /* 文章页面专属样式 */
+    /* ========== 文章页面专属样式 ========== */
+    
+    /* 阅读进度条 */
+    .reading-progress {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+        z-index: 1000;
+        transition: width 0.1s ease;
+        box-shadow: 0 0 10px rgba(59,130,246,0.5);
+    }
+
+    /* 文章容器 - 限制最大宽度提升阅读体验 */
+    .article-wrapper {
+        max-width: 780px;
+        margin: 0 auto;
+    }
+
+    /* 文章头部 */
     .article-header {
         margin-bottom: 2.5rem;
         padding-bottom: 2rem;
@@ -114,9 +80,9 @@
     }
 
     .article-title-text {
-        font-size: 2.25rem;
-        font-weight: 600;
-        line-height: 1.3;
+        font-size: 2.5rem;
+        font-weight: 700;
+        line-height: 1.2;
         margin-bottom: 1rem;
         color: var(--text-primary);
         letter-spacing: -0.02em;
@@ -136,7 +102,13 @@
         color: var(--text-tertiary);
     }
 
-    /* GitHub标签样式 */
+    .read-time {
+        font-family: var(--font-mono);
+        font-size: 0.875rem;
+        color: var(--text-tertiary);
+    }
+
+    /* 标签样式 */
     .article-tags {
         display: flex;
         flex-wrap: wrap;
@@ -147,7 +119,7 @@
         display: inline-block;
         padding: 0.375rem 0.875rem;
         border-radius: 1.5rem;
-        font-size: 0.8125rem;
+        font-size: 0.75rem;
         font-weight: 500;
         color: white;
         text-decoration: none;
@@ -165,7 +137,7 @@
         background: var(--bg-secondary);
         border: 1px solid var(--border-color);
         border-radius: 1.5rem;
-        font-size: 0.8125rem;
+        font-size: 0.75rem;
         color: var(--text-secondary);
         text-decoration: none;
         transition: all 0.2s ease;
@@ -177,25 +149,166 @@
         color: var(--text-primary);
     }
 
-    /* 文章内容区 */
-    .content-area {
+    /* 文章内容区 - 优化阅读体验 */
+    .markdown-body {
+        font-family: var(--font-sans);
         font-size: 1rem;
         line-height: 1.8;
+        background: transparent !important;
+    }
+
+    .markdown-body h1,
+    .markdown-body h2,
+    .markdown-body h3,
+    .markdown-body h4 {
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+        line-height: 1.3;
+    }
+
+    .markdown-body h1 {
+        font-size: 1.75rem;
+        border-bottom: none;
+    }
+    .markdown-body h2 {
+        font-size: 1.5rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid var(--border-color);
+    }
+    .markdown-body h3 {
+        font-size: 1.25rem;
+    }
+    .markdown-body h4 {
+        font-size: 1.125rem;
+    }
+
+    .markdown-body p {
+        margin-bottom: 1.25rem;
+    }
+
+    /* 首字下沉 - 仅文章第一段 */
+    .markdown-body > p:first-of-type::first-letter {
+        font-size: 3.5rem;
+        font-weight: 600;
+        float: left;
+        line-height: 0.8;
+        margin-right: 0.5rem;
         color: var(--text-primary);
     }
 
-    /* Markdown 样式适配暗黑模式 */
+    /* 引用块优化 */
+    .markdown-body blockquote {
+        padding: 0.75rem 1.25rem;
+        border-left: 4px solid #3b82f6;
+        background: var(--bg-secondary);
+        border-radius: 0 0.5rem 0.5rem 0;
+        font-style: normal;
+    }
+
+    /* 表格优化 - 添加滚动条 */
+    .markdown-body table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+        border-collapse: collapse;
+        margin: 1rem 0;
+    }
+
+    .markdown-body table th,
+    .markdown-body table td {
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border-color);
+    }
+
+    /* 图片样式 */
+    .markdown-body img {
+        border-radius: 0.75rem;
+        max-width: 100%;
+        height: auto;
+        cursor: zoom-in;
+    }
+
+    /* 代码块优化 */
+    .markdown-body pre {
+        position: relative;
+        background: #0d1117 !important;
+        border-radius: 0.75rem !important;
+        padding: 1rem !important;
+        margin: 1.25rem 0 !important;
+        overflow-x: auto;
+    }
+
+    .markdown-body pre code {
+        background: transparent !important;
+        padding: 0 !important;
+        font-family: var(--font-mono);
+        font-size: 0.8125rem;
+        line-height: 1.6;
+        color: #e6edf3 !important;
+    }
+
+    .markdown-body code {
+        font-family: var(--font-mono);
+        font-size: 0.875em;
+        padding: 0.2rem 0.4rem;
+        background: var(--bg-secondary);
+        border-radius: 0.375rem;
+    }
+
+    /* 代码块语言标识 */
+    .code-lang {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.75rem;
+        font-size: 0.7rem;
+        color: #8b949e;
+        background: rgba(139,148,158,0.1);
+        padding: 0.2rem 0.5rem;
+        border-radius: 0.25rem;
+        font-family: var(--font-mono);
+        pointer-events: none;
+    }
+
+    /* 复制按钮 */
+    .copy-code-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.75rem;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.7rem;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid #30363d;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        opacity: 0;
+        transition: all 0.2s;
+        color: #8b949e;
+        font-weight: 500;
+        z-index: 10;
+    }
+
+    .markdown-body pre:hover .copy-code-btn {
+        opacity: 1;
+    }
+
+    .copy-code-btn:hover {
+        background: #30363d;
+        color: #e6edf3;
+    }
+
+    .copy-code-btn.copied {
+        background: #238636;
+        color: white;
+        border-color: #238636;
+    }
+
+    /* 暗黑模式适配 */
     body[data-theme="dark"] .markdown-body {
         color-scheme: dark;
-        background-color: transparent !important;
         color: var(--text-primary) !important;
     }
 
-    body[data-theme="dark"] .content-area {
-        color: var(--text-primary);
-    }
-
-    /* 暗黑模式下的 Markdown 元素样式 */
     body[data-theme="dark"] .markdown-body h1,
     body[data-theme="dark"] .markdown-body h2,
     body[data-theme="dark"] .markdown-body h3,
@@ -203,75 +316,19 @@
     body[data-theme="dark"] .markdown-body h5,
     body[data-theme="dark"] .markdown-body h6 {
         color: var(--text-primary) !important;
-        border-bottom-color: var(--border-color) !important;
     }
 
     body[data-theme="dark"] .markdown-body a {
         color: #58a6ff !important;
     }
 
-    body[data-theme="dark"] .markdown-body a:hover {
-        color: #79c0ff !important;
-    }
-
     body[data-theme="dark"] .markdown-body blockquote {
         color: var(--text-secondary) !important;
-        border-left-color: var(--border-color) !important;
+        background: var(--bg-secondary);
     }
 
     body[data-theme="dark"] .markdown-body hr {
         background-color: var(--border-color) !important;
-        border: none !important;
-    }
-
-    body[data-theme="dark"] .markdown-body table tr {
-        background-color: transparent !important;
-        border-top-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body table tr:nth-child(2n) {
-        background-color: var(--bg-secondary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body table th,
-    body[data-theme="dark"] .markdown-body table td {
-        border-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body img {
-        background-color: transparent !important;
-    }
-
-    body[data-theme="dark"] .markdown-body ul,
-    body[data-theme="dark"] .markdown-body ol {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body li {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body strong {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body em {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body p {
-        color: var(--text-primary) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body pre {
-        background-color: var(--bg-secondary) !important;
-        border-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .markdown-body code {
-        background-color: var(--bg-secondary) !important;
-        color: var(--text-primary) !important;
-        border-color: var(--border-color) !important;
     }
 
     /* 文章导航 */
@@ -279,13 +336,13 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         gap: 1.5rem;
-        margin: 4rem 0 3rem;
-        padding-top: 3rem;
+        margin: 3rem 0 2rem;
+        padding-top: 2rem;
         border-top: 1px solid var(--border-color);
     }
 
     .nav-item {
-        padding: 1.25rem;
+        padding: 1rem 1.25rem;
         background: var(--bg-secondary);
         border: 1px solid var(--border-color);
         border-radius: 0.75rem;
@@ -304,7 +361,7 @@
 
     .nav-label {
         display: block;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         color: var(--text-tertiary);
         margin-bottom: 0.5rem;
         text-transform: uppercase;
@@ -312,12 +369,11 @@
     }
 
     .nav-title {
-        display: block;
         color: var(--text-primary);
         text-decoration: none;
         font-weight: 500;
-        font-size: 0.9375rem;
-        transition: color 0.2s ease;
+        font-size: 0.875rem;
+        line-height: 1.4;
     }
 
     .nav-title:hover {
@@ -326,7 +382,7 @@
 
     /* 相关文章 */
     .related-articles {
-        margin: 3rem 0;
+        margin: 2rem 0;
         padding: 1.5rem;
         background: var(--bg-secondary);
         border-radius: 0.75rem;
@@ -335,7 +391,7 @@
 
     .related-articles h3 {
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 600;
         margin-bottom: 1rem;
         color: var(--text-primary);
     }
@@ -343,6 +399,7 @@
     .related-list {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
 
     .related-list li {
@@ -360,7 +417,7 @@
     .related-list a {
         color: var(--text-primary);
         text-decoration: none;
-        font-size: 0.9375rem;
+        font-size: 0.875rem;
         transition: color 0.2s ease;
         flex: 1;
     }
@@ -371,21 +428,22 @@
 
     .related-date {
         font-family: var(--font-mono);
-        font-size: 0.8125rem;
+        font-size: 0.75rem;
         color: var(--text-tertiary);
         margin-left: 1rem;
+        flex-shrink: 0;
     }
 
     /* 评论区 */
     .comment-section {
-        margin-top: 4rem;
-        padding-top: 3rem;
+        margin-top: 3rem;
+        padding-top: 2rem;
         border-top: 1px solid var(--border-color);
     }
 
     .comment-section h3 {
-        font-size: 1.125rem;
-        font-weight: 500;
+        font-size: 1rem;
+        font-weight: 600;
         color: var(--text-primary);
         margin-bottom: 1.5rem;
     }
@@ -409,139 +467,6 @@
         color: var(--text-primary);
     }
 
-    /* 代码块样式 */
-    .markdown-body .codehilite,
-    .markdown-body pre {
-        position: relative;
-        background: var(--bg-secondary) !important;
-        border: 1px solid var(--border-color) !important;
-        border-radius: 0.5rem !important;
-        padding: 1rem !important;
-        margin: 1rem 0 !important;
-        overflow-x: auto;
-        font-size: 0.875rem !important;
-        line-height: 1.6 !important;
-    }
-
-    .markdown-body code {
-        background: var(--bg-secondary) !important;
-        border: 1px solid var(--border-color) !important;
-        border-radius: 0.25rem !important;
-        padding: 0.125rem 0.375rem !important;
-        font-size: 0.875em !important;
-        font-family: var(--font-mono) !important;
-    }
-
-    .markdown-body .codehilite code,
-    .markdown-body pre code {
-        background: transparent !important;
-        border: none !important;
-        padding: 0 !important;
-    }
-
-    /* 代码复制按钮 */
-    .copy-code-btn {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        padding: 0.25rem 0.75rem;
-        font-size: 0.75rem;
-        background: var(--bg-primary);
-        border: 1px solid var(--border-color);
-        border-radius: 0.375rem;
-        cursor: pointer;
-        opacity: 0;
-        transition: all 0.2s;
-        color: var(--text-secondary);
-        font-weight: 500;
-    }
-
-    .codehilite:hover .copy-code-btn,
-    pre:hover .copy-code-btn {
-        opacity: 1;
-    }
-
-    .copy-code-btn:hover {
-        background: var(--bg-hover);
-        color: var(--text-primary);
-    }
-
-    .copy-code-btn.copied {
-        background: #10b981;
-        color: white;
-        border-color: #10b981;
-    }
-
-    /* 图片样式 */
-    .markdown-body .content-area img {
-        cursor: zoom-in;
-        border-radius: 0.5rem;
-        transition: opacity 0.3s, transform 0.3s;
-        max-width: 100%;
-        height: auto;
-    }
-
-    .markdown-body .content-area img:hover {
-        opacity: 0.9;
-        transform: scale(1.01);
-    }
-
-    /* 图片懒加载状态 */
-    .markdown-body .content-area img.img-loading {
-        background: linear-gradient(90deg, var(--bg-secondary) 25%, var(--bg-hover) 50%, var(--bg-secondary) 75%);
-        background-size: 200% 100%;
-        animation: shimmer 1.5s infinite;
-        min-height: 200px;
-    }
-
-    .markdown-body .content-area img.img-loaded {
-        animation: fadeIn 0.5s ease-in;
-    }
-
-    .markdown-body .content-area img.img-error {
-        border: 2px dashed var(--border-color);
-        background: var(--bg-secondary);
-        padding: 2rem;
-        min-height: 150px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        position: relative;
-    }
-
-    .markdown-body .content-area img.img-error::after {
-        content: '图片加载失败';
-        position: absolute;
-        color: var(--text-tertiary);
-        font-size: 0.875rem;
-        font-family: var(--font-sans);
-    }
-
-    /* 骨架屏动画 */
-    @keyframes shimmer {
-        0% { background-position: 200% 0; }
-        100% { background-position: -200% 0; }
-    }
-
-    /* 淡入动画 */
-    @keyframes fadeIn {
-        from { opacity: 0; }
-        to { opacity: 1; }
-    }
-
-    .medium-zoom-image--opened {
-        cursor: zoom-out;
-    }
-
-    .medium-zoom-overlay {
-        z-index: 9998;
-        background: rgba(0, 0, 0, 0.9) !important;
-    }
-
-    .medium-zoom-image {
-        z-index: 9999;
-    }
-
     /* Waline 样式适配 */
     .wl-container {
         font-family: var(--font-sans) !important;
@@ -553,17 +478,9 @@
         color: var(--text-primary) !important;
     }
 
-    body[data-theme="dark"] .wl-editor textarea {
-        color: var(--text-primary) !important;
-    }
-
     body[data-theme="dark"] .wl-card {
         background: transparent !important;
         border-color: var(--border-color) !important;
-    }
-
-    body[data-theme="dark"] .wl-content {
-        color: var(--text-primary) !important;
     }
 
     /* 响应式 */
@@ -574,6 +491,7 @@
 
         .article-navigation {
             grid-template-columns: 1fr;
+            gap: 1rem;
         }
 
         .nav-item.next {
@@ -588,187 +506,197 @@
         .related-date {
             margin-left: 0;
         }
+
+        .markdown-body {
+            font-size: 0.9375rem;
+        }
+
+        .markdown-body > p:first-of-type::first-letter {
+            font-size: 2.5rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        .article-title-text {
+            font-size: 1.5rem;
+        }
+
+        .article-meta {
+            gap: 0.75rem;
+        }
+
+        .post-date,
+        .read-time {
+            font-size: 0.75rem;
+        }
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<a href="../index.html" class="back-link">
-    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="15 18 9 12 15 6"></polyline>
-    </svg>
-    返回首页
-</a>
+<!-- 阅读进度条 -->
+<div class="reading-progress" id="readingProgress"></div>
 
-<article>
-    <header class="article-header">
-        <h1 class="article-title-text">{{issue.title}}</h1>
+<div class="article-wrapper">
+    <a href="../index.html" class="back-link">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="15 18 9 12 15 6"></polyline>
+        </svg>
+        返回首页
+    </a>
 
-        <div class="article-meta">
-            <time class="post-date">{{issue.created_at.strftime('%B %d, %Y')}}</time>
+    <article>
+        <header class="article-header">
+            <h1 class="article-title-text">{{issue.title}}</h1>
+
+            <div class="article-meta">
+                <time class="post-date">{{issue.created_at.strftime('%Y年%m月%d日')}}</time>
+                <span class="read-time" id="readTime"></span>
+            </div>
+
+            <div class="article-tags">
+                {% for l in labels_data %}
+                <a href="../tags/{{l.safe_name}}.html" class="tag" style="background-color: #{{l.color}};">
+                    {{l.name}}
+                </a>
+                {% endfor %}
+
+                {% if content_tags %}
+                {% for tag in content_tags %}
+                {% if tag.safe_name %}
+                <a href="../tags/{{tag.safe_name}}.html" class="content-tag">
+                    {{tag.name}}
+                </a>
+                {% else %}
+                <span class="content-tag">{{tag.name}}</span>
+                {% endif %}
+                {% endfor %}
+                {% endif %}
+            </div>
+        </header>
+
+        <div class="markdown-body">
+            {{content|safe}}
         </div>
+    </article>
 
-        <div class="article-tags">
-            {% for l in labels_data %}
-            <a href="../tags/{{l.safe_name}}.html" class="tag" style="background-color: #{{l.color}};">
-                {{l.name}}
-            </a>
-            {% endfor %}
-
-            {% if content_tags %}
-            {% for tag in content_tags %}
-            {% if tag.safe_name %}
-            <a href="../tags/{{tag.safe_name}}.html" class="content-tag">
-                {{tag.name}}
-            </a>
-            {% else %}
-            <span class="content-tag">{{tag.name}}</span>
-            {% endif %}
-            {% endfor %}
-            {% endif %}
+    <!-- 文章导航 -->
+    {% if prev_article or next_article %}
+    <nav class="article-navigation">
+        {% if prev_article %}
+        <div class="nav-item">
+            <span class="nav-label">← 上一篇</span>
+            <a href="article-{{prev_article.number}}.html" class="nav-title">{{prev_article.title}}</a>
         </div>
-    </header>
+        {% else %}
+        <div></div>
+        {% endif %}
 
-    <div class="markdown-body content-area">
-        {{content|safe}}
-    </div>
-</article>
-
-<!-- 文章导航 -->
-{% if prev_article or next_article %}
-<nav class="article-navigation">
-    {% if prev_article %}
-    <div class="nav-item">
-        <span class="nav-label">← 上一篇</span>
-        <a href="article-{{prev_article.number}}.html" class="nav-title">{{prev_article.title}}</a>
-    </div>
-    {% else %}
-    <div></div>
+        {% if next_article %}
+        <div class="nav-item next">
+            <span class="nav-label">下一篇 →</span>
+            <a href="article-{{next_article.number}}.html" class="nav-title">{{next_article.title}}</a>
+        </div>
+        {% endif %}
+    </nav>
     {% endif %}
 
-    {% if next_article %}
-    <div class="nav-item next">
-        <span class="nav-label">下一篇 →</span>
-        <a href="article-{{next_article.number}}.html" class="nav-title">{{next_article.title}}</a>
-    </div>
+    <!-- 相关文章 -->
+    {% if related_articles %}
+    <aside class="related-articles">
+        <h3>📖 相关文章</h3>
+        <ul class="related-list">
+            {% for article in related_articles %}
+            <li>
+                <a href="article-{{article.number}}.html">{{article.title}}</a>
+                <span class="related-date">{{article.created_at.strftime('%Y-%m-%d')}}</span>
+            </li>
+            {% endfor %}
+        </ul>
+    </aside>
     {% endif %}
-</nav>
-{% endif %}
 
-<!-- 相关文章 -->
-{% if related_articles %}
-<aside class="related-articles">
-    <h3>相关文章</h3>
-    <ul class="related-list">
-        {% for article in related_articles %}
-        <li>
-            <a href="article-{{article.number}}.html">{{article.title}}</a>
-            <span class="related-date">{{article.created_at.strftime('%Y-%m-%d')}}</span>
-        </li>
-        {% endfor %}
-    </ul>
-</aside>
-{% endif %}
-
-<!-- Waline评论区 -->
-<section class="comment-section">
-    <h3>💬 留言区</h3>
-    <div id="waline-container"></div>
-</section>
+    <!-- Waline评论区 -->
+    <section class="comment-section">
+        <h3>💬 留言区</h3>
+        <div id="waline-container"></div>
+    </section>
+</div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        // 图片懒加载功能
-        const lazyImages = document.querySelectorAll('img.lazyload');
-
-        if ('IntersectionObserver' in window) {
-            // 使用 Intersection Observer API 实现懒加载
-            const imageObserver = new IntersectionObserver(function(entries, observer) {
-                entries.forEach(function(entry) {
-                    if (entry.isIntersecting) {
-                        const img = entry.target;
-                        const src = img.getAttribute('data-src');
-
-                        if (src) {
-                            // 创建新的Image对象预加载
-                            const tempImg = new Image();
-
-                            tempImg.onload = function() {
-                                img.src = src;
-                                img.classList.remove('img-loading');
-                                img.classList.add('img-loaded');
-                                img.removeAttribute('data-src');
-                            };
-
-                            tempImg.onerror = function() {
-                                img.classList.remove('img-loading');
-                                img.classList.add('img-error');
-                                img.alt = '图片加载失败';
-                                console.error('图片加载失败:', src);
-                            };
-
-                            tempImg.src = src;
-                        }
-
-                        observer.unobserve(img);
-                    }
-                });
-            }, {
-                rootMargin: '50px 0px', // 提前50px开始加载
-                threshold: 0.01
-            });
-
-            lazyImages.forEach(function(img) {
-                imageObserver.observe(img);
-            });
-        } else {
-            // 降级方案：直接加载所有图片
-            lazyImages.forEach(function(img) {
-                const src = img.getAttribute('data-src');
-                if (src) {
-                    img.src = src;
-                    img.classList.remove('img-loading');
-                    img.classList.add('img-loaded');
-                }
+    (function() {
+        // 阅读进度条
+        const progressBar = document.getElementById('readingProgress');
+        if (progressBar) {
+            window.addEventListener('scroll', function() {
+                const winScroll = document.documentElement.scrollTop;
+                const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+                const scrolled = (winScroll / height) * 100;
+                progressBar.style.width = scrolled + '%';
             });
         }
 
-        // 代码块复制功能
-        const codeBlocks = document.querySelectorAll('.codehilite, pre');
+        // 计算阅读时间
+        const content = document.querySelector('.markdown-body');
+        if (content) {
+            const text = content.innerText || content.textContent;
+            const wordCount = text.replace(/\s/g, '').length;
+            const readTime = Math.max(1, Math.ceil(wordCount / 400));
+            const readTimeSpan = document.getElementById('readTime');
+            if (readTimeSpan) {
+                readTimeSpan.textContent = `📖 约 ${readTime} 分钟`;
+            }
+        }
 
-        codeBlocks.forEach(function(codeBlock) {
+        // 代码块添加语言标识和复制按钮
+        const codeBlocks = document.querySelectorAll('.markdown-body pre');
+        
+        codeBlocks.forEach(function(pre) {
+            const code = pre.querySelector('code');
+            if (!code) return;
+            
+            // 获取语言
+            const langClass = Array.from(code.classList).find(c => c.startsWith('language-'));
+            const lang = langClass ? langClass.replace('language-', '') : '';
+            
+            if (lang) {
+                const langSpan = document.createElement('span');
+                langSpan.className = 'code-lang';
+                langSpan.textContent = lang.toUpperCase();
+                pre.style.position = 'relative';
+                pre.appendChild(langSpan);
+            }
+            
+            // 复制按钮
             const copyBtn = document.createElement('button');
             copyBtn.className = 'copy-code-btn';
             copyBtn.textContent = '复制';
-
-            codeBlock.style.position = 'relative';
-            codeBlock.insertBefore(copyBtn, codeBlock.firstChild);
-
-            copyBtn.addEventListener('click', function() {
-                const codeElement = codeBlock.querySelector('code') || codeBlock;
-                const codeText = codeElement.textContent;
-
+            pre.style.position = 'relative';
+            pre.appendChild(copyBtn);
+            
+            copyBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const codeText = code.textContent;
+                
                 navigator.clipboard.writeText(codeText).then(function() {
-                    copyBtn.textContent = '已复制 ✓';
+                    copyBtn.textContent = '✓ 已复制';
                     copyBtn.classList.add('copied');
-
                     setTimeout(function() {
                         copyBtn.textContent = '复制';
                         copyBtn.classList.remove('copied');
                     }, 2000);
-                }).catch(function(err) {
-                    console.error('复制失败:', err);
-                    copyBtn.textContent = '复制失败';
+                }).catch(function() {
+                    copyBtn.textContent = '失败';
                     setTimeout(function() {
                         copyBtn.textContent = '复制';
                     }, 2000);
                 });
             });
         });
-    });
+    })();
 </script>
 
-<!-- Waline 评论系统 - 使用国内CDN -->
+<!-- Waline 评论系统 -->
 <script type="module">
     import { init } from 'https://cdn.jsdelivr.net/npm/@waline/client@3/dist/waline.min.js';
 
@@ -792,10 +720,10 @@
     });
 </script>
 
-<!-- Medium-zoom 图片缩放 - 使用国内CDN -->
+<!-- Medium-zoom 图片缩放 -->
 <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.1.0/dist/medium-zoom.min.js"></script>
 <script>
-    mediumZoom('.content-area img', {
+    mediumZoom('.markdown-body img', {
         margin: 24,
         background: 'rgba(0, 0, 0, 0.9)',
         scrollOffset: 0,
