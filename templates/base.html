@@ -65,7 +65,6 @@
                         </svg>
                     </button>
                     <div class="dropdown-menu" id="dropdownMenu">
-                        <a href="{% if base_path %}{{base_path}}{% endif %}index.html">首页</a>
                         <a href="{% if base_path %}{{base_path}}{% endif %}blog.html">博客</a>
                         <a href="{% if base_path %}{{base_path}}{% endif %}search.html">搜索</a>
                         <a href="{% if base_path %}{{base_path}}{% endif %}about.html">关于</a>
@@ -322,7 +321,7 @@
                     <div class="subscribe-url-box">
                         <input type="text" readonly value="https://134688.xyz/feed.xml" class="subscribe-url-input" id="rssUrl">
                     </div>
-                    <button class="subscribe-button" onclick="copyRssUrl()">订阅</button>
+                    <button class="subscribe-button" onclick="copyRssUrl(event)">订阅</button>
                 </div>
             </aside>
         </div>
@@ -341,85 +340,6 @@
         </svg>
     </button>
 
-    <script>
-        // 主题切换
-        const themeToggle = document.getElementById('themeToggle');
-        const htmlEl = document.documentElement;
-        const bodyEl = document.body;
-
-        // 从 localStorage 读取主题
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        bodyEl.setAttribute('data-theme', savedTheme);
-        if (savedTheme === 'dark') {
-            htmlEl.classList.add('dark');
-        } else {
-            htmlEl.classList.remove('dark');
-        }
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = bodyEl.getAttribute('data-theme');
-            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
-            bodyEl.setAttribute('data-theme', newTheme);
-            if (newTheme === 'dark') {
-                htmlEl.classList.add('dark');
-            } else {
-                htmlEl.classList.remove('dark');
-            }
-            localStorage.setItem('theme', newTheme);
-        });
-
-        // 下拉菜单
-        const menuToggle = document.getElementById('menuToggle');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        menuToggle.addEventListener('click', (e) => {
-            e.stopPropagation();
-            dropdownMenu.classList.toggle('show');
-        });
-
-        document.addEventListener('click', () => {
-            dropdownMenu.classList.remove('show');
-        });
-
-        // 返回顶部
-        const backToTopButton = document.getElementById('backToTop');
-
-        window.addEventListener('scroll', () => {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.add('show');
-            } else {
-                backToTopButton.classList.remove('show');
-            }
-        });
-
-        backToTopButton.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // 复制RSS地址
-        function copyRssUrl() {
-            const urlInput = document.getElementById('rssUrl');
-            urlInput.select();
-            urlInput.setSelectionRange(0, 99999); // 移动端兼容
-
-            navigator.clipboard.writeText(urlInput.value).then(() => {
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '已复制!';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                }, 2000);
-            }).catch(() => {
-                // 兼容旧浏览器
-                document.execCommand('copy');
-                const btn = event.target;
-                const originalText = btn.textContent;
-                btn.textContent = '已复制!';
-                setTimeout(() => {
-                    btn.textContent = originalText;
-                }, 2000);
-            });
-        }
-    </script>
+    <script src="{% if base_path %}{{base_path}}{% endif %}static/script.js"></script>
 </body>
 </html>
