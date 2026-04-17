@@ -40,7 +40,8 @@ My personal blog using issues and GitHub Actions
 ## 世界好精彩我想去转转 (1篇文章)
 - [竹筍的超級潛力：它為何是營養界的黑馬？](https://github.com/myogg/gitblog/issues/15)--2026-04-16
 
-## 碎碎念 (1篇文章)
+## 碎碎念 (2篇文章)
+- [Telegram官方已集成中文语言选项](https://github.com/myogg/gitblog/issues/20)--2026-04-17
 - [这小视频是不能看，看一场哭一场！](https://github.com/myogg/gitblog/issues/16)--2026-04-16
 
 ## 2026 (2篇文章)
