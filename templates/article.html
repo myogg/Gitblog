@@ -113,6 +113,21 @@
         display: flex;
         flex-wrap: wrap;
         gap: 0.5rem;
+        align-items: center;
+    }
+
+    /* 播放器在标签行内 */
+    .article-tags .audio-player {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        padding: 0.25rem 0.5rem;
+        background: transparent;
+        border: none;
+        user-select: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
     }
 
     .tag {
@@ -488,18 +503,6 @@
     }
 
     /* ========== TTS 播放器样式 - OpenAI 风格 ========== */
-    .audio-player {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        margin: 1rem 0 1.5rem 0;
-        padding: 0.25rem 0.5rem;
-        background: transparent;
-        border: none;
-        user-select: none;
-        cursor: pointer;
-        transition: all 0.2s ease;
-    }
 
     .play-btn {
         flex-shrink: 0;
@@ -588,7 +591,7 @@
 
     /* 响应式 */
     @media (max-width: 768px) {
-        .audio-player {
+        .article-tags .audio-player {
             gap: 0.4rem;
             padding: 0.2rem 0.4rem;
         }
@@ -697,29 +700,29 @@
                 {% endif %}
                 {% endfor %}
                 {% endif %}
+
+                {% if audio_url %}
+                <div class="audio-player" id="ttsPlayer">
+                    <button class="play-btn" id="playBtn" aria-label="播放">
+                        <svg id="playIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+                            <polygon points="6 3 20 12 6 21 6 3"/>
+                        </svg>
+                        <svg id="pauseIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="display:none">
+                            <rect x="5" y="3" width="4" height="18"/>
+                            <rect x="15" y="3" width="4" height="18"/>
+                        </svg>
+                    </button>
+                    <div class="player-controls">
+                        <div class="player-info">
+                            <span class="time-display" id="timeDisplay">0:00</span>
+                            <button class="speed-btn" id="speedBtn">1x</button>
+                        </div>
+                    </div>
+                    <audio id="ttsAudio" preload="none" src="{{ audio_url }}"></audio>
+                </div>
+                {% endif %}
             </div>
         </header>
-
-        {% if audio_url %}
-        <div class="audio-player" id="ttsPlayer">
-            <button class="play-btn" id="playBtn" aria-label="播放">
-                <svg id="playIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
-                    <polygon points="6 3 20 12 6 21 6 3"/>
-                </svg>
-                <svg id="pauseIcon" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="display:none">
-                    <rect x="5" y="3" width="4" height="18"/>
-                    <rect x="15" y="3" width="4" height="18"/>
-                </svg>
-            </button>
-            <div class="player-controls">
-                <div class="player-info">
-                    <span class="time-display" id="timeDisplay">0:00</span>
-                    <button class="speed-btn" id="speedBtn">1x</button>
-                </div>
-            </div>
-            <audio id="ttsAudio" preload="none" src="{{ audio_url }}"></audio>
-        </div>
-        {% endif %}
 
         <div class="markdown-body">
             {{content|safe}}
