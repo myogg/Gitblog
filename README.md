@@ -15,16 +15,18 @@ My personal blog using issues and GitHub Actions
 
 [RSS Feed](https://raw.githubusercontent.com/myogg/gitblog/master/feed.xml)
 
-## 正文 (18篇文章)
+## 正文 (20篇文章)
+- [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/27)--2026-04-17
+- [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/26)--2026-04-17
 - [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/25)--2026-04-17
 - [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/24)--2026-04-17
 - [Perplexity 发布 Personal Computer 软件](https://github.com/myogg/gitblog/issues/22)--2026-04-17
-- [iPhone 忠诚度升至 96.4% 创历史新高](https://github.com/myogg/gitblog/issues/21)--2026-04-17
-- [DeepSeek 发布 DeepGEMM 重大更新：推出 Mega MoE 融合算子并支持 FP4 精度](https://github.com/myogg/gitblog/issues/19)--2026-04-16
 
 <details>
-<summary>显示更多 (13篇)</summary>
+<summary>显示更多 (15篇)</summary>
 
+- [iPhone 忠诚度升至 96.4% 创历史新高](https://github.com/myogg/gitblog/issues/21)
+- [DeepSeek 发布 DeepGEMM 重大更新：推出 Mega MoE 融合算子并支持 FP4 精度](https://github.com/myogg/gitblog/issues/19)
 - [IETF 发布 IPv8 草案：实现 100% 向后兼容并解决地址枯竭](https://github.com/myogg/gitblog/issues/18)
 - [cloudflare 提供安全的私有网络——隆重推出 Cloudflare Mesh](https://github.com/myogg/gitblog/issues/17)
 - [多家境内银行发行的万事达卡支持绑定到 Apple Pay](https://github.com/myogg/gitblog/issues/14)
@@ -59,7 +61,9 @@ My personal blog using issues and GitHub Actions
 - [侠影](https://github.com/myogg/gitblog/issues/2)--2026-04-15
 - [丁香花](https://github.com/myogg/gitblog/issues/1)--2026-04-15
 
-## 一些记录 (2篇文章)
+## 一些记录 (4篇文章)
+- [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/27)--2026-04-17
+- [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/26)--2026-04-17
 - [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/25)--2026-04-17
 - [2026 全球宽带价格报告，中国排名第16](https://github.com/myogg/gitblog/issues/24)--2026-04-17
 
